@@ -1,0 +1,5 @@
+C:\Examples\StudyProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.AssemblyReference.cache
+C:\Examples\StudyProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.GeneratedMSBuildEditorConfig.editorconfig
+C:\Examples\StudyProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.AssemblyInfoInputs.cache
+C:\Examples\StudyProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.AssemblyInfo.cs
+C:\Examples\StudyProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.CoreCompileInputs.cache

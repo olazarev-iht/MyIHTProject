@@ -1,0 +1,13 @@
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.csproj.AssemblyReference.cache
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.Cultures.App.ar.resources
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.Cultures.App.de.resources
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.Cultures.App.en.resources
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.Cultures.App.uk.resources
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.csproj.GenerateResource.cache
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.GeneratedMSBuildEditorConfig.editorconfig
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.AssemblyInfoInputs.cache
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.AssemblyInfo.cs
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.csproj.CoreCompileInputs.cache
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.MvcApplicationPartsAssemblyInfo.cache
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.RazorAssemblyInfo.cache
+C:\Examples\StudyProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.RazorAssemblyInfo.cs

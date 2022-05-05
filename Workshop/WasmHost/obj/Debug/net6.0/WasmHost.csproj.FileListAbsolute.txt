@@ -1,0 +1,6 @@
+C:\Examples\StudyProject\Workshop\WasmHost\obj\Debug\net6.0\WasmHost.csproj.AssemblyReference.cache
+C:\Examples\StudyProject\Workshop\WasmHost\obj\Debug\net6.0\WasmHost.GeneratedMSBuildEditorConfig.editorconfig
+C:\Examples\StudyProject\Workshop\WasmHost\obj\Debug\net6.0\WasmHost.AssemblyInfoInputs.cache
+C:\Examples\StudyProject\Workshop\WasmHost\obj\Debug\net6.0\WasmHost.AssemblyInfo.cs
+C:\Examples\StudyProject\Workshop\WasmHost\obj\Debug\net6.0\WasmHost.csproj.CoreCompileInputs.cache
+C:\Examples\StudyProject\Workshop\WasmHost\obj\Debug\net6.0\WasmHost.MvcApplicationPartsAssemblyInfo.cache
