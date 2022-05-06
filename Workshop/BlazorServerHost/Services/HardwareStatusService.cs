@@ -91,7 +91,7 @@
 				{
 					_logger.LogError(ex, "An error occurred while updating hardware values");
 				}
-				await Task.Delay(TimeSpan.FromSeconds(2));
+				await Task.Delay(TimeSpan.FromSeconds(20));
 			}
 		}
 	}

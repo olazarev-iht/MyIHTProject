@@ -136,6 +136,14 @@ try
 		await tx.CommitAsync();
 	}
 
+	// migrate HardwareAPCDbContext
+	using (var ctx = app.Services.GetRequiredService<IDbContextFactory<HardwareAPCDbContext>>().CreateDbContext())
+	{
+		using var tx = ctx.Database.BeginTransaction();
+		await ctx.Database.MigrateAsync();
+		await tx.CommitAsync();
+	}
+
 	await app.RunAsync();
 	return 0;
 }

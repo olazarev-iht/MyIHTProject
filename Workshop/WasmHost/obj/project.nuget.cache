@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bBQVpnheU4OM1fqbnRpbo/FMVWb3thsgEAbdO5yTYCrOLyO+78i+Be9P74+cy9ZUfZR8YapMOt6u1nWk9FvloQ==",
+  "dgSpecHash": "y+ZQPQzc40fRPqN0DjZPSYVAzlh0XONlE31JLhEsA9awPIjOA+L6YTHLBlyKYVWUJVyFKKnUV5bprZz1ZmDpeA==",
   "success": true,
-  "projectFilePath": "C:\\Examples\\StudyProject\\Workshop\\WasmHost\\WasmHost.csproj",
+  "projectFilePath": "C:\\Examples\\MyIHTProject\\Workshop\\WasmHost\\WasmHost.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.4\\microsoft.aspnetcore.authorization.6.0.4.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.aspnetcore.components\\6.0.4\\microsoft.aspnetcore.components.6.0.4.nupkg.sha512",

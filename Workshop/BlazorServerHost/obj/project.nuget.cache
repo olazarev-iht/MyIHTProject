@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9wHD1nU1l+/UXMkGj277CthZEn1lJd9+CLu+DuhHoW7cMZtmWYQ0noXI8BIKhHo1s6dR+QgWszXU6nc04BZUPg==",
+  "dgSpecHash": "uco9O8mpte7zoRz4VGq/1EJJ6DIxsXbb2K8aqBhKjevT2FGgjXKhcWBuH0uEwuM4Fh8B4akkx2/NW+W9FqAaTQ==",
   "success": true,
-  "projectFilePath": "C:\\Examples\\StudyProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj",
+  "projectFilePath": "C:\\Examples\\MyIHTProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ol\\.nuget\\packages\\blazored.localstorage\\4.2.0\\blazored.localstorage.4.2.0.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

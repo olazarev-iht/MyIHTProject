@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32414.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerHost", "BlazorServerHost\BlazorServerHost.csproj", "{CF40023C-C4A8-4EA2-85C7-D286AB87A110}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedComponents", "SharedComponents\SharedComponents.csproj", "{56FCDDB3-13BE-4381-8A28-7A2A14231451}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedComponents", "SharedComponents\SharedComponents.csproj", "{56FCDDB3-13BE-4381-8A28-7A2A14231451}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WasmHost", "WasmHost\WasmHost.csproj", "{45A41809-A27E-4455-B24B-F87FAB056126}"
 EndProject

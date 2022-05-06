@@ -8,13 +8,13 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SharedComponents
 build_property.RootNamespace = SharedComponents
-build_property.ProjectDir = C:\Examples\StudyProject\Workshop\SharedComponents\
+build_property.ProjectDir = C:\Examples\MyIHTProject\Workshop\SharedComponents\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Examples\StudyProject\Workshop\SharedComponents
+build_property.MSBuildProjectDirectory = C:\Examples\MyIHTProject\Workshop\SharedComponents
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Examples/StudyProject/Workshop/SharedComponents/_Imports.razor]
+[C:/Examples/MyIHTProject/Workshop/SharedComponents/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
