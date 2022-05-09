@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerHost", "BlazorS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedComponents", "SharedComponents\SharedComponents.csproj", "{56FCDDB3-13BE-4381-8A28-7A2A14231451}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WasmHost", "WasmHost\WasmHost.csproj", "{45A41809-A27E-4455-B24B-F87FAB056126}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{56FCDDB3-13BE-4381-8A28-7A2A14231451}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56FCDDB3-13BE-4381-8A28-7A2A14231451}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56FCDDB3-13BE-4381-8A28-7A2A14231451}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45A41809-A27E-4455-B24B-F87FAB056126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45A41809-A27E-4455-B24B-F87FAB056126}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45A41809-A27E-4455-B24B-F87FAB056126}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45A41809-A27E-4455-B24B-F87FAB056126}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

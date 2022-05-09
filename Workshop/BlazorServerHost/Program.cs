@@ -35,6 +35,10 @@ builder.Services.AddDbContextFactory<CuttingParametersDbContext>(options =>
 {
 	options.UseSqlite(builder.Configuration.GetConnectionString("CuttingParametersDbContext"));
 });
+builder.Services.AddDbContextFactory<HardwareAPCDbContext>(options =>
+{
+	options.UseSqlite(builder.Configuration.GetConnectionString("CuttingParametersDbContext"));
+});
 
 builder.Services.AddScoped<ICuttingParametersService, CuttingParametersService>();
 builder.Services.AddSingleton<CommunicationsService>();

@@ -39,7 +39,7 @@ namespace BlazorServerHost.Data
 			modelBuilder.Entity<HardwareAPCModel>()
 			.HasKey(apc => apc.DeviceId);
 
-			base.OnModelCreating(modelBuilder);
+			//base.OnModelCreating(modelBuilder);
 
 			//Seed Departments Table
 			var DynamicParamsInfoId1 = Guid.NewGuid();
@@ -85,36 +85,45 @@ namespace BlazorServerHost.Data
 			modelBuilder.Entity<ConstParamsInfo>().HasData(
 				new ConstParamsInfo { Id = ConstParamsInfoId3, ConstParam1 = 3, ConstParam2 = 3, ConstParam3 = 3 });
 
-			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			var HardwareAPCModelId1 = Guid.NewGuid();
-			var HardwareAPCModelId2 = Guid.NewGuid();
-			var HardwareAPCModelId3 = Guid.NewGuid();
+            var HardwareAPCModelId1 = Guid.NewGuid();
+            var HardwareAPCModelId2 = Guid.NewGuid();
+            var HardwareAPCModelId3 = Guid.NewGuid();
 
-			modelBuilder.Entity<HardwareAPCModel>().HasData(
-				new HardwareAPCModel 
-				{ 
-					DeviceId = HardwareAPCModelId1, DeviceName = "Device1", 
-					DynamicParamsId = DynamicParamsInfoId1, LiveParamsId = LiveParamsInfoId1, ConstParamsId = ConstParamsInfoId1
-				});
+            modelBuilder.Entity<HardwareAPCModel>().HasData(
+                new HardwareAPCModel
+                {
+                    DeviceId = HardwareAPCModelId1,
+                    DeviceName = "Device1",
+                    DynamicParamsId = DynamicParamsInfoId1,
+                    LiveParamsId = LiveParamsInfoId1,
+                    ConstParamsId = ConstParamsInfoId1
+                });
 
-			modelBuilder.Entity<ConstParamsInfo>().HasData(
-				new HardwareAPCModel
-				{
-					DeviceId = HardwareAPCModelId1,	DeviceName = "Device2",
-					DynamicParamsId = DynamicParamsInfoId2, LiveParamsId = LiveParamsInfoId2, ConstParamsId = ConstParamsInfoId2
-				});
+            modelBuilder.Entity<HardwareAPCModel>().HasData(
+                new HardwareAPCModel
+                {
+                    DeviceId = HardwareAPCModelId2,
+                    DeviceName = "Device2",
+                    DynamicParamsId = DynamicParamsInfoId2,
+                    LiveParamsId = LiveParamsInfoId2,
+                    ConstParamsId = ConstParamsInfoId2
+                });
 
-			modelBuilder.Entity<ConstParamsInfo>().HasData(
-				new HardwareAPCModel
-				{
-					DeviceId = HardwareAPCModelId1, DeviceName = "Device3",
-					DynamicParamsId = DynamicParamsInfoId3, LiveParamsId = LiveParamsInfoId3, ConstParamsId = ConstParamsInfoId3
-				});
+            modelBuilder.Entity<HardwareAPCModel>().HasData(
+                new HardwareAPCModel
+                {
+                    DeviceId = HardwareAPCModelId3,
+                    DeviceName = "Device3",
+                    DynamicParamsId = DynamicParamsInfoId3,
+                    LiveParamsId = LiveParamsInfoId3,
+                    ConstParamsId = ConstParamsInfoId3
+                });
 
-			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-		}
+        }
 	}
 }
