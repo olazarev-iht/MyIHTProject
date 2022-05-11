@@ -1,31 +1,37 @@
 ﻿@using BlazorServerHost.Features.HeightControlFeature.Services
-@inject HeightControlDataProvider HeightControlData;
+@inject LiveAPCParamsDataProvider liveAPCParamsDataProvider;
 @implements IDisposable
 <MudText Typo="Typo.h4">LiveAPCParamsDisplay</MudText>
 
-@if (HeightControlData != null)
+@if (liveAPCParamsDataProvider != null)
 {
-    <MudText>Set height is: @HeightControlData.CurrentHeightData.SetHeight</MudText>
-    <br/>
-    <MudText>Actual height is: @HeightControlData.CurrentHeightData.ActualHeight</MudText>
-    <br/>
+    var liveParamsInfos = liveAPCParamsDataProvider.CurrentLiveAPCParams.LiveParamsInfos;
+
+    @for (var i = 1; i <= liveParamsInfos.Count; i++){
+        <p>Device @i Live Params are: 
+            Live Param 1 = @liveParamsInfos[i].LiveParam1 
+            Live Param 2 = @liveParamsInfos[i].LiveParam2 
+            Live Param 3 = @liveParamsInfos[i].LiveParam3
+        </p>
+        
+    }
 }
 @code {
 
     protected override void OnInitialized()
     {
-        HeightControlData.HeightControlDataChanged += HeightControlDataOnHeightControlDataChanged;
+        liveAPCParamsDataProvider.LiveAPCParamsDataChanged += LiveAPCParamsOnLiveAPCParamsDataChanged;
         base.OnInitialized();
     }
 
-    private async void HeightControlDataOnHeightControlDataChanged(object? sender, EventArgs e)
+    private async void LiveAPCParamsOnLiveAPCParamsDataChanged(object? sender, EventArgs e)
     {
         await InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()
     {
-        HeightControlData.HeightControlDataChanged -= HeightControlDataOnHeightControlDataChanged;
+        liveAPCParamsDataProvider.LiveAPCParamsDataChanged -= LiveAPCParamsOnLiveAPCParamsDataChanged;
     }
 
 }

@@ -1,0 +1,21 @@
+﻿@page "/liveAPCParamsInfo"
+
+@using BlazorServerHost.Services
+
+<MudText Typo="Typo.h3">LiveAPCParamsInfo</MudText>
+
+@inject CommunicationsService Comms;
+
+@if (IsInitialized)
+{
+    <AuthorizeView Roles="User">
+        <Authorized>            
+            <LiveAPCParamsDisplay />
+        </Authorized>
+        <NotAuthorized>
+           
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <MudButton OnClick="@(_ => Comms.ButtonPressed())">Press this</MudButton>
+}

@@ -45,7 +45,7 @@
 		{
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 #pragma warning disable CS4014
-			UpdateValues();
+			// UpdateValues();
 #pragma warning restore CS4014
 		}
 

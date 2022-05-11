@@ -4,6 +4,7 @@ using BlazorServerHost.Areas.Identity;
 using BlazorServerHost.Data;
 using BlazorServerHost.Features.HeightControlFeature;
 using BlazorServerHost.Services;
+using BlazorServerHost.Services.APCWorkerService;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ builder.Services.AddScoped<IStringLocalizer<App>, StringLocalizer<App>>();
 
 builder.Services.AddHostedService<BackgroundHardwareMonitor>();
 builder.Services.AddSingleton<IHardwareStatusService, FakeHardwareStatusService>();
+builder.Services.AddSingleton<IAPCWorkerService, APCWorkerService>();
 
 builder.Services.AddCors();
 builder.Services.AddMvc();
@@ -41,6 +43,7 @@ builder.Services.AddDbContextFactory<HardwareAPCDbContext>(options =>
 });
 
 builder.Services.AddScoped<ICuttingParametersService, CuttingParametersService>();
+builder.Services.AddSingleton<IHardwareAPCServise, HardwareAPCServise>();
 builder.Services.AddSingleton<CommunicationsService>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
@@ -58,6 +61,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 	;
 
 builder.Services.AddHeightControlFeature();
+builder.Services.AddLiveAPCParamsDataFeature();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
