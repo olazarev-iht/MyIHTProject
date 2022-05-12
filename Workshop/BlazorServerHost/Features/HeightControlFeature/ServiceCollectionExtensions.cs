@@ -17,5 +17,12 @@ namespace BlazorServerHost.Features.HeightControlFeature
 
 			return services;
 		}
+
+		public static IServiceCollection AddDynamicAPCParamsDataFeature(this IServiceCollection services)
+		{
+			services.AddScoped<DynamicAPCParamsDataProvider>();
+
+			return services;
+		}
 	}
 }

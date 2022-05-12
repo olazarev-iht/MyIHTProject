@@ -62,6 +62,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 
 builder.Services.AddHeightControlFeature();
 builder.Services.AddLiveAPCParamsDataFeature();
+builder.Services.AddDynamicAPCParamsDataFeature();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();

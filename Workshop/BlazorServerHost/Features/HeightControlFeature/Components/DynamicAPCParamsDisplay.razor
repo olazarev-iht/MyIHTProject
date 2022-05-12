@@ -1,0 +1,37 @@
+﻿@using BlazorServerHost.Features.HeightControlFeature.Services
+@inject DynamicAPCParamsDataProvider dynamicAPCParamsDataProvider;
+@implements IDisposable
+<MudText Typo="Typo.h4">DynamicAPCParamsDisplay</MudText>
+
+@if (dynamicAPCParamsDataProvider != null)
+{
+    var dynamicParamsInfos = dynamicAPCParamsDataProvider.CurrentDynamicAPCParams.DynamicParamsInfos;
+
+    @for (var i = 1; i <= dynamicParamsInfos.Count; i++){
+        <p>Device @i Live Params are: 
+            Dynamic Param 1 = @dynamicParamsInfos[i].DynamicParam1 
+            Dynamic Param 2 = @dynamicParamsInfos[i].DynamicParam2 
+            Dynamic Param 3 = @dynamicParamsInfos[i].DynamicParam3
+        </p>
+        
+    }
+}
+@code {
+
+    protected override void OnInitialized()
+    {
+        dynamicAPCParamsDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        base.OnInitialized();
+    }
+
+    private async void DynamicAPCParamsOnDynamicAPCParamsDataChanged(object? sender, EventArgs e)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        dynamicAPCParamsDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+    }
+
+}

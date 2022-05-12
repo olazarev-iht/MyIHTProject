@@ -46,6 +46,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 			{
 				try
 				{
+					// TODO currently we read the whole model, but we may will read only live data
 					CurrentState = await _hardwareAPCServise.GetSingletonDataModelAsync(CancellationToken.None);
 
 					WorkerStatusChanged?.Invoke(this, EventArgs.Empty);

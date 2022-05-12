@@ -11,9 +11,12 @@
     <AuthorizeView Roles="User">
         <Authorized>            
             <LiveAPCParamsDisplay />
+            <DynamicAPCParamsDisplay />
         </Authorized>
+
         <NotAuthorized>
-           
+            <LiveAPCParamsDisplay />
+            <DynamicAPCParamsDisplay />
         </NotAuthorized>
     </AuthorizeView>
 
