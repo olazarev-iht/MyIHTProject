@@ -1,6 +1,7 @@
 ﻿using BlazorServerHost.Features.Models;
 using BlazorServerHost.Services.APCWorkerService;
 using SharedComponents.Models;
+using SharedComponents.Services;
 
 namespace BlazorServerHost.Features.HeightControlFeature.Services
 {
@@ -11,14 +12,27 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services
 
 		private readonly IAPCWorkerService _apcWorkerService;
 
-		public DynamicAPCParamsDataProvider(IAPCWorkerService apcWorkerService)
+		private readonly IHardwareAPCServise _hardwareAPCServise;
+
+		public DynamicAPCParamsDataProvider(IAPCWorkerService apcWorkerService, IHardwareAPCServise hardwareAPCServise)
 		{
 			_apcWorkerService = apcWorkerService ?? throw new ArgumentNullException(nameof(apcWorkerService));
 
-			_apcWorkerService.WorkerStatusChanged += _apcWorkerService_WorkerStatusChanged;
+			_hardwareAPCServise = hardwareAPCServise ?? throw new ArgumentNullException(nameof(hardwareAPCServise));
+
+			_apcWorkerService.DynamicDataChanged += _apcWorkerService_DymanicDataChanged;
+
+
 		}
 
-		private void _apcWorkerService_WorkerStatusChanged(object? sender, EventArgs e)
+		public async void dynamicParamsDysplay_DynamicAPCParamsClientChanged(object? sender, EventArgs e)
+        {
+			await _hardwareAPCServise.UpdateDynamicDataAsync(CurrentDynamicAPCParams.DynamicParamsInfos, CancellationToken.None);
+
+			await _apcWorkerService.RefreshDynamicDataAsync();
+		}
+
+		private void _apcWorkerService_DymanicDataChanged(object? sender, EventArgs e)
 		{
 			var singletonAPCDynamicParamsDictionary = _apcWorkerService.CurrentState.HardwareAPCList.Select(apc =>
 				new { Id = int.Parse(apc.DeviceName?.Last().ToString() ?? "0"), apc.DynamicParams }).ToDictionary(lp => lp.Id);
@@ -46,7 +60,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services
 
 		public void Dispose()
 		{
-			_apcWorkerService.WorkerStatusChanged -= _apcWorkerService_WorkerStatusChanged;
+			_apcWorkerService.DynamicDataChanged -= _apcWorkerService_DymanicDataChanged;
 		}
 
 		protected virtual void OnDynamicAPCParamsDataChanged()

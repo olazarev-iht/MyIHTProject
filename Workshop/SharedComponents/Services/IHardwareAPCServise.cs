@@ -14,5 +14,6 @@ namespace SharedComponents.Services
 		public Task<Guid?> AddEntryAsync(HardwareAPCModel model, CancellationToken cancellationToken);
 		public Task UpdateEntryAsync(Guid id, HardwareAPCModel newData, CancellationToken cancellationToken);
 		public Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken);
+		public Task UpdateDynamicDataAsync(Dictionary<int, DynamicParamsInfo> dynamicParamsInfos, CancellationToken cancellationToken);
 	}
 }

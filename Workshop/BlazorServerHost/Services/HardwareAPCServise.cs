@@ -1,5 +1,6 @@
 ﻿using BlazorServerHost.Data;
 using BlazorServerHost.Extensions;
+using BlazorServerHost.Features.Models;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models;
 using SharedComponents.Services;
@@ -70,6 +71,20 @@ namespace BlazorServerHost.Services
 
 			// Context.Entry(await Context.MyDbSet.FirstOrDefaultAsync(x => x.Id == item.Id)).CurrentValues.SetValues(item);
 			// dbContext.Update(entity);
+
+			await dbContext.SaveChangesAsync(cancellationToken);
+		}
+
+		public async Task UpdateDynamicDataAsync(Dictionary<int, DynamicParamsInfo> dynamicParamsInfos, CancellationToken cancellationToken)
+        {
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			for (var i = 1; i <= dynamicParamsInfos.Count; i++)
+            {
+				var entry = await dbContext.HardwareAPCModel.SingleAsync(s => s.DeviceName != null && s.DeviceName.Contains(i.ToString()), cancellationToken);
+
+				entry.DynamicParams = dynamicParamsInfos[i];
+			}
 
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}

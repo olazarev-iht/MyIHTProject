@@ -28,7 +28,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 
 		public event EventHandler? WorkerStatusChanged;
 
-
+		public event EventHandler? DynamicDataChanged;
 		public APCWorkerService(IHardwareAPCServise hardwareAPCServise, ILogger<APCWorkerService> logger)
 		{
 			_hardwareAPCServise = hardwareAPCServise ?? throw new ArgumentNullException(nameof(hardwareAPCServise));
@@ -46,7 +46,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 			{
 				try
 				{
-					// TODO currently we read the whole model, but we may will read only live data
+					// TODO currently we read the whole APC model, but we may will read only Live data
 					CurrentState = await _hardwareAPCServise.GetSingletonDataModelAsync(CancellationToken.None);
 
 					WorkerStatusChanged?.Invoke(this, EventArgs.Empty);
@@ -57,6 +57,23 @@ namespace BlazorServerHost.Services.APCWorkerService
 				}
 				await Task.Delay(TimeSpan.FromSeconds(20));
 			}
+		}
+
+		public async Task RefreshDynamicDataAsync()
+		{
+			try
+			{
+				// TODO currently we read the whole APC model, but we may will read only Dynamic data
+				CurrentState = await _hardwareAPCServise.GetSingletonDataModelAsync(CancellationToken.None);
+
+				DynamicDataChanged?.Invoke(this, EventArgs.Empty);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "An error occurred while updating hardware values");
+			}
+			await Task.Delay(TimeSpan.FromSeconds(20));
+
 		}
 	}
 }
