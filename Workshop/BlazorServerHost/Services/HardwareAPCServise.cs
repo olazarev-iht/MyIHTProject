@@ -81,9 +81,16 @@ namespace BlazorServerHost.Services
 
 			for (var i = 1; i <= dynamicParamsInfos.Count; i++)
             {
-				var entry = await dbContext.HardwareAPCModel.SingleAsync(s => s.DeviceName != null && s.DeviceName.Contains(i.ToString()), cancellationToken);
+				var entry = await dbContext.HardwareAPCModel
+					.Include(m => m.DynamicParams)
+					.FirstOrDefaultAsync(s => s.DeviceName != null && s.DeviceName.Contains(i.ToString()), cancellationToken);
 
-				entry.DynamicParams = dynamicParamsInfos[i];
+				if (entry != null && entry.DynamicParams != null)
+				{
+					entry.DynamicParams.DynamicParam1 = dynamicParamsInfos[i].DynamicParam1;
+					entry.DynamicParams.DynamicParam2 = dynamicParamsInfos[i].DynamicParam2;
+					entry.DynamicParams.DynamicParam3 = dynamicParamsInfos[i].DynamicParam3;
+				}
 			}
 
 			await dbContext.SaveChangesAsync(cancellationToken);

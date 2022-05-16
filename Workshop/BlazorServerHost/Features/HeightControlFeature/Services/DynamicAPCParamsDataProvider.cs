@@ -22,18 +22,26 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services
 
 			_apcWorkerService.DynamicDataChanged += _apcWorkerService_DymanicDataChanged;
 
-
+			CheckIfDynamicDataChangedAndCreateEventForDisplay();
 		}
 
 		public async void dynamicParamsDysplay_DynamicAPCParamsClientChanged(object? sender, EventArgs e)
         {
 			await _hardwareAPCServise.UpdateDynamicDataAsync(CurrentDynamicAPCParams.DynamicParamsInfos, CancellationToken.None);
 
+			// Only to show the flow
+			//await Task.Delay(TimeSpan.FromSeconds(5));
+
 			await _apcWorkerService.RefreshDynamicDataAsync();
 		}
 
 		private void _apcWorkerService_DymanicDataChanged(object? sender, EventArgs e)
 		{
+			CheckIfDynamicDataChangedAndCreateEventForDisplay();
+		}
+
+		private void CheckIfDynamicDataChangedAndCreateEventForDisplay()
+        {
 			var singletonAPCDynamicParamsDictionary = _apcWorkerService.CurrentState.HardwareAPCList.Select(apc =>
 				new { Id = int.Parse(apc.DeviceName?.Last().ToString() ?? "0"), apc.DynamicParams }).ToDictionary(lp => lp.Id);
 
@@ -56,7 +64,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services
 					break;
 				}
 			}
-		}
+		} 
 
 		public void Dispose()
 		{

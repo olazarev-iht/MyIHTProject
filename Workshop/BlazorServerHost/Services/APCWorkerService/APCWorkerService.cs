@@ -55,6 +55,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 				{
 					_logger.LogError(ex, "An error occurred while updating hardware values");
 				}
+
+				// Must be 0.2 msec
 				await Task.Delay(TimeSpan.FromSeconds(20));
 			}
 		}
@@ -72,8 +74,6 @@ namespace BlazorServerHost.Services.APCWorkerService
 			{
 				_logger.LogError(ex, "An error occurred while updating hardware values");
 			}
-			await Task.Delay(TimeSpan.FromSeconds(20));
-
 		}
 	}
 }
