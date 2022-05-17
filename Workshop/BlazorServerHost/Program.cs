@@ -41,6 +41,10 @@ builder.Services.AddDbContextFactory<HardwareAPCDbContext>(options =>
 {
 	options.UseSqlite(builder.Configuration.GetConnectionString("CuttingParametersDbContext"));
 });
+builder.Services.AddDbContextFactory<CuttingDataDbContext>(options =>
+{
+	options.UseSqlite(builder.Configuration.GetConnectionString("CuttingDataDbContext"));
+});
 
 builder.Services.AddScoped<ICuttingParametersService, CuttingParametersService>();
 builder.Services.AddSingleton<IHardwareAPCServise, HardwareAPCServise>();
@@ -147,6 +151,14 @@ try
 
 	// migrate HardwareAPCDbContext
 	using (var ctx = app.Services.GetRequiredService<IDbContextFactory<HardwareAPCDbContext>>().CreateDbContext())
+	{
+		using var tx = ctx.Database.BeginTransaction();
+		await ctx.Database.MigrateAsync();
+		await tx.CommitAsync();
+	}
+
+	// migrate CuttingDataDbContext
+	using (var ctx = app.Services.GetRequiredService<IDbContextFactory<CuttingDataDbContext>>().CreateDbContext())
 	{
 		using var tx = ctx.Database.BeginTransaction();
 		await ctx.Database.MigrateAsync();
