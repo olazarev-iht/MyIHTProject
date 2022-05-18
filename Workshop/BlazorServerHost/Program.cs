@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using BlazorServerHost;
 using BlazorServerHost.Areas.Identity;
 using BlazorServerHost.Data;
+using BlazorServerHost.Data.DataMapper;
 using BlazorServerHost.Features.HeightControlFeature;
 using BlazorServerHost.Services;
 using BlazorServerHost.Services.APCWorkerService;
@@ -61,8 +62,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 		options.Password.RequiredUniqueChars = 0;
 	})
 	.AddRoles<IdentityRole>()
-	.AddEntityFrameworkStores<ApplicationDbContext>()
-	;
+	.AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddSingleton<DbModelMapper>();
 
 builder.Services.AddHeightControlFeature();
 builder.Services.AddLiveAPCParamsDataFeature();

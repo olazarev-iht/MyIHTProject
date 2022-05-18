@@ -14,7 +14,6 @@ namespace BlazorServerHost.Data.Models.CuttingData
         public Nozzle? Nozzle { get; set; }
         public Guid? GasId { get; set; }
         public Gas? Gas { get; set; }
-
         public float Thickness { get; set; }
         public float Kerf { get; set; }
         public int LeadInLength { get; set; }
@@ -29,16 +28,12 @@ namespace BlazorServerHost.Data.Models.CuttingData
         public float PierceCuttingOxygenPressure { get; set; }
         public float PierceFuelGasPressure { get; set; }
         public int PierceCuttingSpeedChange { get; set; }
-
-
         public float PierceTime { get; set; }
         public int CutHeight { get; set; }
         public float CutHeatingOxygenPressure { get; set; }
         public float CutCuttingOxygenPressure { get; set; }
         public float CutFuelGasPressure { get; set; }
         public float PI0 { get; set; }
-
-
         //[Column(TypeName = "decimal(5, 2)")]
         public float PI1 { get; set; }
         public float PP0 { get; set; }

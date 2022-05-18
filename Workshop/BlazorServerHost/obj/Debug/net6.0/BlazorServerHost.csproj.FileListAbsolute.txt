@@ -107,3 +107,4 @@ C:\Examples\MyIHTProject\Workshop\BlazorServerHost\obj\Debug\net6.0\refint\Blazo
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.pdb
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.genruntimeconfig.cache
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\obj\Debug\net6.0\ref\BlazorServerHost.dll
+C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\AutoMapper.dll

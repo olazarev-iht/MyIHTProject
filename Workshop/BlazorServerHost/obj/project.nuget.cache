@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "uco9O8mpte7zoRz4VGq/1EJJ6DIxsXbb2K8aqBhKjevT2FGgjXKhcWBuH0uEwuM4Fh8B4akkx2/NW+W9FqAaTQ==",
+  "dgSpecHash": "0pAFD+ySDxYxFokMkDcJtVjbSaDFQlz3bbZeCH58YGsoTdZ0bXA8WqLA9aDw7Ogd7d68zPUbrxMQqJApSPZBSQ==",
   "success": true,
   "projectFilePath": "C:\\Examples\\MyIHTProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\ol\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\blazored.localstorage\\4.2.0\\blazored.localstorage.4.2.0.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.3\\microsoft.aspnetcore.authorization.6.0.3.nupkg.sha512",
@@ -17,6 +18,7 @@
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.4\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.4.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.4\\microsoft.aspnetcore.identity.ui.6.0.4.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.aspnetcore.metadata\\6.0.3\\microsoft.aspnetcore.metadata.6.0.3.nupkg.sha512",
+    "C:\\Users\\ol\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.data.sqlite.core\\6.0.4\\microsoft.data.sqlite.core.6.0.4.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.4\\microsoft.entityframeworkcore.6.0.4.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\6.0.4\\microsoft.entityframeworkcore.abstractions.6.0.4.nupkg.sha512",
