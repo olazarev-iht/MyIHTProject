@@ -2,7 +2,8 @@
 {
     public class Gas
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        public int GasId { get; set; }
         public string Name { get; set; } = String.Empty;
     }
 }

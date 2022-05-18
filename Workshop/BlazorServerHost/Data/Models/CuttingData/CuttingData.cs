@@ -39,9 +39,9 @@ namespace BlazorServerHost.Data.Models.CuttingData
         public float PI0 { get; set; }
 
 
-        [Column(TypeName = "decimal(5, 2)")]
-        public float? PI1 { get; set; }
-        public float? PP0 { get; set; }
+        //[Column(TypeName = "decimal(5, 2)")]
+        public float PI1 { get; set; }
+        public float PP0 { get; set; }
         public float PP1 { get; set; }
         public float PP2 { get; set; }
         public float PP3 { get; set; }

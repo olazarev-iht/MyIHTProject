@@ -33,9 +33,9 @@ namespace BlazorServerHost.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Gas>().HasData(new Gas { Id = 0, Name = "Propan" });
-			modelBuilder.Entity<Gas>().HasData(new Gas { Id = 1, Name = "Acetylene" });
-			modelBuilder.Entity<Gas>().HasData(new Gas { Id = 2, Name = "NaturalGas" });
+			modelBuilder.Entity<Gas>().HasData(new Gas { Id = Guid.NewGuid(), GasId = 0, Name = "Propan" });
+			modelBuilder.Entity<Gas>().HasData(new Gas { Id = Guid.NewGuid(), GasId = 1, Name = "Acetylene" });
+			modelBuilder.Entity<Gas>().HasData(new Gas { Id = Guid.NewGuid(), GasId = 2, Name = "NaturalGas" });
 
 			modelBuilder.Entity<Material>().HasData(new Material { Id = Guid.NewGuid(), Name = "Structural Steel" });
 
