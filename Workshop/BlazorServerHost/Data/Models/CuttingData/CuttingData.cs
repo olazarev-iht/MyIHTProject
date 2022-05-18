@@ -12,7 +12,7 @@ namespace BlazorServerHost.Data.Models.CuttingData
         public Material? Material { get; set; }
         public Guid? NozzleId { get; set; }
         public Nozzle? Nozzle { get; set; }
-        public int GasId { get; set; }
+        public Guid? GasId { get; set; }
         public Gas? Gas { get; set; }
 
         public float Thickness { get; set; }
