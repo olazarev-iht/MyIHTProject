@@ -42,7 +42,8 @@ namespace BlazorServerHost.Data.Models.CuttingData
         public float PP3 { get; set; }
         public float PP4 { get; set; }
         public string? Remark { get; set; }
-        public int idCutDataParent { get; set; }
+        public string? ExtKey { get; set; }
+        public Guid? idCutDataParent { get; set; }
         public int Controlbits { get; set; }
     }
 }
