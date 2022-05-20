@@ -69,17 +69,17 @@ namespace BlazorServerHost.Data
 			modelBuilder.Entity<Nozzle>().HasData(new Nozzle { Id = Guid.NewGuid(), Name = "PSF 150-200" });			
 			modelBuilder.Entity<Nozzle>().HasData(new Nozzle { Id = Guid.NewGuid(), Name = "PSF 200-250" });
 			modelBuilder.Entity<Nozzle>().HasData(new Nozzle { Id = Guid.NewGuid(), Name = "PSF 250-300" });
-			
 
-//			this.Database.ExecuteSqlRaw(@"insert into [CuttingData] (MaterialId, NozzleId, Thickness, LeadInLength, Kerf, GasId, CuttingSpeed, IgnitionFlameAdjustment, 
-//PI0, PI1, PreHeatHeight, PreHeatHeatingOxygenPressure, PreHeatFuelGasPressure, PreHeatTime, PierceHeight, PierceHeatingOxygenPressure, PierceCuttingOxygenPressure, 
-//PierceFuelGasPressure, PierceCuttingSpeedChange, PierceTime, PP0, PP1, PP2, PP3, PP4, CutHeight, CutHeatingOxygenPressure, CutCuttingOxygenPressure, CutFuelGasPressure, 
-//Remark, ExtKey, ControlBits) 
-//SELECT Material.Id, Nozzle.Id, apc.Thickness, apc.LeadInLength, apc.Kerf, apc.idGas, apc.CuttingSpeed, apc.IgnitionFlameAdjustment, apc.PI0,
-//apc.PI1, apc.PreHeatHeight, apc.PreHeatHeatingOxygenPressure, apc.PreHeatFuelGasPressure, apc.PreHeatTime, apc.PierceHeight, apc.PierceHeatingOxygenPressure,
-//apc.PierceCuttingOxygenPressure, apc.PierceFuelGasPressure, apc.PierceCuttingSpeedChange, apc.PierceTime, apc.PP0, apc.PP1, apc.PP2, apc.PP3,
-//apc.PP4, apc.CutHeight, apc.CutHeatingOxygenPressure, apc.CutCuttingOxygenPressure, apc.CutFuelGasPressure, apc.Remark, apc.ExtKey, apc.ControlBits 
-//FROM APCCuttingParametersIHT apc LEFT JOIN Nozzle ON apc.Nozzle = Nozzle.Name LEFT JOIN Material ON apc.Material = Material.Name");
+
+//			this.Database.ExecuteSqlRaw(@"insert into [CuttingData]
+// ( MaterialId, NozzleId, Thickness, LeadInLength, Kerf, GasId, CuttingSpeed, IgnitionFlameAdjustment, PI0, PI1, PreHeatHeight, PreHeatHeatingOxygenPressure, 
+// PreHeatFuelGasPressure, PreHeatTime, PierceHeight, PierceHeatingOxygenPressure, PierceCuttingOxygenPressure, PierceFuelGasPressure, PierceCuttingSpeedChange, 
+// PierceTime, PP0, PP1, PP2, PP3, PP4, CutHeight, CutHeatingOxygenPressure, CutCuttingOxygenPressure, CutFuelGasPressure, Remark, ExtKey, ControlBits ) 
+//SELECT Material.Id, Nozzle.Id as NozId, apc.Thickness, apc.LeadInLength, apc.Kerf, Gas.Id as GasId , apc.CuttingSpeed, apc.IgnitionFlameAdjustment, apc.PI0, 
+//apc.PI1, apc.PreHeatHeight, apc.PreHeatHeatingOxygenPressure, apc.PreHeatFuelGasPressure, apc.PreHeatTime, apc.PierceHeight, apc.PierceHeatingOxygenPressure, 
+//apc.PierceCuttingOxygenPressure, apc.PierceFuelGasPressure, apc.PierceCuttingSpeedChange, apc.PierceTime, apc.PP0, apc.PP1, apc.PP2, apc.PP3, 
+//apc.PP4, apc.CutHeight, apc.CutHeatingOxygenPressure, apc.CutCuttingOxygenPressure, apc.CutFuelGasPressure, apc.Remark, apc.ExtKey, apc.ControlBits
+//FROM APCCuttingParametersIHT apc LEFT JOIN Nozzle ON apc.Nozzle = Nozzle.Name LEFT JOIN Material ON apc.Material = Material.Name LEFT JOIN Gas on apc.IdGas = Gas.GasId");
 
 		}
 	}
