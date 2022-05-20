@@ -33,6 +33,12 @@ namespace BlazorServerHost.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.Entity<APCCuttingParametersIHT>().HasNoKey();
+
+			//modelBuilder.Entity<APCCuttingParametersIHT>().Property(x => x.Id).HasDefaultValueSql(
+			//	@"(lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))))"
+			//	);
+
 			modelBuilder.Entity<Gas>().HasData(new Gas { Id = Guid.NewGuid(), GasId = 0, Name = "Propan" });
 			modelBuilder.Entity<Gas>().HasData(new Gas { Id = Guid.NewGuid(), GasId = 1, Name = "Acetylene" });
 			modelBuilder.Entity<Gas>().HasData(new Gas { Id = Guid.NewGuid(), GasId = 2, Name = "NaturalGas" });

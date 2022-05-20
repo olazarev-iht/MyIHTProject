@@ -1,11 +1,14 @@
-﻿namespace BlazorServerHost.Data.Models.CuttingData
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BlazorServerHost.Data.Models.CuttingData
 {
     public class APCCuttingParametersIHT
     {
-        public Guid Id { get; set; }
         public string? Material { get; set; }
         public string? Remark { get; set; }
         public int Thickness { get; set; }
+        public string? Nozzle { get; set; }
         public int LeadInLength { get; set; }
         public float Kerf { get; set; }
         public int idGas { get; set; }
@@ -14,9 +17,13 @@
         public float PI0 { get; set; }
         public float PI1 { get; set; }
         public int PreHeatHeight { get; set; }
+        public float PreHeatHeatingOxygenPressure { get; set; }
+        public float PreHeatFuelGasPressure { get; set; }
+        public int PreHeatTime { get; set; }
+        public int PierceHeight { get; set; }
         public float PierceHeatingOxygenPressure { get; set; }
         public float PierceCuttingOxygenPressure { get; set; }
-        public float PierceFuelGasPressure { get; set; }
+        public float PierceFuelGasPressure { get; set; }             
         public int PierceCuttingSpeedChange { get; set; }
         public float PierceTime { get; set; }
         public int PP0 { get; set; }
