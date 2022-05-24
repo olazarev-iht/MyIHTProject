@@ -6,12 +6,14 @@ using BlazorServerHost.Data.DataMapper;
 using BlazorServerHost.Features.HeightControlFeature;
 using BlazorServerHost.Services;
 using BlazorServerHost.Services.APCWorkerService;
+using BlazorServerHost.Services.CuttingDataDBServices;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Services;
 using SharedComponents.Services;
+using SharedComponents.Services.CuttingDataDBServices;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseWindowsService();
@@ -48,6 +50,10 @@ builder.Services.AddDbContextFactory<CuttingDataDbContext>(options =>
 });
 
 builder.Services.AddScoped<ICuttingParametersService, CuttingParametersService>();
+builder.Services.AddScoped<ICuttingDataDBService, CuttingDataDBService>();
+builder.Services.AddScoped<IGasDBService, GasDBService>();
+builder.Services.AddScoped<IMaterialDBService, MaterialDBService>();
+builder.Services.AddScoped<INozzleDBService, NozzleDBService>();
 builder.Services.AddSingleton<IHardwareAPCServise, HardwareAPCServise>();
 builder.Services.AddSingleton<CommunicationsService>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

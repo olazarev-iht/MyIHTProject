@@ -20,7 +20,7 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 		}
 
-		public async Task<IEnumerable<CuttingDataModel>> GetEntriesAsync(CancellationToken cancellationToken)
+		public async Task<List<CuttingDataModel>> GetEntriesAsync(CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
@@ -29,7 +29,7 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 				.Include(p => p.Nozzle)
 				.Include(p => p.Material)
 				.Select(p => _mapper.Map<CuttingData, CuttingDataModel>(p))
-				.ToArrayAsync(cancellationToken);
+				.ToListAsync(cancellationToken);
 
 			return entries;
 		}

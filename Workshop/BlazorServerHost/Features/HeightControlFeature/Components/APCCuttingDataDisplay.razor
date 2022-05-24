@@ -1,0 +1,102 @@
+﻿@inherits IhtComponentBase
+@using SharedComponents.Models
+@using SharedComponents.Services.CuttingDataDBServices
+@using SharedComponents.Models.CuttingData
+@inject ICuttingDataDBService cuttingDataDBService
+@inject MudBlazor.ISnackbar snackBar
+
+<PageTitle>Cutting Data</PageTitle>
+
+<MudText Typo="Typo.h3">Cutting Data</MudText>
+
+<MudCard Elevation="25">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">Add / Edit Customers</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudTextField @bind-Value="cuttingDataModel.Material.Name" Label="Material" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
+        <MudTextField @bind-Value="cuttingDataModel.Remark" Label="Remark" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
+        <MudTextField @bind-Value="cuttingDataModel.Nozzle.Name" Label="Nozzle" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
+        <br />
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Save">Save</MudButton>
+    </MudCardContent>
+</MudCard>
+
+<br />
+<MudTable Elevation="25" RowsPerPage="8" Items="@cuttingDataModelList" Filter="new Func<CuttingDataModel, bool>(Search)" Hover="true"
+    @bind-cuttingDataModel="cuttingDataModel">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Parameters</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString" Placeholder="Search for Customers..." Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Material</MudTh>
+        <MudTh>Remark</MudTh>
+        <MudTh>Thickness</MudTh>
+        <MudTh>Nozzle</MudTh>
+        <MudTh>Cutting speed</MudTh>
+        <MudTh>Origin</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Material">@context.Material?.Name</MudTd>
+        <MudTd DataLabel="Remark">@context.Remark</MudTd>
+        <MudTd DataLabel="Thickness">@context.Thickness</MudTd>
+        <MudTd DataLabel="Nozzle">@context.Nozzle?.Name</MudTd>
+        <MudTd DataLabel="Origin">@context.idCutDataParent</MudTd>
+        <MudTd DataLabel="">
+            <MudFab @onclick="@(()=>Edit(@context.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" IconSize="Size.Small" />
+            <MudFab @onclick="@(()=>Delete(@context.Id))" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 8, 10, 12 }" />
+    </PagerContent>
+</MudTable>
+
+
+@code {
+        private string searchString = "";
+        private CuttingDataModel cuttingDataModel = new CuttingDataModel();
+        private List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
+        protected override async Task OnInitializedAsync()
+        {
+            await GetEntriesAsync();
+        }
+        private async Task<List<CuttingDataModel>> GetEntriesAsync()
+        {
+            cuttingDataModelList = await cuttingDataDBService.GetEntriesAsync(CancellationToken.None);
+            return cuttingDataModelList;
+        }
+        private bool Search(CuttingDataModel cuttingDataModel)
+        {
+            if (string.IsNullOrWhiteSpace(searchString)) return true;
+            if ((cuttingDataModel.Material?.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false)
+                //|| cuttingDataModel.Thickness == (searchString, StringComparison.OrdinalIgnoreCase)
+                || (cuttingDataModel.Nozzle?.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false))
+            {
+                return true;
+            }
+            return false;
+        }
+        private async void Save()
+        {
+            await cuttingDataDBService.AddEntryAsync(cuttingDataModel, CancellationToken.None);
+            cuttingDataModel = new CuttingDataModel();
+            snackBar.Add("Customer Saved.", Severity.Success);
+            await GetEntriesAsync();
+        }
+        private void Edit(Guid id)
+        {
+            cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
+        }
+        private async void Delete(Guid id)
+        {
+            await cuttingDataDBService.DeleteEntryAsync(id, CancellationToken.None);
+            snackBar.Add("Customer Deleted.", Severity.Success);
+            await GetEntriesAsync();
+        }
+    }
+}
