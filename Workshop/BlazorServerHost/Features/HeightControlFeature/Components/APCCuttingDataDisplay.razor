@@ -3,6 +3,7 @@
 @using SharedComponents.Services.CuttingDataDBServices
 @using SharedComponents.Models.CuttingData
 @inject ICuttingDataDBService cuttingDataDBService
+@inject INozzleDBService nozzleDBService
 @inject MudBlazor.ISnackbar snackBar
 
 <PageTitle>Cutting Data</PageTitle>
@@ -23,6 +24,48 @@
         <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Save">Save</MudButton>
     </MudCardContent>
 </MudCard>
+
+
+<MudDialog @bind-IsVisible="_editParamsDialogVisible">
+    <TitleContent>
+        <MudText Typo="Typo.h6">@cuttingDataModel.Remark</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@cuttingDataModel"
+                 @ref="_editForm">
+            <MudTextField @bind-Value="@cuttingDataModel.Material.Name" 
+                          Label="Material"
+                          For=@(() => cuttingDataModel.Material.Name) />
+            <br />
+            <MudTextField @bind-Value="@cuttingDataModel.Remark" 
+                          Label="Remark"
+                          Lines="2"
+                          For=@(() => cuttingDataModel.Remark) />
+            <br />
+            <MudNumericField Label="Thickness" 
+                          @bind-Value="@cuttingDataModel.Thickness"
+                          For="(() => cuttingDataModel.Thickness)" />
+            <br />
+            <MudSelect T="Guid" HelperText="@cuttingDataModel.Nozzle?.Id.ToString()" @bind-Value="cuttingDataModel.Nozzle.Id" Label="Nozzle" AdornmentIcon="@Icons.Material.Filled.Search">
+                @foreach (var nozzleModel in nozzleModelList)
+                {
+                    <MudSelectItem T="Guid" Value="@nozzleModel.Id">@nozzleModel.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" 
+                   OnClick="CloseEditParamsModal">
+            Cancel
+        </MudButton>
+        <MudButton Variant="Variant.Filled" 
+                   Color="MudBlazor.Color.Primary" 
+                   OnClick="UpdateParamsAsync">
+            Save
+        </MudButton>
+    </DialogActions>
+</MudDialog>
 
 <br />
 <MudTable Elevation="25" RowsPerPage="8" Items="@cuttingDataModelList" Filter="new Func<CuttingDataModel, bool>(Search)" Hover="true"
@@ -58,45 +101,87 @@
 
 
 @code {
-        private string searchString = "";
-        private CuttingDataModel cuttingDataModel = new CuttingDataModel();
-        private List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
-        protected override async Task OnInitializedAsync()
+    private bool _createParamsDialogVisible;
+    private bool _editParamsDialogVisible;
+    private MudForm _createForm;
+    private MudForm _editForm;
+
+    private string searchString = "";
+    private CuttingDataModel cuttingDataModel = new CuttingDataModel();
+    private NozzleModel nozzle = new NozzleModel();
+    private List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
+    private IEnumerable<NozzleModel> nozzleModelList = new List<NozzleModel>();
+
+    private string[] felines =
+    {
+        "Jaguar", "Leopard", "Lion", "Lynx", "Panther", "Puma", "Tiger"
+    };
+    private string value { get; set; } = "Nothing selected";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetEntriesAsync();
+        await GetNozzlesAsync();
+    }
+    private async Task<List<CuttingDataModel>> GetEntriesAsync()
+    {
+        cuttingDataModelList = await cuttingDataDBService.GetEntriesAsync(CancellationToken.None);
+        return cuttingDataModelList;
+    }
+
+    private async Task GetNozzlesAsync()
+    {
+        nozzleModelList = await nozzleDBService.GetEntriesAsync(CancellationToken.None);
+    }
+
+    private bool Search(CuttingDataModel cuttingDataModel)
+    {
+        if (string.IsNullOrWhiteSpace(searchString)) return true;
+        if ((cuttingDataModel.Material?.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false)
+            //|| cuttingDataModel.Thickness == (searchString, StringComparison.OrdinalIgnoreCase)
+            || (cuttingDataModel.Nozzle?.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false))
         {
-            await GetEntriesAsync();
+            return true;
         }
-        private async Task<List<CuttingDataModel>> GetEntriesAsync()
+        return false;
+    }
+
+
+    private async Task UpdateParamsAsync()
+    {
+        if (_editForm.IsValid)
         {
-            cuttingDataModelList = await cuttingDataDBService.GetEntriesAsync(CancellationToken.None);
-            return cuttingDataModelList;
-        }
-        private bool Search(CuttingDataModel cuttingDataModel)
-        {
-            if (string.IsNullOrWhiteSpace(searchString)) return true;
-            if ((cuttingDataModel.Material?.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false)
-                //|| cuttingDataModel.Thickness == (searchString, StringComparison.OrdinalIgnoreCase)
-                || (cuttingDataModel.Nozzle?.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false))
-            {
-                return true;
-            }
-            return false;
-        }
-        private async void Save()
-        {
-            await cuttingDataDBService.AddEntryAsync(cuttingDataModel, CancellationToken.None);
-            cuttingDataModel = new CuttingDataModel();
-            snackBar.Add("Customer Saved.", Severity.Success);
-            await GetEntriesAsync();
-        }
-        private void Edit(Guid id)
-        {
-            cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
-        }
-        private async void Delete(Guid id)
-        {
-            await cuttingDataDBService.DeleteEntryAsync(id, CancellationToken.None);
-            snackBar.Add("Customer Deleted.", Severity.Success);
+            await cuttingDataDBService.UpdateEntryAsync(cuttingDataModel.Id, cuttingDataModel, CancellationToken.None);
+            _editParamsDialogVisible = false;
             await GetEntriesAsync();
         }
     }
+
+    private void CloseEditParamsModal()
+    {
+        _editParamsDialogVisible = false;
+    }
+
+    private async void Save()
+    {
+        await cuttingDataDBService.AddEntryAsync(cuttingDataModel, CancellationToken.None);
+        cuttingDataModel = new CuttingDataModel();
+        snackBar.Add("Customer Saved.", Severity.Success);
+        await GetEntriesAsync();
+    }
+
+    private void Edit(Guid id)
+    {
+        cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
+        _editParamsDialogVisible = true;
+    }
+
+    private async void Delete(Guid id)
+    {
+        await cuttingDataDBService.DeleteEntryAsync(id, CancellationToken.None);
+        snackBar.Add("Customer Deleted.", Severity.Success);
+        await GetEntriesAsync();
+    }
+
+}
 }
