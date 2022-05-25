@@ -8,13 +8,13 @@ namespace SharedComponents.Models.CuttingData
 {
     public class CuttingDataModel
     {
-        public Guid Id { get; set; }
-        public Guid? MaterialId { get; set; }
-        public MaterialModel? Material { get; set; } = new MaterialModel();
-        public Guid? NozzleId { get; set; }
-        public NozzleModel? Nozzle { get; set; } = new NozzleModel();
-        public Guid? GasId { get; set; }
-        public GasModel? Gas { get; set; } = new GasModel();
+        public string? Id { get; set; }
+        public Guid MaterialId { get; set; }
+        public MaterialModel Material { get; set; } = new MaterialModel();
+        public Guid NozzleId { get; set; }
+        public NozzleModel Nozzle { get; set; } = new NozzleModel();
+        public Guid GasId { get; set; }
+        public GasModel Gas { get; set; } = new GasModel();
         public float Thickness { get; set; } = 0;
         public float Kerf { get; set; } = 0;
         public int LeadInLength { get; set; } = 0;
@@ -42,7 +42,7 @@ namespace SharedComponents.Models.CuttingData
         public float PP3 { get; set; } = 0;
         public float PP4 { get; set; } = 0;
         public string? Remark { get; set; }
-        public int idCutDataParent { get; set; } = 0;
+        public string? idCutDataParent { get; set; }
         public int Controlbits { get; set; } = 0;
     }
 }

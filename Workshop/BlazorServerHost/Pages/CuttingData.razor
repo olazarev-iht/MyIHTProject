@@ -64,12 +64,12 @@
         await GetEntriesAsync();
     }
 
-    private void Edit(Guid id)
+    private void Edit(string id)
     {
         cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
     }
 
-    private async void Delete(Guid id)
+    private async void Delete(string id)
     {
        await cuttingDataDBService.DeleteEntryAsync(id, CancellationToken.None);
        // snackBar.Add("Customer Deleted.", Severity.Success);

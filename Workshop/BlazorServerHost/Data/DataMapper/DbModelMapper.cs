@@ -31,7 +31,17 @@ namespace BlazorServerHost.Data.DataMapper
                 cfg.CreateMap<GasModel, Gas>().ReverseMap();
                 cfg.CreateMap<MaterialModel, Material>().ReverseMap();
                 cfg.CreateMap<NozzleModel, Nozzle>().ReverseMap();
-                cfg.CreateMap<CuttingDataModel, CuttingData>().ReverseMap();
+                cfg.CreateMap<CuttingDataModel, CuttingData>()
+                .ForMember(
+                    dest => dest.Material,
+                    opt => opt.Ignore())
+                .ForMember(
+                    dest => dest.Nozzle,
+                    opt => opt.Ignore())
+                .ForMember(
+                    dest => dest.Gas,
+                    opt => opt.Ignore())
+                .ReverseMap();
             });
 
             return configuration.CreateMapper();

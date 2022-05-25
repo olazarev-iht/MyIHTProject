@@ -46,7 +46,7 @@
                           @bind-Value="@cuttingDataModel.Thickness"
                           For="(() => cuttingDataModel.Thickness)" />
             <br />
-            <MudSelect T="Guid" HelperText="@cuttingDataModel.Nozzle?.Id.ToString()" @bind-Value="cuttingDataModel.Nozzle.Id" Label="Nozzle" AdornmentIcon="@Icons.Material.Filled.Search">
+            <MudSelect T="Guid" HelperText="@cuttingDataModel.Nozzle?.Id.ToString()" @bind-Value="cuttingDataModel.NozzleId" Label="Nozzle" AdornmentIcon="@Icons.Material.Filled.Search">
                 @foreach (var nozzleModel in nozzleModelList)
                 {
                     <MudSelectItem T="Guid" Value="@nozzleModel.Id">@nozzleModel.Name</MudSelectItem>
@@ -112,12 +112,6 @@
     private List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
     private IEnumerable<NozzleModel> nozzleModelList = new List<NozzleModel>();
 
-    private string[] felines =
-    {
-        "Jaguar", "Leopard", "Lion", "Lynx", "Panther", "Puma", "Tiger"
-    };
-    private string value { get; set; } = "Nothing selected";
-
     protected override async Task OnInitializedAsync()
     {
         await GetEntriesAsync();
@@ -151,7 +145,7 @@
     {
         if (_editForm.IsValid)
         {
-            await cuttingDataDBService.UpdateEntryAsync(cuttingDataModel.Id, cuttingDataModel, CancellationToken.None);
+            await cuttingDataDBService.UpdateEntryAsync(cuttingDataModel.Id.ToString(), cuttingDataModel, CancellationToken.None);
             _editParamsDialogVisible = false;
             await GetEntriesAsync();
         }
@@ -170,13 +164,13 @@
         await GetEntriesAsync();
     }
 
-    private void Edit(Guid id)
+    private void Edit(string id)
     {
         cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
         _editParamsDialogVisible = true;
     }
 
-    private async void Delete(Guid id)
+    private async void Delete(string id)
     {
         await cuttingDataDBService.DeleteEntryAsync(id, CancellationToken.None);
         snackBar.Add("Customer Deleted.", Severity.Success);
