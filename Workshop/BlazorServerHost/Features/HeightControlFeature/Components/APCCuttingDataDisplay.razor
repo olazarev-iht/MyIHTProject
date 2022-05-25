@@ -4,13 +4,14 @@
 @using SharedComponents.Models.CuttingData
 @inject ICuttingDataDBService cuttingDataDBService
 @inject INozzleDBService nozzleDBService
+@inject IMaterialDBService materialDBService
 @inject MudBlazor.ISnackbar snackBar
 
 <PageTitle>Cutting Data</PageTitle>
 
 <MudText Typo="Typo.h3">Cutting Data</MudText>
 
-<MudCard Elevation="25">
+@*<MudCard Elevation="25">
     <MudCardHeader>
         <CardHeaderContent>
             <MudText Typo="Typo.h6">Add / Edit Customers</MudText>
@@ -23,7 +24,7 @@
         <br />
         <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Save">Save</MudButton>
     </MudCardContent>
-</MudCard>
+</MudCard>*@
 
 
 <MudDialog @bind-IsVisible="_editParamsDialogVisible">
@@ -46,7 +47,7 @@
                           @bind-Value="@cuttingDataModel.Thickness"
                           For="(() => cuttingDataModel.Thickness)" />
             <br />
-            <MudSelect T="Guid" HelperText="@cuttingDataModel.Nozzle?.Id.ToString()" @bind-Value="cuttingDataModel.NozzleId" Label="Nozzle" AdornmentIcon="@Icons.Material.Filled.Search">
+            <MudSelect T="Guid" HelperText="@cuttingDataModel.NozzleId.ToString()" @bind-Value="cuttingDataModel.NozzleId" Label="Nozzle" AdornmentIcon="@Icons.Material.Filled.Search">
                 @foreach (var nozzleModel in nozzleModelList)
                 {
                     <MudSelectItem T="Guid" Value="@nozzleModel.Id">@nozzleModel.Name</MudSelectItem>
@@ -73,7 +74,30 @@
     <ToolBarContent>
         <MudText Typo="Typo.h6">Parameters</MudText>
         <MudSpacer />
-        <MudTextField @bind-Value="searchString" Placeholder="Search for Customers..." Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+
+        <MudSelect T="string" @bind-Value="searchMaterial" Placeholder="Material" Label="Material" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem T="string" Value="string.Empty">All Values</MudSelectItem>
+            @foreach (var materialModel in materialModelList)
+            {
+                <MudSelectItem T="string" Value="@materialModel.Id.ToString()">@materialModel.Name</MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudSelect T="float" @bind-Value="searchThickness" Placeholder="Thickness" Label="Thickness" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem T="float" Value="0">All Values</MudSelectItem>
+            @foreach (var thickness in arrThicknesses)
+            {
+                <MudSelectItem T="float" Value="@thickness">@thickness</MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudSelect T="string" @bind-Value="searchNozzle" Placeholder="Nozzle" Label="Nozzle" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem T="string" Value="string.Empty">All Values</MudSelectItem>
+            @foreach (var nozzleModel in nozzleModelList)
+            {
+                <MudSelectItem T="string" Value="@nozzleModel.Id.ToString()">@nozzleModel.Name</MudSelectItem>
+            }
+        </MudSelect>
     </ToolBarContent>
     <HeaderContent>
         <MudTh>Material</MudTh>
@@ -106,16 +130,21 @@
     private MudForm _createForm;
     private MudForm _editForm;
 
-    private string searchString = "";
+    private string searchMaterial = "";
+    private float searchThickness = 0;
+    private string searchNozzle = "";
+    private float[] arrThicknesses = { 3, 4, 5, 6, 7, 8, 10, 12, 15, 20, 25, 30, 40, 50, 70, 80, 90, 100, 120, 130, 150, 200, 230, 250, 300 };
     private CuttingDataModel cuttingDataModel = new CuttingDataModel();
-    private NozzleModel nozzle = new NozzleModel();
+    //private NozzleModel nozzle = new NozzleModel();
     private List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
     private IEnumerable<NozzleModel> nozzleModelList = new List<NozzleModel>();
+    private IEnumerable<MaterialModel> materialModelList = new List<MaterialModel>();
 
     protected override async Task OnInitializedAsync()
     {
         await GetEntriesAsync();
         await GetNozzlesAsync();
+        await GetMaterialsAsync();
     }
     private async Task<List<CuttingDataModel>> GetEntriesAsync()
     {
@@ -128,12 +157,17 @@
         nozzleModelList = await nozzleDBService.GetEntriesAsync(CancellationToken.None);
     }
 
+    private async Task GetMaterialsAsync()
+    {
+        materialModelList = await materialDBService.GetEntriesAsync(CancellationToken.None);
+    }
+
     private bool Search(CuttingDataModel cuttingDataModel)
     {
-        if (string.IsNullOrWhiteSpace(searchString)) return true;
-        if ((cuttingDataModel.Material?.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false)
-            //|| cuttingDataModel.Thickness == (searchString, StringComparison.OrdinalIgnoreCase)
-            || (cuttingDataModel.Nozzle?.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false))
+        if (string.IsNullOrWhiteSpace(searchMaterial + searchThickness + searchNozzle)) return true;
+        if (((cuttingDataModel.Material?.Id.ToString().Contains(searchMaterial, StringComparison.OrdinalIgnoreCase) ?? false) || string.IsNullOrWhiteSpace(searchMaterial))
+            && (cuttingDataModel.Thickness == searchThickness || searchThickness == 0)
+            && ((cuttingDataModel.Nozzle?.Id.ToString().Contains(searchNozzle, StringComparison.OrdinalIgnoreCase) ?? false) || string.IsNullOrWhiteSpace(searchNozzle)))
         {
             return true;
         }

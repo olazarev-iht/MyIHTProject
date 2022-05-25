@@ -4,6 +4,7 @@ using BlazorServerHost.Data.Models.CuttingData;
 using SharedComponents.Models.CuttingData;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Services.CuttingDataDBServices;
+using System.Linq;
 
 namespace BlazorServerHost.Services.CuttingDataDBServices
 {
@@ -25,12 +26,18 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
 			var entries = await dbContext.Nozzle
-				.AsNoTracking()
-				.OrderBy(p => p.Name)
+				.OrderBy(p => p.Name.Substring(0, 3))
+					.ThenBy(p => p.Name.Substring(4, p.Name.IndexOf("-")-4))
 				.Select(p => _mapper.Map<Nozzle, NozzleModel>(p))
-				.ToArrayAsync(cancellationToken);
+				.ToListAsync(cancellationToken);
 
 			return entries;
+		}
+
+		public string GetStringToOrder(string nozzle)
+        {
+			var str = nozzle;
+			return str;
 		}
 
 		public async Task<NozzleModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)

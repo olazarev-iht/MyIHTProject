@@ -25,6 +25,7 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
 			var entries = await dbContext.CuttingData
+				.OrderBy(p => p.Thickness)
 				.Include(p => p.Gas)
 				.Include(p => p.Nozzle)
 				.Include(p => p.Material)
@@ -68,10 +69,9 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 
 				if (entry != null)
 				{
-					//newData.Id = entry.Id;
-					entry.NozzleId = newData.NozzleId;
+					newData.Id = entry.Id;
 					//entry = _mapper.Map<CuttingDataModel, CuttingData>(newData);
-					//dbContext.Entry(entry).CurrentValues.SetValues(newData);
+					dbContext.Entry(entry).CurrentValues.SetValues(newData);
 					await dbContext.SaveChangesAsync(cancellationToken);
 				}
 			}

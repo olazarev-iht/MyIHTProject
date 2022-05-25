@@ -8,7 +8,7 @@ namespace SharedComponents.Models.CuttingData
 {
     public class CuttingDataModel
     {
-        public string? Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         public Guid MaterialId { get; set; }
         public MaterialModel Material { get; set; } = new MaterialModel();
         public Guid NozzleId { get; set; }
