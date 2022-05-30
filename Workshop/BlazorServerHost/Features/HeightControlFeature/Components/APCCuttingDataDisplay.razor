@@ -11,41 +11,69 @@
 
 <MudText Typo="Typo.h3">Cutting Data</MudText>
 
-@*<MudCard Elevation="25">
-    <MudCardHeader>
-        <CardHeaderContent>
-            <MudText Typo="Typo.h6">Add / Edit Customers</MudText>
-        </CardHeaderContent>
-    </MudCardHeader>
-    <MudCardContent>
-        <MudTextField @bind-Value="cuttingDataModel.Material.Name" Label="Material" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
-        <MudTextField @bind-Value="cuttingDataModel.Remark" Label="Remark" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
-        <MudTextField @bind-Value="cuttingDataModel.Nozzle.Name" Label="Nozzle" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
-        <br />
-        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Save">Save</MudButton>
-    </MudCardContent>
-</MudCard>*@
+<MudDialog @bind-IsVisible="_deleteParamsDialogVisible">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Delete Confirmation</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@cuttingDataModel" @ref="_deleteForm">
+            <MudTextField ReadOnly Value="@cuttingDataModel.Material.Name" Label="Material" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
+            <MudTextField ReadOnly Value="@cuttingDataModel.Thickness" Label="Thickness" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
+            <MudTextField ReadOnly Value="@cuttingDataModel.Remark" Label="Remark" Variant="Variant.Text" Margin="Margin.Normal"
+                Lines="2" For=@(() => cuttingDataModel.Remark)></MudTextField>                  
+        </MudForm>      
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>
+    </DialogActions>
+</MudDialog>
 
+<MudDialog @bind-IsVisible="_createParamsDialogVisible">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Duplicate</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@cuttingDataModel" @ref="_createForm">
+            <MudTextField @bind-Value="@cuttingDataModel.Material.Name" Label="Material" 
+                For=@(() => cuttingDataModel.Material.Name) Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
+            <MudNumericField @bind-Value="@cuttingDataModel.Thickness" Label="Thickness" 
+                For="@(() => cuttingDataModel.Thickness)" ></MudNumericField>
+            <MudTextField @bind-Value="@cuttingDataModel.Remark" Label="Remark" Variant="Variant.Text" Margin="Margin.Normal"
+                Lines="2" For=@(() => cuttingDataModel.Remark)></MudTextField>                  
+        </MudForm>      
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" 
+            OnClick="CloseCreateParamsModal" onmousedown="return false">
+            Cancel
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" 
+            OnClick="CreateParamsAsync">
+            Save
+        </MudButton>
+    </DialogActions>
+</MudDialog>
 
 <MudDialog @bind-IsVisible="_editParamsDialogVisible">
     <TitleContent>
-        <MudText Typo="Typo.h6">@cuttingDataModel.Remark</MudText>
+        <MudText Typo="Typo.h6">Edit</MudText>
     </TitleContent>
     <DialogContent>
         <MudForm Model="@cuttingDataModel"
                  @ref="_editForm">
             <MudTextField @bind-Value="@cuttingDataModel.Material.Name" 
                           Label="Material"
-                          For=@(() => cuttingDataModel.Material.Name) />
+                          For="@(() => cuttingDataModel.Material.Name)" />
             <br />
             <MudTextField @bind-Value="@cuttingDataModel.Remark" 
                           Label="Remark"
                           Lines="2"
-                          For=@(() => cuttingDataModel.Remark) />
+                          For="@(() => cuttingDataModel.Remark)" />
             <br />
             <MudNumericField Label="Thickness" 
                           @bind-Value="@cuttingDataModel.Thickness"
-                          For="(() => cuttingDataModel.Thickness)" />
+                          For="@(() => cuttingDataModel.Thickness)" />
             <br />
             <MudSelect T="Guid" HelperText="@cuttingDataModel.NozzleId.ToString()" @bind-Value="cuttingDataModel.NozzleId" Label="Nozzle" AdornmentIcon="@Icons.Material.Filled.Search">
                 @foreach (var nozzleModel in nozzleModelList)
@@ -57,7 +85,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton Color="MudBlazor.Color.Secondary" 
-                   OnClick="CloseEditParamsModal">
+                   OnClick="CloseEditParamsModal" onmousedown="return false">
             Cancel
         </MudButton>
         <MudButton Variant="Variant.Filled" 
@@ -69,7 +97,7 @@
 </MudDialog>
 
 <br />
-<MudTable Elevation="25" RowsPerPage="8" Items="@cuttingDataModelList" Filter="new Func<CuttingDataModel, bool>(Search)" Hover="true"
+<MudTable Elevation="25" RowsPerPage="8" Items="@cuttingDataModelList" Filter="new Func<CuttingDataModel, bool>(Search)" Hover="true" 
     @bind-cuttingDataModel="cuttingDataModel">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Parameters</MudText>
@@ -106,16 +134,19 @@
         <MudTh>Nozzle</MudTh>
         <MudTh>Cutting speed</MudTh>
         <MudTh>Origin</MudTh>
+        <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Material">@context.Material?.Name</MudTd>
         <MudTd DataLabel="Remark">@context.Remark</MudTd>
         <MudTd DataLabel="Thickness">@context.Thickness</MudTd>
         <MudTd DataLabel="Nozzle">@context.Nozzle?.Name</MudTd>
-        <MudTd DataLabel="Origin">@context.idCutDataParent</MudTd>
+        <MudTd DataLabel="Cutting speed">@context.CuttingSpeed</MudTd>
+        <MudTd DataLabel="Origin">@(string.IsNullOrWhiteSpace(@context.idCutDataParent) ? "*" : "")</MudTd>
         <MudTd DataLabel="">
-            <MudFab @onclick="@(()=>Edit(@context.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" IconSize="Size.Small" />
-            <MudFab @onclick="@(()=>Delete(@context.Id))" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />
+            <MudFab @onclick="@(()=>Duplicate(@context.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Title="Duplicate" Size="Size.Small" IconSize="Size.Small" />
+            <MudFab @onclick="@(()=>Edit(@context.Id))" Disabled="@IsDisabled(@context.idCutDataParent)" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Title="Edit" Size="Size.Small" IconSize="Size.Small" />
+            <MudFab @onclick="@(()=>Delete(@context.Id))" Disabled="@IsDisabled(@context.idCutDataParent)" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />
         </MudTd>
     </RowTemplate>
     <PagerContent>
@@ -127,8 +158,11 @@
 @code {
     private bool _createParamsDialogVisible;
     private bool _editParamsDialogVisible;
+    private bool _deleteParamsDialogVisible;
+
     private MudForm _createForm;
     private MudForm _editForm;
+    private MudForm _deleteForm;
 
     private string searchMaterial = "";
     private float searchThickness = 0;
@@ -174,7 +208,6 @@
         return false;
     }
 
-
     private async Task UpdateParamsAsync()
     {
         if (_editForm.IsValid)
@@ -185,17 +218,42 @@
         }
     }
 
-    private void CloseEditParamsModal()
+    private async Task CreateParamsAsync()
     {
+        if (_createForm.IsValid)
+        {
+            await cuttingDataDBService.AddEntryAsync(cuttingDataModel, CancellationToken.None);
+            cuttingDataModel = new CuttingDataModel();
+            _createParamsDialogVisible = false;
+            snackBar.Add("Parameter Saved.", Severity.Success);
+            await GetEntriesAsync();
+        }
+    }
+
+    private async Task DeleteParamsAsync()
+    {
+        await cuttingDataDBService.DeleteEntryAsync(cuttingDataModel.Id, CancellationToken.None);
+        cuttingDataModel = new CuttingDataModel();
+        _deleteParamsDialogVisible = false;
+        snackBar.Add("Parameter Deleted.", Severity.Success);
+        await GetEntriesAsync();
+    }
+
+    private async void CloseEditParamsModal()
+    {
+        await GetEntriesAsync();
         _editParamsDialogVisible = false;
     }
 
-    private async void Save()
+    private async void CloseCreateParamsModal()
     {
-        await cuttingDataDBService.AddEntryAsync(cuttingDataModel, CancellationToken.None);
-        cuttingDataModel = new CuttingDataModel();
-        snackBar.Add("Customer Saved.", Severity.Success);
         await GetEntriesAsync();
+        _createParamsDialogVisible = false;
+    }
+
+    private void CloseDeleteParamsModal()
+    {
+        _deleteParamsDialogVisible = false;
     }
 
     private void Edit(string id)
@@ -204,12 +262,24 @@
         _editParamsDialogVisible = true;
     }
 
-    private async void Delete(string id)
+    private void Duplicate(string id)
     {
-        await cuttingDataDBService.DeleteEntryAsync(id, CancellationToken.None);
-        snackBar.Add("Customer Deleted.", Severity.Success);
-        await GetEntriesAsync();
+        cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
+        _createParamsDialogVisible = true;
     }
 
-}
+    private void Delete(string id)
+    {
+        cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
+        _deleteParamsDialogVisible = true;
+    }
+
+    private bool IsDisabled(string? idCutDataParent) {
+        return string.IsNullOrWhiteSpace(idCutDataParent);
+    }
+
+    private bool IsEditVisible(string? idCutDataParent) {
+        return !string.IsNullOrWhiteSpace(idCutDataParent);
+    }
+
 }
