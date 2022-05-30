@@ -25,11 +25,13 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entries = await dbContext.Nozzle
-				.OrderBy(p => p.Name.Substring(0, 3))
-					.ThenBy(p => p.Name.Substring(4, p.Name.IndexOf("-")-4))
+			var entriesList = await dbContext.Nozzle
 				.Select(p => _mapper.Map<Nozzle, NozzleModel>(p))
 				.ToListAsync(cancellationToken);
+
+			var entries = entriesList.OrderBy(p => p.Name.Substring(0, 3))
+					.ThenBy(p => p.Name.Substring(4, p.Name.IndexOf("-") - 4).PadLeft(3, '0'))
+					.ThenBy(p => p.Name.Substring(p.Name.IndexOf("-") + 1, p.Name.Length - (p.Name.IndexOf("-") + 1)).PadLeft(3, '0'));
 
 			return entries;
 		}
