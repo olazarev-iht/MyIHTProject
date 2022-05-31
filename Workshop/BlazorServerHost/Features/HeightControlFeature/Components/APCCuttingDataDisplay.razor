@@ -8,6 +8,12 @@
 @inject MudBlazor.ISnackbar snackBar
 @implements IDisposable
 
+<style>
+    .center-mud-text input {
+        text-align: center;
+    }
+</style>
+
 <PageTitle>Cutting Data</PageTitle>
 
 <MudText Typo="Typo.h3">Cutting Data</MudText>
@@ -56,7 +62,7 @@
     </DialogActions>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_editParamsDialogVisible">
+@*<MudDialog @bind-IsVisible="_editParamsDialogVisible">
     <TitleContent>
         <MudText Typo="Typo.h6">Edit</MudText>
     </TitleContent>
@@ -82,6 +88,123 @@
                     <MudSelectItem T="Guid" Value="@nozzleModel.Id">@nozzleModel.Name</MudSelectItem>
                 }
             </MudSelect>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" 
+                   OnClick="CloseEditParamsModal" onmousedown="return false">
+            Cancel
+        </MudButton>
+        <MudButton Variant="Variant.Filled" 
+                   Color="MudBlazor.Color.Primary" 
+                   OnClick="UpdateParamsAsync">
+            Save
+        </MudButton>
+    </DialogActions>
+</MudDialog>*@
+
+
+<MudDialog @bind-IsVisible="_editParamsDialogVisible">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Edit</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@cuttingDataModel"
+                 @ref="_editForm">
+        <table class="center-mud-text">
+            <tr>
+                <MudTh Style="width:25%">&nbsp;</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">Ignition</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">PreHeating</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">Piercing</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">Cutting</MudTh>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">H-O [bar]</MudTh>
+                <td>
+                    <MudTextField ReadOnly="true" @onclick="@(()=>Duplicate(@cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PI0" For="@(() => cuttingDataModel.PI0)"/>
+                </td>
+                <td>
+                    <MudTextField ReadOnly="true" @bind-Value="@cuttingDataModel.PreHeatHeatingOxygenPressure" For="@(() => cuttingDataModel.PreHeatHeatingOxygenPressure)"/>
+                </td>
+                <td>
+                    <MudTextField  @bind-Value="@cuttingDataModel.PierceHeatingOxygenPressure" For="@(() => cuttingDataModel.PierceHeatingOxygenPressure)" />
+                </td>
+                <td>
+                    <MudTextField  @bind-Value="@cuttingDataModel.CutHeatingOxygenPressure" For="@(() => cuttingDataModel.CutHeatingOxygenPressure)" />
+                </td>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">C-O [bar]</MudTh>
+                <td></td>
+                <td></td>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.PierceCuttingOxygenPressure" For="@(() => cuttingDataModel.PierceCuttingOxygenPressure)" />
+                </td>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.CutCuttingOxygenPressure" For="@(() => cuttingDataModel.CutCuttingOxygenPressure)" />
+                </td>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">F-G [bar]</MudTh>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.PI1" For="@(() => cuttingDataModel.PI1)"/>
+                </td>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.PreHeatFuelGasPressure" For="@(() => cuttingDataModel.PreHeatFuelGasPressure)" />
+                </td>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.PierceFuelGasPressure" For="@(() => cuttingDataModel.PierceFuelGasPressure)" />
+                </td>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.CutFuelGasPressure" For="@(() => cuttingDataModel.CutFuelGasPressure)" />
+                </td>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">Clearance [mm]</MudTh>
+                <td></td>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.PreHeatHeight" For="@(() => cuttingDataModel.PreHeatHeight)" />
+                </td>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.PierceHeight" For="@(() => cuttingDataModel.PierceHeight)" />
+                </td>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.CutHeight" For="@(() => cuttingDataModel.CutHeight)" />
+                </td>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">Time [s]</MudTh>
+                <td></td>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.PreHeatTime" For="@(() => cuttingDataModel.PreHeatTime)" />
+                </td>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.PierceTime" For="@(() => cuttingDataModel.PierceTime)" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">Ignition flame<br />
+                    ajust [%]</MudTh>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.IgnitionFlameAdjustment" For="@(() => cuttingDataModel.IgnitionFlameAdjustment)" />
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">Cutting Speed<br />
+                    [mm/min]</MudTh>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <MudTextField @bind-Value="@cuttingDataModel.CuttingSpeed" For="@(() => cuttingDataModel.CuttingSpeed)" />
+                </td>
+            </tr>
+        </table>
         </MudForm>
     </DialogContent>
     <DialogActions>
