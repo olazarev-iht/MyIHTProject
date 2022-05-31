@@ -1,4 +1,4 @@
-﻿@inherits IhtComponentBase
+﻿@*@inherits IhtComponentBase*@
 @using SharedComponents.Models
 @using SharedComponents.Services.CuttingDataDBServices
 @using SharedComponents.Models.CuttingData
@@ -6,6 +6,7 @@
 @inject INozzleDBService nozzleDBService
 @inject IMaterialDBService materialDBService
 @inject MudBlazor.ISnackbar snackBar
+@implements IDisposable
 
 <PageTitle>Cutting Data</PageTitle>
 
@@ -170,16 +171,21 @@
     private float[] arrThicknesses = { 3, 4, 5, 6, 7, 8, 10, 12, 15, 20, 25, 30, 40, 50, 70, 80, 90, 100, 120, 130, 150, 200, 230, 250, 300 };
     private CuttingDataModel cuttingDataModel = new CuttingDataModel();
     //private NozzleModel nozzle = new NozzleModel();
-    private List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
+    private static List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
     private IEnumerable<NozzleModel> nozzleModelList = new List<NozzleModel>();
     private IEnumerable<MaterialModel> materialModelList = new List<MaterialModel>();
+
+    public static event EventHandler? StaticParamsClientChanged;
 
     protected override async Task OnInitializedAsync()
     {
         await GetEntriesAsync();
         await GetNozzlesAsync();
         await GetMaterialsAsync();
+
+        APCCuttingDataDisplay.StaticParamsClientChanged += StaticAPCParamsOnStaticAPCParamsDataChanged;
     }
+
     private async Task<List<CuttingDataModel>> GetEntriesAsync()
     {
         cuttingDataModelList = await cuttingDataDBService.GetEntriesAsync(CancellationToken.None);
@@ -215,6 +221,8 @@
             await cuttingDataDBService.UpdateEntryAsync(cuttingDataModel.Id.ToString(), cuttingDataModel, CancellationToken.None);
             _editParamsDialogVisible = false;
             await GetEntriesAsync();
+
+            OnStaticParamChanged();
         }
     }
 
@@ -227,6 +235,8 @@
             _createParamsDialogVisible = false;
             snackBar.Add("Parameter Saved.", Severity.Success);
             await GetEntriesAsync();
+
+            OnStaticParamChanged();
         }
     }
 
@@ -237,6 +247,8 @@
         _deleteParamsDialogVisible = false;
         snackBar.Add("Parameter Deleted.", Severity.Success);
         await GetEntriesAsync();
+
+        OnStaticParamChanged();
     }
 
     private async void CloseEditParamsModal()
@@ -280,6 +292,21 @@
 
     private bool IsEditVisible(string? idCutDataParent) {
         return !string.IsNullOrWhiteSpace(idCutDataParent);
+    }
+
+    private void OnStaticParamChanged()
+    {
+        APCCuttingDataDisplay.StaticParamsClientChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private async void StaticAPCParamsOnStaticAPCParamsDataChanged(object? sender, EventArgs e)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        APCCuttingDataDisplay.StaticParamsClientChanged -= StaticAPCParamsOnStaticAPCParamsDataChanged;
     }
 
 }
