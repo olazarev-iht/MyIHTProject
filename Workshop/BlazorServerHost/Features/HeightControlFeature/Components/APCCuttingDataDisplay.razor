@@ -11,6 +11,8 @@
 <style>
     .center-mud-text input {
         text-align: center;
+        cursor: default;
+        background-color:aliceblue;
     }
 </style>
 
@@ -62,37 +64,21 @@
     </DialogActions>
 </MudDialog>
 
-@*<MudDialog @bind-IsVisible="_editParamsDialogVisible">
+<MudDialog @bind-IsVisible="_editOneParamDialogVisible">
     <TitleContent>
         <MudText Typo="Typo.h6">Edit</MudText>
     </TitleContent>
     <DialogContent>
         <MudForm Model="@cuttingDataModel"
                  @ref="_editForm">
-            <MudTextField @bind-Value="@cuttingDataModel.Material.Name" 
-                          Label="Material"
-                          For="@(() => cuttingDataModel.Material.Name)" />
-            <br />
-            <MudTextField @bind-Value="@cuttingDataModel.Remark" 
-                          Label="Remark"
-                          Lines="2"
-                          For="@(() => cuttingDataModel.Remark)" />
-            <br />
-            <MudNumericField Label="Thickness" 
-                          @bind-Value="@cuttingDataModel.Thickness"
-                          For="@(() => cuttingDataModel.Thickness)" />
-            <br />
-            <MudSelect T="Guid" HelperText="@cuttingDataModel.NozzleId.ToString()" @bind-Value="cuttingDataModel.NozzleId" Label="Nozzle" AdornmentIcon="@Icons.Material.Filled.Search">
-                @foreach (var nozzleModel in nozzleModelList)
-                {
-                    <MudSelectItem T="Guid" Value="@nozzleModel.Id">@nozzleModel.Name</MudSelectItem>
-                }
-            </MudSelect>
+            <MudSlider @bind-Value="@_sliderVarValue" Min="@_sliderMinValue" Max="@_sliderMaxValue" 
+                TickMarks="true" TickMarkLabels="@_sliderArrValues" Step="@_sliderDeltaValue" Color="Color.Info">Value: @_sliderVarValue.ToString()
+            </MudSlider>
         </MudForm>
     </DialogContent>
     <DialogActions>
         <MudButton Color="MudBlazor.Color.Secondary" 
-                   OnClick="CloseEditParamsModal" onmousedown="return false">
+                   OnClick="CloseEditOneParamModal" onmousedown="return false">
             Cancel
         </MudButton>
         <MudButton Variant="Variant.Filled" 
@@ -101,7 +87,7 @@
             Save
         </MudButton>
     </DialogActions>
-</MudDialog>*@
+</MudDialog>
 
 
 <MudDialog @bind-IsVisible="_editParamsDialogVisible">
@@ -121,88 +107,105 @@
             </tr>
             <tr>
                 <MudTh Style="background-color:aliceblue;font-weight: bold">H-O [bar]</MudTh>
-                <td>
-                    <MudTextField ReadOnly="true" @onclick="@(()=>Duplicate(@cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PI0" For="@(() => cuttingDataModel.PI0)"/>
-                </td>
-                <td>
-                    <MudTextField ReadOnly="true" @bind-Value="@cuttingDataModel.PreHeatHeatingOxygenPressure" For="@(() => cuttingDataModel.PreHeatHeatingOxygenPressure)"/>
-                </td>
-                <td>
-                    <MudTextField  @bind-Value="@cuttingDataModel.PierceHeatingOxygenPressure" For="@(() => cuttingDataModel.PierceHeatingOxygenPressure)" />
-                </td>
-                <td>
-                    <MudTextField  @bind-Value="@cuttingDataModel.CutHeatingOxygenPressure" For="@(() => cuttingDataModel.CutHeatingOxygenPressure)" />
-                </td>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam(nameof(@cuttingDataModel.PI0), @cuttingDataModel.PI0, 0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PI0"/>
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("PreHeatHeatingOxygenPressure", @cuttingDataModel.PreHeatHeatingOxygenPressure, 0.01f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PreHeatHeatingOxygenPressure"/>
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("PierceHeatingOxygenPressure", @cuttingDataModel.PierceHeatingOxygenPressure, 0.01f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceHeatingOxygenPressure"/>
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("CutHeatingOxygenPressure", @cuttingDataModel.CutHeatingOxygenPressure, 0.01f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CutHeatingOxygenPressure" />
+                </MudTh>
             </tr>
             <tr>
                 <MudTh Style="background-color:aliceblue;font-weight: bold">C-O [bar]</MudTh>
-                <td></td>
-                <td></td>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.PierceCuttingOxygenPressure" For="@(() => cuttingDataModel.PierceCuttingOxygenPressure)" />
-                </td>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.CutCuttingOxygenPressure" For="@(() => cuttingDataModel.CutCuttingOxygenPressure)" />
-                </td>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("PierceCuttingOxygenPressure", @cuttingDataModel.PierceCuttingOxygenPressure, 0.01f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceCuttingOxygenPressure" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("CutCuttingOxygenPressure", @cuttingDataModel.CutCuttingOxygenPressure, 0.01f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CutCuttingOxygenPressure" />
+                </MudTh>
             </tr>
             <tr>
                 <MudTh Style="background-color:aliceblue;font-weight: bold">F-G [bar]</MudTh>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.PI1" For="@(() => cuttingDataModel.PI1)"/>
-                </td>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.PreHeatFuelGasPressure" For="@(() => cuttingDataModel.PreHeatFuelGasPressure)" />
-                </td>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.PierceFuelGasPressure" For="@(() => cuttingDataModel.PierceFuelGasPressure)" />
-                </td>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.CutFuelGasPressure" For="@(() => cuttingDataModel.CutFuelGasPressure)" />
-                </td>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("PI1", @cuttingDataModel.PI1, 0.01f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PI1" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("PreHeatFuelGasPressure", @cuttingDataModel.PreHeatFuelGasPressure, 0.01f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PreHeatFuelGasPressure" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("PierceFuelGasPressure", @cuttingDataModel.PierceFuelGasPressure, 0.01f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceFuelGasPressure" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("CutFuelGasPressure", @cuttingDataModel.CutFuelGasPressure, 0.01f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CutFuelGasPressure" />
+                </MudTh>
             </tr>
             <tr>
                 <MudTh Style="background-color:aliceblue;font-weight: bold">Clearance [mm]</MudTh>
-                <td></td>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.PreHeatHeight" For="@(() => cuttingDataModel.PreHeatHeight)" />
-                </td>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.PierceHeight" For="@(() => cuttingDataModel.PierceHeight)" />
-                </td>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.CutHeight" For="@(() => cuttingDataModel.CutHeight)" />
-                </td>
+                <MudTh></MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("PreHeatHeight", @cuttingDataModel.PreHeatHeight, 0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PreHeatHeight" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("PierceHeight", @cuttingDataModel.PierceHeight, 0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceHeight" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("CutHeight", @cuttingDataModel.CutHeight, 0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CutHeight" />
+                </MudTh>
             </tr>
             <tr>
                 <MudTh Style="background-color:aliceblue;font-weight: bold">Time [s]</MudTh>
-                <td></td>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.PreHeatTime" For="@(() => cuttingDataModel.PreHeatTime)" />
-                </td>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.PierceTime" For="@(() => cuttingDataModel.PierceTime)" />
-                </td>
-                <td></td>
+                <MudTh></MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("PreHeatTime", @cuttingDataModel.PreHeatTime, 1.0f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PreHeatTime" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("PierceTime", @cuttingDataModel.PierceTime, 0.1f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceTime" />
+                </MudTh>
+                <MudTh></MudTh>
             </tr>
             <tr>
                 <MudTh Style="background-color:aliceblue;font-weight: bold">Ignition flame<br />
                     ajust [%]</MudTh>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.IgnitionFlameAdjustment" For="@(() => cuttingDataModel.IgnitionFlameAdjustment)" />
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("IgnitionFlameAdjustment", @cuttingDataModel.IgnitionFlameAdjustment, 0.1f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.IgnitionFlameAdjustment" />
+                </MudTh>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
             </tr>
             <tr>
                 <MudTh Style="background-color:aliceblue;font-weight: bold">Cutting Speed<br />
                     [mm/min]</MudTh>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <MudTextField @bind-Value="@cuttingDataModel.CuttingSpeed" For="@(() => cuttingDataModel.CuttingSpeed)" />
-                </td>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    @onclick="@(()=>EditOneParam("CuttingSpeed", @cuttingDataModel.CuttingSpeed, 1.0f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CuttingSpeed" />
+                </MudTh>
             </tr>
         </table>
         </MudForm>
@@ -283,6 +286,7 @@
     private bool _createParamsDialogVisible;
     private bool _editParamsDialogVisible;
     private bool _deleteParamsDialogVisible;
+    private bool _editOneParamDialogVisible;
 
     private MudForm _createForm;
     private MudForm _editForm;
@@ -291,6 +295,14 @@
     private string searchMaterial = "";
     private float searchThickness = 0;
     private string searchNozzle = "";
+
+    private string _sliderVarName = "";
+    private float _sliderVarValue = 0;
+    private float _sliderMinValue = 0;
+    private float _sliderMaxValue = 0;
+    private float _sliderDeltaValue = 0;
+    private string[] _sliderArrValues = null;
+
     private float[] arrThicknesses = { 3, 4, 5, 6, 7, 8, 10, 12, 15, 20, 25, 30, 40, 50, 70, 80, 90, 100, 120, 130, 150, 200, 230, 250, 300 };
     private CuttingDataModel cuttingDataModel = new CuttingDataModel();
     //private NozzleModel nozzle = new NozzleModel();
@@ -391,6 +403,16 @@
         _deleteParamsDialogVisible = false;
     }
 
+    private void CloseEditOneParamModal()
+    {
+        _editOneParamDialogVisible = false;
+    }
+
+    private void SaveEditOneParamAsync()
+    {        
+        _editOneParamDialogVisible = false;
+    }
+
     private void Edit(string id)
     {
         cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
@@ -407,6 +429,31 @@
     {
         cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
         _deleteParamsDialogVisible = true;
+    }
+
+    private void EditOneParam(string paramName, float paramValue, float paramDelta, string id)
+    {
+        cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
+        _sliderVarName = paramName;
+        _sliderVarValue = paramValue;
+        _sliderDeltaValue = paramDelta;
+        _sliderMinValue = (float)Math.Round((_sliderVarValue - _sliderVarValue / 2.0f), 1);
+        _sliderMaxValue = (float)Math.Round((_sliderVarValue + _sliderVarValue / 2.0f), 1);
+
+        List<string> labels = new List<string>();
+
+        var currValue = _sliderMinValue;
+
+        while(currValue <= _sliderMaxValue)
+        {
+            currValue = (float)Math.Round(currValue, 1);
+            labels.Add(currValue.ToString());
+            currValue += _sliderDeltaValue;
+        }
+
+        _sliderArrValues = labels.ToArray();
+
+        _editOneParamDialogVisible = true;
     }
 
     private bool IsDisabled(string? idCutDataParent) {
