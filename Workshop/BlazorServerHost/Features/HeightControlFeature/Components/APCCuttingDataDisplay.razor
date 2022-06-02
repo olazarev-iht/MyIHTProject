@@ -15,6 +15,34 @@
         cursor: default;
         background-color:aliceblue;
     }
+    .mud-input>input.mud-input-root-outlined {
+        padding: 7px 0px 5px;
+    }
+    .mud-table-cell{
+        padding: 5px 5px 5px 5px;
+        
+    }
+    table>tr:not(:first-child)>th.mud-table-cell:first-child {
+        border: 1px solid #e0e0e0;
+    }
+    table>tr:first-child>th.mud-table-cell:not(:first-child) {
+        border: 1px solid #e0e0e0;
+    }
+    .mud-input-control{
+	    margin-top: 0px;
+	}
+    .mud-dialog .mud-dialog-title{
+		padding: 6px 24px;
+	}
+    .mud-input{
+	    font-size: 0.96rem;
+	}	
+	.mud-input-control>.mud-input-control-input-container {
+		align-items: center;
+	}	
+	.mud-input.mud-input-outlined {
+		width: 80px;
+	}
 </style>
 
 <PageTitle>Cutting Data</PageTitle>
@@ -84,7 +112,7 @@
         </MudButton>
         <MudButton Variant="Variant.Filled" 
                    Color="MudBlazor.Color.Primary" 
-                   OnClick="SaveEditOneParamAsync">
+                   OnClick="SaveEditOneParamModal">
             Save
         </MudButton>
     </DialogActions>
@@ -93,18 +121,18 @@
 
 <MudDialog @bind-IsVisible="_editParamsDialogVisible">
     <TitleContent>
-        <MudText Typo="Typo.h6">Edit</MudText>
+        <MudText Typo="Typo.h6"></MudText>
     </TitleContent>
     <DialogContent>
         <MudForm Model="@cuttingDataModel"
                  @ref="_editForm">
         <table class="center-mud-text">
             <tr>
-                <MudTh Style="width:25%">&nbsp;</MudTh>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">Ignition</MudTh>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">PreHeating</MudTh>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">Piercing</MudTh>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">Cutting</MudTh>
+                <MudTh Style="width:24%; border: 0px solid;">&nbsp;</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Ignition</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">PreHeating</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Piercing</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Cutting</MudTh>
             </tr>
             <tr>
                 <MudTh Style="background-color:aliceblue;font-weight: bold">H-O [bar]</MudTh>
@@ -409,7 +437,7 @@
         _editOneParamDialogVisible = false;
     }
 
-    private void SaveEditOneParamAsync()
+    private void SaveEditOneParamModal()
     {   
         PropertyInfo prop = cuttingDataModel?.GetType().GetProperty(_sliderVarName, BindingFlags.Public | BindingFlags.Instance);
 
