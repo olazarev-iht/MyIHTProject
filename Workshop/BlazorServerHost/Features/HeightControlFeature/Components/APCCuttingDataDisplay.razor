@@ -190,15 +190,15 @@
                 <MudTh></MudTh>
                 <MudTh>
                     <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PreHeatHeight", @cuttingDataModel.PreHeatHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PreHeatHeight" />
+                    @onclick="@(()=>EditOneParam("PreHeatHeight", @cuttingDataModel.PreHeatHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:1.0f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PreHeatHeight" />
                 </MudTh>
                 <MudTh>
                     <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PierceHeight", @cuttingDataModel.PierceHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceHeight" />
+                    @onclick="@(()=>EditOneParam("PierceHeight", @cuttingDataModel.PierceHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:1.0f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceHeight" />
                 </MudTh>
                 <MudTh>
                     <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("CutHeight", @cuttingDataModel.CutHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CutHeight" />
+                    @onclick="@(()=>EditOneParam("CutHeight", @cuttingDataModel.CutHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:1.0f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CutHeight" />
                 </MudTh>
             </tr>
             <tr>
