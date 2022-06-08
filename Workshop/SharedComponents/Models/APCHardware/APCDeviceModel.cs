@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace SharedComponents.Models.APCHardware
 {
-    public class ConstParamsModel
+    public class APCDeviceModel
     {
-        // may be delete the Id
         public Guid Id { get; set; }
-        public int Min { get; set; }
-        public int Max { get; set; }
-        public int Step { get; set; }
+        public int Num { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace BlazorServerHost.Data.Models.APCHardware
+﻿namespace BlazorServerHost.Data.Models.APCHardwareMoq
 {
     public class APCDevice
     {
