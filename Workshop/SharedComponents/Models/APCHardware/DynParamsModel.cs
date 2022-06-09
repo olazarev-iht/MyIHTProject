@@ -16,6 +16,5 @@ namespace SharedComponents.Models.APCHardware
         public Guid? ParameterDataInfoId { get; set; }
         public ParameterDataInfoModel? ParameterDataInfo { get; set; }
         public int Value { get; set; }
-        public string? Format { get; set; }
     }
 }

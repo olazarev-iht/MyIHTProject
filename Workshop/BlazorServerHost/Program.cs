@@ -48,6 +48,10 @@ builder.Services.AddDbContextFactory<CuttingDataDbContext>(options =>
 {
 	options.UseSqlite(builder.Configuration.GetConnectionString("CuttingDataDbContext"));
 });
+builder.Services.AddDbContextFactory<APCHardwareMoqDBContext>(options =>
+{
+	options.UseSqlite(builder.Configuration.GetConnectionString("APCHardwareMoqDBContext"));
+});
 
 builder.Services.AddScoped<ICuttingParametersService, CuttingParametersService>();
 builder.Services.AddScoped<ICuttingDataDBService, CuttingDataDBService>();
@@ -167,6 +171,14 @@ try
 
 	// migrate CuttingDataDbContext
 	using (var ctx = app.Services.GetRequiredService<IDbContextFactory<CuttingDataDbContext>>().CreateDbContext())
+	{
+		using var tx = ctx.Database.BeginTransaction();
+		await ctx.Database.MigrateAsync();
+		await tx.CommitAsync();
+	}
+
+	// migrate APCHardwareMoqDBContext
+	using (var ctx = app.Services.GetRequiredService<IDbContextFactory<APCHardwareMoqDBContext>> ().CreateDbContext())
 	{
 		using var tx = ctx.Database.BeginTransaction();
 		await ctx.Database.MigrateAsync();
