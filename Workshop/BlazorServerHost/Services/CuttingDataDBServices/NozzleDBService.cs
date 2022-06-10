@@ -36,12 +36,6 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			return entries;
 		}
 
-		public string GetStringToOrder(string nozzle)
-        {
-			var str = nozzle;
-			return str;
-		}
-
 		public async Task<NozzleModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
