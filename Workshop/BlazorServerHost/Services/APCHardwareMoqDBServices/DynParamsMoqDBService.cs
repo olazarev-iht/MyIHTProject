@@ -7,61 +7,65 @@ using SharedComponents.Services.APCHardwareMoqDBServices;
 
 namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 {
-	public class LiveParamsDBService : ILiveParamsDBService
+	public class DynParamsMoqDBService : IDynParamsMoqDBService
 	{
 		private readonly IDbContextFactory<APCHardwareMoqDBContext> _dbContextFactory;
 
 		private readonly DbModelMapper _mapper;
 
-		public LiveParamsDBService(IDbContextFactory<APCHardwareMoqDBContext> dbContextFactory, DbModelMapper mapper)
+		public DynParamsMoqDBService(IDbContextFactory<APCHardwareMoqDBContext> dbContextFactory, DbModelMapper mapper)
 		{
 			_dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
 
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 		}
 
-		public async Task<IEnumerable<LiveParamsModel>> GetEntriesAsync(CancellationToken cancellationToken)
+		public async Task<IEnumerable<DynParamsModel>> GetEntriesAsync(CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entries = await dbContext.LiveParams
+			var entries = await dbContext.DynParams
 				.AsNoTracking()
-				.Select(p => _mapper.Map<LiveParams, LiveParamsModel>(p))
+				.Include(p => p.ConstParams)
+				.Select(p => _mapper.Map<DynParams, DynParamsModel>(p))
 				.ToArrayAsync(cancellationToken);
 
 			return entries;
 		}
 
-		public async Task<LiveParamsModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
+		public async Task<DynParamsModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
-			var entry = await dbContext.LiveParams.SingleAsync(s => s.Id == id, cancellationToken);
+			var entry = await dbContext.DynParams
+				.Include(p => p.ConstParams)
+				.SingleAsync(s => s.Id == id, cancellationToken);
 
-			return _mapper.Map<LiveParams, LiveParamsModel>(entry);
+			return _mapper.Map<DynParams, DynParamsModel>(entry);
 		}
 
-		public async Task<Guid> AddEntryAsync(LiveParamsModel model, CancellationToken cancellationToken)
+		public async Task<Guid> AddEntryAsync(DynParamsModel model, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entity = _mapper.Map<LiveParamsModel, LiveParams>(model);
+			var entity = _mapper.Map<DynParamsModel, DynParams>(model);
 
-			await dbContext.LiveParams.AddAsync(entity, cancellationToken);
+			await dbContext.DynParams.AddAsync(entity, cancellationToken);
 			await dbContext.SaveChangesAsync(cancellationToken);
 
 			return entity.Id;
 		}
 
-		public async Task UpdateEntryAsync(Guid id, LiveParamsModel newData, CancellationToken cancellationToken)
+		public async Task UpdateEntryAsync(Guid id, DynParamsModel newData, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entry = await dbContext.LiveParams.SingleAsync(s => s.Id == id, cancellationToken);
+			var entry = await dbContext.DynParams.SingleAsync(s => s.Id == id, cancellationToken);
 
 			if (entry != null)
 			{
 				newData.Id = entry.Id;
-				entry = _mapper.Map<LiveParamsModel, LiveParams>(newData);
+				entry = _mapper.Map<DynParamsModel, DynParams>(newData);
+				//dbContext.Entry(entry).CurrentValues.SetValues(newData);
 				await dbContext.SaveChangesAsync(cancellationToken);
 			}
 		}
@@ -70,10 +74,10 @@ namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var stub = new LiveParams() { Id = id, };
+			var stub = new DynParams() { Id = id, };
 
-			dbContext.LiveParams.Attach(stub);
-			dbContext.LiveParams.Remove(stub);
+			dbContext.DynParams.Attach(stub);
+			dbContext.DynParams.Remove(stub);
 
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}

@@ -1,19 +1,19 @@
 ﻿using BlazorServerHost.Data;
 using BlazorServerHost.Data.DataMapper;
-using BlazorServerHost.Data.Models.APCHardwareMoq;
+using BlazorServerHost.Data.Models.APCHardware;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models.APCHardware;
-using SharedComponents.Services.APCHardwareMoqDBServices;
+using SharedComponents.Services.APCHardwareDBServices;
 
-namespace BlazorServerHost.Services.APCHardwareMoqDBServices
+namespace BlazorServerHost.Services.APCHardwareDBServices
 {
 	public class DynParamsDBService : IDynParamsDBService
 	{
-		private readonly IDbContextFactory<APCHardwareMoqDBContext> _dbContextFactory;
+		private readonly IDbContextFactory<APCHardwareDBContext> _dbContextFactory;
 
 		private readonly DbModelMapper _mapper;
 
-		public DynParamsDBService(IDbContextFactory<APCHardwareMoqDBContext> dbContextFactory, DbModelMapper mapper)
+		public DynParamsDBService(IDbContextFactory<APCHardwareDBContext> dbContextFactory, DbModelMapper mapper)
 		{
 			_dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
 
@@ -26,6 +26,7 @@ namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 
 			var entries = await dbContext.DynParams
 				.AsNoTracking()
+				.Include(p => p.ConstParams)
 				.Select(p => _mapper.Map<DynParams, DynParamsModel>(p))
 				.ToArrayAsync(cancellationToken);
 
@@ -35,7 +36,9 @@ namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 		public async Task<DynParamsModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
-			var entry = await dbContext.DynParams.SingleAsync(s => s.Id == id, cancellationToken);
+			var entry = await dbContext.DynParams
+				.Include(p => p.ConstParams)
+				.SingleAsync(s => s.Id == id, cancellationToken);
 
 			return _mapper.Map<DynParams, DynParamsModel>(entry);
 		}
@@ -62,6 +65,7 @@ namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 			{
 				newData.Id = entry.Id;
 				entry = _mapper.Map<DynParamsModel, DynParams>(newData);
+				//dbContext.Entry(entry).CurrentValues.SetValues(newData);
 				await dbContext.SaveChangesAsync(cancellationToken);
 			}
 		}

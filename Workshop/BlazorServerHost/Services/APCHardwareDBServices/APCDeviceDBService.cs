@@ -1,19 +1,19 @@
 ﻿using BlazorServerHost.Data;
 using BlazorServerHost.Data.DataMapper;
-using BlazorServerHost.Data.Models.APCHardwareMoq;
+using BlazorServerHost.Data.Models.APCHardware;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models.APCHardware;
-using SharedComponents.Services.APCHardwareMoqDBServices;
+using SharedComponents.Services.APCHardwareDBServices;
 
-namespace BlazorServerHost.Services.APCHardwareMoqDBServices
+namespace BlazorServerHost.Services.APCHardwareDBServices
 {
 	public class APCDeviceDBService : IAPCDeviceDBService
 	{
-		private readonly IDbContextFactory<APCHardwareMoqDBContext> _dbContextFactory;
+		private readonly IDbContextFactory<APCHardwareDBContext> _dbContextFactory;
 
 		private readonly DbModelMapper _mapper;
 
-		public APCDeviceDBService(IDbContextFactory<APCHardwareMoqDBContext> dbContextFactory, DbModelMapper mapper)
+		public APCDeviceDBService(IDbContextFactory<APCHardwareDBContext> dbContextFactory, DbModelMapper mapper)
 		{
 			_dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
 

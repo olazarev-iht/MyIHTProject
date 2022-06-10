@@ -1,6 +1,6 @@
 ﻿using SharedComponents.Models.APCHardware;
 
-namespace SharedComponents.Services.APCHardwareMoqDBServices
+namespace SharedComponents.Services.APCHardwareDBServices
 {
 	public interface IParameterDataDBService
 	{
