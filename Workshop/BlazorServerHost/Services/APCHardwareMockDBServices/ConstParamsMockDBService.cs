@@ -3,17 +3,17 @@ using BlazorServerHost.Data.DataMapper;
 using BlazorServerHost.Data.Models.APCHardwareMoq;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models.APCHardware;
-using SharedComponents.Services.APCHardwareMoqDBServices;
+using SharedComponents.Services.APCHardwareMockDBServices;
 
 namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 {
-	public class ConstParamsMoqDBService : IConstParamsMoqDBService
+	public class ConstParamsMockDBService : IConstParamsMockDBService
 	{
 		private readonly IDbContextFactory<APCHardwareMoqDBContext> _dbContextFactory;
 
 		private readonly DbModelMapper _mapper;
 
-		public ConstParamsMoqDBService(IDbContextFactory<APCHardwareMoqDBContext> dbContextFactory, DbModelMapper mapper)
+		public ConstParamsMockDBService(IDbContextFactory<APCHardwareMoqDBContext> dbContextFactory, DbModelMapper mapper)
 		{
 			_dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
 

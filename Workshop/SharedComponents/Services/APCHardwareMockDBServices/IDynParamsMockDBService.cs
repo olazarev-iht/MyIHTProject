@@ -1,8 +1,8 @@
 ﻿using SharedComponents.Models.APCHardware;
 
-namespace SharedComponents.Services.APCHardwareMoqDBServices
+namespace SharedComponents.Services.APCHardwareMockDBServices
 {
-	public interface IDynParamsDBService
+	public interface IDynParamsMockDBService
 	{
 		public Task<IEnumerable<DynParamsModel>> GetEntriesAsync(CancellationToken cancellationToken);
 		public Task<DynParamsModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken);

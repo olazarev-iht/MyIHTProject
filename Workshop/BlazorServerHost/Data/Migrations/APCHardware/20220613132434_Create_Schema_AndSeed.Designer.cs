@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServerHost.Data.Migrations.APCHardware
 {
     [DbContext(typeof(APCHardwareDBContext))]
-    [Migration("20220609151324_Create_Schema_AndSeed")]
+    [Migration("20220613132434_Create_Schema_AndSeed")]
     partial class Create_Schema_AndSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,8 +146,8 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     b.Property<string>("MinDescription")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Multiplier")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Multiplier")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("StepDescription")
                         .HasColumnType("TEXT");

@@ -9,6 +9,6 @@
         public string? MaxDescription { get; set; }
         public string? StepDescription { get; set; }
         public string? ValueDescription { get; set; }
-        public int Multiplier { get; set; }
+        public double Multiplier { get; set; }
     }
 }

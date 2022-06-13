@@ -3,68 +3,70 @@ using BlazorServerHost.Data.DataMapper;
 using BlazorServerHost.Data.Models.APCHardwareMoq;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models.APCHardware;
-using SharedComponents.Services.APCHardwareMoqDBServices;
+using SharedComponents.Services.APCHardwareMockDBServices;
 
 namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 {
-	public class DynParamsMoqDBService : IDynParamsMoqDBService
+	public class ParameterDataMockDBService : IParameterDataMockDBService
 	{
 		private readonly IDbContextFactory<APCHardwareMoqDBContext> _dbContextFactory;
 
 		private readonly DbModelMapper _mapper;
 
-		public DynParamsMoqDBService(IDbContextFactory<APCHardwareMoqDBContext> dbContextFactory, DbModelMapper mapper)
+		public ParameterDataMockDBService(IDbContextFactory<APCHardwareMoqDBContext> dbContextFactory, DbModelMapper mapper)
 		{
 			_dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
 
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 		}
 
-		public async Task<IEnumerable<DynParamsModel>> GetEntriesAsync(CancellationToken cancellationToken)
+		public async Task<IEnumerable<ParameterDataModel>> GetEntriesAsync(CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entries = await dbContext.DynParams
+			var entries = await dbContext.ParameterDatas
 				.AsNoTracking()
-				.Include(p => p.ConstParams)
-				.Select(p => _mapper.Map<DynParams, DynParamsModel>(p))
+				.Include(p => p.APCDevice)
+				.Include(p => p.DynParams)
+				.Select(p => _mapper.Map<ParameterData, ParameterDataModel>(p))
 				.ToArrayAsync(cancellationToken);
 
 			return entries;
 		}
 
-		public async Task<DynParamsModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
+		public async Task<ParameterDataModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
-			var entry = await dbContext.DynParams
-				.Include(p => p.ConstParams)
+			var entry = await dbContext.ParameterDatas
+				.Include(p => p.APCDevice)
+				.Include(p => p.DynParams)
 				.SingleAsync(s => s.Id == id, cancellationToken);
 
-			return _mapper.Map<DynParams, DynParamsModel>(entry);
+			return _mapper.Map<ParameterData, ParameterDataModel>(entry);
 		}
 
-		public async Task<Guid> AddEntryAsync(DynParamsModel model, CancellationToken cancellationToken)
+		public async Task<Guid> AddEntryAsync(ParameterDataModel model, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entity = _mapper.Map<DynParamsModel, DynParams>(model);
+			var entity = _mapper.Map<ParameterDataModel, ParameterData>(model);
 
-			await dbContext.DynParams.AddAsync(entity, cancellationToken);
+			await dbContext.ParameterDatas.AddAsync(entity, cancellationToken);
 			await dbContext.SaveChangesAsync(cancellationToken);
 
 			return entity.Id;
 		}
 
-		public async Task UpdateEntryAsync(Guid id, DynParamsModel newData, CancellationToken cancellationToken)
+		public async Task UpdateEntryAsync(Guid id, ParameterDataModel newData, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entry = await dbContext.DynParams.SingleAsync(s => s.Id == id, cancellationToken);
+			var entry = await dbContext.ParameterDatas.SingleAsync(s => s.Id == id, cancellationToken);
 
 			if (entry != null)
 			{
 				newData.Id = entry.Id;
-				entry = _mapper.Map<DynParamsModel, DynParams>(newData);
+				entry = _mapper.Map<ParameterDataModel, ParameterData>(newData);
 				//dbContext.Entry(entry).CurrentValues.SetValues(newData);
 				await dbContext.SaveChangesAsync(cancellationToken);
 			}
@@ -74,14 +76,15 @@ namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var stub = new DynParams() { Id = id, };
+			var stub = new ParameterData() { Id = id, };
 
-			dbContext.DynParams.Attach(stub);
-			dbContext.DynParams.Remove(stub);
+			dbContext.ParameterDatas.Attach(stub);
+			dbContext.ParameterDatas.Remove(stub);
 
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}
 	}
 }
+
 
 

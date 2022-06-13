@@ -1,8 +1,8 @@
 ﻿using SharedComponents.Models.APCHardware;
 
-namespace SharedComponents.Services.APCHardwareMoqDBServices
+namespace SharedComponents.Services.APCHardwareMockDBServices
 {
-	public interface IParameterDataMoqDBService
+	public interface IParameterDataMockDBService
 	{
 		public Task<IEnumerable<ParameterDataModel>> GetEntriesAsync(CancellationToken cancellationToken);
 		public Task<ParameterDataModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken);

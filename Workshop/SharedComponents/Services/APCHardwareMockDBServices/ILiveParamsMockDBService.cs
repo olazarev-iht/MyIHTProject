@@ -1,8 +1,8 @@
 ﻿using SharedComponents.Models.APCHardware;
 
-namespace SharedComponents.Services.APCHardwareMoqDBServices
+namespace SharedComponents.Services.APCHardwareMockDBServices
 {
-	public interface ILiveParamsDBService
+	public interface ILiveParamsMockDBService
 	{
 		public Task<IEnumerable<LiveParamsModel>> GetEntriesAsync(CancellationToken cancellationToken);
 		public Task<LiveParamsModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken);

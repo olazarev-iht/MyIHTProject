@@ -144,8 +144,8 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     b.Property<string>("MinDescription")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Multiplier")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Multiplier")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("StepDescription")
                         .HasColumnType("TEXT");

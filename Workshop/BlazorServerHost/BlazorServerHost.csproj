@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\APCHardwareMoq\" />
+    <Folder Include="Data\Migrations\APCHardware\" />
     <Folder Include="Data\Migrations\CuttingData\" />
     <Folder Include="Models\" />
   </ItemGroup>

@@ -47,7 +47,7 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     MaxDescription = table.Column<string>(type: "TEXT", nullable: true),
                     StepDescription = table.Column<string>(type: "TEXT", nullable: true),
                     ValueDescription = table.Column<string>(type: "TEXT", nullable: true),
-                    Multiplier = table.Column<int>(type: "INTEGER", nullable: false)
+                    Multiplier = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {

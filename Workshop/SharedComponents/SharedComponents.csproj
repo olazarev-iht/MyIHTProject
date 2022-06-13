@@ -16,8 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\" />
-    <Folder Include="Services\APCHardwareDBServices\" />
-    <Folder Include="Services\APCHardwareMoqDBServices\" />
   </ItemGroup>
 
 </Project>

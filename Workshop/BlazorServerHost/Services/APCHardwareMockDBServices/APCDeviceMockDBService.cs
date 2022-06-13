@@ -3,65 +3,66 @@ using BlazorServerHost.Data.DataMapper;
 using BlazorServerHost.Data.Models.APCHardwareMoq;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models.APCHardware;
-using SharedComponents.Services.APCHardwareMoqDBServices;
+using SharedComponents.Services.APCHardwareMockDBServices;
 
 namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 {
-	public class LiveParamsMoqDBService : ILiveParamsMoqDBService
+	public class APCDeviceMockDBService : IAPCDeviceMockDBService
 	{
 		private readonly IDbContextFactory<APCHardwareMoqDBContext> _dbContextFactory;
 
 		private readonly DbModelMapper _mapper;
 
-		public LiveParamsMoqDBService(IDbContextFactory<APCHardwareMoqDBContext> dbContextFactory, DbModelMapper mapper)
+		public APCDeviceMockDBService(IDbContextFactory<APCHardwareMoqDBContext> dbContextFactory, DbModelMapper mapper)
 		{
 			_dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
 
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 		}
 
-		public async Task<IEnumerable<LiveParamsModel>> GetEntriesAsync(CancellationToken cancellationToken)
+		public async Task<IEnumerable<APCDeviceModel>> GetEntriesAsync(CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entries = await dbContext.LiveParams
+			var entries = await dbContext.APCDevices
 				.AsNoTracking()
-				.Select(p => _mapper.Map<LiveParams, LiveParamsModel>(p))
+				.OrderBy(p => p.Name)
+				.Select(p => _mapper.Map<APCDevice, APCDeviceModel>(p))
 				.ToArrayAsync(cancellationToken);
 
 			return entries;
 		}
 
-		public async Task<LiveParamsModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
+		public async Task<APCDeviceModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
-			var entry = await dbContext.LiveParams.SingleAsync(s => s.Id == id, cancellationToken);
+			var entry = await dbContext.APCDevices.SingleAsync(s => s.Id == id, cancellationToken);
 
-			return _mapper.Map<LiveParams, LiveParamsModel>(entry);
+			return _mapper.Map<APCDevice, APCDeviceModel>(entry);
 		}
 
-		public async Task<Guid> AddEntryAsync(LiveParamsModel model, CancellationToken cancellationToken)
+		public async Task<Guid> AddEntryAsync(APCDeviceModel model, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entity = _mapper.Map<LiveParamsModel, LiveParams>(model);
+			var entity = _mapper.Map<APCDeviceModel, APCDevice>(model);
 
-			await dbContext.LiveParams.AddAsync(entity, cancellationToken);
+			await dbContext.APCDevices.AddAsync(entity, cancellationToken);
 			await dbContext.SaveChangesAsync(cancellationToken);
 
 			return entity.Id;
 		}
 
-		public async Task UpdateEntryAsync(Guid id, LiveParamsModel newData, CancellationToken cancellationToken)
+		public async Task UpdateEntryAsync(Guid id, APCDeviceModel newData, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entry = await dbContext.LiveParams.SingleAsync(s => s.Id == id, cancellationToken);
+			var entry = await dbContext.APCDevices.SingleAsync(s => s.Id == id, cancellationToken);
 
 			if (entry != null)
 			{
 				newData.Id = entry.Id;
-				entry = _mapper.Map<LiveParamsModel, LiveParams>(newData);
+				entry = _mapper.Map<APCDeviceModel, APCDevice>(newData);
 				await dbContext.SaveChangesAsync(cancellationToken);
 			}
 		}
@@ -70,14 +71,13 @@ namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var stub = new LiveParams() { Id = id, };
+			var stub = new APCDevice() { Id = id, };
 
-			dbContext.LiveParams.Attach(stub);
-			dbContext.LiveParams.Remove(stub);
+			dbContext.APCDevices.Attach(stub);
+			dbContext.APCDevices.Remove(stub);
 
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}
 	}
 }
-
 
