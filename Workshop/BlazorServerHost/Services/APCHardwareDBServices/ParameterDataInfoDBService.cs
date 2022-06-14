@@ -52,6 +52,19 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			return entity.Id;
 		}
 
+		public async Task<IEnumerable<ParameterDataInfoModel>> AddRangeAsync(IEnumerable<ParameterDataInfoModel> entities, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var entries = _mapper.Map<IEnumerable<ParameterDataInfoModel>, IEnumerable<ParameterDataInfo>>(entities);
+
+			await dbContext.Set<ParameterDataInfo>().AddRangeAsync(entries);
+			await dbContext.SaveChangesAsync();
+
+			return _mapper.Map<IEnumerable<ParameterDataInfo>, IEnumerable<ParameterDataInfoModel>>(entries);
+
+		}
+
 		public async Task UpdateEntryAsync(Guid id, ParameterDataInfoModel newData, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
@@ -74,6 +87,15 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 
 			dbContext.ParameterDataInfos.Attach(stub);
 			dbContext.ParameterDataInfos.Remove(stub);
+
+			await dbContext.SaveChangesAsync(cancellationToken);
+		}
+
+		public async Task DeleteAllEntriesAsync(CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			dbContext.RemoveRange(dbContext.ParameterDataInfos);
 
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}

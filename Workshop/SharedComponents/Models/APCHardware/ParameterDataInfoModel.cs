@@ -19,8 +19,10 @@ namespace SharedComponents.Models.APCHardware
         public double Multiplier { get; set; }
 
 
-        public ParameterDataInfoModel(ParamIds paramId)
+        public ParameterDataInfoModel(ParamIds? paramId)
         {
+            if (paramId is null) throw new ArgumentNullException($"{nameof(paramId)}");
+
             ushort u16IdxTechnology = (ushort)paramId;
             bool IgnorePasswordValid = true;
 
@@ -35,6 +37,6 @@ namespace SharedComponents.Models.APCHardware
             MinDescription = IhtModbusDescriptionParamConst.GetTechnology(minId);
             MaxDescription = IhtModbusDescriptionParamConst.GetTechnology(maxId);
             StepDescription = IhtModbusDescriptionParamConst.GetTechnology(stepId);
-        } 
+        }
     }
 }
