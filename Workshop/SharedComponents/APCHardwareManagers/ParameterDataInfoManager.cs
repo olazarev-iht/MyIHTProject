@@ -42,8 +42,9 @@ namespace SharedComponents.APCHardwareManagers
 
             var parameterDataListFromAPC = await _parameterDataMockDBService.GetEntriesAsync(cancellationToken);
             IEnumerable<ParameterDataModel> parameterDataInsertedList = null;
+
             List<ParameterDataInfoModel> parameterDataInfoListToSave = new();
-            List<ParameterDataInfoModel> parameterDataInfoInserted = new();
+            List<ParameterDataInfoModel> parameterDataInfoInsertedList = new();
 
             if (parameterDataListFromAPC.Any())
             {
@@ -59,12 +60,12 @@ namespace SharedComponents.APCHardwareManagers
                 }
             }
 
-            if (parameterDataInfoListToSave != null)
+            if (parameterDataInfoListToSave.Any())
             {
-                parameterDataInfoInserted = (await _parameterDataInfoDBService.AddRangeAsync(parameterDataInfoListToSave, cancellationToken)).ToList();
+                parameterDataInfoInsertedList = (await _parameterDataInfoDBService.AddRangeAsync(parameterDataInfoListToSave, cancellationToken)).ToList();
             }
 
-            return parameterDataInfoInserted;
+            return parameterDataInfoInsertedList;
         }
     }
 }

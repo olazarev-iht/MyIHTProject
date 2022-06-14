@@ -5,6 +5,8 @@ using BlazorServerHost.Data;
 using BlazorServerHost.Data.DataMapper;
 using BlazorServerHost.Features.HeightControlFeature;
 using BlazorServerHost.Services;
+using BlazorServerHost.Services.APCHardwareDBServices;
+using BlazorServerHost.Services.APCHardwareMoqDBServices;
 using BlazorServerHost.Services.APCWorkerService;
 using BlazorServerHost.Services.CuttingDataDBServices;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -12,7 +14,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Services;
+using SharedComponents.APCHardwareManagers;
 using SharedComponents.Services;
+using SharedComponents.Services.APCHardwareDBServices;
+using SharedComponents.Services.APCHardwareManagers;
+using SharedComponents.Services.APCHardwareMockDBServices;
 using SharedComponents.Services.CuttingDataDBServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +39,7 @@ builder.Services.AddScoped<IStringLocalizer<App>, StringLocalizer<App>>();
 builder.Services.AddHostedService<BackgroundHardwareMonitor>();
 builder.Services.AddSingleton<IHardwareStatusService, FakeHardwareStatusService>();
 builder.Services.AddSingleton<IAPCWorkerService, APCWorkerService>();
+builder.Services.AddSingleton<IAPCWorker, APCWorker>();
 
 builder.Services.AddCors();
 builder.Services.AddMvc();
@@ -58,11 +65,30 @@ builder.Services.AddDbContextFactory<APCHardwareDBContext>(options =>
 });
 
 builder.Services.AddScoped<ICuttingParametersService, CuttingParametersService>();
+
+// CuttingData
 builder.Services.AddScoped<ICuttingDataDBService, CuttingDataDBService>();
 builder.Services.AddScoped<IGasDBService, GasDBService>();
 builder.Services.AddScoped<IMaterialDBService, MaterialDBService>();
 builder.Services.AddScoped<INozzleDBService, NozzleDBService>();
+
+// APC DB
+builder.Services.AddScoped<IAPCDeviceDBService, APCDeviceDBService>();
+builder.Services.AddScoped<IConstParamsDBService, ConstParamsDBService>();
+builder.Services.AddScoped<IDynParamsDBService, DynParamsDBService>();
+builder.Services.AddScoped<ILiveParamsDBService, LiveParamsDBService>();
+builder.Services.AddScoped<IParameterDataDBService, ParameterDataDBService>();
+builder.Services.AddScoped<IParameterDataInfoDBService, ParameterDataInfoDBService>();
+
+// APC Mock DB
+builder.Services.AddScoped<IAPCDeviceMockDBService, APCDeviceMockDBService>();
+builder.Services.AddScoped<IConstParamsMockDBService, ConstParamsMockDBService>();
+builder.Services.AddScoped<IDynParamsMockDBService, DynParamsMockDBService>();
+builder.Services.AddScoped<ILiveParamsMockDBService, LiveParamsMockDBService>();
+builder.Services.AddScoped<IParameterDataMockDBService, ParameterDataMockDBService>();
+
 builder.Services.AddSingleton<IHardwareAPCServise, HardwareAPCServise>();
+builder.Services.AddSingleton<IParameterDataInfoManager, ParameterDataInfoManager>();
 builder.Services.AddSingleton<CommunicationsService>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
