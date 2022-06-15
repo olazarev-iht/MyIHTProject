@@ -43,7 +43,13 @@ namespace BlazorServerHost.Data
 			//base.OnModelCreating(modelBuilder);
 
 			//Seed Departments Table
-			
+
+			modelBuilder.Entity<ParameterData>()
+				.HasOne(pd => pd.APCDevice)
+				.WithMany(d => d.parameterDatas)
+				.HasForeignKey(t => t.APCDeviceId);
+
+
 		}
 	}
 }

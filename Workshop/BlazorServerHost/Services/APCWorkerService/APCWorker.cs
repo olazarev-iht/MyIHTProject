@@ -4,21 +4,6 @@ using SharedComponents.Services.APCHardwareManagers;
 
 namespace BlazorServerHost.Services.APCWorkerService
 {
-	//public class BackgroundAPCMonitor : BackgroundService
-	//{
-	//	private readonly IAPCWorkerService _workerService;
-
-	//	public BackgroundAPCMonitor(IAPCWorkerService workerService)
-	//	{
-	//		_workerService = workerService;
-	//	}
-
-	//	protected override Task ExecuteAsync(CancellationToken stoppingToken)
-	//	{
-	//		return Task.CompletedTask;
-	//	}
-	//}
-
 	public class APCWorker : IAPCWorker
 	{
 		private readonly ILogger<APCWorkerService> _logger;
@@ -33,8 +18,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 
 		public event EventHandler? DynamicDataChanged;
 		public APCWorker(
-			IHardwareAPCServise hardwareAPCServise, 
-			IParameterDataInfoManager parameterDataInfoManager, 
+			IHardwareAPCServise hardwareAPCServise,
+			IParameterDataInfoManager parameterDataInfoManager,
 			ILogger<APCWorkerService> logger)
 		{
 			_hardwareAPCServise = hardwareAPCServise ?? throw new ArgumentNullException(nameof(hardwareAPCServise));
@@ -43,16 +28,17 @@ namespace BlazorServerHost.Services.APCWorkerService
 
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-			InitializeSystem().Wait();
+
+			InitializeAsync().Wait();
 
 #pragma warning disable CS4014
-			UpdateValues();
+			DoWork(CancellationToken.None);
 #pragma warning restore CS4014
 		}
 
-		private async Task UpdateValues()
+		public async Task DoWork(CancellationToken cancellationToken)
 		{
-			while (true)
+			while (!cancellationToken.IsCancellationRequested)
 			{
 				try
 				{
@@ -69,8 +55,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 				// Must be 0.2 msec
 				await Task.Delay(TimeSpan.FromSeconds(20));
 			}
-		}
 
+		}
 		public async Task RefreshDynamicDataAsync()
 		{
 			try
@@ -86,8 +72,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 			}
 		}
 
-		private async Task InitializeSystem()
-        {
+		private async Task InitializeAsync()
+		{
 			await _parameterDataInfoManager.InitializeParameterDataInfoAsync(CancellationToken.None);
 
 		}

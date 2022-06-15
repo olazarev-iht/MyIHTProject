@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServerHost.Data.Migrations.APCHardware
 {
     [DbContext(typeof(APCHardwareDBContext))]
-    [Migration("20220613132434_Create_Schema_AndSeed")]
+    [Migration("20220615064817_Create_Schema_AndSeed")]
     partial class Create_Schema_AndSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -190,7 +190,7 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
             modelBuilder.Entity("BlazorServerHost.Data.Models.APCHardware.ParameterData", b =>
                 {
                     b.HasOne("BlazorServerHost.Data.Models.APCHardware.APCDevice", "APCDevice")
-                        .WithMany()
+                        .WithMany("parameterDatas")
                         .HasForeignKey("APCDeviceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -202,6 +202,11 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     b.Navigation("APCDevice");
 
                     b.Navigation("DynParams");
+                });
+
+            modelBuilder.Entity("BlazorServerHost.Data.Models.APCHardware.APCDevice", b =>
+                {
+                    b.Navigation("parameterDatas");
                 });
 #pragma warning restore 612, 618
         }

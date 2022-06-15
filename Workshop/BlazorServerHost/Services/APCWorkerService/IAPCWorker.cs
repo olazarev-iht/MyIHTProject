@@ -8,5 +8,6 @@ namespace BlazorServerHost.Services.APCWorkerService
 		event EventHandler WorkerStatusChanged;
 		event EventHandler DynamicDataChanged;
 		Task RefreshDynamicDataAsync();
+		Task DoWork(CancellationToken stoppingToken);
 	}
 }

@@ -63,6 +63,9 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 
 			var entries = _mapper.Map<IEnumerable<ParameterDataModel>, IEnumerable<ParameterData>>(entities);
 
+			//foreach(var entry in entries)
+			//	dbContext.Entry<ParameterData>(entry).State = EntityState.Detached;
+
 			await dbContext.Set<ParameterData>().AddRangeAsync(entries);
 			await dbContext.SaveChangesAsync();
 

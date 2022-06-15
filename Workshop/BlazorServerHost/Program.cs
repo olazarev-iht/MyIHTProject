@@ -37,9 +37,11 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Cultures");
 builder.Services.AddScoped<IStringLocalizer<App>, StringLocalizer<App>>();
 
 builder.Services.AddHostedService<BackgroundHardwareMonitor>();
+builder.Services.AddHostedService<APCWorkerBackgroundService>();
 builder.Services.AddSingleton<IHardwareStatusService, FakeHardwareStatusService>();
 builder.Services.AddSingleton<IAPCWorkerService, APCWorkerService>();
-builder.Services.AddSingleton<IAPCWorker, APCWorker>();
+
+builder.Services.AddScoped<IAPCWorker, APCWorker>();
 
 builder.Services.AddCors();
 builder.Services.AddMvc();
@@ -87,8 +89,10 @@ builder.Services.AddScoped<IDynParamsMockDBService, DynParamsMockDBService>();
 builder.Services.AddScoped<ILiveParamsMockDBService, LiveParamsMockDBService>();
 builder.Services.AddScoped<IParameterDataMockDBService, ParameterDataMockDBService>();
 
+// APC Managers
+builder.Services.AddScoped<IParameterDataInfoManager, ParameterDataInfoManager>();
+
 builder.Services.AddSingleton<IHardwareAPCServise, HardwareAPCServise>();
-builder.Services.AddSingleton<IParameterDataInfoManager, ParameterDataInfoManager>();
 builder.Services.AddSingleton<CommunicationsService>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>

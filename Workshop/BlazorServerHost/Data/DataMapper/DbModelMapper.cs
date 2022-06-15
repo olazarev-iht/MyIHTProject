@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using APCHardwareMoq = BlazorServerHost.Data.Models.APCHardwareMoq;
+using BlazorServerHost.Data.Models.APCHardware;
 using BlazorServerHost.Data.Models.CuttingData;
+using SharedComponents.Models.APCHardware;
 using SharedComponents.Models.CuttingData;
 
 namespace BlazorServerHost.Data.DataMapper
@@ -27,6 +30,7 @@ namespace BlazorServerHost.Data.DataMapper
         {
             var configuration = new MapperConfiguration(cfg =>
             {
+                // CuttingData
                 // TODO: add a condition to not override the Id to null
                 cfg.CreateMap<GasModel, Gas>().ReverseMap();
                 cfg.CreateMap<MaterialModel, Material>().ReverseMap();
@@ -42,6 +46,47 @@ namespace BlazorServerHost.Data.DataMapper
                     dest => dest.Gas,
                     opt => opt.Ignore())
                 .ReverseMap();
+
+                // APCHardwareMoq
+                cfg.CreateMap<APCDeviceModel, APCHardwareMoq.APCDevice>().ReverseMap();
+                cfg.CreateMap<ConstParamsModel, APCHardwareMoq.ConstParams>().ReverseMap();
+                cfg.CreateMap<LiveParamsModel, APCHardwareMoq.LiveParams>().ReverseMap();
+                cfg.CreateMap<DynParamsModel, APCHardwareMoq.DynParams>()
+                .ForMember(
+                    dest => dest.ConstParams,
+                    opt => opt.Ignore())
+                .ReverseMap();
+                cfg.CreateMap<ParameterDataModel, APCHardwareMoq.ParameterData>()
+                .ForMember(
+                    dest => dest.APCDevice,
+                    opt => opt.Ignore())
+                .ForMember(
+                    dest => dest.DynParams,
+                    opt => opt.Ignore())
+                .ReverseMap();
+
+                // APCHardware
+                cfg.CreateMap<APCDeviceModel, APCDevice>().ReverseMap();
+                cfg.CreateMap<ConstParamsModel, ConstParams>().ReverseMap();
+                cfg.CreateMap<LiveParamsModel, LiveParams>().ReverseMap();
+                cfg.CreateMap<ParameterDataInfoModel, ParameterDataInfo>().ReverseMap();
+                cfg.CreateMap<DynParamsModel, DynParams>()
+                .ForMember(
+                    dest => dest.ConstParams,
+                    opt => opt.Ignore())
+                .ForMember(
+                    dest => dest.ParameterDataInfo,
+                    opt => opt.Ignore())
+                .ReverseMap();
+
+                cfg.CreateMap<ParameterDataModel, ParameterData>()
+                .ForMember(
+                    dest => dest.APCDevice,
+                    opt => opt.Ignore())
+                .ForMember(
+                    dest => dest.DynParams,
+                    opt => opt.Ignore())
+                .ReverseMap();                
             });
 
             return configuration.CreateMapper();

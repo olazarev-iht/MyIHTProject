@@ -55,6 +55,22 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			return entity.Id;
 		}
 
+		public async Task<IEnumerable<DynParamsModel>> AddRangeAsync(IEnumerable<DynParamsModel> entities, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var entries = _mapper.Map<IEnumerable<DynParamsModel>, IEnumerable<DynParams>>(entities);
+
+			//foreach(var entry in entries)
+			//	dbContext.Entry<ParameterData>(entry).State = EntityState.Detached;
+
+			await dbContext.Set<DynParams>().AddRangeAsync(entries);
+			await dbContext.SaveChangesAsync();
+
+			return _mapper.Map<IEnumerable<DynParams>, IEnumerable<DynParamsModel>>(entries);
+
+		}
+
 		public async Task UpdateEntryAsync(Guid id, DynParamsModel newData, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
@@ -78,6 +94,15 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 
 			dbContext.DynParams.Attach(stub);
 			dbContext.DynParams.Remove(stub);
+
+			await dbContext.SaveChangesAsync(cancellationToken);
+		}
+
+		public async Task DeleteAllEntriesAsync(CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			dbContext.RemoveRange(dbContext.DynParams);
 
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}

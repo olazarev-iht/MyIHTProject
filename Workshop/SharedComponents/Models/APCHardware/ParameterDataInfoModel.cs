@@ -26,8 +26,8 @@ namespace SharedComponents.Models.APCHardware
             ushort u16IdxTechnology = (ushort)paramId;
             bool IgnorePasswordValid = true;
 
-            Unit = IhtModbusUnitParam.GetTechnology(u16IdxTechnology);
-            Multiplier = IhtModbusRealMultiplierParam.GetTechnology(u16IdxTechnology, IgnorePasswordValid);
+            Id = Guid.NewGuid();
+            Unit = IhtModbusUnitParam.GetTechnology(u16IdxTechnology);           
 
             var idx = (ushort)(u16IdxTechnology * 3);
             var minId = (ushort)(idx + 0);
@@ -37,6 +37,10 @@ namespace SharedComponents.Models.APCHardware
             MinDescription = IhtModbusDescriptionParamConst.GetTechnology(minId);
             MaxDescription = IhtModbusDescriptionParamConst.GetTechnology(maxId);
             StepDescription = IhtModbusDescriptionParamConst.GetTechnology(stepId);
+
+            ValueDescription = IhtModbusDescriptionParamDyn.GetTechnology(u16IdxTechnology);
+
+            Multiplier = IhtModbusRealMultiplierParam.GetTechnology(u16IdxTechnology, IgnorePasswordValid);
         }
     }
 }

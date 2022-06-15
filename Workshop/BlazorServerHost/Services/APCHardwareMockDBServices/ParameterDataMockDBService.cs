@@ -27,7 +27,9 @@ namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 			var entries = await dbContext.ParameterDatas
 				.AsNoTracking()
 				.Include(p => p.APCDevice)
+				.AsNoTracking()
 				.Include(p => p.DynParams)
+					.ThenInclude(p => p.ConstParams)
 				.Select(p => _mapper.Map<ParameterData, ParameterDataModel>(p))
 				.ToArrayAsync(cancellationToken);
 
