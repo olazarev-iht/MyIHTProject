@@ -64,88 +64,177 @@ namespace SharedComponents.APCHardwareManagers
 
         }
 
-        public async Task<List<ParameterDataInfoModel>> InitializeParameterDataInfoAsync(CancellationToken cancellationToken)
+        public async Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken)
         {
-            var parameterDataInfoModel = await _parameterDataInfoDBService.GetEntriesAsync(cancellationToken);
+            await DeleteAllAPCHardwareDataAsync(CancellationToken.None);
 
-            if (parameterDataInfoModel.Any())
+            await FillParameterDataAsync(CancellationToken.None);
+
+        }
+
+        private async Task DeleteAllAPCHardwareDataAsync(CancellationToken cancellationToken)
+        {
+            try
             {
-                await _parameterDataInfoDBService.DeleteAllEntriesAsync(cancellationToken);
-            }
-
-            // 1. Get APCDevice table from Mock and save to working table ---------------------------------
-            var apcDeviceListFromAPC = await _apcDeviceMockDBService.GetEntriesAsync(cancellationToken);
-
-            var apcDeviceListCurrent = await _apcDeviceDBService.GetEntriesAsync(cancellationToken);
-            if(apcDeviceListCurrent.Any())
-            {
-                await _apcDeviceDBService.DeleteAllEntriesAsync(cancellationToken);
-            }
-
-            // IEnumerable<APCDeviceModel> apcDeviceInsertedList = null;
-            if (apcDeviceListFromAPC.Any())
-            {
-                var apcDeviceInsertedList = await _apcDeviceDBService.AddRangeAsync(apcDeviceListFromAPC, cancellationToken);
-            }
-            //--------------------------------------------------------------------------------------------
-
-            // 2. Get ConstParams table from Mock and save to working table ---------------------------------
-            var constParamsListFromAPC = await _constParamsMockDBService.GetEntriesAsync(cancellationToken);
-
-            var constParamsListCurrent = await _constParamsDBService.GetEntriesAsync(cancellationToken);
-            if (constParamsListCurrent.Any())
-            {
-                await _apcDeviceDBService.DeleteAllEntriesAsync(cancellationToken);
-            }
-
-            if (constParamsListFromAPC.Any())
-            {
-                var constParamsInsertedList = await _constParamsDBService.AddRangeAsync(constParamsListFromAPC, cancellationToken);
-            }
-            //--------------------------------------------------------------------------------------------
-
-            // 2. Get DynParams table from Mock and save to working table ---------------------------------
-            var dynParamsListFromAPC = await _dynParamsMockDBService.GetEntriesAsync(cancellationToken);
-
-            var dynParamsListCurrent = await _dynParamsDBService.GetEntriesAsync(cancellationToken);
-            if (dynParamsListCurrent.Any())
-            {
+                await _parameterDataDBService.DeleteAllEntriesAsync(cancellationToken);
                 await _dynParamsDBService.DeleteAllEntriesAsync(cancellationToken);
+                await _constParamsDBService.DeleteAllEntriesAsync(cancellationToken);
+                await _parameterDataInfoDBService.DeleteAllEntriesAsync(cancellationToken);
+                await _apcDeviceDBService.DeleteAllEntriesAsync(cancellationToken);
             }
-
-            if (constParamsListFromAPC.Any())
+            catch (Exception ex)
             {
-                var constParamsInsertedList = await _dynParamsDBService.AddRangeAsync(dynParamsListFromAPC, cancellationToken);
+                var message = ex.Message;
             }
-            //--------------------------------------------------------------------------------------------
+        }
 
-
-            var parameterDataListFromAPC = await _parameterDataMockDBService.GetEntriesAsync(cancellationToken);
-            IEnumerable<ParameterDataModel> parameterDataInsertedList = null;
-
-            List<ParameterDataInfoModel> parameterDataInfoListToSave = new();
-            List<ParameterDataInfoModel> parameterDataInfoInsertedList = new();
-
-            if (parameterDataListFromAPC.Any())
+        private async Task<bool> FillParameterDataAsync(CancellationToken cancellationToken)
+        {
+            try
             {
-                parameterDataInsertedList = await _parameterDataDBService.AddRangeAsync(parameterDataListFromAPC, cancellationToken);
-            }
+                await FillAPCDevicesAsync(CancellationToken.None);
 
-            if (parameterDataInsertedList != null)
-            {
-                foreach (var parameterData in parameterDataInsertedList)
+                var apcDeviceList = await _apcDeviceDBService.GetEntriesAsync(cancellationToken);
+
+                foreach (var apcDevice in apcDeviceList)
                 {
-                    var parameterDataInfoToSave = new ParameterDataInfoModel(parameterData?.DynParams?.ParamId);
-                    parameterDataInfoListToSave.Add(parameterDataInfoToSave);
+                    foreach (ParamIds paramId in (ParamIds[])Enum.GetValues(typeof(ParamIds)))
+                    {
+                        var mockParameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDevice, paramId, cancellationToken);
+                        var mockDynParams = mockParameterData?.DynParams;
+
+                        if (mockDynParams == null || mockDynParams.ConstParams == null) continue;
+
+                        var constParamsId = await SaveConstParamsAsync(mockDynParams.ConstParams, cancellationToken);
+
+                        var parameterDataInfoModel = new ParameterDataInfoModel(paramId);
+                        var parameterDataInfoId = await SaveParameterDataInfoAsync(parameterDataInfoModel, cancellationToken);
+
+                        if (constParamsId != Guid.Empty && parameterDataInfoId != Guid.Empty)
+                        {
+                            var newDynParams = new DynParamsModel
+                            {
+                                Id = Guid.NewGuid(),
+                                ParamId = paramId,
+                                ConstParamsId = constParamsId,
+                                ParameterDataInfoId = parameterDataInfoId,
+                                Value = mockDynParams.Value
+                            };
+
+                            var dynParamsId = await SaveDynParamsAsync(newDynParams, cancellationToken);
+
+                            if (dynParamsId != Guid.Empty)
+                            {
+                                var newParameterData = new ParameterDataModel
+                                {
+                                    Id = Guid.NewGuid(),
+                                    ParamName = $"Device{apcDevice.Num}_{paramId}",
+                                    APCDeviceId = apcDevice.Id,
+                                    DynParamsId = dynParamsId // newDynParams.Id
+                                };
+
+                                await SaveParameterDataAsync(newParameterData, cancellationToken);
+                            }
+                        }
+                    }
                 }
-            }
 
-            if (parameterDataInfoListToSave.Any())
+                return true;
+            }
+            catch (Exception ex)
             {
-                parameterDataInfoInsertedList = (await _parameterDataInfoDBService.AddRangeAsync(parameterDataInfoListToSave, cancellationToken)).ToList();
+                var message = ex.Message;
+                return false;
             }
 
-            return parameterDataInfoInsertedList;
+        }
+
+        private async Task<bool> FillAPCDevicesAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Get APCDevice table from Mock and save to working table
+                var apcDeviceListFromAPC = await _apcDeviceMockDBService.GetEntriesAsync(cancellationToken);
+
+                if (apcDeviceListFromAPC.Any())
+                {
+                    var apcDeviceInsertedList = await _apcDeviceDBService.AddRangeAsync(apcDeviceListFromAPC, cancellationToken);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+                return false;
+            }
+
+        }
+
+        private async Task<Guid> SaveParameterDataInfoAsync(ParameterDataInfoModel parameterDataInfoModel, CancellationToken cancellationToken)
+        {
+            try
+            {
+                parameterDataInfoModel.Id = Guid.NewGuid();
+
+                return await _parameterDataInfoDBService.AddEntryAsync(parameterDataInfoModel, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+            }
+
+            return Guid.Empty;
+        }
+
+        private async Task<Guid> SaveConstParamsAsync(ConstParamsModel constParamsModel, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var newConstParams = new ConstParamsModel
+                {
+                    Id = Guid.NewGuid(),
+                    Min = constParamsModel.Min,
+                    Max = constParamsModel.Max,
+                    Step = constParamsModel.Step
+                };
+
+                return await _constParamsDBService.AddEntryAsync(newConstParams, cancellationToken); ;
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+            }
+
+            return Guid.Empty;
+        }
+
+        private async Task<Guid> SaveDynParamsAsync(DynParamsModel dynParamsModel, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return await _dynParamsDBService.AddEntryAsync(dynParamsModel, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+            }
+
+            return Guid.Empty;
+        }
+
+        private async Task<Guid> SaveParameterDataAsync(ParameterDataModel parameterDataModel, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return await _parameterDataDBService.AddEntryAsync(parameterDataModel, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+            }
+
+            return Guid.Empty;
         }
     }
 }

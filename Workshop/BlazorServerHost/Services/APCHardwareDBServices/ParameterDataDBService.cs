@@ -45,6 +45,18 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			return _mapper.Map<ParameterData, ParameterDataModel>(entry);
 		}
 
+		public async Task<ParameterDataModel?> GetEntryByAPCDeviceAndParamIdAsync(APCDeviceModel apcDevice, ParamIds paramId, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var entry = await dbContext.ParameterDatas
+				.AsNoTracking()
+				.Include(p => p.DynParams)
+				.SingleAsync(p => p.DynParams != null && p.APCDevice != null && p.DynParams.ParamId == paramId && p.APCDevice.Id == apcDevice.Id, cancellationToken);
+
+			return _mapper.Map<ParameterData, ParameterDataModel>(entry);
+		}
+
 		public async Task<Guid> AddEntryAsync(ParameterDataModel model, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
@@ -96,6 +108,15 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 
 			dbContext.ParameterDatas.Attach(stub);
 			dbContext.ParameterDatas.Remove(stub);
+
+			await dbContext.SaveChangesAsync(cancellationToken);
+		}
+
+		public async Task DeleteAllEntriesAsync(CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			dbContext.RemoveRange(dbContext.DynParams);
 
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}

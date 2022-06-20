@@ -93,6 +93,15 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}
+
+		public async Task DeleteAllEntriesAsync(CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			dbContext.RemoveRange(dbContext.ConstParams);
+
+			await dbContext.SaveChangesAsync(cancellationToken);
+		}
 	}
 }
 

@@ -9,6 +9,6 @@ namespace SharedComponents.Services.APCHardwareManagers
 {
     public interface IParameterDataInfoManager
     {
-        public Task<List<ParameterDataInfoModel>> InitializeParameterDataInfoAsync(CancellationToken cancellationToken);
+        public Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken);
     }
 }

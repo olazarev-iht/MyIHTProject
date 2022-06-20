@@ -47,6 +47,21 @@ namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 			return _mapper.Map<ParameterData, ParameterDataModel>(entry);
 		}
 
+		public async Task<ParameterDataModel?> GetEntryByAPCDeviceAndParamIdAsync(APCDeviceModel apcDevice, ParamIds paramId, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var entry = await dbContext.ParameterDatas
+				.AsNoTracking()
+				.Include(p => p.DynParams)
+					.ThenInclude(dyn => dyn.ConstParams)
+				.Include(p => p.APCDevice)
+				.FirstOrDefaultAsync(p => p.DynParams != null && p.APCDevice != null && 
+					p.DynParams.ParamId == paramId && p.APCDevice.Num == apcDevice.Num);
+
+			return _mapper.Map<ParameterData, ParameterDataModel>(entry);
+		}
+
 		public async Task<Guid> AddEntryAsync(ParameterDataModel model, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
