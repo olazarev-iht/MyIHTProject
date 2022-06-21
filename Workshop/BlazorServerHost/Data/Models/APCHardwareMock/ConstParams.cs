@@ -1,4 +1,4 @@
-﻿namespace BlazorServerHost.Data.Models.APCHardwareMoq
+﻿namespace BlazorServerHost.Data.Models.APCHardwareMock
 {
     public class ConstParams
     {

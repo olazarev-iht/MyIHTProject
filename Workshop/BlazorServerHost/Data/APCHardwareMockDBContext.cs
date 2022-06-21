@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using BlazorServerHost.Data.Models.APCHardwareMoq;
+using BlazorServerHost.Data.Models.APCHardwareMock;
 using SharedComponents.Models.APCHardware;
 
 namespace BlazorServerHost.Data
 {
-	public class APCHardwareMoqDBContext : DbContext
+	public class APCHardwareMockDBContext : DbContext
 	{
 		private static readonly object Lock = new();
 
@@ -19,7 +19,7 @@ namespace BlazorServerHost.Data
 		public DbSet<ParameterData> ParameterDatas { get; set; } = null!;
 
 
-		public APCHardwareMoqDBContext(DbContextOptions<APCHardwareMoqDBContext> options)
+		public APCHardwareMockDBContext(DbContextOptions<APCHardwareMockDBContext> options)
 			: base(options)
 		{
 		}

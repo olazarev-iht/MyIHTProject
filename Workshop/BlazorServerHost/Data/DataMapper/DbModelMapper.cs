@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using APCHardwareMoq = BlazorServerHost.Data.Models.APCHardwareMoq;
+using APCHardwareMoq = BlazorServerHost.Data.Models.APCHardwareMock;
 using BlazorServerHost.Data.Models.APCHardware;
 using BlazorServerHost.Data.Models.CuttingData;
 using SharedComponents.Models.APCHardware;

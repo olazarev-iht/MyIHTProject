@@ -57,7 +57,7 @@ builder.Services.AddDbContextFactory<CuttingDataDbContext>(options =>
 {
 	options.UseSqlite(builder.Configuration.GetConnectionString("CuttingDataDbContext"));
 });
-builder.Services.AddDbContextFactory<APCHardwareMoqDBContext>(options =>
+builder.Services.AddDbContextFactory<APCHardwareMockDBContext>(options =>
 {
 	options.UseSqlite(builder.Configuration.GetConnectionString("APCHardwareMoqDBContext"));
 });
@@ -212,7 +212,7 @@ try
 	}
 
 	// migrate APCHardwareMoqDBContext
-	using (var ctx = app.Services.GetRequiredService<IDbContextFactory<APCHardwareMoqDBContext>> ().CreateDbContext())
+	using (var ctx = app.Services.GetRequiredService<IDbContextFactory<APCHardwareMockDBContext>> ().CreateDbContext())
 	{
 		using var tx = ctx.Database.BeginTransaction();
 		await ctx.Database.MigrateAsync();

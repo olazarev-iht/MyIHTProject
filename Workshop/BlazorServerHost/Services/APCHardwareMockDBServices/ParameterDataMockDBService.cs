@@ -1,6 +1,6 @@
 ﻿using BlazorServerHost.Data;
 using BlazorServerHost.Data.DataMapper;
-using BlazorServerHost.Data.Models.APCHardwareMoq;
+using BlazorServerHost.Data.Models.APCHardwareMock;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareMockDBServices;
@@ -9,11 +9,11 @@ namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 {
 	public class ParameterDataMockDBService : IParameterDataMockDBService
 	{
-		private readonly IDbContextFactory<APCHardwareMoqDBContext> _dbContextFactory;
+		private readonly IDbContextFactory<APCHardwareMockDBContext> _dbContextFactory;
 
 		private readonly DbModelMapper _mapper;
 
-		public ParameterDataMockDBService(IDbContextFactory<APCHardwareMoqDBContext> dbContextFactory, DbModelMapper mapper)
+		public ParameterDataMockDBService(IDbContextFactory<APCHardwareMockDBContext> dbContextFactory, DbModelMapper mapper)
 		{
 			_dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
 
