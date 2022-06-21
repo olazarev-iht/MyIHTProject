@@ -59,7 +59,7 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 
 			var entries = _mapper.Map<IEnumerable<APCDeviceModel>, IEnumerable<APCDevice>>(entities);
 
-			var query = entries.Select(apc => { apc.Id = Guid.NewGuid(); return apc; });
+			entries = entries.Select(apc => { apc.Id = Guid.NewGuid(); return apc; });
 
 			await dbContext.Set<APCDevice>().AddRangeAsync(entries);
 			await dbContext.SaveChangesAsync();
