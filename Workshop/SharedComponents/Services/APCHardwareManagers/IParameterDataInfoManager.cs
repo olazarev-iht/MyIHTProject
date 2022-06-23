@@ -10,5 +10,7 @@ namespace SharedComponents.Services.APCHardwareManagers
     public interface IParameterDataInfoManager
     {
         public Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken);
+        public Task<IEnumerable<ParameterDataModel>> GetDynParamsByDeviceIdAndParamsTypeAsync(int DeviceId, string ParamsType, CancellationToken cancellationToken);
+        public Task UpdateDynParamValueAsync(DynParamsModel newData, CancellationToken cancellationToken);
     }
 }

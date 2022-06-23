@@ -64,6 +64,23 @@ namespace SharedComponents.APCHardwareManagers
 
         }
 
+        public async Task<IEnumerable<ParameterDataModel>> GetDynParamsByDeviceIdAndParamsTypeAsync(int DeviceId, string ParamsType, CancellationToken cancellationToken)
+        {
+            var dynParams = await _parameterDataDBService.GetDynParamsByDeviceIdAndParamsTypeAsync(DeviceId, ParamsType, cancellationToken);
+
+            return dynParams;
+        }
+
+        public async Task UpdateDynParamValueAsync(DynParamsModel newData, CancellationToken cancellationToken)
+        {
+            if(newData == null)
+            {
+                throw new ArgumentNullException(nameof(newData));   
+            }
+
+            await _dynParamsDBService.UpdateDynParamValueAsync(newData, cancellationToken);
+        }
+
         public async Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken)
         {
             await DeleteAllAPCHardwareDataAsync(CancellationToken.None);

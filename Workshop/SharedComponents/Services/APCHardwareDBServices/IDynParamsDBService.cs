@@ -9,6 +9,7 @@ namespace SharedComponents.Services.APCHardwareDBServices
 		public Task<Guid> AddEntryAsync(DynParamsModel model, CancellationToken cancellationToken);
 		public Task<IEnumerable<DynParamsModel>> AddRangeAsync(IEnumerable<DynParamsModel> entities, CancellationToken cancellationToken);
 		public Task UpdateEntryAsync(Guid id, DynParamsModel newData, CancellationToken cancellationToken);
+		public Task UpdateDynParamValueAsync(DynParamsModel newData, CancellationToken cancellationToken);
 		public Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken);
 		public Task DeleteAllEntriesAsync(CancellationToken cancellationToken);
 	}

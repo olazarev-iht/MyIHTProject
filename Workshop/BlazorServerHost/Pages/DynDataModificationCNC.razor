@@ -1,0 +1,22 @@
+﻿@page "/dynDataModificationCNC"
+
+@using BlazorServerHost.Services
+
+<MudText Typo="Typo.h3">Static APC Params Info</MudText>
+
+@inject CommunicationsService Comms;
+
+@if (IsInitialized)
+{
+    <AuthorizeView Roles="User">
+        <Authorized>            
+            <DynDataModificationCNCDisplay />
+        </Authorized>
+
+        <NotAuthorized>
+            <DynDataModificationCNCDisplay />
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <MudButton OnClick="@(_ => Comms.ButtonPressed())">Press this</MudButton>
+}

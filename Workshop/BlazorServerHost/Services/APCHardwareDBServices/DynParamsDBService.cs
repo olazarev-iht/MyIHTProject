@@ -86,6 +86,21 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			}
 		}
 
+		public async Task UpdateDynParamValueAsync(DynParamsModel newData, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var entry = await dbContext.DynParams.SingleAsync(s => s.Id == newData.Id, cancellationToken);
+
+			if (entry != null)
+			{
+				entry.Value = newData.Value;
+				//entry = _mapper.Map<DynParamsModel, DynParams>(entry);
+				//dbContext.Entry(entry).CurrentValues.SetValues(newData);
+				await dbContext.SaveChangesAsync(cancellationToken);
+			}
+		}
+
 		public async Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
