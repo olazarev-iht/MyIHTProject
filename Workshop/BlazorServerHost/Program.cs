@@ -113,6 +113,7 @@ builder.Services.AddSingleton<DbModelMapper>();
 builder.Services.AddHeightControlFeature();
 builder.Services.AddLiveAPCParamsDataFeature();
 builder.Services.AddDynamicAPCParamsDataFeature();
+builder.Services.DynDataModificationCNCDisplayFeature();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();

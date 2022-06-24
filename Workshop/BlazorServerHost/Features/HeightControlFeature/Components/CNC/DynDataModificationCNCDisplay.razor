@@ -1,58 +1,82 @@
 ﻿@using BlazorServerHost.Features.HeightControlFeature.Services.CNC
-
-@inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider;
+@using SharedComponents.Models.APCHardware
+@inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
 @implements IDisposable
-
 <MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
 
-@if (dynamicAPCParamsDataProvider != null)
+@if (dynDataModificationCNCDataProvider != null)
 {
-    var dynamicParamsInfos = dynamicAPCParamsDataProvider.CurrentDynamicAPCParams.DynamicParamsInfos;
-    @for (var i = 1; i <= dynamicParamsInfos.Count; i++){
-        <p>Device @i Dynamic Params are: 
-            Dynamic Param 1 = @dynamicParamsInfos[i].DynamicParam1 
-            Dynamic Param 2 = @dynamicParamsInfos[i].DynamicParam2 
-            Dynamic Param 3 = @dynamicParamsInfos[i].DynamicParam3
-        </p>
-    }
-        <table border=1>
-            <tr>
-                <td colspan="3">&nbsp;</td>
-            </tr>
-            <tr>
+    var paramHeatO2 = dynDataModificationCNCDataProvider._paramHeatO2;
+    var paramFuelGas = dynDataModificationCNCDataProvider._paramFuelGas;
+    var paramCutO2 = dynDataModificationCNCDataProvider._paramCutO2;
 
-            <td>Device 1 Dynamic Params are: 
-                Dynamic Param 1:
-
-
-                <Select id="Device1Param1" value="@dynamicParamsInfos[1].DynamicParam1" @onchange="ParamSelected1">
-                    @for (var x = 1; x <= 10; x++)
-                    {
-                        <option value="@x" >@x</option>
-                    }
-                </Select>
+    <table border=1>
+        <tr>
+            <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>=</td>
+        </tr>
+        <tr>
+            <td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>E</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <table>
+                    <tr>
+                        <td>
+                            Flame (H-O)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            F - G
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            C - O
+                        </td>
+                    </tr>
+                </table>
             </td>
-            <td>
-                Dynamic Param 2:
-
-                 <Select id="Device1Param1" value="@dynamicParamsInfos[1].DynamicParam2" @onchange="ParamSelected2">
-                    @for (var x = 1; x <= 10; x++)
-                    {
-                        <option value="@x" >@x</option>
-                    }
-                </Select>
+            <td> SP </td>
+            <td colspan="2">
+                <table>
+                    <tr>
+                        <td>Calib1</td>
+                        <td>Calib2</td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <table>
+                            <tr>
+                                <td rowspan="2">Empty</td>
+                            </tr>
+                            <tr><td>img1</td></tr>
+                            <tr><td>img2</td></tr>
+                         </table>   
+                        </td>
+                    </tr>
+                </table>
             </td>
-            <td>
-                Dynamic Param 3:
-
-                <Select id="Device1Param1" value="@dynamicParamsInfos[1].DynamicParam3" @onchange="ParamSelected3">
-                    @for (var x = 1; x <= 10; x++)
-                    {
-                        <option value="@x" >@x</option>
-                    }
-                </Select>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <table>
+                    <tr>
+                        <td>Ignition</td>
+                        <td>Preheat</td>
+                        <td>Piercing</td>
+                    </tr>
+                </table>
             </td>
-            @*}*@
+            <td colspan="3">
+                <table>
+                    <tr>
+                        <td>Cutting</td>
+                        <td>Heating</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </td>
         </tr>
     </table>
            
@@ -61,10 +85,14 @@
 
     public event EventHandler? DynamicAPCParamsClientChanged;
 
+    //private ParameterDataModel paramHeatO2 = new();
+    //private ParameterDataModel paramFuelGas = new();
+    //private ParameterDataModel paramCutO2 = new();
+
     protected override void OnInitialized()
     {
-        dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
-        this.DynamicAPCParamsClientChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+        //dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        //this.DynamicAPCParamsClientChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
 
         base.OnInitialized();
     }
@@ -76,25 +104,25 @@
 
     public void Dispose()
     {
-        dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
-        this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+        //dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        //this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
     }
 
     private void ParamSelected1(ChangeEventArgs args)
     {
-        dynDataModificationCNCDataProvider.CurrentDynamicAPCParams.DynamicParamsInfos[1].DynamicParam1 = double.Parse(args.Value.ToString());
+        //dynDataModificationCNCDataProvider._paramHeatO2.DynParams.Value = args.Value;
         OnParamSelected();
     }
 
     private void ParamSelected2(ChangeEventArgs args)
     {
-        dynamicAPCParamsDataProvider.CurrentDynamicAPCParams.DynamicParamsInfos[1].DynamicParam2 = double.Parse(args.Value.ToString());
+        //dynDataModificationCNCDataProvider._paramHeatO2.DynParams.Value = args.Value;
         OnParamSelected();
     }
 
     private void ParamSelected3(ChangeEventArgs args)
     {
-        dynamicAPCParamsDataProvider.CurrentDynamicAPCParams.DynamicParamsInfos[1].DynamicParam3 = double.Parse(args.Value.ToString());
+        //dynDataModificationCNCDataProvider._paramHeatO2.DynParams.Value = args.Value;
         OnParamSelected();
     }
 

@@ -1,4 +1,5 @@
 ﻿using BlazorServerHost.Features.HeightControlFeature.Services;
+using BlazorServerHost.Features.HeightControlFeature.Services.CNC;
 
 namespace BlazorServerHost.Features.HeightControlFeature
 {
@@ -21,6 +22,13 @@ namespace BlazorServerHost.Features.HeightControlFeature
 		public static IServiceCollection AddDynamicAPCParamsDataFeature(this IServiceCollection services)
 		{
 			services.AddScoped<DynamicAPCParamsDataProvider>();
+
+			return services;
+		}
+
+		public static IServiceCollection DynDataModificationCNCDisplayFeature(this IServiceCollection services)
+		{
+			services.AddScoped<DynDataModificationCNCDataProvider>();
 
 			return services;
 		}

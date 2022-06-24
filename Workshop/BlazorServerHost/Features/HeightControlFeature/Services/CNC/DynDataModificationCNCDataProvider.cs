@@ -60,44 +60,47 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			// New: Get Dyn params data from the DB instead of the _apcWorker.CurrentState
 			// So, we get all the dynamic params for the current devices and current params type
 
-			var apcDynamicParamsFromDB = await _parameterDataInfoManager.GetDynParamsByDeviceIdAndParamsTypeAsync(
-				CurrentDeviceNumber, CurrentParamsType, CancellationToken.None);
+			var dynParamsFromDB = await GetDynParamsFromDBAsync(CurrentDeviceNumber, CurrentParamsType);
 
-			var paramHeatO2FromDB = apcDynamicParamsFromDB.FirstOrDefault(p => p.ParamName.ToLower().Contains("HeatO2".ToLower()));
-			var paramFuelGasFromDB = apcDynamicParamsFromDB.FirstOrDefault(p => p.ParamName.ToLower().Contains("FuelGas".ToLower()));
-			var paramCutO2FromDB = apcDynamicParamsFromDB.FirstOrDefault(p => p.ParamName.ToLower().Contains("CutO2".ToLower()));
-
-			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramHeatO2, paramFromDB: paramHeatO2FromDB);
-			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramFuelGas, paramFromDB: paramFuelGasFromDB);
-			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramCutO2, paramFromDB: paramCutO2FromDB);
+			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramHeatO2, paramFromDB: dynParamsFromDB.HeatO2);
+			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramFuelGas, paramFromDB: dynParamsFromDB.FuelGas);
+			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramCutO2, paramFromDB: dynParamsFromDB.CutO2);
 
 			if (_paramChangedFlag)
 			{
 				OnDynamicAPCParamsDataChanged();
 			}
+		}
 
-			//var singletonAPCDynamicParamsDictionary = _apcWorker.CurrentState.HardwareAPCList.Select(apc =>
-			//	new { Id = int.Parse(apc.DeviceName?.Last().ToString() ?? "0"), apc.DynamicParams }).ToDictionary(lp => lp.Id);
-			//
-			//for (var i = 1; i < singletonAPCDynamicParamsDictionary.Count + 1; i++)
-			//{
-			//	if (CurrentDynamicAPCParams.DynamicParamsInfos.Count == 0
-			//		|| singletonAPCDynamicParamsDictionary[i].DynamicParams?.DynamicParam1 != (CurrentDynamicAPCParams.DynamicParamsInfos[i]?.DynamicParam1 ?? 0)
-			//		|| singletonAPCDynamicParamsDictionary[i].DynamicParams?.DynamicParam1 != (CurrentDynamicAPCParams.DynamicParamsInfos[i]?.DynamicParam2 ?? 0)
-			//		|| singletonAPCDynamicParamsDictionary[i].DynamicParams?.DynamicParam1 != (CurrentDynamicAPCParams.DynamicParamsInfos[i]?.DynamicParam3 ?? 0))
-			//	{
-			//		CurrentDynamicAPCParams.DynamicParamsInfos.ToList().ForEach(kvp =>
-			//		{
-			//			kvp.Value.DynamicParam1 = singletonAPCDynamicParamsDictionary[kvp.Key]?.DynamicParams?.DynamicParam1 ?? 0;
-			//			kvp.Value.DynamicParam2 = singletonAPCDynamicParamsDictionary[kvp.Key]?.DynamicParams?.DynamicParam2 ?? 0;
-			//			kvp.Value.DynamicParam3 = singletonAPCDynamicParamsDictionary[kvp.Key]?.DynamicParams?.DynamicParam3 ?? 0;
-			//		});
+		public async Task<bool> RefreshDynamicDataModelToDisplayAsync()
+        {
+			try
+			{
+				var dynParamsFromDB = await GetDynParamsFromDBAsync(CurrentDeviceNumber, CurrentParamsType);
 
-			//		OnDynamicAPCParamsDataChanged();
+				_paramHeatO2 = dynParamsFromDB.HeatO2;
+				_paramFuelGas = dynParamsFromDB.FuelGas;
+				_paramCutO2 = dynParamsFromDB.CutO2;
+			}
+			catch (Exception ex)
+            {
+				return false;
+			}
 
-			//		break;
-			//	}
-			//}
+			return true;
+		}
+
+		public async Task<(ParameterDataModel HeatO2, ParameterDataModel FuelGas, ParameterDataModel CutO2)> GetDynParamsFromDBAsync(
+			int currentDeviceNumber, string currentParamsType)
+        {
+			var apcDynamicParamsFromDB = await _parameterDataInfoManager.GetDynParamsByDeviceIdAndParamsTypeAsync(
+				currentDeviceNumber, currentParamsType, CancellationToken.None);
+
+			var paramHeatO2FromDB = apcDynamicParamsFromDB.FirstOrDefault(p => p.ParamName.ToLower().Contains("HeatO2".ToLower()));
+			var paramFuelGasFromDB = apcDynamicParamsFromDB.FirstOrDefault(p => p.ParamName.ToLower().Contains("FuelGas".ToLower()));
+			var paramCutO2FromDB = apcDynamicParamsFromDB.FirstOrDefault(p => p.ParamName.ToLower().Contains("CutO2".ToLower()));
+
+			return (paramHeatO2FromDB, paramFuelGasFromDB, paramCutO2FromDB);
 		}
 
 		private void IfChangedUpdateModelParamFromDB(ref ParameterDataModel paramFromModel, ParameterDataModel? paramFromDB)
