@@ -34,6 +34,23 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			return entries;
 		}
 
+		public async Task<IEnumerable<ParameterDataModel>> GetDynParamsByDeviceIdAndParamsTypeAsync(int DeviceId, string ParamsType, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var entries = await dbContext.ParameterDatas
+				.AsNoTracking()
+				.Include(p => p.APCDevice)
+				.Include(p => p.DynParams)
+					.ThenInclude(dp => dp.ConstParams)			
+				.Where(p => p.APCDevice != null && p.APCDevice.Num == DeviceId)
+				.Where(p => p.ParamName.Contains(ParamsType))
+				.Select(p => _mapper.Map<ParameterData, ParameterDataModel>(p))
+				.ToArrayAsync(cancellationToken);
+
+			return entries;
+		}
+
 		public async Task<ParameterDataModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);

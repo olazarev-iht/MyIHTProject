@@ -32,7 +32,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 			InitializeAsync().Wait();
 
 #pragma warning disable CS4014
-			DoWork(CancellationToken.None);
+			//DoWork(CancellationToken.None);
 #pragma warning restore CS4014
 		}
 

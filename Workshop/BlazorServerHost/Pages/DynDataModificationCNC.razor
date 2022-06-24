@@ -1,0 +1,140 @@
+﻿@page "/dynDataModificationCNC"
+
+@using BlazorServerHost.Features.HeightControlFeature.Services.CNC
+@using SharedComponents.Models.APCHardware
+@inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
+@implements IDisposable
+<MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
+
+<style>
+table#controlPanel td  {
+    border: 1px solid #e0e0e0;
+}
+</style>
+
+@if (dynDataModificationCNCDataProvider != null)
+{
+    var paramHeatO2 = dynDataModificationCNCDataProvider._paramHeatO2;
+    var paramFuelGas = dynDataModificationCNCDataProvider._paramFuelGas;
+    var paramCutO2 = dynDataModificationCNCDataProvider._paramCutO2;
+
+    <table id="controlPanel">
+        <tr>
+            <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>=</td>
+        </tr>
+        <tr>
+            <td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>E</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <table width="100%">
+                    <tr>
+                        <td>
+                            Flame (H-O)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            F - G
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            C - O
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td> SP </td>
+            <td colspan="2">
+                <table>
+                    <tr>
+                        <td>Calib1</td>
+                        <td>Calib2</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">Empty</td>
+                        <td>
+                            <table>
+                                <tr><td>img1</td></tr>
+                                <tr><td>img2</td></tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <table>
+                    <tr>
+                        <td>Ignition</td>
+                        <td>Preheat</td>
+                        <td>Piercing</td>
+                    </tr>
+                </table>
+            </td>
+            <td colspan="3">
+                <table>
+                    <tr>
+                        <td>Cutting</td>
+                        <td>Heating</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+           
+}
+@code {
+
+    public event EventHandler? DynamicAPCParamsClientChanged;
+
+    //private ParameterDataModel paramHeatO2 = new();
+    //private ParameterDataModel paramFuelGas = new();
+    //private ParameterDataModel paramCutO2 = new();
+
+    protected override void OnInitialized()
+    {
+        //dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        //this.DynamicAPCParamsClientChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+
+        base.OnInitialized();
+    }
+
+    private async void DynamicAPCParamsOnDynamicAPCParamsDataChanged(object? sender, EventArgs e)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        //dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        //this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+    }
+
+    private void ParamSelected1(ChangeEventArgs args)
+    {
+        //dynDataModificationCNCDataProvider._paramHeatO2.DynParams.Value = args.Value;
+        OnParamSelected();
+    }
+
+    private void ParamSelected2(ChangeEventArgs args)
+    {
+        //dynDataModificationCNCDataProvider._paramHeatO2.DynParams.Value = args.Value;
+        OnParamSelected();
+    }
+
+    private void ParamSelected3(ChangeEventArgs args)
+    {
+        //dynDataModificationCNCDataProvider._paramHeatO2.DynParams.Value = args.Value;
+        OnParamSelected();
+    }
+
+    private void OnParamSelected()
+    {
+        this.DynamicAPCParamsClientChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+}
