@@ -133,6 +133,12 @@ namespace BlazorServerHost.Data
 			modelBuilder.Entity<ConstParams>().HasData(CutO2Pierce_Const);
 			modelBuilder.Entity<ConstParams>().HasData(CutO2Cut_Const);
 
+			//IgnitionFlameAdjust
+			var IgnitionFlameAdjust_Const_Id = Guid.NewGuid();
+			var IgnitionFlameAdjust_Const = new ConstParams { Id = IgnitionFlameAdjust_Const_Id, Min = 200, Max = 1000, Step = 1 };
+
+			modelBuilder.Entity<ConstParams>().HasData(IgnitionFlameAdjust_Const);
+
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//DynParams
 			//H-O
@@ -177,6 +183,12 @@ namespace BlazorServerHost.Data
 			modelBuilder.Entity<DynParams>().HasData(CutO2Pierce_Dyn);
 			modelBuilder.Entity<DynParams>().HasData(CutO2Cut_Dyn);
 
+			//IgnitionFlameAdjust
+			var IgnitionFlameAdjust_Dyn_Id = Guid.NewGuid();
+			var IgnitionFlameAdjust_Dyn = new DynParams { Id = IgnitionFlameAdjust_Dyn_Id, ParamId = ParamIds.IgnitionFlameAdjust, ConstParamsId = IgnitionFlameAdjust_Const_Id, Value = 500 };
+
+			modelBuilder.Entity<DynParams>().HasData(IgnitionFlameAdjust_Dyn);
+
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//ParameterData
 
@@ -190,6 +202,7 @@ namespace BlazorServerHost.Data
 			var ParameterData_FuelGasCut = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_FuelGasCut", APCDeviceId = apcDevice.Id, DynParamsId = FuelGasCut_Dyn_Id };
 			var ParameterData_CutO2Pierce = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_CutO2Pierce", APCDeviceId = apcDevice.Id, DynParamsId = CutO2Pierce_Dyn_Id };
 			var ParameterData_CutO2Cut = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_CutO2Cut", APCDeviceId = apcDevice.Id, DynParamsId = CutO2Cut_Dyn_Id };
+			var ParameterData_IgnitionFlameAdjust = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}IgnitionFlameAdjust", APCDeviceId = apcDevice.Id, DynParamsId = IgnitionFlameAdjust_Dyn_Id };
 
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_HeatO2Ignition);
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_HeatO2PreHeat);
@@ -201,6 +214,7 @@ namespace BlazorServerHost.Data
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_FuelGasCut);
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_CutO2Pierce);
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_CutO2Cut);
+			modelBuilder.Entity<ParameterData>().HasData(ParameterData_IgnitionFlameAdjust);
 		}
 	}
 }

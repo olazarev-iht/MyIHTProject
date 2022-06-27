@@ -18,6 +18,7 @@ namespace SharedComponents.Models.APCHardware
         public string? ValueDescription { get; set; }
         public double Multiplier { get; set; }
 
+        public ParameterDataInfoModel() { }
 
         public ParameterDataInfoModel(ParamIds? paramId)
         {

@@ -41,7 +41,7 @@ builder.Services.AddHostedService<APCWorkerBackgroundService>();
 builder.Services.AddSingleton<IHardwareStatusService, FakeHardwareStatusService>();
 builder.Services.AddSingleton<IAPCWorkerService, APCWorkerService>();
 
-builder.Services.AddScoped<IAPCWorker, APCWorker>();
+builder.Services.AddSingleton<IAPCWorker, APCWorker>();
 
 builder.Services.AddCors();
 builder.Services.AddMvc();
@@ -75,22 +75,22 @@ builder.Services.AddScoped<IMaterialDBService, MaterialDBService>();
 builder.Services.AddScoped<INozzleDBService, NozzleDBService>();
 
 // APC DB
-builder.Services.AddScoped<IAPCDeviceDBService, APCDeviceDBService>();
-builder.Services.AddScoped<IConstParamsDBService, ConstParamsDBService>();
-builder.Services.AddScoped<IDynParamsDBService, DynParamsDBService>();
-builder.Services.AddScoped<ILiveParamsDBService, LiveParamsDBService>();
-builder.Services.AddScoped<IParameterDataDBService, ParameterDataDBService>();
-builder.Services.AddScoped<IParameterDataInfoDBService, ParameterDataInfoDBService>();
+builder.Services.AddSingleton<IAPCDeviceDBService, APCDeviceDBService>();
+builder.Services.AddSingleton<IConstParamsDBService, ConstParamsDBService>();
+builder.Services.AddSingleton<IDynParamsDBService, DynParamsDBService>();
+builder.Services.AddSingleton<ILiveParamsDBService, LiveParamsDBService>();
+builder.Services.AddSingleton<IParameterDataDBService, ParameterDataDBService>();
+builder.Services.AddSingleton<IParameterDataInfoDBService, ParameterDataInfoDBService>();
 
 // APC Mock DB
-builder.Services.AddScoped<IAPCDeviceMockDBService, APCDeviceMockDBService>();
-builder.Services.AddScoped<IConstParamsMockDBService, ConstParamsMockDBService>();
-builder.Services.AddScoped<IDynParamsMockDBService, DynParamsMockDBService>();
-builder.Services.AddScoped<ILiveParamsMockDBService, LiveParamsMockDBService>();
-builder.Services.AddScoped<IParameterDataMockDBService, ParameterDataMockDBService>();
+builder.Services.AddSingleton<IAPCDeviceMockDBService, APCDeviceMockDBService>();
+builder.Services.AddSingleton<IConstParamsMockDBService, ConstParamsMockDBService>();
+builder.Services.AddSingleton<IDynParamsMockDBService, DynParamsMockDBService>();
+builder.Services.AddSingleton<ILiveParamsMockDBService, LiveParamsMockDBService>();
+builder.Services.AddSingleton<IParameterDataMockDBService, ParameterDataMockDBService>();
 
 // APC Managers
-builder.Services.AddScoped<IParameterDataInfoManager, ParameterDataInfoManager>();
+builder.Services.AddSingleton<IParameterDataInfoManager, ParameterDataInfoManager>();
 
 builder.Services.AddSingleton<IHardwareAPCServise, HardwareAPCServise>();
 builder.Services.AddSingleton<CommunicationsService>();

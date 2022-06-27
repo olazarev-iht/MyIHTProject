@@ -10,47 +10,127 @@
 table#controlPanel td  {
     border: 1px solid #e0e0e0;
 }
+
+.SelectedParamsType {
+    background-color:aquamarine;
+}
+
+.UnselectedParamsType {
+    background-color:aliceblue;
+}
+
+.SelectedDeviceNum {
+    background-color:mistyrose;
+}
+
+.UnselectedDeviceNum {
+    background-color:aliceblue;
+}
+
+.NotInUseDeviceNum {
+    background-color:lightgrey;
+}
+
 </style>
 
 @if (dynDataModificationCNCDataProvider != null)
 {
-    var paramHeatO2 = dynDataModificationCNCDataProvider._paramHeatO2;
-    var paramFuelGas = dynDataModificationCNCDataProvider._paramFuelGas;
-    var paramCutO2 = dynDataModificationCNCDataProvider._paramCutO2;
+    paramHeatO2 = dynDataModificationCNCDataProvider._paramHeatO2;
+    paramFuelGas = dynDataModificationCNCDataProvider._paramFuelGas;
+
+    if(dynDataModificationCNCDataProvider.CurrentParamsType == "Ignition")
+    {
+        paramFlameAdjust = dynDataModificationCNCDataProvider._paramFlameAdjust;
+        _cutO2Visible = "d-none";
+        _flameAdjustVisible = "d-block";
+    }
+    else
+    {
+        paramCutO2 = dynDataModificationCNCDataProvider._paramCutO2;
+        _flameAdjustVisible = "d-none";
+        _cutO2Visible = "d-block";
+    }
 
     <table id="controlPanel">
         <tr>
-            <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>=</td>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(1)"
+            @onclick="@(()=>SetDeviceNum(1))">1</MudTd>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(2)"
+            @onclick="@(()=>SetDeviceNum(2))">2</MudTd>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(3)"
+            @onclick="@(()=>SetDeviceNum(3))">3</MudTd>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(4)"
+            @onclick="@(()=>SetDeviceNum(4))">4</MudTd>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(5)"
+            @onclick="@(()=>SetDeviceNum(5))">5</MudTd>
+            <MudTd Style="font-weight:bold; width:15%">=</MudTd>
         </tr>
         <tr>
-            <td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>E</td>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(6)"
+            @onclick="@(()=>SetDeviceNum(6))">6</MudTd>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(7)"
+            @onclick="@(()=>SetDeviceNum(7))">7</MudTd>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(8)"
+            @onclick="@(()=>SetDeviceNum(8))">8</MudTd>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(9)"
+            @onclick="@(()=>SetDeviceNum(9))">9</MudTd>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(10)"
+            @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
+            <MudTd Style="background-color:#ffffff; font-weight:bold; width:15%">E</MudTd>
         </tr>
         <tr>
             <td colspan="3">
                 <table width="100%">
                     <tr>
                         <td>
-                            Flame (H-O)
+                            <MudSlider @onmouseup="@(()=>UpdateDynParam(@paramHeatO2))"
+                            @bind-Value="@paramHeatO2.DynParams.Value" 
+                            Min="@paramHeatO2.DynParams.ConstParams.Min" 
+                            Max="@paramHeatO2.DynParams.ConstParams.Max"
+                            Step="@paramHeatO2.DynParams.ConstParams.Step" 
+                            Color="Color.Info">Flame (H-O): @paramHeatO2.DynParams.Value.ToString()
+                            </MudSlider>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            F - G
+                            <MudSlider @onmouseup="@(()=>UpdateDynParam(@paramFuelGas))"
+                            @bind-Value="@paramFuelGas.DynParams.Value" 
+                            Min="@paramFuelGas.DynParams.ConstParams.Min" 
+                            Max="@paramFuelGas.DynParams.ConstParams.Max"
+                            Step="@paramFuelGas.DynParams.ConstParams.Step" 
+                            Color="Color.Info">F - G: @paramFuelGas.DynParams.Value.ToString()
+                            </MudSlider>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            C - O
+                        <td Class="@_cutO2Visible">                            
+                            <MudSlider @onmouseup="@(()=>UpdateDynParam(@paramCutO2))"
+                            @bind-Value="@paramCutO2.DynParams.Value" 
+                            Min="@paramCutO2.DynParams.ConstParams.Min" 
+                            Max="@paramCutO2.DynParams.ConstParams.Max"
+                            Step="@paramCutO2.DynParams.ConstParams.Step" 
+                            Color="Color.Info">C - O: @paramCutO2.DynParams.Value.ToString()
+                            </MudSlider>
+                        </td>
+                        <td Class="@_flameAdjustVisible">                            
+                            <MudSlider @onmouseup="@(()=>UpdateDynParam(@paramFlameAdjust))"
+                            @bind-Value="@paramFlameAdjust.DynParams.Value" 
+                            Min="@paramFlameAdjust.DynParams.ConstParams.Min" 
+                            Max="@paramFlameAdjust.DynParams.ConstParams.Max"
+                            Step="@paramFlameAdjust.DynParams.ConstParams.Step" 
+                            Color="Color.Info">Flame Adjust: @paramFlameAdjust.DynParams.Value.ToString()
+                            </MudSlider>
                         </td>
                     </tr>
                 </table>
             </td>
             <td> SP </td>
             <td colspan="2">
-                <table>
+                <table width="100%">
                     <tr>
-                        <td>Calib1</td>
-                        <td>Calib2</td>
+                        <td width="50%">Calib1</td>
+                        <td width="50%">Calib2</td>
                     </tr>
                     <tr>
                         <td rowspan="2">Empty</td>
@@ -67,19 +147,24 @@ table#controlPanel td  {
         <tr>
             <td colspan="3">
                 <table>
-                    <tr>
-                        <td>Ignition</td>
-                        <td>Preheat</td>
-                        <td>Piercing</td>
+                    <tr>              
+                        <MudTd Style="font-weight:bold; width:17%;" Class="@GetParamsTypeClass("Ignition")"
+                        @onclick="@(()=>SetParamsType("Ignition"))">Ignition</MudTd>
+                        <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("PreHeat")"
+                        @onclick="@(()=>SetParamsType("PreHeat"))">Preheat</MudTd>
+                        <MudTd Style="font-weight:bold; width:11%" Class="@GetParamsTypeClass("Pierce")"
+                        @onclick="@(()=>SetParamsType("Pierce"))">Piercing</MudTd>
                     </tr>
                 </table>
             </td>
             <td colspan="3">
                 <table>
                     <tr>
-                        <td>Cutting</td>
-                        <td>Heating</td>
-                        <td></td>
+                        <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Cut")"
+                        @onclick="@(()=>SetParamsType("Cut"))">Cutting</MudTd>
+                        <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Heat")"
+                        @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
+                        <MudTd Style="width:15%; border: 0px solid;">&nbsp;</MudTd>
                     </tr>
                 </table>
             </td>
@@ -91,16 +176,69 @@ table#controlPanel td  {
 
     public event EventHandler? DynamicAPCParamsClientChanged;
 
-    //private ParameterDataModel paramHeatO2 = new();
-    //private ParameterDataModel paramFuelGas = new();
-    //private ParameterDataModel paramCutO2 = new();
+    private ParameterDataModel paramHeatO2 = new();
+    private ParameterDataModel paramFuelGas = new();
+    private ParameterDataModel paramCutO2 = new();
+    private ParameterDataModel paramFlameAdjust = new();
+
+    private string _cutO2Visible;
+    private string _flameAdjustVisible;
+    private string INVISIBLE_CLASS = "d-none";
+    private string VISIBLE_CLASS = "d-block";
 
     protected override void OnInitialized()
     {
         //dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
-        //this.DynamicAPCParamsClientChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+        this.DynamicAPCParamsClientChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
 
         base.OnInitialized();
+    }
+
+    private async void SetParamsType(string paramsType)
+    {
+        dynDataModificationCNCDataProvider.CurrentParamsType = paramsType;
+
+        await dynDataModificationCNCDataProvider.UpdateModelParamsFromDBAsync();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async void SetDeviceNum(int deviceNum)
+    {
+        if (deviceNum <= dynDataModificationCNCDataProvider.APCDevicesCount)
+        {
+            dynDataModificationCNCDataProvider.CurrentDeviceNumber = deviceNum;
+
+            await dynDataModificationCNCDataProvider.UpdateModelParamsFromDBAsync();
+
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private string GetParamsTypeClass(string selectedType)
+    {
+        if (selectedType.ToLower() == dynDataModificationCNCDataProvider.CurrentParamsType.ToLower())
+            return "SelectedParamsType";
+        return "UnselectedParamsType";
+    }
+
+    private string GetDeviceNumClass(int selectedNum)
+    {
+        var cssClass = "NotInUseDeviceNum";
+
+        if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber){
+            cssClass = "SelectedDeviceNum";
+        }
+        else if(selectedNum <= dynDataModificationCNCDataProvider.APCDevicesCount){
+            cssClass = "UnselectedDeviceNum";
+        }
+
+        return cssClass;
+    }
+
+    private void UpdateDynParam(ParameterDataModel dynParam)
+    {
+        OnParamChanged(dynParam);
     }
 
     private async void DynamicAPCParamsOnDynamicAPCParamsDataChanged(object? sender, EventArgs e)
@@ -111,30 +249,18 @@ table#controlPanel td  {
     public void Dispose()
     {
         //dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
-        //this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+        this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
     }
 
     private void ParamSelected1(ChangeEventArgs args)
     {
         //dynDataModificationCNCDataProvider._paramHeatO2.DynParams.Value = args.Value;
-        OnParamSelected();
+        //OnParamChanged();
     }
 
-    private void ParamSelected2(ChangeEventArgs args)
+    private void OnParamChanged(object eventParams)
     {
-        //dynDataModificationCNCDataProvider._paramHeatO2.DynParams.Value = args.Value;
-        OnParamSelected();
-    }
-
-    private void ParamSelected3(ChangeEventArgs args)
-    {
-        //dynDataModificationCNCDataProvider._paramHeatO2.DynParams.Value = args.Value;
-        OnParamSelected();
-    }
-
-    private void OnParamSelected()
-    {
-        this.DynamicAPCParamsClientChanged?.Invoke(this, EventArgs.Empty);
+        this.DynamicAPCParamsClientChanged?.Invoke(eventParams, EventArgs.Empty);
     }
 
 }

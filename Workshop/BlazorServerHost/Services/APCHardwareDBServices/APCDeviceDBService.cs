@@ -33,6 +33,15 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			return entries;
 		}
 
+		public async Task<int> GetDevicesCountAsync(CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var entries = dbContext.APCDevices.Count();
+
+			return entries;
+		}
+
 		public async Task<APCDeviceModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);

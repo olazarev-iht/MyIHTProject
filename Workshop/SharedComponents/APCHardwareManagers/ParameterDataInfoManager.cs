@@ -64,6 +64,12 @@ namespace SharedComponents.APCHardwareManagers
 
         }
 
+        public async Task<int> GeAPCDevicesNumber(CancellationToken cancellationToken)
+        {
+            var devicesNum = await _apcDeviceDBService.GetDevicesCountAsync(cancellationToken);
+            return devicesNum;
+        }
+
         public async Task<IEnumerable<ParameterDataModel>> GetDynParamsByDeviceIdAndParamsTypeAsync(int DeviceId, string ParamsType, CancellationToken cancellationToken)
         {
             var dynParams = await _parameterDataDBService.GetDynParamsByDeviceIdAndParamsTypeAsync(DeviceId, ParamsType, cancellationToken);

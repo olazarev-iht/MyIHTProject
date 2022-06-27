@@ -11,9 +11,9 @@ namespace SharedComponents.Models.APCHardware
         public Guid Id { get; set; }
         public string ParamName { get; set; } = "";
         public Guid APCDeviceId { get; set; }
-        public APCDeviceModel? APCDevice { get; set; }
+        public APCDeviceModel? APCDevice { get; set; } = new();
         public Guid? DynParamsId { get; set; }
-        public DynParamsModel? DynParams { get; set; }
+        public DynParamsModel? DynParams { get; set; } = new();
 
     }
 }

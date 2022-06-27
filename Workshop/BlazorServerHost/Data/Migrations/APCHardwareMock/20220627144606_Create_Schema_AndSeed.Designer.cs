@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServerHost.Data.Migrations.APCHardwareMock
 {
     [DbContext(typeof(APCHardwareMockDBContext))]
-    [Migration("20220621065543_Create_Schema_AndSeed")]
+    [Migration("20220627144606_Create_Schema_AndSeed")]
     partial class Create_Schema_AndSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,19 +39,19 @@ namespace BlazorServerHost.Data.Migrations.APCHardwareMock
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fe67c069-534a-4896-a021-9b1279d740b6"),
+                            Id = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
                             Name = "APCDevice_1",
                             Num = 1
                         },
                         new
                         {
-                            Id = new Guid("c13121b4-9d76-48f8-80c7-b93ca268ed87"),
+                            Id = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
                             Name = "APCDevice_2",
                             Num = 2
                         },
                         new
                         {
-                            Id = new Guid("8eed3876-5034-4ed0-b1dd-5ca9128c492c"),
+                            Id = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
                             Name = "APCDevice_3",
                             Num = 3
                         });
@@ -79,213 +79,234 @@ namespace BlazorServerHost.Data.Migrations.APCHardwareMock
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6c689014-f5eb-4ff5-9b60-29803ab45c23"),
+                            Id = new Guid("22340841-bc7e-4a93-a5d9-17b75fae04c6"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("4165a408-2f9b-495a-9dc7-914678ef7e55"),
+                            Id = new Guid("9e82b924-7963-4321-afee-e990ca31253b"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("05638997-6a4a-479c-b700-68bfcaf18892"),
+                            Id = new Guid("62c9a576-40bf-419e-8359-b7d2f5d3408b"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("d1e48584-8ec2-4271-9bb9-b839065b0e9b"),
+                            Id = new Guid("0855d37a-49a2-44e5-ba25-6742b562307b"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("2ee575ad-5cfe-4bbb-abf1-f19a184ddffe"),
+                            Id = new Guid("6c050c73-e32e-435b-9606-65e6294eeb6d"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("2114653a-d33e-4af0-8967-894d3c2ec318"),
+                            Id = new Guid("a7e0e00a-bbab-45a5-a208-998b5a2e0d39"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("a6e5bccd-b6de-41b7-a5fb-a1b8bfa5815f"),
+                            Id = new Guid("66581409-ff81-4fa8-a3ca-ea9445f86eba"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("8ab3af88-03c9-469e-9de6-d4c2108dfe7d"),
+                            Id = new Guid("ae2c1727-17eb-48a3-bd12-9e691982e335"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("ffd80daf-bf7b-4e31-be10-f4758669d1f6"),
+                            Id = new Guid("4c31ddaa-a9b8-4e8c-bc74-5d0abe253d05"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("0be65824-c49c-491d-92c4-ba267ff6fc23"),
+                            Id = new Guid("9e2082fa-4419-4ae6-8354-0abc74ea8a3c"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("38b6095f-2336-496e-99fb-aa046d3fa9b6"),
+                            Id = new Guid("ce456279-2e1a-47be-a93b-2507dc0ac374"),
+                            Max = 1000,
+                            Min = 200,
+                            Step = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("ee9c5ae5-ccf4-4ecb-bc8a-edc6894fab73"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("83351af8-96d9-4e42-aa4e-287edf375e88"),
+                            Id = new Guid("4e8dbe95-60a1-42bb-b9ca-1f979e6b2d25"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("d3d0df5d-d888-4cd4-a31b-cf1da813d085"),
+                            Id = new Guid("025fce1b-c0a9-4fd0-9353-f3796ea4707a"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("bbdb3bdb-fb02-4aa3-837d-49e43b185bec"),
+                            Id = new Guid("6d27ec27-5ee5-466d-ad95-38b2c5b6f819"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("4d99581c-5963-43fa-9b31-053ac74a1e38"),
+                            Id = new Guid("9b946901-a377-488d-a894-6354a89c931b"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("bace22bf-74ee-4a21-9eaa-f5164a63fa2f"),
+                            Id = new Guid("249ad0f9-d2e4-4da4-981c-09e5fc33af91"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("95c3c24a-c652-4655-b9f9-015b4167aaaa"),
+                            Id = new Guid("abd0bada-3932-4292-aa19-c1fa8f0f9c2f"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("734c9d13-02d0-41af-be0e-39d52315ced3"),
+                            Id = new Guid("83811fd5-e9d0-4139-b039-a3a058a6f83e"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("a7b54bae-d9a2-4058-9a5c-5862ffa4522b"),
+                            Id = new Guid("2a7bc61e-44fe-4380-ac0f-056cc0aebd97"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("1f3329a6-8737-4b99-9213-8b835d3325aa"),
+                            Id = new Guid("ca93f9d5-a401-44f4-bb5b-d8d492b61fb4"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("c3a5db6a-981b-4038-bd56-c30abccc32f7"),
+                            Id = new Guid("304495c1-fedd-467b-bed7-8378154bda87"),
+                            Max = 1000,
+                            Min = 200,
+                            Step = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("34e0f9f9-d353-4588-82c2-a5a2e6782aee"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("e93a1f12-eb6c-4b73-b5c6-17516e80f56a"),
+                            Id = new Guid("6372f193-7163-40bb-a1f3-eb974c69477d"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("e4a87cb0-21af-4ed5-89fd-3946c5589cf6"),
+                            Id = new Guid("1bbff2fd-de51-4941-8291-6dc12c3006ad"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("2c5c86ef-ec34-4780-b3cd-2b8ed9300bd3"),
+                            Id = new Guid("71f62801-e2da-4f50-acab-984e70109d49"),
                             Max = 5000,
                             Min = 500,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("897f59ef-effa-49f1-b461-33d90be610f5"),
+                            Id = new Guid("8314b8e6-71f1-4f9a-a893-f671ab3d7b38"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("df10ccb1-3393-4bb2-8b83-6fa719537de6"),
+                            Id = new Guid("5086cb77-5121-4042-adb6-9171c0d584e4"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("c8884f45-14b4-469d-b65f-e980bc1b301d"),
+                            Id = new Guid("9de6cb89-270b-4d1b-8834-475bb1eff1bc"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("cb0e3c1f-924d-47cb-82e6-fd791c714e7e"),
+                            Id = new Guid("e758f18b-3c3c-46e7-b2be-725a9c549ae1"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("c7bb414f-c75e-4af3-b25c-4ccbb3883fc9"),
+                            Id = new Guid("d8626611-2945-414b-9d7b-f0ff915eb80e"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
                         },
                         new
                         {
-                            Id = new Guid("a04d178c-5cc7-4c54-b0cd-7671a7be03a3"),
+                            Id = new Guid("df85dcd9-3e55-4e0b-97bc-585514535052"),
                             Max = 1000,
                             Min = 0,
                             Step = 10
+                        },
+                        new
+                        {
+                            Id = new Guid("411b507a-76c8-4158-a9c0-0405690d1947"),
+                            Max = 1000,
+                            Min = 200,
+                            Step = 1
                         });
                 });
 
@@ -313,213 +334,234 @@ namespace BlazorServerHost.Data.Migrations.APCHardwareMock
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d3ca04d4-0de0-4d19-b457-2a56ee530311"),
-                            ConstParamsId = new Guid("6c689014-f5eb-4ff5-9b60-29803ab45c23"),
+                            Id = new Guid("7420daab-942c-4522-bea8-55eef89d23a6"),
+                            ConstParamsId = new Guid("22340841-bc7e-4a93-a5d9-17b75fae04c6"),
                             ParamId = 3,
                             Value = 2000
                         },
                         new
                         {
-                            Id = new Guid("de91886d-6282-4b69-a277-5b19ab154327"),
-                            ConstParamsId = new Guid("4165a408-2f9b-495a-9dc7-914678ef7e55"),
+                            Id = new Guid("b2613df3-1c53-4f48-9c20-ecb9b5b8e203"),
+                            ConstParamsId = new Guid("9e82b924-7963-4321-afee-e990ca31253b"),
                             ParamId = 4,
                             Value = 2000
                         },
                         new
                         {
-                            Id = new Guid("6b387293-f29e-4d3d-a09d-ea47fc80fcb9"),
-                            ConstParamsId = new Guid("05638997-6a4a-479c-b700-68bfcaf18892"),
+                            Id = new Guid("6cc234ee-7ad4-4daa-9d93-50731f0bbd06"),
+                            ConstParamsId = new Guid("62c9a576-40bf-419e-8359-b7d2f5d3408b"),
                             ParamId = 5,
                             Value = 4000
                         },
                         new
                         {
-                            Id = new Guid("f2eab00d-03a4-4251-bd47-a582fb16d77f"),
-                            ConstParamsId = new Guid("d1e48584-8ec2-4271-9bb9-b839065b0e9b"),
+                            Id = new Guid("ac04fde6-761c-455a-a457-6037a9d9981a"),
+                            ConstParamsId = new Guid("0855d37a-49a2-44e5-ba25-6742b562307b"),
                             ParamId = 6,
                             Value = 2000
                         },
                         new
                         {
-                            Id = new Guid("41048045-21a6-4716-8f0b-bb06b8576fb0"),
-                            ConstParamsId = new Guid("2ee575ad-5cfe-4bbb-abf1-f19a184ddffe"),
+                            Id = new Guid("a3ab3e61-28ee-4cf0-af50-593a97ab66bf"),
+                            ConstParamsId = new Guid("6c050c73-e32e-435b-9606-65e6294eeb6d"),
                             ParamId = 9,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("f82d0ca8-fc83-4fdc-bff1-679fe8dd08af"),
-                            ConstParamsId = new Guid("2114653a-d33e-4af0-8967-894d3c2ec318"),
+                            Id = new Guid("b2174e27-f7ea-4fd4-9d12-6cca5d78aa84"),
+                            ConstParamsId = new Guid("a7e0e00a-bbab-45a5-a208-998b5a2e0d39"),
                             ParamId = 10,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("55ad7f74-b073-4486-8626-50c21280cbef"),
-                            ConstParamsId = new Guid("a6e5bccd-b6de-41b7-a5fb-a1b8bfa5815f"),
+                            Id = new Guid("b305ab5c-5664-4a21-9374-65a8fd2922a8"),
+                            ConstParamsId = new Guid("66581409-ff81-4fa8-a3ca-ea9445f86eba"),
                             ParamId = 11,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("555773d5-ad08-4f69-8aa6-144246a27b7e"),
-                            ConstParamsId = new Guid("8ab3af88-03c9-469e-9de6-d4c2108dfe7d"),
+                            Id = new Guid("88399f09-01be-46c9-98ca-183e37811cd8"),
+                            ConstParamsId = new Guid("ae2c1727-17eb-48a3-bd12-9e691982e335"),
                             ParamId = 12,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("2ba8691a-470b-485a-a9ce-4b1110319284"),
-                            ConstParamsId = new Guid("ffd80daf-bf7b-4e31-be10-f4758669d1f6"),
+                            Id = new Guid("e39ce774-3302-4556-8a3f-15e618abd035"),
+                            ConstParamsId = new Guid("4c31ddaa-a9b8-4e8c-bc74-5d0abe253d05"),
                             ParamId = 7,
                             Value = 1500
                         },
                         new
                         {
-                            Id = new Guid("ceb35341-afb3-4d6b-84e7-8eef8385317a"),
-                            ConstParamsId = new Guid("0be65824-c49c-491d-92c4-ba267ff6fc23"),
+                            Id = new Guid("26564483-4e87-44c5-aa1f-08c929b0933d"),
+                            ConstParamsId = new Guid("9e2082fa-4419-4ae6-8354-0abc74ea8a3c"),
                             ParamId = 8,
                             Value = 6000
                         },
                         new
                         {
-                            Id = new Guid("41087314-d54f-451d-9db1-ac398a0bcc3d"),
-                            ConstParamsId = new Guid("38b6095f-2336-496e-99fb-aa046d3fa9b6"),
+                            Id = new Guid("e5418611-29b0-41b4-ae77-f4e0ebc9a48c"),
+                            ConstParamsId = new Guid("ce456279-2e1a-47be-a93b-2507dc0ac374"),
+                            ParamId = 20,
+                            Value = 500
+                        },
+                        new
+                        {
+                            Id = new Guid("fab75120-ef58-4c06-a022-8cc3aa4c0edb"),
+                            ConstParamsId = new Guid("ee9c5ae5-ccf4-4ecb-bc8a-edc6894fab73"),
                             ParamId = 3,
                             Value = 2000
                         },
                         new
                         {
-                            Id = new Guid("2825d4ce-1b5b-45a8-bbc1-3ebb187ced3d"),
-                            ConstParamsId = new Guid("83351af8-96d9-4e42-aa4e-287edf375e88"),
+                            Id = new Guid("462fd30d-5998-45f9-8eb8-2f207df2b2e3"),
+                            ConstParamsId = new Guid("4e8dbe95-60a1-42bb-b9ca-1f979e6b2d25"),
                             ParamId = 4,
                             Value = 2000
                         },
                         new
                         {
-                            Id = new Guid("a89e95c6-a65d-4467-897a-aa89a227c23a"),
-                            ConstParamsId = new Guid("d3d0df5d-d888-4cd4-a31b-cf1da813d085"),
+                            Id = new Guid("be9b7fc5-2cbe-4762-a740-759a56962c36"),
+                            ConstParamsId = new Guid("025fce1b-c0a9-4fd0-9353-f3796ea4707a"),
                             ParamId = 5,
                             Value = 4000
                         },
                         new
                         {
-                            Id = new Guid("a957ba4b-5ce1-4deb-ba66-34597c14b9f8"),
-                            ConstParamsId = new Guid("bbdb3bdb-fb02-4aa3-837d-49e43b185bec"),
+                            Id = new Guid("61bdfaa0-f138-40bc-90e6-ad518b777f07"),
+                            ConstParamsId = new Guid("6d27ec27-5ee5-466d-ad95-38b2c5b6f819"),
                             ParamId = 6,
                             Value = 2000
                         },
                         new
                         {
-                            Id = new Guid("c0ad4a76-f5c7-4800-869b-614d943bae4b"),
-                            ConstParamsId = new Guid("4d99581c-5963-43fa-9b31-053ac74a1e38"),
+                            Id = new Guid("80cde3e1-534c-448e-bb93-3f725d5b7c35"),
+                            ConstParamsId = new Guid("9b946901-a377-488d-a894-6354a89c931b"),
                             ParamId = 9,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("8b98b54d-a48b-4c18-a632-84b7b48930b0"),
-                            ConstParamsId = new Guid("bace22bf-74ee-4a21-9eaa-f5164a63fa2f"),
+                            Id = new Guid("0e56b3ed-e8b1-470d-860b-0aa38676f186"),
+                            ConstParamsId = new Guid("249ad0f9-d2e4-4da4-981c-09e5fc33af91"),
                             ParamId = 10,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("aec4fba4-594f-4250-aa9a-dbf7df3cf84d"),
-                            ConstParamsId = new Guid("95c3c24a-c652-4655-b9f9-015b4167aaaa"),
+                            Id = new Guid("6c113bc4-9a13-4490-8151-f95bb0df0b42"),
+                            ConstParamsId = new Guid("abd0bada-3932-4292-aa19-c1fa8f0f9c2f"),
                             ParamId = 11,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("071b8fc5-0685-4f1e-b115-7111f4bdd123"),
-                            ConstParamsId = new Guid("734c9d13-02d0-41af-be0e-39d52315ced3"),
+                            Id = new Guid("1817805c-f9f7-476a-88d1-e762d0cf0b81"),
+                            ConstParamsId = new Guid("83811fd5-e9d0-4139-b039-a3a058a6f83e"),
                             ParamId = 12,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("cf1d0a44-5113-44ee-8aeb-7362c858e14a"),
-                            ConstParamsId = new Guid("a7b54bae-d9a2-4058-9a5c-5862ffa4522b"),
+                            Id = new Guid("63c66b52-7ff9-4db3-9a75-86d60f72b655"),
+                            ConstParamsId = new Guid("2a7bc61e-44fe-4380-ac0f-056cc0aebd97"),
                             ParamId = 7,
                             Value = 1500
                         },
                         new
                         {
-                            Id = new Guid("bfa9cd27-9d13-4527-81a9-70433ebb4a26"),
-                            ConstParamsId = new Guid("1f3329a6-8737-4b99-9213-8b835d3325aa"),
+                            Id = new Guid("e6465950-ffe5-466f-bc04-e13e5b2b595e"),
+                            ConstParamsId = new Guid("ca93f9d5-a401-44f4-bb5b-d8d492b61fb4"),
                             ParamId = 8,
                             Value = 6000
                         },
                         new
                         {
-                            Id = new Guid("64f632f2-a1c9-4f36-8223-c400beeecaaf"),
-                            ConstParamsId = new Guid("c3a5db6a-981b-4038-bd56-c30abccc32f7"),
+                            Id = new Guid("1dd1edf9-c049-459d-9862-8acf3c73df9e"),
+                            ConstParamsId = new Guid("304495c1-fedd-467b-bed7-8378154bda87"),
+                            ParamId = 20,
+                            Value = 500
+                        },
+                        new
+                        {
+                            Id = new Guid("5b2ca97a-0cf1-47a4-a3d5-32b3976e70c3"),
+                            ConstParamsId = new Guid("34e0f9f9-d353-4588-82c2-a5a2e6782aee"),
                             ParamId = 3,
                             Value = 2000
                         },
                         new
                         {
-                            Id = new Guid("ccccadcd-ab4b-455d-b617-d81d66ec3f67"),
-                            ConstParamsId = new Guid("e93a1f12-eb6c-4b73-b5c6-17516e80f56a"),
+                            Id = new Guid("391d0b37-3500-44fb-9e21-832078b6748d"),
+                            ConstParamsId = new Guid("6372f193-7163-40bb-a1f3-eb974c69477d"),
                             ParamId = 4,
                             Value = 2000
                         },
                         new
                         {
-                            Id = new Guid("da5cc717-8e7b-406f-a1b3-563134496754"),
-                            ConstParamsId = new Guid("e4a87cb0-21af-4ed5-89fd-3946c5589cf6"),
+                            Id = new Guid("d9aac3f7-2975-4921-9f5c-8445711543fa"),
+                            ConstParamsId = new Guid("1bbff2fd-de51-4941-8291-6dc12c3006ad"),
                             ParamId = 5,
                             Value = 4000
                         },
                         new
                         {
-                            Id = new Guid("980479ff-6fe1-4af4-a565-9fdf22ddecc9"),
-                            ConstParamsId = new Guid("2c5c86ef-ec34-4780-b3cd-2b8ed9300bd3"),
+                            Id = new Guid("ad90b0e9-3098-4836-8595-87ab734a839e"),
+                            ConstParamsId = new Guid("71f62801-e2da-4f50-acab-984e70109d49"),
                             ParamId = 6,
                             Value = 2000
                         },
                         new
                         {
-                            Id = new Guid("b54159e0-cc52-4f93-950b-39e1b25b9876"),
-                            ConstParamsId = new Guid("897f59ef-effa-49f1-b461-33d90be610f5"),
+                            Id = new Guid("e1da9a7c-fa97-4ecd-8191-62b4bf63eea3"),
+                            ConstParamsId = new Guid("8314b8e6-71f1-4f9a-a893-f671ab3d7b38"),
                             ParamId = 9,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("11bbded8-2af1-446e-8d3e-a5176dc8940e"),
-                            ConstParamsId = new Guid("df10ccb1-3393-4bb2-8b83-6fa719537de6"),
+                            Id = new Guid("2e7fa486-65b4-410b-b378-241112bc436b"),
+                            ConstParamsId = new Guid("5086cb77-5121-4042-adb6-9171c0d584e4"),
                             ParamId = 10,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("e719756c-e021-42d2-a288-ea92ca837f6f"),
-                            ConstParamsId = new Guid("c8884f45-14b4-469d-b65f-e980bc1b301d"),
+                            Id = new Guid("34413dde-b182-4562-a339-34d0674512b3"),
+                            ConstParamsId = new Guid("9de6cb89-270b-4d1b-8834-475bb1eff1bc"),
                             ParamId = 11,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("838d37e0-65aa-4d9e-9522-4e8cda89eb64"),
-                            ConstParamsId = new Guid("cb0e3c1f-924d-47cb-82e6-fd791c714e7e"),
+                            Id = new Guid("57792d65-24d6-4b87-a926-7a15f837c442"),
+                            ConstParamsId = new Guid("e758f18b-3c3c-46e7-b2be-725a9c549ae1"),
                             ParamId = 12,
                             Value = 200
                         },
                         new
                         {
-                            Id = new Guid("aeed17c8-1a4d-442d-b5f0-5862033c191d"),
-                            ConstParamsId = new Guid("c7bb414f-c75e-4af3-b25c-4ccbb3883fc9"),
+                            Id = new Guid("6759bc3b-6e04-4c66-8dad-97557f85b0c0"),
+                            ConstParamsId = new Guid("d8626611-2945-414b-9d7b-f0ff915eb80e"),
                             ParamId = 7,
                             Value = 1500
                         },
                         new
                         {
-                            Id = new Guid("5d93d009-d1f9-4225-8954-c8862fad48d8"),
-                            ConstParamsId = new Guid("a04d178c-5cc7-4c54-b0cd-7671a7be03a3"),
+                            Id = new Guid("bc3782c5-9993-4dfb-93e0-d9e5fc03c462"),
+                            ConstParamsId = new Guid("df85dcd9-3e55-4e0b-97bc-585514535052"),
                             ParamId = 8,
                             Value = 6000
+                        },
+                        new
+                        {
+                            Id = new Guid("4e347357-d5c8-42af-a531-6c24e64828cd"),
+                            ConstParamsId = new Guid("411b507a-76c8-4158-a9c0-0405690d1947"),
+                            ParamId = 20,
+                            Value = 500
                         });
                 });
 
@@ -567,213 +609,234 @@ namespace BlazorServerHost.Data.Migrations.APCHardwareMock
                     b.HasData(
                         new
                         {
-                            Id = new Guid("aaa2fd9a-6270-4bfd-b253-0471b5bc1926"),
-                            APCDeviceId = new Guid("fe67c069-534a-4896-a021-9b1279d740b6"),
-                            DynParamsId = new Guid("d3ca04d4-0de0-4d19-b457-2a56ee530311"),
+                            Id = new Guid("d651130c-cdca-4c7b-931b-31de1c286932"),
+                            APCDeviceId = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
+                            DynParamsId = new Guid("7420daab-942c-4522-bea8-55eef89d23a6"),
                             ParamName = "Device1_HeatO2Ignition"
                         },
                         new
                         {
-                            Id = new Guid("47690af8-a850-4e98-8aa6-6d02cc4ff4a2"),
-                            APCDeviceId = new Guid("fe67c069-534a-4896-a021-9b1279d740b6"),
-                            DynParamsId = new Guid("de91886d-6282-4b69-a277-5b19ab154327"),
+                            Id = new Guid("5ae2cdf3-4034-4693-a514-60c7177f195f"),
+                            APCDeviceId = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
+                            DynParamsId = new Guid("b2613df3-1c53-4f48-9c20-ecb9b5b8e203"),
                             ParamName = "Device1_HeatO2PreHeat"
                         },
                         new
                         {
-                            Id = new Guid("74ff28f5-a1dc-4d80-93d1-84ac46468085"),
-                            APCDeviceId = new Guid("fe67c069-534a-4896-a021-9b1279d740b6"),
-                            DynParamsId = new Guid("6b387293-f29e-4d3d-a09d-ea47fc80fcb9"),
+                            Id = new Guid("173d2275-0e36-40c8-85d8-eb40fe016c3a"),
+                            APCDeviceId = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
+                            DynParamsId = new Guid("6cc234ee-7ad4-4daa-9d93-50731f0bbd06"),
                             ParamName = "Device1_HeatO2Pierce"
                         },
                         new
                         {
-                            Id = new Guid("bf04516f-2fc6-46f1-8605-8c4384d1c11c"),
-                            APCDeviceId = new Guid("fe67c069-534a-4896-a021-9b1279d740b6"),
-                            DynParamsId = new Guid("f2eab00d-03a4-4251-bd47-a582fb16d77f"),
+                            Id = new Guid("818ceb88-7229-4a79-a801-31afd7e2d136"),
+                            APCDeviceId = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
+                            DynParamsId = new Guid("ac04fde6-761c-455a-a457-6037a9d9981a"),
                             ParamName = "Device1_HeatO2Cut"
                         },
                         new
                         {
-                            Id = new Guid("ca3d7c69-6682-4c99-9ffb-40d3da62d12b"),
-                            APCDeviceId = new Guid("fe67c069-534a-4896-a021-9b1279d740b6"),
-                            DynParamsId = new Guid("41048045-21a6-4716-8f0b-bb06b8576fb0"),
+                            Id = new Guid("a470f116-cfc6-42ed-a71b-caf645a869bd"),
+                            APCDeviceId = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
+                            DynParamsId = new Guid("a3ab3e61-28ee-4cf0-af50-593a97ab66bf"),
                             ParamName = "Device1_FuelGasIgnition"
                         },
                         new
                         {
-                            Id = new Guid("a6594eed-7f11-4c56-830c-54364a030fba"),
-                            APCDeviceId = new Guid("fe67c069-534a-4896-a021-9b1279d740b6"),
-                            DynParamsId = new Guid("f82d0ca8-fc83-4fdc-bff1-679fe8dd08af"),
+                            Id = new Guid("8b0a6717-79bb-422c-a3d6-203ef3bb9c01"),
+                            APCDeviceId = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
+                            DynParamsId = new Guid("b2174e27-f7ea-4fd4-9d12-6cca5d78aa84"),
                             ParamName = "Device1_FuelGasPreHeat"
                         },
                         new
                         {
-                            Id = new Guid("632bb5f9-83af-4540-8554-ffc57670a37c"),
-                            APCDeviceId = new Guid("fe67c069-534a-4896-a021-9b1279d740b6"),
-                            DynParamsId = new Guid("55ad7f74-b073-4486-8626-50c21280cbef"),
+                            Id = new Guid("36fe0036-c33a-4ce3-9afd-e73b7376d322"),
+                            APCDeviceId = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
+                            DynParamsId = new Guid("b305ab5c-5664-4a21-9374-65a8fd2922a8"),
                             ParamName = "Device1_FuelGasPierce"
                         },
                         new
                         {
-                            Id = new Guid("7b736df4-c63a-447e-96be-ccc57e73d469"),
-                            APCDeviceId = new Guid("fe67c069-534a-4896-a021-9b1279d740b6"),
-                            DynParamsId = new Guid("555773d5-ad08-4f69-8aa6-144246a27b7e"),
+                            Id = new Guid("56187ace-3589-4f13-9b51-6dc68ecd14d5"),
+                            APCDeviceId = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
+                            DynParamsId = new Guid("88399f09-01be-46c9-98ca-183e37811cd8"),
                             ParamName = "Device1_FuelGasCut"
                         },
                         new
                         {
-                            Id = new Guid("0896e1ad-eb97-495c-9e23-31fac38338ae"),
-                            APCDeviceId = new Guid("fe67c069-534a-4896-a021-9b1279d740b6"),
-                            DynParamsId = new Guid("2ba8691a-470b-485a-a9ce-4b1110319284"),
+                            Id = new Guid("94d58f57-e013-4968-83bb-2254900d26b0"),
+                            APCDeviceId = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
+                            DynParamsId = new Guid("e39ce774-3302-4556-8a3f-15e618abd035"),
                             ParamName = "Device1_CutO2Pierce"
                         },
                         new
                         {
-                            Id = new Guid("d259ce56-dcea-4c81-832a-b463a098d4a5"),
-                            APCDeviceId = new Guid("fe67c069-534a-4896-a021-9b1279d740b6"),
-                            DynParamsId = new Guid("ceb35341-afb3-4d6b-84e7-8eef8385317a"),
+                            Id = new Guid("6084ecb0-c3e9-4f18-864b-40a755060074"),
+                            APCDeviceId = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
+                            DynParamsId = new Guid("26564483-4e87-44c5-aa1f-08c929b0933d"),
                             ParamName = "Device1_CutO2Cut"
                         },
                         new
                         {
-                            Id = new Guid("436b8f76-2c13-4c86-b88c-9f56ad04cb88"),
-                            APCDeviceId = new Guid("c13121b4-9d76-48f8-80c7-b93ca268ed87"),
-                            DynParamsId = new Guid("41087314-d54f-451d-9db1-ac398a0bcc3d"),
+                            Id = new Guid("09f6b35d-e08a-4421-9f5d-36631228cf8e"),
+                            APCDeviceId = new Guid("5738f1cb-bf62-4884-9212-b758a1bbf68b"),
+                            DynParamsId = new Guid("e5418611-29b0-41b4-ae77-f4e0ebc9a48c"),
+                            ParamName = "Device1IgnitionFlameAdjust"
+                        },
+                        new
+                        {
+                            Id = new Guid("25f225f1-5621-46e1-b87a-c2d4d96bfbbe"),
+                            APCDeviceId = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
+                            DynParamsId = new Guid("fab75120-ef58-4c06-a022-8cc3aa4c0edb"),
                             ParamName = "Device2_HeatO2Ignition"
                         },
                         new
                         {
-                            Id = new Guid("63a7fad2-0ca7-41f3-89f2-d39d2753b07c"),
-                            APCDeviceId = new Guid("c13121b4-9d76-48f8-80c7-b93ca268ed87"),
-                            DynParamsId = new Guid("2825d4ce-1b5b-45a8-bbc1-3ebb187ced3d"),
+                            Id = new Guid("6bbf14bb-71a7-4e08-a49b-67e2469ead7c"),
+                            APCDeviceId = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
+                            DynParamsId = new Guid("462fd30d-5998-45f9-8eb8-2f207df2b2e3"),
                             ParamName = "Device2_HeatO2PreHeat"
                         },
                         new
                         {
-                            Id = new Guid("062d87d6-abbf-47fe-be59-e18cf85e2ac7"),
-                            APCDeviceId = new Guid("c13121b4-9d76-48f8-80c7-b93ca268ed87"),
-                            DynParamsId = new Guid("a89e95c6-a65d-4467-897a-aa89a227c23a"),
+                            Id = new Guid("92b65e8b-2da5-430c-a1ed-2e0a9ea95dab"),
+                            APCDeviceId = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
+                            DynParamsId = new Guid("be9b7fc5-2cbe-4762-a740-759a56962c36"),
                             ParamName = "Device2_HeatO2Pierce"
                         },
                         new
                         {
-                            Id = new Guid("b772226f-7556-4229-a49b-14854139381d"),
-                            APCDeviceId = new Guid("c13121b4-9d76-48f8-80c7-b93ca268ed87"),
-                            DynParamsId = new Guid("a957ba4b-5ce1-4deb-ba66-34597c14b9f8"),
+                            Id = new Guid("169d9efe-8256-4fde-b061-405aa8a596cb"),
+                            APCDeviceId = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
+                            DynParamsId = new Guid("61bdfaa0-f138-40bc-90e6-ad518b777f07"),
                             ParamName = "Device2_HeatO2Cut"
                         },
                         new
                         {
-                            Id = new Guid("999cd36e-34a2-46d2-8d97-34ddba8aa1a0"),
-                            APCDeviceId = new Guid("c13121b4-9d76-48f8-80c7-b93ca268ed87"),
-                            DynParamsId = new Guid("c0ad4a76-f5c7-4800-869b-614d943bae4b"),
+                            Id = new Guid("ac8b24ca-7c10-4013-bb41-3847d32c4ac0"),
+                            APCDeviceId = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
+                            DynParamsId = new Guid("80cde3e1-534c-448e-bb93-3f725d5b7c35"),
                             ParamName = "Device2_FuelGasIgnition"
                         },
                         new
                         {
-                            Id = new Guid("c370f21c-80f0-4099-944c-6e5faa95359f"),
-                            APCDeviceId = new Guid("c13121b4-9d76-48f8-80c7-b93ca268ed87"),
-                            DynParamsId = new Guid("8b98b54d-a48b-4c18-a632-84b7b48930b0"),
+                            Id = new Guid("6977cfdd-0448-45e0-9d1a-db30b779d7ed"),
+                            APCDeviceId = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
+                            DynParamsId = new Guid("0e56b3ed-e8b1-470d-860b-0aa38676f186"),
                             ParamName = "Device2_FuelGasPreHeat"
                         },
                         new
                         {
-                            Id = new Guid("0348419b-97ab-4d04-ab04-270cf98d4f78"),
-                            APCDeviceId = new Guid("c13121b4-9d76-48f8-80c7-b93ca268ed87"),
-                            DynParamsId = new Guid("aec4fba4-594f-4250-aa9a-dbf7df3cf84d"),
+                            Id = new Guid("2ff2a553-0ec6-428b-9605-4a0d4be99068"),
+                            APCDeviceId = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
+                            DynParamsId = new Guid("6c113bc4-9a13-4490-8151-f95bb0df0b42"),
                             ParamName = "Device2_FuelGasPierce"
                         },
                         new
                         {
-                            Id = new Guid("1ad303a0-5f5e-4eb5-a61a-9a7e4327219a"),
-                            APCDeviceId = new Guid("c13121b4-9d76-48f8-80c7-b93ca268ed87"),
-                            DynParamsId = new Guid("071b8fc5-0685-4f1e-b115-7111f4bdd123"),
+                            Id = new Guid("eaa35fff-4d20-49a9-b2d4-9da9b0616f58"),
+                            APCDeviceId = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
+                            DynParamsId = new Guid("1817805c-f9f7-476a-88d1-e762d0cf0b81"),
                             ParamName = "Device2_FuelGasCut"
                         },
                         new
                         {
-                            Id = new Guid("5c9c4d19-db3c-4b38-8bbb-f2cc3704b854"),
-                            APCDeviceId = new Guid("c13121b4-9d76-48f8-80c7-b93ca268ed87"),
-                            DynParamsId = new Guid("cf1d0a44-5113-44ee-8aeb-7362c858e14a"),
+                            Id = new Guid("041475d0-9dc1-43a6-bf42-a793b86b4878"),
+                            APCDeviceId = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
+                            DynParamsId = new Guid("63c66b52-7ff9-4db3-9a75-86d60f72b655"),
                             ParamName = "Device2_CutO2Pierce"
                         },
                         new
                         {
-                            Id = new Guid("fbf513d0-320c-4cb2-ab53-fef16c4fdbcb"),
-                            APCDeviceId = new Guid("c13121b4-9d76-48f8-80c7-b93ca268ed87"),
-                            DynParamsId = new Guid("bfa9cd27-9d13-4527-81a9-70433ebb4a26"),
+                            Id = new Guid("001d6f47-50c6-429c-806a-bf0be07e8579"),
+                            APCDeviceId = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
+                            DynParamsId = new Guid("e6465950-ffe5-466f-bc04-e13e5b2b595e"),
                             ParamName = "Device2_CutO2Cut"
                         },
                         new
                         {
-                            Id = new Guid("0f6c936e-95ca-441e-aca8-cbf61edac47e"),
-                            APCDeviceId = new Guid("8eed3876-5034-4ed0-b1dd-5ca9128c492c"),
-                            DynParamsId = new Guid("64f632f2-a1c9-4f36-8223-c400beeecaaf"),
+                            Id = new Guid("1722d702-04f4-46c9-9f9b-8160c01c0bfd"),
+                            APCDeviceId = new Guid("758a0f68-8677-4071-b8b8-c2919112fc23"),
+                            DynParamsId = new Guid("1dd1edf9-c049-459d-9862-8acf3c73df9e"),
+                            ParamName = "Device2IgnitionFlameAdjust"
+                        },
+                        new
+                        {
+                            Id = new Guid("485fcd84-bcd2-4214-96c9-7f547a640b21"),
+                            APCDeviceId = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
+                            DynParamsId = new Guid("5b2ca97a-0cf1-47a4-a3d5-32b3976e70c3"),
                             ParamName = "Device3_HeatO2Ignition"
                         },
                         new
                         {
-                            Id = new Guid("7b532663-d537-47c2-b463-5a5924de7221"),
-                            APCDeviceId = new Guid("8eed3876-5034-4ed0-b1dd-5ca9128c492c"),
-                            DynParamsId = new Guid("ccccadcd-ab4b-455d-b617-d81d66ec3f67"),
+                            Id = new Guid("c3ac0316-9b40-40a8-b65a-520b13092f59"),
+                            APCDeviceId = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
+                            DynParamsId = new Guid("391d0b37-3500-44fb-9e21-832078b6748d"),
                             ParamName = "Device3_HeatO2PreHeat"
                         },
                         new
                         {
-                            Id = new Guid("a71aca2d-7b8f-49f6-8452-de40611bd1d8"),
-                            APCDeviceId = new Guid("8eed3876-5034-4ed0-b1dd-5ca9128c492c"),
-                            DynParamsId = new Guid("da5cc717-8e7b-406f-a1b3-563134496754"),
+                            Id = new Guid("e499612e-4d9d-42f9-96ac-7ec14f067cd9"),
+                            APCDeviceId = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
+                            DynParamsId = new Guid("d9aac3f7-2975-4921-9f5c-8445711543fa"),
                             ParamName = "Device3_HeatO2Pierce"
                         },
                         new
                         {
-                            Id = new Guid("8bbc8bca-f271-4063-9c37-306820696c1d"),
-                            APCDeviceId = new Guid("8eed3876-5034-4ed0-b1dd-5ca9128c492c"),
-                            DynParamsId = new Guid("980479ff-6fe1-4af4-a565-9fdf22ddecc9"),
+                            Id = new Guid("74f34648-3f2e-4fa7-b53a-6745e4bf452f"),
+                            APCDeviceId = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
+                            DynParamsId = new Guid("ad90b0e9-3098-4836-8595-87ab734a839e"),
                             ParamName = "Device3_HeatO2Cut"
                         },
                         new
                         {
-                            Id = new Guid("5771a89a-6ad5-49b3-86f1-54a2de5d126a"),
-                            APCDeviceId = new Guid("8eed3876-5034-4ed0-b1dd-5ca9128c492c"),
-                            DynParamsId = new Guid("b54159e0-cc52-4f93-950b-39e1b25b9876"),
+                            Id = new Guid("f3ced4de-2214-4fd8-88d4-7de7b9060c22"),
+                            APCDeviceId = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
+                            DynParamsId = new Guid("e1da9a7c-fa97-4ecd-8191-62b4bf63eea3"),
                             ParamName = "Device3_FuelGasIgnition"
                         },
                         new
                         {
-                            Id = new Guid("e47c05e3-cb4a-4311-aac9-032dde0cefac"),
-                            APCDeviceId = new Guid("8eed3876-5034-4ed0-b1dd-5ca9128c492c"),
-                            DynParamsId = new Guid("11bbded8-2af1-446e-8d3e-a5176dc8940e"),
+                            Id = new Guid("2649d3dd-be59-429a-8c4a-ec81bc42948e"),
+                            APCDeviceId = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
+                            DynParamsId = new Guid("2e7fa486-65b4-410b-b378-241112bc436b"),
                             ParamName = "Device3_FuelGasPreHeat"
                         },
                         new
                         {
-                            Id = new Guid("8d6462d1-6520-471a-ab2c-21efdee20710"),
-                            APCDeviceId = new Guid("8eed3876-5034-4ed0-b1dd-5ca9128c492c"),
-                            DynParamsId = new Guid("e719756c-e021-42d2-a288-ea92ca837f6f"),
+                            Id = new Guid("beb4f00d-5bac-47fb-80f7-470b312a258f"),
+                            APCDeviceId = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
+                            DynParamsId = new Guid("34413dde-b182-4562-a339-34d0674512b3"),
                             ParamName = "Device3_FuelGasPierce"
                         },
                         new
                         {
-                            Id = new Guid("70819535-94e3-4674-807b-27dab04c8750"),
-                            APCDeviceId = new Guid("8eed3876-5034-4ed0-b1dd-5ca9128c492c"),
-                            DynParamsId = new Guid("838d37e0-65aa-4d9e-9522-4e8cda89eb64"),
+                            Id = new Guid("d0101f02-5ff4-4f1d-b473-2a55d6980292"),
+                            APCDeviceId = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
+                            DynParamsId = new Guid("57792d65-24d6-4b87-a926-7a15f837c442"),
                             ParamName = "Device3_FuelGasCut"
                         },
                         new
                         {
-                            Id = new Guid("8890c57c-3bb6-4fd7-9ae3-0c86b3daf276"),
-                            APCDeviceId = new Guid("8eed3876-5034-4ed0-b1dd-5ca9128c492c"),
-                            DynParamsId = new Guid("aeed17c8-1a4d-442d-b5f0-5862033c191d"),
+                            Id = new Guid("c537a104-d9a1-4a9e-a302-4541d75d4a09"),
+                            APCDeviceId = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
+                            DynParamsId = new Guid("6759bc3b-6e04-4c66-8dad-97557f85b0c0"),
                             ParamName = "Device3_CutO2Pierce"
                         },
                         new
                         {
-                            Id = new Guid("b97a844c-e975-443f-abe8-3e755291405d"),
-                            APCDeviceId = new Guid("8eed3876-5034-4ed0-b1dd-5ca9128c492c"),
-                            DynParamsId = new Guid("5d93d009-d1f9-4225-8954-c8862fad48d8"),
+                            Id = new Guid("aa119ea0-d1ec-4bdf-9244-479080422350"),
+                            APCDeviceId = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
+                            DynParamsId = new Guid("bc3782c5-9993-4dfb-93e0-d9e5fc03c462"),
                             ParamName = "Device3_CutO2Cut"
+                        },
+                        new
+                        {
+                            Id = new Guid("d3951ceb-2b79-44c4-9817-a01c1f09fc20"),
+                            APCDeviceId = new Guid("590f87c6-f007-43e6-a9dd-cd8c674f86dd"),
+                            DynParamsId = new Guid("4e347357-d5c8-42af-a531-6c24e64828cd"),
+                            ParamName = "Device3IgnitionFlameAdjust"
                         });
                 });
 

@@ -133,7 +133,7 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			dbContext.RemoveRange(dbContext.DynParams);
+			dbContext.RemoveRange(dbContext.ParameterDatas);
 
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}

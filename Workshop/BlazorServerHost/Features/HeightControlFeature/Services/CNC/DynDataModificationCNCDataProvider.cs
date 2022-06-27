@@ -17,6 +17,12 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		public int CurrentDeviceNumber { get; set; } = 1;
 		public string CurrentParamsType { get; set; } = "Ignition";
 
+		public int APCDevicesCount { 
+			get {
+				return GeAPCDevicesNumber().Result;
+			}
+		}
+
 		private readonly IAPCWorker _apcWorker;
 
 		private readonly IParameterDataInfoManager _parameterDataInfoManager;
@@ -24,6 +30,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		public ParameterDataModel _paramHeatO2 = new ParameterDataModel();
 		public ParameterDataModel _paramFuelGas = new ParameterDataModel();
 		public ParameterDataModel _paramCutO2 = new ParameterDataModel();
+		public ParameterDataModel _paramFlameAdjust = new ParameterDataModel();
 
 		private bool _paramChangedFlag = false;
 
@@ -60,16 +67,22 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			// New: Get Dyn params data from the DB instead of the _apcWorker.CurrentState
 			// So, we get all the dynamic params for the current devices and current params type
 
-			var dynParamsFromDB = await GetDynParamsFromDBAsync(CurrentDeviceNumber, CurrentParamsType);
-
-			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramHeatO2, paramFromDB: dynParamsFromDB.HeatO2);
-			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramFuelGas, paramFromDB: dynParamsFromDB.FuelGas);
-			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramCutO2, paramFromDB: dynParamsFromDB.CutO2);
+			await UpdateModelParamsFromDBAsync();
 
 			if (_paramChangedFlag)
 			{
 				OnDynamicAPCParamsDataChanged();
 			}
+		}
+
+		public async Task UpdateModelParamsFromDBAsync()
+        {
+			var dynParamsFromDB = await GetDynParamsFromDBAsync(CurrentDeviceNumber, CurrentParamsType);
+
+			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramHeatO2, paramFromDB: dynParamsFromDB.HeatO2);
+			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramFuelGas, paramFromDB: dynParamsFromDB.FuelGas);
+			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramCutO2, paramFromDB: dynParamsFromDB.CutO2);
+			IfChangedUpdateModelParamFromDB(paramFromModel: ref _paramFlameAdjust, paramFromDB: dynParamsFromDB.FlameAdjust);
 		}
 
 		public async Task<bool> RefreshDynamicDataModelToDisplayAsync()
@@ -81,6 +94,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 				_paramHeatO2 = dynParamsFromDB.HeatO2;
 				_paramFuelGas = dynParamsFromDB.FuelGas;
 				_paramCutO2 = dynParamsFromDB.CutO2;
+				_paramFlameAdjust = dynParamsFromDB.FlameAdjust;
 			}
 			catch (Exception ex)
             {
@@ -90,8 +104,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			return true;
 		}
 
-		public async Task<(ParameterDataModel HeatO2, ParameterDataModel FuelGas, ParameterDataModel CutO2)> GetDynParamsFromDBAsync(
-			int currentDeviceNumber, string currentParamsType)
+		public async Task<(ParameterDataModel HeatO2, ParameterDataModel FuelGas, ParameterDataModel CutO2, ParameterDataModel FlameAdjust)> 
+			GetDynParamsFromDBAsync(int currentDeviceNumber, string currentParamsType)
         {
 			var apcDynamicParamsFromDB = await _parameterDataInfoManager.GetDynParamsByDeviceIdAndParamsTypeAsync(
 				currentDeviceNumber, currentParamsType, CancellationToken.None);
@@ -99,8 +113,9 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			var paramHeatO2FromDB = apcDynamicParamsFromDB.FirstOrDefault(p => p.ParamName.ToLower().Contains("HeatO2".ToLower()));
 			var paramFuelGasFromDB = apcDynamicParamsFromDB.FirstOrDefault(p => p.ParamName.ToLower().Contains("FuelGas".ToLower()));
 			var paramCutO2FromDB = apcDynamicParamsFromDB.FirstOrDefault(p => p.ParamName.ToLower().Contains("CutO2".ToLower()));
+			var paramFlameAdjustFromDB = apcDynamicParamsFromDB.FirstOrDefault(p => p.ParamName.ToLower().Contains("FlameAdjust".ToLower()));
 
-			return (paramHeatO2FromDB, paramFuelGasFromDB, paramCutO2FromDB);
+			return (paramHeatO2FromDB, paramFuelGasFromDB, paramCutO2FromDB, paramFlameAdjustFromDB);
 		}
 
 		private void IfChangedUpdateModelParamFromDB(ref ParameterDataModel paramFromModel, ParameterDataModel? paramFromDB)
@@ -124,6 +139,11 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 					}
 				}
 			}
+		}
+
+		private async Task<int> GeAPCDevicesNumber()
+        {
+			return await _parameterDataInfoManager.GeAPCDevicesNumber(CancellationToken.None);
 		}
 
 		public void Dispose()

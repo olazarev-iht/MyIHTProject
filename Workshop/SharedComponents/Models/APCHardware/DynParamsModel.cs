@@ -12,9 +12,9 @@ namespace SharedComponents.Models.APCHardware
         public Guid Id { get; set; }
         public ParamIds ParamId { get; set; }
         public Guid? ConstParamsId { get; set; }
-        public ConstParamsModel? ConstParams { get; set; }
+        public ConstParamsModel? ConstParams { get; set; } = new();
         public Guid? ParameterDataInfoId { get; set; }
-        public ParameterDataInfoModel? ParameterDataInfo { get; set; }
+        public ParameterDataInfoModel? ParameterDataInfo { get; set; } = new();
         public int Value { get; set; }
     }
 }
