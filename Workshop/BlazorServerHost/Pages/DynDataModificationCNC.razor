@@ -44,11 +44,16 @@ table#controlPanel td  {
         _cutO2Visible = "d-none";
         _flameAdjustVisible = "d-block";
     }
-    else
+    else if(dynDataModificationCNCDataProvider.CurrentParamsType != "PreHeat" )
     {
         paramCutO2 = dynDataModificationCNCDataProvider._paramCutO2;
         _flameAdjustVisible = "d-none";
         _cutO2Visible = "d-block";
+    }
+    else
+    {
+        _flameAdjustVisible = "d-none";
+        _cutO2Visible = "d-none";
     }
 
     <table id="controlPanel">
@@ -188,7 +193,7 @@ table#controlPanel td  {
 
     protected override void OnInitialized()
     {
-        //dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
         this.DynamicAPCParamsClientChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
 
         base.OnInitialized();
@@ -248,7 +253,7 @@ table#controlPanel td  {
 
     public void Dispose()
     {
-        //dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
         this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
     }
 
