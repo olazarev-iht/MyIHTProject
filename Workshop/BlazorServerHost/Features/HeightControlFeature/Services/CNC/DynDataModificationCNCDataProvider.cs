@@ -47,12 +47,21 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		public async void dynamicParamsDysplay_DynamicAPCParamsClientChanged(object? sender, EventArgs e)
 		{
-			await _parameterDataInfoManager.UpdateDynParamValueAsync(newData: (sender as ParameterDataModel)?.DynParams, CancellationToken.None);
+			var parameter = sender as ParameterDataModel;
+			if (parameter == null || parameter.DynParams == null) return;
+
+			// Update prameter value in the APC Device (Mock DB)
+			await UpdateDynParamInAPCDeviceMockDBAsync(CurrentDeviceNumber, parameter.DynParams.ParamId, parameter.DynParams.Value);
 
 			// Only to show the flow
 			//await Task.Delay(TimeSpan.FromSeconds(5));
 
-			await _apcWorker.RefreshDynamicDataAsync();
+			await _apcWorker.RefreshDynamicDataAsync(CurrentDeviceNumber, parameter.DynParams.ParamId);
+		}
+
+		private async Task UpdateDynParamInAPCDeviceMockDBAsync(int deviceNum, ParamIds paramId, int paramValue)
+        {
+			await _parameterDataInfoManager.UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(deviceNum, paramId, paramValue, CancellationToken.None);
 		}
 
 		private async void _apcWorkerService_DymanicDataChanged(object? sender, EventArgs e)
@@ -107,7 +116,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		public async Task<(ParameterDataModel HeatO2, ParameterDataModel FuelGas, ParameterDataModel CutO2, ParameterDataModel FlameAdjust)> 
 			GetDynParamsFromDBAsync(int currentDeviceNumber, string currentParamsType)
         {
-			var apcDynamicParamsFromDB = await _parameterDataInfoManager.GetDynParamsByDeviceIdAndParamsTypeAsync(
+			var apcDynamicParamsFromDB = await _parameterDataInfoManager.GetParamsByDeviceIdAndParamsTypeAsync(
 				currentDeviceNumber, currentParamsType, CancellationToken.None);
 
 			var paramHeatO2FromDB = apcDynamicParamsFromDB.FirstOrDefault(p => p.ParamName.ToLower().Contains("HeatO2".ToLower()));
@@ -128,22 +137,29 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 				}
 				else
 				{
-					if (paramFromDB.DynParams != null && paramFromModel.DynParams != null)
+					if (paramFromModel.Id == paramFromDB.Id)
 					{
-						if (paramFromModel.DynParams.Value != paramFromDB.DynParams.Value)
+						if (paramFromDB.DynParams != null && paramFromModel.DynParams != null)
 						{
-							paramFromModel.DynParams.Value = paramFromDB.DynParams.Value;
+							if (paramFromModel.DynParams.Value != paramFromDB.DynParams.Value)
+							{
+								paramFromModel.DynParams.Value = paramFromDB.DynParams.Value;
 
-							_paramChangedFlag = true;
+								_paramChangedFlag = true;
+							}
 						}
 					}
+                    else
+                    {
+						throw new InvalidOperationException();
+                    }
 				}
 			}
 		}
 
 		private async Task<int> GeAPCDevicesNumber()
         {
-			return await _parameterDataInfoManager.GeAPCDevicesNumber(CancellationToken.None);
+			return await _parameterDataInfoManager.GetAPCDevicesNumber(CancellationToken.None);
 		}
 
 		public void Dispose()

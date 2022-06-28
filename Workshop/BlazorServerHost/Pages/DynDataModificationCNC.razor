@@ -198,7 +198,7 @@ table#controlPanel td  {
     {
         dynDataModificationCNCDataProvider.CurrentParamsType = paramsType;
 
-        await dynDataModificationCNCDataProvider.UpdateModelParamsFromDBAsync();
+        await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
 
         await InvokeAsync(StateHasChanged);
     }
@@ -209,7 +209,7 @@ table#controlPanel td  {
         {
             dynDataModificationCNCDataProvider.CurrentDeviceNumber = deviceNum;
 
-            await dynDataModificationCNCDataProvider.UpdateModelParamsFromDBAsync();
+            await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
 
             await InvokeAsync(StateHasChanged);
         }
@@ -236,9 +236,9 @@ table#controlPanel td  {
         return cssClass;
     }
 
-    private void UpdateDynParam(ParameterDataModel dynParam)
+    private void UpdateDynParam(ParameterDataModel parameterData)
     {
-        OnParamChanged(dynParam);
+        OnParamChanged(parameterData);
     }
 
     private async void DynamicAPCParamsOnDynamicAPCParamsDataChanged(object? sender, EventArgs e)
@@ -258,9 +258,9 @@ table#controlPanel td  {
         //OnParamChanged();
     }
 
-    private void OnParamChanged(object eventParams)
+    private void OnParamChanged(object eventParam)
     {
-        this.DynamicAPCParamsClientChanged?.Invoke(eventParams, EventArgs.Empty);
+        this.DynamicAPCParamsClientChanged?.Invoke(eventParam, EventArgs.Empty);
     }
 
 }

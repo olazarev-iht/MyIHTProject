@@ -64,17 +64,23 @@ namespace SharedComponents.APCHardwareManagers
 
         }
 
-        public async Task<int> GeAPCDevicesNumber(CancellationToken cancellationToken)
+        public async Task<int> GetAPCDevicesNumber(CancellationToken cancellationToken)
         {
             var devicesNum = await _apcDeviceDBService.GetDevicesCountAsync(cancellationToken);
             return devicesNum;
         }
 
-        public async Task<IEnumerable<ParameterDataModel>> GetDynParamsByDeviceIdAndParamsTypeAsync(int DeviceId, string ParamsType, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ParameterDataModel>> GetParamsByDeviceIdAndParamsTypeAsync(int DeviceId, string ParamsType, CancellationToken cancellationToken)
         {
-            var dynParams = await _parameterDataDBService.GetDynParamsByDeviceIdAndParamsTypeAsync(DeviceId, ParamsType, cancellationToken);
+            var dynParams = await _parameterDataDBService.GetParamsByDeviceIdAndParamsTypeAsync(DeviceId, ParamsType, cancellationToken);
 
             return dynParams;
+        }
+
+        public async Task<ParameterDataModel?> GetParamDataFromMockDBByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamIds paramId, CancellationToken cancellationToken)
+        {
+            var parameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDeviceNum, paramId, CancellationToken.None);
+            return parameterData;
         }
 
         public async Task UpdateDynParamValueAsync(DynParamsModel newData, CancellationToken cancellationToken)
@@ -85,6 +91,16 @@ namespace SharedComponents.APCHardwareManagers
             }
 
             await _dynParamsDBService.UpdateDynParamValueAsync(newData, cancellationToken);
+        }
+
+        public async Task UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamIds paramId, int paramValue, CancellationToken cancellationToken)
+        {
+            await _dynParamsMockDBService.UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(apcDeviceNum, paramId, paramValue, cancellationToken);
+        }
+
+        public async Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamIds paramId, int paramValue, CancellationToken cancellationToken)
+        {
+            await _dynParamsDBService.UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(apcDeviceNum, paramId, paramValue, cancellationToken);
         }
 
         public async Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken)
@@ -123,7 +139,7 @@ namespace SharedComponents.APCHardwareManagers
                 {
                     foreach (ParamIds paramId in (ParamIds[])Enum.GetValues(typeof(ParamIds)))
                     {
-                        var mockParameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDevice, paramId, cancellationToken);
+                        var mockParameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDevice.Num, paramId, cancellationToken);
                         var mockDynParams = mockParameterData?.DynParams;
 
                         if (mockDynParams == null || mockDynParams.ConstParams == null) continue;

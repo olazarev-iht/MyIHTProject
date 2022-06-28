@@ -1,4 +1,5 @@
 ﻿using SharedComponents.Models;
+using SharedComponents.Models.APCHardware;
 
 namespace BlazorServerHost.Services.APCWorkerService
 {
@@ -7,7 +8,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 		SingletonDataModel CurrentState { get; }
 		event EventHandler WorkerStatusChanged;
 		event EventHandler DynamicDataChanged;
-		Task RefreshDynamicDataAsync();
+		Task RefreshDynamicDataAsync(int deviceNum, ParamIds paramId);
 		Task DoWork(CancellationToken stoppingToken);
 	}
 }

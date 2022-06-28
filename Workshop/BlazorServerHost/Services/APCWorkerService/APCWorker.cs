@@ -1,4 +1,5 @@
 ﻿using SharedComponents.Models;
+using SharedComponents.Models.APCHardware;
 using SharedComponents.Services;
 using SharedComponents.Services.APCHardwareManagers;
 
@@ -8,8 +9,6 @@ namespace BlazorServerHost.Services.APCWorkerService
 	{
 		private readonly ILogger<APCWorkerService> _logger;
 
-		private readonly IHardwareAPCServise _hardwareAPCServise;
-
 		private readonly IParameterDataInfoManager _parameterDataInfoManager;
 
 		public SingletonDataModel CurrentState { get; set; } = new();
@@ -18,12 +17,9 @@ namespace BlazorServerHost.Services.APCWorkerService
 
 		public event EventHandler? DynamicDataChanged;
 		public APCWorker(
-			IHardwareAPCServise hardwareAPCServise,
 			IParameterDataInfoManager parameterDataInfoManager,
 			ILogger<APCWorkerService> logger)
 		{
-			_hardwareAPCServise = hardwareAPCServise ?? throw new ArgumentNullException(nameof(hardwareAPCServise));
-
 			_parameterDataInfoManager = parameterDataInfoManager ?? throw new ArgumentNullException(nameof(parameterDataInfoManager));
 
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -43,7 +39,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 				try
 				{
 					// TODO currently we read the whole APC model, but we may will read only Live data
-					CurrentState = await _hardwareAPCServise.GetSingletonDataModelAsync(CancellationToken.None);
+					//CurrentState = await _hardwareAPCServise.GetSingletonDataModelAsync(CancellationToken.None);
 
 					WorkerStatusChanged?.Invoke(this, EventArgs.Empty);
 				}
@@ -57,13 +53,27 @@ namespace BlazorServerHost.Services.APCWorkerService
 			}
 
 		}
-		public async Task RefreshDynamicDataAsync()
+
+		public async Task RefreshDynamicDataAsync(int apcDeviceNum, ParamIds paramId)
 		{
 			try
 			{
-				// TODO currently we read the whole APC model, but we may will read only Dynamic data
-				CurrentState = await _hardwareAPCServise.GetSingletonDataModelAsync(CancellationToken.None);
+				// Get Dynamic Parameter from Mock DB (APC Device) after client had updated the APC Device
+				var mockParameterData = await _parameterDataInfoManager.GetParamDataFromMockDBByAPCDeviceAndParamIdAsync(
+					apcDeviceNum, 
+					paramId, 
+					CancellationToken.None);
 
+				if (mockParameterData != null && mockParameterData.APCDevice != null && mockParameterData.DynParams != null) {
+					// Update Dynamic Parameter in the Dynamic Params DB
+					await _parameterDataInfoManager.UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(
+						mockParameterData.APCDevice.Num, 
+						mockParameterData.DynParams.ParamId, 
+						mockParameterData.DynParams.Value, 
+						CancellationToken.None);
+				}
+
+				// Invoke DynamicDataChanged Event after the Dynamic Parameter had been updated
 				DynamicDataChanged?.Invoke(this, EventArgs.Empty);
 			}
 			catch (Exception ex)
