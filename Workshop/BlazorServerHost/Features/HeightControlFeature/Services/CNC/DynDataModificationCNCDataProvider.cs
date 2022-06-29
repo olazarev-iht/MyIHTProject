@@ -116,6 +116,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		public async Task<(ParameterDataModel HeatO2, ParameterDataModel FuelGas, ParameterDataModel CutO2, ParameterDataModel FlameAdjust)> 
 			GetDynParamsFromDBAsync(int currentDeviceNumber, string currentParamsType)
         {
+			if (currentParamsType == "Heat") currentParamsType = "Cut";
+
 			var apcDynamicParamsFromDB = await _parameterDataInfoManager.GetParamsByDeviceIdAndParamsTypeAsync(
 				currentDeviceNumber, currentParamsType, CancellationToken.None);
 
