@@ -6,7 +6,14 @@
 @implements IDisposable
 <MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
 
+
 <style>
+.tabcell {
+    width: 50px;
+    height:50px;
+    text-align: center;
+}
+
 table#controlPanel td  {
     border: 1px solid #e0e0e0;
 }
@@ -57,8 +64,8 @@ table#controlPanel td  {
         _cutO2Visible = INVISIBLE_CLASS;
     }
 
-<div overflow="auto">
-    <table id="controlPanel">
+<div>
+    <table id="controlPanel" class="tablemobile">
         <tr>
             <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(1)"
             @onclick="@(()=>SetDeviceNum(1))">1</MudTd>
@@ -70,23 +77,23 @@ table#controlPanel td  {
             @onclick="@(()=>SetDeviceNum(4))">4</MudTd>
             <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(5)"
             @onclick="@(()=>SetDeviceNum(5))">5</MudTd>
-            <MudTd Style="font-weight:bold; width:15%">=</MudTd>
+            <MudTd Style="font-weight:bold; width:15%" Class="tabcell">=</MudTd>
         </tr>
         <tr>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(6)"
+            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(6)"
             @onclick="@(()=>SetDeviceNum(6))">6</MudTd>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(7)"
+            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(7)"
             @onclick="@(()=>SetDeviceNum(7))">7</MudTd>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(8)"
+            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(8)"
             @onclick="@(()=>SetDeviceNum(8))">8</MudTd>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(9)"
+            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(9)"
             @onclick="@(()=>SetDeviceNum(9))">9</MudTd>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(10)"
+            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
             @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
-            <MudTd Style="background-color:#ffffff; font-weight:bold; width:15%">E</MudTd>
+            <MudTd Style="background-color:#ffffff; font-weight:bold;" Class="tabcell">E</MudTd>
         </tr>
         <tr>
-            <td colspan="3">
+            <td colspan="3" >
                 <table width="100%">
                     <tr>
                         <td>
@@ -151,32 +158,22 @@ table#controlPanel td  {
             </td>
         </tr>
         <tr>
-            <td colspan="3">
-                <table>
-                    <tr>              
-                        <MudTd Style="font-weight:bold; width:17%;" Class="@GetParamsTypeClass("Ignition")"
-                        @onclick="@(()=>SetParamsType("Ignition"))">Ignition</MudTd>
-                        <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("PreHeat")"
-                        @onclick="@(()=>SetParamsType("PreHeat"))">Preheat</MudTd>
-                        <MudTd Style="font-weight:bold; width:11%" Class="@GetParamsTypeClass("Pierce")"
-                        @onclick="@(()=>SetParamsType("Pierce"))">Piercing</MudTd>
-                    </tr>
-                </table>
-            </td>
-            <td colspan="3">
-                <table>
-                    <tr>
-                        <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Cut")"
-                        @onclick="@(()=>SetParamsType("Cut"))">Cutting</MudTd>
-                        <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Heat")"
-                        @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
-                        <MudTd Style="width:15%; border: 0px solid;">&nbsp;</MudTd>
-                    </tr>
-                </table>
-            </td>
+            <MudTd Style="font-weight:bold; width:17%;" Class="@GetParamsTypeClass("Ignition")"
+            @onclick="@(()=>SetParamsType("Ignition"))">Ignition</MudTd>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("PreHeat")"
+            @onclick="@(()=>SetParamsType("PreHeat"))">Preheat</MudTd>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Pierce")"
+            @onclick="@(()=>SetParamsType("Pierce"))">Piercing</MudTd>
+              
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Cut")"
+            @onclick="@(()=>SetParamsType("Cut"))">Cutting</MudTd>
+            <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Heat")"
+            @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
+            <td>&nbsp;</td>          
         </tr>
     </table>
 </div>
+
 }
 @code {
 
@@ -227,19 +224,19 @@ table#controlPanel td  {
     private string GetParamsTypeClass(string selectedType)
     {
         if (selectedType.ToLower() == dynDataModificationCNCDataProvider.CurrentParamsType.ToLower())
-            return "SelectedParamsType";
-        return "UnselectedParamsType";
+            return "SelectedParamsType tabcell";
+        return "UnselectedParamsType tabcell";
     }
 
     private string GetDeviceNumClass(int selectedNum)
     {
-        var cssClass = "NotInUseDeviceNum";
+        var cssClass = "NotInUseDeviceNum tabcell";
 
         if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber){
-            cssClass = "SelectedDeviceNum";
+            cssClass = "SelectedDeviceNum tabcell";
         }
         else if(selectedNum <= dynDataModificationCNCDataProvider.APCDevicesCount){
-            cssClass = "UnselectedDeviceNum";
+            cssClass = "UnselectedDeviceNum tabcell";
         }
 
         return cssClass;

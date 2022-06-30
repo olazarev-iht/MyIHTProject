@@ -108,3 +108,4 @@ C:\Examples\MyIHTProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServer
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.genruntimeconfig.cache
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\obj\Debug\net6.0\ref\BlazorServerHost.dll
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\AutoMapper.dll
+C:\Examples\MyIHTProject\Workshop\BlazorServerHost\obj\Debug\net6.0\scopedcss\Pages\DynDataModificationCNC.razor.rz.scp.css
