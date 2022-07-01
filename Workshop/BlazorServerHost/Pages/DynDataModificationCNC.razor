@@ -9,7 +9,13 @@
 
 <style>
 .device_tabcell {
-    width: 87px;
+    width: 88px;
+    height:50px;
+    text-align: center;
+}
+
+.device_lastcell {
+    width: 88px;
     height:50px;
     text-align: center;
 }
@@ -58,6 +64,18 @@ table#controlPanel td  {
   flex: 50%;
 }
 
+.internal_div_table{
+    width:267px; 
+    height:197px;
+    border-spacing: 1px
+    /*border: 0px solid*/
+}
+
+.flex-container table{
+    border-spacing: 1px
+    /*border: 0px solid*/
+}
+
 
 </style>
 
@@ -86,7 +104,7 @@ table#controlPanel td  {
     }
 
 <div class="flex-container" >
-    <table id="controlPanel" class="tablemobile" width="550px">
+    <table id="controlPanel" class="tablemobile" width="540px">
         <tr>
             <td>
                 <div class="flex-item-left">
@@ -102,13 +120,13 @@ table#controlPanel td  {
                     </table>
                  </div>
                  <div class="flex-item-right">
-                    <table>
+                    <table style="width:267px;">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(4)"
             @onclick="@(()=>SetDeviceNum(4))">4</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)"
             @onclick="@(()=>SetDeviceNum(5))">5</MudTd>
-            <td>&nbsp;=&nbsp;</td>
+            <MudTd Style="font-weight:bold;" Class="device_lastcell">&nbsp;=&nbsp;</MudTd>
                         </tr>
                     </table>
                 </div>
@@ -129,13 +147,13 @@ table#controlPanel td  {
                     </table>
                 </div>
                 <div class="flex-item-right">
-                    <table>
+                    <table style="width:267px;">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(9)"
             @onclick="@(()=>SetDeviceNum(9))">9</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
             @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
-            <td>&nbsp;E&nbsp;</td>
+            <MudTd Style="font-weight:bold;" Class="device_lastcell">&nbsp;E&nbsp;</MudTd>
                         </tr>
                     </table>
                 </div>
@@ -144,7 +162,7 @@ table#controlPanel td  {
         <tr>
             <td>
                 <div class="flex-item-left">
-                <table width="270px" >
+                <table class="internal_div_table">
                     <tr>
                         <td>
                             <MudSlider @ontouchend="@(()=>UpdateDynParam(@paramHeatO2))" @onmouseup="@(()=>UpdateDynParam(@paramHeatO2))"
@@ -189,26 +207,26 @@ table#controlPanel td  {
                 </table>
                 </div>
                 <div class="flex-item-right">
-                    <table>
+                    <table class="internal_div_table">
                         <tr>
                             <td> SP </td>
-            <td colspan="2">
-                <table width="100%">
-                    <tr>
-                        <td width="50%">Calib1</td>
-                        <td width="50%">Calib2</td>
-                    </tr>
-                    <tr>
-                        <td rowspan="2">Empty</td>
-                        <td>
-                            <table>
-                                <tr><td>img1</td></tr>
-                                <tr><td>img2</td></tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
+                            <td colspan="2">
+                                <table width="100%">
+                                    <tr>
+                                        <td width="50%">Calib1</td>
+                                        <td width="50%">Calib2</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">Empty</td>
+                                        <td>
+                                            <table>
+                                                <tr><td>img1</td></tr>
+                                                <tr><td>img2</td></tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
                         </tr>
                     </table>
                 </div>
