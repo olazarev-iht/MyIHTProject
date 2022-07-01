@@ -21,7 +21,7 @@
 }
 
 .tabcell {
-    width: 75px;
+    width: 87px;
     height:50px;
     text-align: center;
 }
@@ -65,18 +65,13 @@ table#controlPanel td  {
 }
 
 .internal_div_table{
-    width:267px; 
+    width:268px; 
     height:197px;
-    border-spacing: 1px
-    /*border: 0px solid*/
 }
 
 .flex-container table{
-    border-spacing: 1px
-    /*border: 0px solid*/
+    border-spacing: 1px;
 }
-
-
 </style>
 
 @if (dynDataModificationCNCDataProvider != null)
@@ -120,7 +115,7 @@ table#controlPanel td  {
                     </table>
                  </div>
                  <div class="flex-item-right">
-                    <table style="width:267px;">
+                    <table style="width:268px;">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(4)"
             @onclick="@(()=>SetDeviceNum(4))">4</MudTd>
@@ -147,7 +142,7 @@ table#controlPanel td  {
                     </table>
                 </div>
                 <div class="flex-item-right">
-                    <table style="width:267px;">
+                    <table style="width:268px;">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(9)"
             @onclick="@(()=>SetDeviceNum(9))">9</MudTd>
@@ -237,11 +232,11 @@ table#controlPanel td  {
                 <div class="flex-item-left">
                     <table>
                         <tr>
-            <MudTd Style="font-weight:bold; width:17%;" Class="@GetParamsTypeClass("Ignition")"
+            <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Ignition")"
             @onclick="@(()=>SetParamsType("Ignition"))">Ignition</MudTd>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("PreHeat")"
+            <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("PreHeat")"
             @onclick="@(()=>SetParamsType("PreHeat"))">Preheat</MudTd>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Pierce")"
+            <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Pierce")"
             @onclick="@(()=>SetParamsType("Pierce"))">Piercing</MudTd>
                         </tr>
                     </table>
@@ -249,11 +244,11 @@ table#controlPanel td  {
                  <div class="flex-item-right">
                     <table>
                         <tr>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Cut")"
+            <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Cut")"
             @onclick="@(()=>SetParamsType("Cut"))">Cutting</MudTd>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Heat")"
+            <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Heat")"
             @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
-            <td>&nbsp;</td>   
+            <td style="width:90px">&nbsp;</td>   
                         </tr>
                     </table>
                 </div>
