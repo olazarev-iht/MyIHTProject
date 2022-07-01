@@ -8,8 +8,14 @@
 
 
 <style>
+.device_tabcell {
+    width: 87px;
+    height:50px;
+    text-align: center;
+}
+
 .tabcell {
-    width: 50px;
+    width: 75px;
     height:50px;
     text-align: center;
 }
@@ -38,6 +44,21 @@ table#controlPanel td  {
     background-color:lightgrey;
 }
 
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-item-left {
+  float:left;
+  flex: 50%;
+}
+
+.flex-item-right {
+  flex: 50%;
+}
+
+
 </style>
 
 @if (dynDataModificationCNCDataProvider != null)
@@ -64,37 +85,66 @@ table#controlPanel td  {
         _cutO2Visible = INVISIBLE_CLASS;
     }
 
-<div>
-    <table id="controlPanel" class="tablemobile">
+<div class="flex-container" >
+    <table id="controlPanel" class="tablemobile" width="550px">
         <tr>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(1)"
+            <td>
+                <div class="flex-item-left">
+                    <table>
+                        <tr>
+            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(1)"
             @onclick="@(()=>SetDeviceNum(1))">1</MudTd>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(2)"
+            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(2)"
             @onclick="@(()=>SetDeviceNum(2))">2</MudTd>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(3)"
+            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(3)"
             @onclick="@(()=>SetDeviceNum(3))">3</MudTd>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(4)"
+                        </tr>
+                    </table>
+                 </div>
+                 <div class="flex-item-right">
+                    <table>
+                        <tr>
+            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(4)"
             @onclick="@(()=>SetDeviceNum(4))">4</MudTd>
-            <MudTd Style="font-weight:bold; width:17%" Class="@GetDeviceNumClass(5)"
+            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)"
             @onclick="@(()=>SetDeviceNum(5))">5</MudTd>
-            <MudTd Style="font-weight:bold; width:15%" Class="tabcell">=</MudTd>
+            <td>&nbsp;=&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
         </tr>
         <tr>
+            <td>
+                <div class="flex-item-left">
+                    <table>
+                        <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(6)"
             @onclick="@(()=>SetDeviceNum(6))">6</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(7)"
             @onclick="@(()=>SetDeviceNum(7))">7</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(8)"
             @onclick="@(()=>SetDeviceNum(8))">8</MudTd>
+                        </tr>
+                    </table>
+                </div>
+                <div class="flex-item-right">
+                    <table>
+                        <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(9)"
             @onclick="@(()=>SetDeviceNum(9))">9</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
             @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
-            <MudTd Style="background-color:#ffffff; font-weight:bold;" Class="tabcell">E</MudTd>
+            <td>&nbsp;E&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
         </tr>
         <tr>
-            <td colspan="3" >
-                <table width="100%">
+            <td>
+                <div class="flex-item-left">
+                <table width="270px" >
                     <tr>
                         <td>
                             <MudSlider @ontouchend="@(()=>UpdateDynParam(@paramHeatO2))" @onmouseup="@(()=>UpdateDynParam(@paramHeatO2))"
@@ -137,8 +187,11 @@ table#controlPanel td  {
                         </td>
                     </tr>
                 </table>
-            </td>
-            <td> SP </td>
+                </div>
+                <div class="flex-item-right">
+                    <table>
+                        <tr>
+                            <td> SP </td>
             <td colspan="2">
                 <table width="100%">
                     <tr>
@@ -156,20 +209,37 @@ table#controlPanel td  {
                     </tr>
                 </table>
             </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>                      
         </tr>
         <tr>
+            <td>
+                <div class="flex-item-left">
+                    <table>
+                        <tr>
             <MudTd Style="font-weight:bold; width:17%;" Class="@GetParamsTypeClass("Ignition")"
             @onclick="@(()=>SetParamsType("Ignition"))">Ignition</MudTd>
             <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("PreHeat")"
             @onclick="@(()=>SetParamsType("PreHeat"))">Preheat</MudTd>
             <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Pierce")"
             @onclick="@(()=>SetParamsType("Pierce"))">Piercing</MudTd>
-              
+                        </tr>
+                    </table>
+                 </div>
+                 <div class="flex-item-right">
+                    <table>
+                        <tr>
             <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Cut")"
             @onclick="@(()=>SetParamsType("Cut"))">Cutting</MudTd>
             <MudTd Style="font-weight:bold; width:17%" Class="@GetParamsTypeClass("Heat")"
             @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
-            <td>&nbsp;</td>          
+            <td>&nbsp;</td>   
+                        </tr>
+                    </table>
+                </div>
+            </td>
         </tr>
     </table>
 </div>
@@ -230,13 +300,13 @@ table#controlPanel td  {
 
     private string GetDeviceNumClass(int selectedNum)
     {
-        var cssClass = "NotInUseDeviceNum tabcell";
+        var cssClass = "NotInUseDeviceNum device_tabcell";
 
         if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber){
-            cssClass = "SelectedDeviceNum tabcell";
+            cssClass = "SelectedDeviceNum device_tabcell";
         }
         else if(selectedNum <= dynDataModificationCNCDataProvider.APCDevicesCount){
-            cssClass = "UnselectedDeviceNum tabcell";
+            cssClass = "UnselectedDeviceNum device_tabcell";
         }
 
         return cssClass;
