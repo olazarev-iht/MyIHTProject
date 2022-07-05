@@ -204,7 +204,16 @@ table#controlPanel td  {
                 <div class="flex-item-right">
                     <table class="internal_div_table">
                         <tr>
-                            <td class="device_tabcell"> SP </td>
+                            <td class="device_tabcell">SP 
+                                <MudSlider @onchange="@(()=>StartTorchMoving())" 
+                                    @ontouchend="@(()=>StopTorchMoving())" @onmouseup="@(()=>StopTorchMoving())"
+                                @bind-Value="@spValueCurrent"
+                                Vertical="true"
+                                Min="1" 
+                                Max="100"
+                                Step="1" 
+                                Color="Color.Info">SP: spValueCurrent.ToString()</MudSlider> 
+                            </td>
                             <td colspan="2">
                                 <table width="100%" height="100%">
                                     <tr>
@@ -261,6 +270,8 @@ table#controlPanel td  {
 @code {
 
     public event EventHandler? DynamicAPCParamsClientChanged;
+    public event EventHandler? APCTorchPositionChanged;
+    public event EventHandler? APCTorchPositionStoped;
 
     private ParameterDataModel paramHeatO2 = new();
     private ParameterDataModel paramFuelGas = new();
@@ -275,10 +286,20 @@ table#controlPanel td  {
     private string NONE_DISPLAY_CLASS = "d-none";
     private string DISPLAY_CLASS = "d-block";
 
+    private int spValueOriginal = 50;
+    private int spValueCurrent = 50;
+    private string currentTorchEventName = string.Empty;
+
     protected override void OnInitialized()
     {
         dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
         this.DynamicAPCParamsClientChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+
+        // Subscribe of Data Provider for the Client Event of moving torch (Up or Down)
+        this.APCTorchPositionChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
+
+        // Subscribe of Data Provider for the Client Event of stoping torch
+        this.APCTorchPositionStoped += dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
 
         base.OnInitialized();
     }
@@ -325,6 +346,41 @@ table#controlPanel td  {
         return cssClass;
     }
 
+    private void StopTorchMoving()
+    {
+        this.APCTorchPositionStoped?.Invoke("StopTorch", EventArgs.Empty);
+    }
+
+    private void StartTorchMoving()
+    {
+        var newEventName = string.Empty;
+
+        if(spValueOriginal < spValueCurrent)
+        {
+            newEventName = "MoveTorchUp";
+        }
+        else
+        {
+            //TODO delete if - if not deened
+            if(spValueOriginal != spValueCurrent)
+                newEventName = "MoveTorchDown";
+        }
+
+        if(currentTorchEventName != newEventName)
+        {
+            currentTorchEventName = newEventName;
+
+            StartMovingTorch(currentTorchEventName);
+        }
+
+        spValueCurrent = spValueOriginal;
+    }
+
+    private void StartMovingTorch(string eventName)
+    {
+        this.APCTorchPositionChanged?.Invoke(eventName, EventArgs.Empty);
+    }
+
     private void UpdateDynParam(ParameterDataModel parameterData)
     {
         OnParamChanged(parameterData);
@@ -339,6 +395,9 @@ table#controlPanel td  {
     {
         dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
         this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+
+        this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
+        this.APCTorchPositionStoped -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
     }
 
     private void ParamSelected1(ChangeEventArgs args)

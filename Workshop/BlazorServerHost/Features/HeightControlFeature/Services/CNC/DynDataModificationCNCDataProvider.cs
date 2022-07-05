@@ -11,6 +11,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 	{
 		public event EventHandler? DynamicAPCParamsDataChanged;
 
+		private readonly ILogger<DynDataModificationCNCDataProvider> _logger;
+
 		//public DynDataModificationParamsModel CurrentDynamicAPCParams { get; set; }
 		//public DynamicAPCParamsModel CurrentDynamicAPCParams { get; set; } = new();
 
@@ -34,11 +36,18 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		private bool _paramChangedFlag = false;
 
-		public DynDataModificationCNCDataProvider(IAPCWorker apcWorker, IParameterDataInfoManager parameterDataInfoManager)
+		private CancellationTokenSource tokenSource = null;
+
+		public DynDataModificationCNCDataProvider(
+			IAPCWorker apcWorker, 
+			IParameterDataInfoManager parameterDataInfoManager,
+			ILogger<DynDataModificationCNCDataProvider> logger)
 		{
 			_apcWorker = apcWorker ?? throw new ArgumentNullException(nameof(apcWorker));
 
 			_parameterDataInfoManager = parameterDataInfoManager ?? throw new ArgumentNullException(nameof(parameterDataInfoManager));
+
+			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
 			_apcWorker.DynamicDataChanged += _apcWorkerService_DymanicDataChanged;
 
@@ -57,6 +66,94 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			//await Task.Delay(TimeSpan.FromSeconds(5));
 
 			await _apcWorker.RefreshDynamicDataAsync(CurrentDeviceNumber, parameter.DynParams.ParamId);
+		}
+
+		public async void dynamicParamsDysplay_APCTorchPositionChanged(object? sender, EventArgs e)
+		{
+			var commandType = sender as string;
+			if (string.IsNullOrWhiteSpace(commandType)) return;
+
+			//Action<CancellationToken> doHeartBeatWork = null;
+			//var tokenSource = new CancellationTokenSource();
+
+			tokenSource = new CancellationTokenSource();
+			var token = tokenSource.Token;
+
+			try
+			{
+				await Task.Run(async () => await StartSendingHeartBeatForTorchAsync(commandType, token), token);
+			}
+			catch (OperationCanceledException)
+			{
+				Console.WriteLine($"\n{nameof(OperationCanceledException)} thrown\n");
+			}
+			finally
+			{
+				tokenSource.Dispose();
+			}
+
+		}
+
+		public async void dynamicParamsDysplay_APCTorchPositionStoped(object? sender, EventArgs e)
+		{
+			tokenSource.Cancel();
+			Console.WriteLine("\nTask cancellation requested.");
+
+			await StopMoveTorchCommandAsync();
+
+		}
+		private async Task StartSendingHeartBeatForTorchAsync(string commandType, CancellationToken ct)
+		{
+			Task taskSendHeartBeat = null;
+
+			// Cancellation was already requested
+			if (ct.IsCancellationRequested)
+			{
+				Console.WriteLine("Task {0} was cancelled before it got started.", commandType);
+				ct.ThrowIfCancellationRequested();
+			}
+
+			while (true)
+			{
+                switch (commandType)
+                {
+                    case "MoveTorchUp":
+						taskSendHeartBeat = SendHeartBeatMoveTorchUpAsync();
+                        break;
+                    case "MoveTorchDown":
+						taskSendHeartBeat = SendHeartBeatMoveTorchDownAsync();
+                        break;
+                }
+
+				if(taskSendHeartBeat != null) await taskSendHeartBeat;
+
+				//In the production Delay must be < 0.750 sec
+				await Task.Delay(TimeSpan.FromSeconds(2));
+
+				if (ct.IsCancellationRequested)
+				{
+					Console.WriteLine("Task {0} cancelled", commandType);
+					ct.ThrowIfCancellationRequested();
+				}
+			}
+		}
+
+		private async Task StopMoveTorchCommandAsync()
+		{
+			// TODO: call APC device API function to Move Torch Up instead.
+			await Task.Run(() => { _logger.LogDebug("\nSent Command - StopTorch"); });
+		}
+
+		private async Task SendHeartBeatMoveTorchUpAsync()
+		{
+			// TODO: call APC device API function to Move Torch Up instead.
+			await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchUp"); });
+		}
+
+		private async Task SendHeartBeatMoveTorchDownAsync()
+		{
+			// TODO: call APC device API function to Move Torch Down instead.
+			await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchDown"); });
 		}
 
 		private async Task UpdateDynParamInAPCDeviceMockDBAsync(int deviceNum, ParamIds paramId, int paramValue)
