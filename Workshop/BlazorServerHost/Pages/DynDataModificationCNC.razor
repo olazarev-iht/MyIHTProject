@@ -205,14 +205,15 @@ table#controlPanel td  {
                     <table class="internal_div_table">
                         <tr>
                             <td class="device_tabcell">SP 
-                                <MudSlider @onchange="@(()=>StartTorchMoving())" 
-                                    @ontouchend="@(()=>StopTorchMoving())" @onmouseup="@(()=>StopTorchMoving())"
+                                <MudSlider @onmousedown="@(()=>StartChangeState())" @ontouchstart="@(()=>StartChangeState())"
+                                @onmousemove="@(()=>StartTorchMoving())" @ontouchmove="@(()=>StartTorchMoving())" 
+                                @ontouchend="@(()=>StopTorchMoving())" @onmouseup="@(()=>StopTorchMoving())"
                                 @bind-Value="@spValueCurrent"
                                 Vertical="true"
-                                Min="1" 
-                                Max="100"
+                                Min="49" 
+                                Max="51"
                                 Step="1" 
-                                Color="Color.Info">SP: spValueCurrent.ToString()</MudSlider> 
+                                Color="Color.Info">SP: @spValueCurrent.ToString()</MudSlider> 
                             </td>
                             <td colspan="2">
                                 <table width="100%" height="100%">
@@ -289,6 +290,8 @@ table#controlPanel td  {
     private int spValueOriginal = 50;
     private int spValueCurrent = 50;
     private string currentTorchEventName = string.Empty;
+    private bool isMouseDown = false;
+    private bool isTorchStartedMoving = false;
 
     protected override void OnInitialized()
     {
@@ -348,37 +351,61 @@ table#controlPanel td  {
 
     private void StopTorchMoving()
     {
-        this.APCTorchPositionStoped?.Invoke("StopTorch", EventArgs.Empty);
+        if (isTorchStartedMoving)
+        {
+            isMouseDown = false;
+            isTorchStartedMoving = false;
+
+            this.APCTorchPositionStoped?.Invoke("StopTorch", EventArgs.Empty);
+        }
+    }
+
+    private void StartChangeState()
+    {
+        isMouseDown = true;
     }
 
     private void StartTorchMoving()
     {
         var newEventName = string.Empty;
 
-        if(spValueOriginal < spValueCurrent)
+        if (isTorchStartedMoving || !isMouseDown)
+            return;
+
+        if (spValueOriginal < spValueCurrent)
         {
             newEventName = "MoveTorchUp";
         }
         else
         {
             //TODO delete if - if not deened
-            if(spValueOriginal != spValueCurrent)
+            if (spValueOriginal != spValueCurrent)
                 newEventName = "MoveTorchDown";
         }
 
-        if(currentTorchEventName != newEventName)
+        if (currentTorchEventName != newEventName)
         {
+            if (currentTorchEventName != string.Empty)
+            {
+                StopTorchMoving();
+            }
             currentTorchEventName = newEventName;
 
             StartMovingTorch(currentTorchEventName);
         }
 
         spValueCurrent = spValueOriginal;
+
     }
 
     private void StartMovingTorch(string eventName)
     {
-        this.APCTorchPositionChanged?.Invoke(eventName, EventArgs.Empty);
+        if (!isTorchStartedMoving)
+        {
+            isTorchStartedMoving = true;
+
+            this.APCTorchPositionChanged?.Invoke(eventName, EventArgs.Empty);
+        }
     }
 
     private void UpdateDynParam(ParameterDataModel parameterData)
