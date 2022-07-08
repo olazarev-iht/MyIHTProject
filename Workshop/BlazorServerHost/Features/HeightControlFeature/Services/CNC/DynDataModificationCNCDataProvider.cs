@@ -38,6 +38,12 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		private CancellationTokenSource tokenSource = null;
 
+		// To define hwo is currently working with the device
+		private static Guid[] currentlyInWorkDevices = new Guid[11];
+
+		// TODO: take this value from the Authenticated user id
+		private Guid _userId = Guid.NewGuid();
+
 		public DynDataModificationCNCDataProvider(
 			IAPCWorker apcWorker, 
 			IParameterDataInfoManager parameterDataInfoManager,
@@ -68,10 +74,44 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			await _apcWorker.RefreshDynamicDataAsync(CurrentDeviceNumber, parameter.DynParams.ParamId);
 		}
 
+		private bool IsAnOtherUserWorkingWithDeviceNow()
+        {
+			var returnVal = false;
+
+			if (currentlyInWorkDevices[CurrentDeviceNumber] == Guid.Empty)
+			{
+				// currentlyInWorkDevices.Where(v => v.Equals(_userId)).ToList().ForEach(v => v = Guid.Empty);
+				// currentlyInWorkDevices[CurrentDeviceNumber] = _userId;
+
+                for(int i = 1; i < currentlyInWorkDevices.Length; i++)
+                {
+					if (currentlyInWorkDevices[i] == _userId)
+                    {
+						currentlyInWorkDevices[i] = Guid.Empty;
+					}
+                }
+
+				currentlyInWorkDevices[CurrentDeviceNumber] = _userId;
+			}
+			else
+			{
+				// Another user is currently working with the device
+				// TODO: We can implement the same logic in razor component to get an info message
+				if (currentlyInWorkDevices[CurrentDeviceNumber] != _userId)
+				{
+					returnVal = true;
+				}
+			}
+
+			return returnVal;
+		}
+
 		public async void dynamicParamsDysplay_APCTorchPositionChanged(object? sender, EventArgs e)
 		{
 			var commandType = sender as string;
 			if (string.IsNullOrWhiteSpace(commandType)) return;
+
+			if (IsAnOtherUserWorkingWithDeviceNow()) return;
 
 			//Action<CancellationToken> doHeartBeatWork = null;
 			//var tokenSource = new CancellationTokenSource();
@@ -113,6 +153,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		public async void dynamicParamsDysplay_APCTorchPositionStoped(object? sender, EventArgs e)
 		{
+			if (IsAnOtherUserWorkingWithDeviceNow()) return;
+
 			tokenSource.Cancel();
 
 			// Dispose token source instead of finally block
@@ -130,7 +172,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			// Cancellation was already requested
 			if (ct.IsCancellationRequested)
 			{
-				Console.WriteLine("Task {0} was cancelled before it got started.", commandType);
+				Console.WriteLine($"Task {commandType} was cancelled before it got started. Device {CurrentDeviceNumber}");
 				ct.ThrowIfCancellationRequested();
 			}
 
@@ -149,11 +191,11 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 				if(taskSendHeartBeat != null) await taskSendHeartBeat;
 
 				//In the production Delay must be < 0.750 sec
-				await Task.Delay(TimeSpan.FromSeconds(2));
+				await Task.Delay(TimeSpan.FromSeconds(1));
 
 				if (ct.IsCancellationRequested)
 				{
-					Console.WriteLine("Task {0} cancelled", commandType);
+					Console.WriteLine($"\nTask {commandType} cancelled. Device {CurrentDeviceNumber}");
 					ct.ThrowIfCancellationRequested();
 				}
 			}
@@ -163,21 +205,21 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		{
 			// TODO: call APC device API function to Move Torch Up instead.
 			//await Task.Run(() => { _logger.LogDebug("\nSent Command - StopTorch"); });
-			_logger.LogDebug("\nSent Command - StopTorch");
+			_logger.LogDebug($"\n\n\n\nSent Command - Stop Torch. Device: {CurrentDeviceNumber}. User: {_userId}\n\n\n\n");
 		}
 
 		private async Task SendHeartBeatMoveTorchUpAsync()
 		{
 			// TODO: call APC device API function to Move Torch Up instead.
 			//await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchUp"); });
-			_logger.LogDebug("\nSent Command - MoveTorchUp");
+			_logger.LogDebug($"\nSent Command - Move Torch Up. Device {CurrentDeviceNumber}. User: {_userId}");
 		}
 
 		private async Task SendHeartBeatMoveTorchDownAsync()
 		{
 			// TODO: call APC device API function to Move Torch Down instead.
 			//await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchDown"); });
-			_logger.LogDebug("\nSent Command - MoveTorchDown");
+			_logger.LogDebug($"\nSent Command - Move Torch Down. Device {CurrentDeviceNumber}. User: {_userId}");
 		}
 
 		private async Task UpdateDynParamInAPCDeviceMockDBAsync(int deviceNum, ParamIds paramId, int paramValue)

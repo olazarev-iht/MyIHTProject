@@ -316,6 +316,12 @@ table#controlPanel td  {
     {
         if (deviceNum <= dynDataModificationCNCDataProvider.APCDevicesCount)
         {
+            // Stop the SP moving
+            StopTorchMoving();
+
+            // Reset the SP value to the start val
+            spValueCurrent = 50;
+
             dynDataModificationCNCDataProvider.CurrentDeviceNumber = deviceNum;
 
             await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
