@@ -100,9 +100,13 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 				var exMessage = ex.Message;
 			}
+			catch(Exception ex2)
+            {
+				Console.WriteLine(ex2.Message);
+            }
 			finally
 			{
-				tokenSource.Dispose();
+				//tokenSource.Dispose();
 			}
 
 		}
@@ -110,6 +114,10 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		public async void dynamicParamsDysplay_APCTorchPositionStoped(object? sender, EventArgs e)
 		{
 			tokenSource.Cancel();
+
+			// Dispose token source instead of finally block
+			tokenSource.Dispose();
+
 			Console.WriteLine("\nTask cancellation requested.");
 
 			await StopMoveTorchCommandAsync();

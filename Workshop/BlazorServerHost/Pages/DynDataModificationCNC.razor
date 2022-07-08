@@ -376,6 +376,12 @@ table#controlPanel td  {
 
         if (!string.IsNullOrWhiteSpace(newEventName))
         {
+            // We change torch moving direction witout switching to stop position
+            if (isTorchStartedMoving)
+            {
+                StopTorchMoving();
+            }
+
             currentTorchEventName = newEventName;
 
             StartMovingTorch(currentTorchEventName);
