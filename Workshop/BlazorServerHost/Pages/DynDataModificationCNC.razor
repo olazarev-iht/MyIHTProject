@@ -205,10 +205,7 @@ table#controlPanel td  {
                     <table class="internal_div_table">
                         <tr>
                             <td class="device_tabcell">SP 
-                                <MudSlider @onmousedown="@(()=>StartChangeState())" @ontouchstart="@(()=>StartChangeState())"
-                                @onmousemove="@(()=>StartTorchMoving())" @ontouchmove="@(()=>StartTorchMoving())" 
-                                @ontouchend="@(()=>StopTorchMoving())" @onmouseup="@(()=>StopTorchMoving())"
-                                @bind-Value="@spValueCurrent"
+                                <MudSlider @onchange="OnTorchStateChanged" @bind-Value="@spValueCurrent"
                                 Vertical="true"
                                 Min="49" 
                                 Max="51"
@@ -290,7 +287,6 @@ table#controlPanel td  {
     private int spValueOriginal = 50;
     private int spValueCurrent = 50;
     private string currentTorchEventName = string.Empty;
-    private bool isMouseDown = false;
     private bool isTorchStartedMoving = false;
 
     protected override void OnInitialized()
@@ -353,49 +349,37 @@ table#controlPanel td  {
     {
         if (isTorchStartedMoving)
         {
-            isMouseDown = false;
             isTorchStartedMoving = false;
 
             this.APCTorchPositionStoped?.Invoke("StopTorch", EventArgs.Empty);
         }
     }
 
-    private void StartChangeState()
-    {
-        isMouseDown = true;
-    }
-
-    private void StartTorchMoving()
+    private void OnTorchStateChanged()
     {
         var newEventName = string.Empty;
 
-        if (isTorchStartedMoving || !isMouseDown)
-            return;
+        //if (isTorchStartedMoving) return;
 
         if (spValueOriginal < spValueCurrent)
         {
             newEventName = "MoveTorchUp";
         }
+        else if (spValueOriginal > spValueCurrent)
+        {
+            newEventName = "MoveTorchDown";
+        }
         else
         {
-            //TODO delete if - if not deened
-            if (spValueOriginal != spValueCurrent)
-                newEventName = "MoveTorchDown";
+            StopTorchMoving();
         }
 
-        if (currentTorchEventName != newEventName)
+        if (!string.IsNullOrWhiteSpace(newEventName))
         {
-            if (currentTorchEventName != string.Empty)
-            {
-                StopTorchMoving();
-            }
             currentTorchEventName = newEventName;
 
             StartMovingTorch(currentTorchEventName);
         }
-
-        spValueCurrent = spValueOriginal;
-
     }
 
     private void StartMovingTorch(string eventName)

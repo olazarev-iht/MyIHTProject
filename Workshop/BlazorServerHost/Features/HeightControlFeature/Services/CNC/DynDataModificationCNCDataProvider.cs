@@ -83,9 +83,22 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			{
 				await Task.Run(async () => await StartSendingHeartBeatForTorchAsync(commandType, token), token);
 			}
-			catch (OperationCanceledException)
+			catch (AggregateException ex1)
+			{
+				// catch whatever was thrown
+				foreach (Exception eex in ex1.InnerExceptions)
+					Console.WriteLine(eex.Message);
+			}
+			catch (OperationCanceledException ex)
 			{
 				Console.WriteLine($"\n{nameof(OperationCanceledException)} thrown\n");
+
+				if (ex.InnerException != null)
+				{
+					var innerExMessage = ex.InnerException.Message;
+				}
+
+				var exMessage = ex.Message;
 			}
 			finally
 			{
@@ -141,19 +154,22 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		private async Task StopMoveTorchCommandAsync()
 		{
 			// TODO: call APC device API function to Move Torch Up instead.
-			await Task.Run(() => { _logger.LogDebug("\nSent Command - StopTorch"); });
+			//await Task.Run(() => { _logger.LogDebug("\nSent Command - StopTorch"); });
+			_logger.LogDebug("\nSent Command - StopTorch");
 		}
 
 		private async Task SendHeartBeatMoveTorchUpAsync()
 		{
 			// TODO: call APC device API function to Move Torch Up instead.
-			await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchUp"); });
+			//await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchUp"); });
+			_logger.LogDebug("\nSent Command - MoveTorchUp");
 		}
 
 		private async Task SendHeartBeatMoveTorchDownAsync()
 		{
 			// TODO: call APC device API function to Move Torch Down instead.
-			await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchDown"); });
+			//await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchDown"); });
+			_logger.LogDebug("\nSent Command - MoveTorchDown");
 		}
 
 		private async Task UpdateDynParamInAPCDeviceMockDBAsync(int deviceNum, ParamIds paramId, int paramValue)
