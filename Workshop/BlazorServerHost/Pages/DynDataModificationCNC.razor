@@ -3,6 +3,7 @@
 @using BlazorServerHost.Features.HeightControlFeature.Services.CNC
 @using SharedComponents.Models.APCHardware
 @inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
+@inherits ComponentBase
 @implements IDisposable
 <MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
 
@@ -204,13 +205,15 @@ table#controlPanel td  {
                 <div class="flex-item-right">
                     <table class="internal_div_table">
                         <tr>
-                            <td class="device_tabcell">SP 
-                                <MudSlider @onchange="OnTorchStateChanged" @bind-Value="@spValueCurrent"
+                            <td class="device_tabcell">Up 
+                                <MudSlider @onchange="OnTorchStateChanged" @bind-Value="@spValueCurrent" Style="height:50%"
+                                Disabled="@dynDataModificationCNCDataProvider.IsCurrentDeviceBusy" 
                                 Vertical="true"
                                 Min="49" 
                                 Max="51"
                                 Step="1" 
-                                Color="Color.Info">SP: @spValueCurrent.ToString()</MudSlider> 
+                                Color="Color.Info">Stop</MudSlider>
+                                Down 
                             </td>
                             <td colspan="2">
                                 <table width="100%" height="100%">
@@ -270,6 +273,7 @@ table#controlPanel td  {
     public event EventHandler? DynamicAPCParamsClientChanged;
     public event EventHandler? APCTorchPositionChanged;
     public event EventHandler? APCTorchPositionStoped;
+    public static event EventHandler? ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded;
 
     private ParameterDataModel paramHeatO2 = new();
     private ParameterDataModel paramFuelGas = new();
@@ -297,11 +301,16 @@ table#controlPanel td  {
         // Subscribe of Data Provider for the Client Event of moving torch (Up or Down)
         this.APCTorchPositionChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
 
-        // Subscribe of Data Provider for the Client Event of stoping torch
+        // Subscribe of Data Provider for the Client Event of stopping the torch
         this.APCTorchPositionStoped += dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
+
+        // Subscribe for event of client stopping working with the torch
+        ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
 
         base.OnInitialized();
     }
+
+
 
     private async void SetParamsType(string paramsType)
     {
@@ -358,6 +367,8 @@ table#controlPanel td  {
             isTorchStartedMoving = false;
 
             this.APCTorchPositionStoped?.Invoke("StopTorch", EventArgs.Empty);
+
+            ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -401,6 +412,8 @@ table#controlPanel td  {
             isTorchStartedMoving = true;
 
             this.APCTorchPositionChanged?.Invoke(eventName, EventArgs.Empty);
+
+            ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -421,6 +434,12 @@ table#controlPanel td  {
 
         this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
         this.APCTorchPositionStoped -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
+
+        // Stop the SP moving and refresh component for all the users
+        dynDataModificationCNCDataProvider.StopMovingTorchAsync();
+        ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
+
+        ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
     }
 
     private void ParamSelected1(ChangeEventArgs args)

@@ -25,6 +25,15 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			}
 		}
 
+		public bool IsCurrentDeviceBusy
+		{
+            get
+            {
+				return IsAnOtherUserWorkingWithDeviceNow();
+            } 
+			
+		}
+
 		private readonly IAPCWorker _apcWorker;
 
 		private readonly IParameterDataInfoManager _parameterDataInfoManager;
@@ -74,47 +83,81 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			await _apcWorker.RefreshDynamicDataAsync(CurrentDeviceNumber, parameter.DynParams.ParamId);
 		}
 
+		//private bool IsAnOtherUserWorkingWithDeviceNow1()
+  //      {
+		//	var returnVal = false;
+
+		//	// If the current device is free - set up as busy by the current user
+		//	if (currentlyInWorkDevices[CurrentDeviceNumber] == Guid.Empty)
+		//	{
+		//		// Release other devices are busy by the current user
+		//		ReleaseAllTheDevices();
+
+		//		// Set up the device as busy by the current user
+		//		currentlyInWorkDevices[CurrentDeviceNumber] = _userId;
+		//	}
+		//	else
+		//	{
+		//		// Another user is currently working with the device
+		//		// TODO: We can implement the same logic in razor component to get an info message
+		//		if (currentlyInWorkDevices[CurrentDeviceNumber] != _userId)
+		//		{
+		//			returnVal = true;
+		//		}
+		//	}
+
+		//	return returnVal;
+		//}
+
 		private bool IsAnOtherUserWorkingWithDeviceNow()
         {
 			var returnVal = false;
-
-			if (currentlyInWorkDevices[CurrentDeviceNumber] == Guid.Empty)
-			{
-				// currentlyInWorkDevices.Where(v => v.Equals(_userId)).ToList().ForEach(v => v = Guid.Empty);
-				// currentlyInWorkDevices[CurrentDeviceNumber] = _userId;
-
-                for(int i = 1; i < currentlyInWorkDevices.Length; i++)
-                {
-					if (currentlyInWorkDevices[i] == _userId)
-                    {
-						currentlyInWorkDevices[i] = Guid.Empty;
-					}
-                }
-
-				currentlyInWorkDevices[CurrentDeviceNumber] = _userId;
-			}
-			else
-			{
-				// Another user is currently working with the device
-				// TODO: We can implement the same logic in razor component to get an info message
-				if (currentlyInWorkDevices[CurrentDeviceNumber] != _userId)
-				{
-					returnVal = true;
-				}
+			
+			if (currentlyInWorkDevices[CurrentDeviceNumber] != Guid.Empty && currentlyInWorkDevices[CurrentDeviceNumber] != _userId)
+            {
+				returnVal = true;
 			}
 
 			return returnVal;
 		}
+
+		private void ReleaseAllTheDevices()
+        {
+			for (int i = 1; i < currentlyInWorkDevices.Length; i++)
+			{
+				if (currentlyInWorkDevices[i] == _userId)
+				{
+					currentlyInWorkDevices[i] = Guid.Empty;
+				}
+			}
+		}
+
+
+		SemaphoreSlim mutexModbusMaster = new SemaphoreSlim(1,1);
 
 		public async void dynamicParamsDysplay_APCTorchPositionChanged(object? sender, EventArgs e)
 		{
 			var commandType = sender as string;
 			if (string.IsNullOrWhiteSpace(commandType)) return;
 
+			// If the device is busy - stop the command
 			if (IsAnOtherUserWorkingWithDeviceNow()) return;
+
+
+			// If the current device is free - set up it as busy by the current user
+			if (currentlyInWorkDevices[CurrentDeviceNumber] == Guid.Empty)
+			{
+				// Release other devices are busy by the current user
+				ReleaseAllTheDevices();
+
+				// Set up the device as busy by the current user
+				currentlyInWorkDevices[CurrentDeviceNumber] = _userId;
+			}
 
 			//Action<CancellationToken> doHeartBeatWork = null;
 			//var tokenSource = new CancellationTokenSource();
+
+			await mutexModbusMaster.WaitAsync().ConfigureAwait(false);
 
 			tokenSource = new CancellationTokenSource();
 			var token = tokenSource.Token;
@@ -140,31 +183,40 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 				var exMessage = ex.Message;
 			}
-			catch(Exception ex2)
-            {
+			catch (Exception ex2)
+			{
 				Console.WriteLine(ex2.Message);
-            }
+			}
 			finally
 			{
-				//tokenSource.Dispose();
+				tokenSource.Dispose();
+				mutexModbusMaster.Release();
 			}
 
 		}
 
 		public async void dynamicParamsDysplay_APCTorchPositionStoped(object? sender, EventArgs e)
 		{
+			await StopMovingTorchAsync();
+		}
+
+		public async Task StopMovingTorchAsync()
+        {
 			if (IsAnOtherUserWorkingWithDeviceNow()) return;
+
+			// Set up the device as free
+			currentlyInWorkDevices[CurrentDeviceNumber] = Guid.Empty;
 
 			tokenSource.Cancel();
 
 			// Dispose token source instead of finally block
-			tokenSource.Dispose();
+			//tokenSource.Dispose();
 
 			Console.WriteLine("\nTask cancellation requested.");
 
 			await StopMoveTorchCommandAsync();
-
 		}
+
 		private async Task StartSendingHeartBeatForTorchAsync(string commandType, CancellationToken ct)
 		{
 			Task taskSendHeartBeat = null;
