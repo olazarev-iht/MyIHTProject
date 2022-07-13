@@ -73,6 +73,11 @@ table#controlPanel td  {
 .flex-container table{
     border-spacing: 1px;
 }
+
+button .mud-nav-link-text {
+    font-size: medium;
+    font-weight: 550 !important;
+}
 </style>
 
 @if (dynDataModificationCNCDataProvider != null)
@@ -122,7 +127,20 @@ table#controlPanel td  {
             @onclick="@(()=>SetDeviceNum(4))">4</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)"
             @onclick="@(()=>SetDeviceNum(5))">5</MudTd>
-            <MudTd Style="font-weight:bold;" Class="device_lastcell">&nbsp;=&nbsp;</MudTd>
+            <MudTd Style="font-weight:bold; padding:0px" Class="device_lastcell">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())" />
+            <MudPaper Height="200px" Class="mud-theme-primary" Style="overflow:inherit; position:absolute">
+                 <MudDrawerContainer Class="mud-height-full">
+                    <MudDrawer Class="@drawerDisplay" Open="@_menuExpanded" Elevation="1" DisableOverlay="true"
+                        Breakpoint="Breakpoint.Xl" Fixed="false" Anchor="Anchor.Right" Variant="@DrawerVariant.Responsive">
+                        @*<MudDrawerHeader>
+                            <MudText Typo="Typo.h6">Settings</MudText>
+                        </MudDrawerHeader>*@
+                        <CNCNavMenu />
+                    </MudDrawer>
+                </MudDrawerContainer>
+            </MudPaper>
+            </MudTd>
                         </tr>
                     </table>
                 </div>
@@ -292,6 +310,20 @@ table#controlPanel td  {
     private int spValueCurrent = 50;
     private string currentTorchEventName = string.Empty;
     private bool isTorchStartedMoving = false;
+    private bool _menuExpanded = false;
+
+    private string drawerDisplay {
+        get
+        {
+            return _menuExpanded ? DISPLAY_CLASS : NONE_DISPLAY_CLASS;
+        }
+    }
+
+    private void ToggleMenu()
+    {
+        _menuExpanded = !_menuExpanded;
+
+    }
 
     protected override void OnInitialized()
     {
