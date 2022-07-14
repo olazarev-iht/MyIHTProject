@@ -5,8 +5,6 @@
 @inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
 @inherits ComponentBase
 @implements IDisposable
-<MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
-
 
 <style>
 .device_tabcell {
@@ -78,6 +76,17 @@ button .mud-nav-link-text {
     font-size: medium;
     font-weight: 550 !important;
 }
+
+.tablemobile
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mud-dialog-container.mud-dialog-center
+{
+    top: -65px;
+}
 </style>
 
 @if (dynDataModificationCNCDataProvider != null)
@@ -104,8 +113,29 @@ button .mud-nav-link-text {
         _cutO2Visible = INVISIBLE_CLASS;
     }
 
+<MudPaper Class="mud-theme-primary" Style="overflow:visible; position:absolute;">
+<MudDialog @bind-IsVisible="_menuExpanded">
+    <DialogContent>     
+        <MudList Clickable="true" Style="Height:200px;" >
+            <MudListItem Icon="@Icons.Filled.Settings" Text="Settings" InitiallyExpanded="false">
+                <NestedList>
+                    <MudListItem Icon="@Icons.Filled.Article">Setup</MudListItem>
+                </NestedList>
+            </MudListItem>
+        </MudList>          
+    </DialogContent>
+    <DialogActions>
+        @*<MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
+    </DialogActions>
+</MudDialog>
+</MudPaper>
+
 <div class="flex-container" >
     <table id="controlPanel" class="tablemobile" width="540px">
+        <tr>
+            <MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
+        </tr>
         <tr>
             <td>
                 <div class="flex-item-left">
@@ -127,19 +157,8 @@ button .mud-nav-link-text {
             @onclick="@(()=>SetDeviceNum(4))">4</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)"
             @onclick="@(()=>SetDeviceNum(5))">5</MudTd>
-            <MudTd Style="font-weight:bold; padding:0px" Class="device_lastcell">
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())" />
-            <MudPaper Height="200px" Class="mud-theme-primary" Style="overflow:inherit; position:absolute">
-                 <MudDrawerContainer Class="mud-height-full">
-                    <MudDrawer Class="@drawerDisplay" Open="@_menuExpanded" Elevation="1" DisableOverlay="true"
-                        Breakpoint="Breakpoint.Xl" Fixed="false" Anchor="Anchor.Right" Variant="@DrawerVariant.Responsive">
-                        @*<MudDrawerHeader>
-                            <MudText Typo="Typo.h6">Settings</MudText>
-                        </MudDrawerHeader>*@
-                        <CNCNavMenu />
-                    </MudDrawer>
-                </MudDrawerContainer>
-            </MudPaper>
+            <MudTd Style="font-weight:bold; padding:0px;" Class="device_lastcell">
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())" />           
             </MudTd>
                         </tr>
                     </table>
