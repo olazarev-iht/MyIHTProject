@@ -1122,6 +1122,16 @@
           "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
+      "MudBlazor.Examples.Data/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/MudBlazor.Examples.Data.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MudBlazor.Examples.Data.dll": {}
+        }
+      },
       "SharedComponents/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -2906,6 +2916,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "MudBlazor.Examples.Data/1.0.0": {
+      "type": "project",
+      "path": "../MudBlazor-dev/src/MudBlazor.Examples.Data/MudBlazor.Examples.Data.csproj",
+      "msbuildProject": "../MudBlazor-dev/src/MudBlazor.Examples.Data/MudBlazor.Examples.Data.csproj"
+    },
     "SharedComponents/1.0.0": {
       "type": "project",
       "path": "../SharedComponents/SharedComponents.csproj",
@@ -2925,6 +2940,7 @@
       "Microsoft.Extensions.Localization >= 6.0.4",
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.15.1",
       "MudBlazor >= 6.0.9",
+      "MudBlazor.Examples.Data >= 1.0.0",
       "SharedComponents >= 1.0.0"
     ]
   },
@@ -2963,6 +2979,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
+            "C:\\Examples\\MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj": {
+              "projectPath": "C:\\Examples\\MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj"
+            },
             "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj": {
               "projectPath": "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj"
             }

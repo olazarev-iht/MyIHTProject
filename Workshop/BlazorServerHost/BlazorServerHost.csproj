@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MudBlazor-dev\src\MudBlazor.Examples.Data\MudBlazor.Examples.Data.csproj" />
     <ProjectReference Include="..\SharedComponents\SharedComponents.csproj" />
   </ItemGroup>
 

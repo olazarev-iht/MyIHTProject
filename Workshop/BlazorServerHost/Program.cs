@@ -26,6 +26,7 @@ builder.Host.UseWindowsService();
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<UnitService>();
+builder.Services.AddScoped<HttpClient>();
 builder.Services.AddHttpContextAccessor();
 
 // Add services to the container.

@@ -110,3 +110,5 @@ C:\Examples\MyIHTProject\Workshop\BlazorServerHost\obj\Debug\net6.0\ref\BlazorSe
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\AutoMapper.dll
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\obj\Debug\net6.0\scopedcss\Pages\DynDataModificationCNC.razor.rz.scp.css
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\obj\Debug\net6.0\scopedcss\Shared\CNCNavMenu.razor.rz.scp.css
+C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\MudBlazor.Examples.Data.dll
+C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\MudBlazor.Examples.Data.pdb
