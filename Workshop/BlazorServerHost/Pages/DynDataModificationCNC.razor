@@ -105,6 +105,14 @@ button .mud-nav-link-text {
     .mud-input-control.mud-select.myselect>.mud-input-control-input-container>div.mud-input.mud-input-text {
     margin-top: 0px; 
     }
+
+    .mud-dialog .mud-dialog-title  {
+        padding: 16px 24px 0px;
+    }
+
+    .mud-table-cell  {
+        font-size: 1rem;
+    }
 </style>
 
 @if (dynDataModificationCNCDataProvider != null)
@@ -211,6 +219,9 @@ button .mud-nav-link-text {
                 <MudSelectItem T="int" Value="4">Value 5</MudSelectItem>
             </MudSelect> 
             }
+            else if(@context.Number == 18){
+                @context.Sign;
+            }
             else {
                 @context.Position
             }
@@ -220,14 +231,45 @@ button .mud-nav-link-text {
         </MudTd>*@
         @*<MudTd Style="text-align: right" DataLabel="Molar mass">@context.Molar"</MudTd>*@
     </RowTemplate>
-    <GroupFooterTemplate>
+    @*<GroupFooterTemplate>
         <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer" colspan="5">Total Mass: @context.Items.Sum((e) => e.Molar)</MudTh>
-    </GroupFooterTemplate>
+    </GroupFooterTemplate>*@
 </MudTable>
 </DialogContent>
 </MudDialog>
 
-<MudPaper Class="mud-theme-primary" Style="overflow:visible; position:absolute;">
+
+<MudDialog @bind-IsVisible="_isOpenParamsListDialog" Class="SelectDialog">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Param: @dynParamDataModel.Name</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@dynParamDataModel" @ref="_editParamListFormDialog">
+        <MudList Clickable="true"            
+            @bind-SelectedValue="@selectedItemParamValue"          
+            SelectedItemChanged="SelectedListItemParamChanged">
+            @*<MudListSubheader>
+            <MudChip Color="Color.Secondary">
+                (@(selectedItemParamValue?.ToString() ?? "0")) -- Position: @dynParamDataModel.Position
+            </MudChip>
+            </MudListSubheader>*@
+
+            <MudListItem Text="Value 1" Value="1"></MudListItem>
+            <MudListItem Text="Value 2" Value="2"></MudListItem> 
+            <MudListItem Text="Value 3" Value="3"></MudListItem>
+            <MudListItem Text="Value 4" Value="4"></MudListItem>
+            <MudListItem Text="Value 5" Value="5"></MudListItem>
+
+        </MudList>    
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseParamsListDialog">Close</MudButton>
+        @*<MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
+    </DialogActions>
+</MudDialog>
+
+
 <MudDialog @bind-IsVisible="_menuExpanded">
     <DialogContent>     
         <MudList Clickable="true" Style="Height:200px;" >
@@ -243,7 +285,7 @@ button .mud-nav-link-text {
         <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
     </DialogActions>
 </MudDialog>
-</MudPaper>
+
 
 <div class="flex-container" >
     <table id="controlPanel" class="tablemobile" width="540px">
@@ -451,8 +493,12 @@ button .mud-nav-link-text {
     private Element dynParamDataModel = new Element();
     private bool _editParamDialogVisible = false;
     private int _sliderDynParamValue;
+    private bool _isOpenParamsListDialog = false;
+    private object selectedItemParamValue;
 
     private MudForm _editParamForm;
+    private MudListItem selectedItem;
+    private MudForm _editParamListFormDialog;
 
     private TableGroupDefinition<Element> _groupDefinition = new()
     {
@@ -473,6 +519,8 @@ button .mud-nav-link-text {
         {
             Elements.ToArray()[1].Position = 1;
             Elements.ToArray()[9].Position = 3;
+            Elements.ToArray()[17].Position = 2;
+            Elements.ToArray()[17].Sign = "Value 2";
         }
     }
 
@@ -488,10 +536,22 @@ button .mud-nav-link-text {
 
     private void OpenEditParamDialog(int id)
     {
-        dynParamDataModel = Elements.FirstOrDefault(c => c.Number == id) ?? new Element();
+        GetParamDataModel(id);
         // _sliderDynParamValue = dynParamDataModel.Position;
 
         _editParamDialogVisible = true;
+    }
+
+    private void GetParamDataModel(int id)
+    {
+        dynParamDataModel = Elements.FirstOrDefault(c => c.Number == id) ?? new Element();
+    }
+
+    private void OpenParamsListDialog(int id)
+    {
+        GetParamDataModel(id);
+
+        _isOpenParamsListDialog = true;
     }
 
     private void CloseEditParamDialog()
@@ -515,9 +575,15 @@ button .mud-nav-link-text {
 
     private void RowClickEvent(TableRowClickEventArgs<Element> tableRowClickEventArgs)
     {
-        if (tableRowClickEventArgs.Item.Number > 2 && tableRowClickEventArgs.Item.Number != 10)
+        var id = tableRowClickEventArgs.Item.Number;
+
+        if (id == 18)
         {
-            OpenEditParamDialog(tableRowClickEventArgs.Item.Number);
+            OpenParamsListDialog(id);
+        }
+        else if (id > 2 && id != 10)
+        {
+            OpenEditParamDialog(id);
         }
 
     }
@@ -525,6 +591,20 @@ button .mud-nav-link-text {
     private void ParameterValChangedBySlider()
     {
         // Save data in to the DB
+    }
+
+    private void SelectedListItemParamChanged(MudListItem mudListItem)
+    {
+        if (mudListItem != null)
+        {
+            dynParamDataModel.Position = (int)mudListItem.Value;
+            dynParamDataModel.Sign = mudListItem.Text;
+        }
+    }
+
+    private void CloseParamsListDialog()
+    {
+        _isOpenParamsListDialog = false;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
