@@ -8,7 +8,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 		SingletonDataModel CurrentState { get; }
 		event EventHandler WorkerStatusChanged;
 		event EventHandler DynamicDataChanged;
-		Task RefreshDynamicDataAsync(int deviceNum, ParamIds paramId);
+		Task RefreshDynamicDataAsync(int deviceNum, ParamGroup paramGroup, ParamIds paramId);
 		Task DoWork(CancellationToken stoppingToken);
 	}
 }

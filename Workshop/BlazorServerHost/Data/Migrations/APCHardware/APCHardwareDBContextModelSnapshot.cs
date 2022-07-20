@@ -116,6 +116,9 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     b.Property<Guid?>("DynParamsId")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("ParamGroupId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ParamName")
                         .IsRequired()
                         .HasColumnType("TEXT");

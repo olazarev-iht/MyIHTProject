@@ -11,10 +11,10 @@ namespace SharedComponents.Services.APCHardwareManagers
     {
         public Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken);
         public Task<IEnumerable<ParameterDataModel>> GetParamsByDeviceIdAndParamsTypeAsync(int DeviceId, string ParamsType, CancellationToken cancellationToken);
-        public Task<ParameterDataModel?> GetParamDataFromMockDBByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamIds paramId, CancellationToken cancellationToken);
+        public Task<ParameterDataModel?> GetParamDataFromMockDBByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, CancellationToken cancellationToken);
         public Task UpdateDynParamValueAsync(DynParamsModel newData, CancellationToken cancellationToken);
-        public Task UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamIds paramId, int paramValue, CancellationToken cancellationToken);
-        public Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamIds paramId, int paramValue, CancellationToken cancellationToken);
+        public Task UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, int paramValue, CancellationToken cancellationToken);
+        public Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, int paramValue, CancellationToken cancellationToken);
         public Task<int> GetAPCDevicesNumber(CancellationToken cancellationToken);
     }
 }

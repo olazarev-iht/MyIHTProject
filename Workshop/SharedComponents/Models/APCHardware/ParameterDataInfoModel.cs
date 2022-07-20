@@ -28,20 +28,20 @@ namespace SharedComponents.Models.APCHardware
             bool IgnorePasswordValid = true;
 
             Id = Guid.NewGuid();
-            Unit = IhtModbusUnitParam.GetTechnology(u16IdxTechnology);
+            Unit = GetIhtModbusUnitParam(paramGroup, u16IdxTechnology);
 
             var idx = (ushort)(u16IdxTechnology * 3);
             var minId = (ushort)(idx + 0);
             var maxId = (ushort)(idx + 1);
             var stepId = (ushort)(idx + 2);
 
-            MinDescription = IhtModbusDescriptionParamConst.GetTechnology(minId);
-            MaxDescription = IhtModbusDescriptionParamConst.GetTechnology(maxId);
-            StepDescription = IhtModbusDescriptionParamConst.GetTechnology(stepId);
+            MinDescription = GetIhtModbusDescriptionParamConst(paramGroup, minId);
 
-            ValueDescription = IhtModbusDescriptionParamDyn.GetTechnology(u16IdxTechnology);
+            MaxDescription = GetIhtModbusDescriptionParamConst(paramGroup, maxId);
+            StepDescription = GetIhtModbusDescriptionParamConst(paramGroup, stepId);
+            ValueDescription = GetIhtModbusDescriptionParamDyn(paramGroup, u16IdxTechnology);
 
-            Multiplier = IhtModbusRealMultiplierParam.GetTechnology(u16IdxTechnology, IgnorePasswordValid);
+            Multiplier = GetIhtModbusRealMultiplierParam(paramGroup, u16IdxTechnology, IgnorePasswordValid);
         }
 
         public string GetIhtModbusUnitParam(ParamGroup paramGroup, ushort u16Idx)
@@ -79,14 +79,54 @@ namespace SharedComponents.Models.APCHardware
                     return IhtModbusDescriptionParamConst.GetConfig(u16Idx);
                 case ParamGroup.Service:
                     return IhtModbusDescriptionParamConst.GetService(u16Idx);
-                case ParamGroup.ProcessInfo:
-                    return IhtModbusDescriptionParamConst.GetProcessInfo(u16Idx);
-                case ParamGroup.CmdExec:
-                    return IhtModbusDescriptionParamConst.GetCmdExec(u16Idx);
-                case ParamGroup.SetupExec:
-                    return IhtModbusDescriptionParamConst.GetSetupExec(u16Idx);
                 default:
                     return string.Empty;
+            }
+        }
+
+        public string GetIhtModbusDescriptionParamDyn(ParamGroup paramGroup, ushort u16Idx)
+        {
+            switch (paramGroup)
+            {
+                case ParamGroup.Technology:
+                    return IhtModbusDescriptionParamDyn.GetTechnology(u16Idx);
+                case ParamGroup.Process:
+                    return IhtModbusDescriptionParamDyn.GetProcess(u16Idx);
+                case ParamGroup.Config:
+                    return IhtModbusDescriptionParamDyn.GetConfig(u16Idx);
+                case ParamGroup.Service:
+                    return IhtModbusDescriptionParamDyn.GetService(u16Idx);
+                case ParamGroup.ProcessInfo:
+                    return IhtModbusDescriptionParamDyn.GetProcessInfo(u16Idx);
+                case ParamGroup.CmdExec:
+                    return IhtModbusDescriptionParamDyn.GetCmdExec(u16Idx);
+                case ParamGroup.SetupExec:
+                    return IhtModbusDescriptionParamDyn.GetSetupExec(u16Idx);
+                default:
+                    return string.Empty;
+            }
+        }
+
+        public double GetIhtModbusRealMultiplierParam(ParamGroup paramGroup, ushort u16Idx, bool IgnorePasswordValid)
+        {
+            switch (paramGroup)
+            {
+                case ParamGroup.Technology:
+                    return IhtModbusRealMultiplierParam.GetTechnology(u16Idx, IgnorePasswordValid);
+                case ParamGroup.Process:
+                    return IhtModbusRealMultiplierParam.GetProcess(u16Idx);
+                case ParamGroup.Config:
+                    return IhtModbusRealMultiplierParam.GetConfig(u16Idx);
+                case ParamGroup.Service:
+                    return IhtModbusRealMultiplierParam.GetService(u16Idx);
+                case ParamGroup.ProcessInfo:
+                    return IhtModbusRealMultiplierParam.GetProcessInfo(u16Idx);
+                case ParamGroup.CmdExec:
+                    return IhtModbusRealMultiplierParam.GetCmdExec(u16Idx);
+                case ParamGroup.SetupExec:
+                    return IhtModbusRealMultiplierParam.GetSetupExec(u16Idx);
+                default:
+                    return 1.0;
             }
         }
     }

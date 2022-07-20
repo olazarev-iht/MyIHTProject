@@ -77,9 +77,9 @@ namespace SharedComponents.APCHardwareManagers
             return dynParams;
         }
 
-        public async Task<ParameterDataModel?> GetParamDataFromMockDBByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamIds paramId, CancellationToken cancellationToken)
+        public async Task<ParameterDataModel?> GetParamDataFromMockDBByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, CancellationToken cancellationToken)
         {
-            var parameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDeviceNum, paramId, CancellationToken.None);
+            var parameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDeviceNum, paramGroup, paramId, CancellationToken.None);
             return parameterData;
         }
 
@@ -93,14 +93,14 @@ namespace SharedComponents.APCHardwareManagers
             await _dynParamsDBService.UpdateDynParamValueAsync(newData, cancellationToken);
         }
 
-        public async Task UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamIds paramId, int paramValue, CancellationToken cancellationToken)
+        public async Task UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, int paramValue, CancellationToken cancellationToken)
         {
-            await _dynParamsMockDBService.UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(apcDeviceNum, paramId, paramValue, cancellationToken);
+            await _dynParamsMockDBService.UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(apcDeviceNum, paramGroup, paramId, paramValue, cancellationToken);
         }
 
-        public async Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamIds paramId, int paramValue, CancellationToken cancellationToken)
+        public async Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, int paramValue, CancellationToken cancellationToken)
         {
-            await _dynParamsDBService.UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(apcDeviceNum, paramId, paramValue, cancellationToken);
+            await _dynParamsDBService.UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(apcDeviceNum, paramGroup, paramId, paramValue, cancellationToken);
         }
 
         public async Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken)
@@ -137,42 +137,46 @@ namespace SharedComponents.APCHardwareManagers
 
                 foreach (var apcDevice in apcDeviceList)
                 {
-                    foreach (ParamIds paramId in (ParamIds[])Enum.GetValues(typeof(ParamIds)))
+                    foreach (ParamGroup paramGroup in (ParamGroup[])Enum.GetValues(typeof(ParamGroup)))
                     {
-                        var mockParameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDevice.Num, paramId, cancellationToken);
-                        var mockDynParams = mockParameterData?.DynParams;
-
-                        if (mockDynParams == null || mockDynParams.ConstParams == null) continue;
-
-                        var constParamsId = await SaveConstParamsAsync(mockDynParams.ConstParams, cancellationToken);
-
-                        var parameterDataInfoModel = new ParameterDataInfoModel(paramId);
-                        var parameterDataInfoId = await SaveParameterDataInfoAsync(parameterDataInfoModel, cancellationToken);
-
-                        if (constParamsId != Guid.Empty && parameterDataInfoId != Guid.Empty)
+                        foreach (ParamIds paramId in (ParamIds[])Enum.GetValues(typeof(ParamIds)))
                         {
-                            var newDynParams = new DynParamsModel
-                            {
-                                Id = Guid.NewGuid(),
-                                ParamId = paramId,
-                                ConstParamsId = constParamsId,
-                                ParameterDataInfoId = parameterDataInfoId,
-                                Value = mockDynParams.Value
-                            };
+                            var mockParameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDevice.Num, paramGroup, paramId, cancellationToken);
+                            var mockDynParams = mockParameterData?.DynParams;
 
-                            var dynParamsId = await SaveDynParamsAsync(newDynParams, cancellationToken);
+                            if (mockDynParams == null || mockDynParams.ConstParams == null) continue;
 
-                            if (dynParamsId != Guid.Empty)
+                            var constParamsId = await SaveConstParamsAsync(mockDynParams.ConstParams, cancellationToken);
+
+                            var parameterDataInfoModel = new ParameterDataInfoModel(paramGroup, paramId);
+                            var parameterDataInfoId = await SaveParameterDataInfoAsync(parameterDataInfoModel, cancellationToken);
+
+                            if (constParamsId != Guid.Empty && parameterDataInfoId != Guid.Empty)
                             {
-                                var newParameterData = new ParameterDataModel
+                                var newDynParams = new DynParamsModel
                                 {
                                     Id = Guid.NewGuid(),
-                                    ParamName = $"Device{apcDevice.Num}_{paramId}",
-                                    APCDeviceId = apcDevice.Id,
-                                    DynParamsId = dynParamsId // newDynParams.Id
+                                    ParamId = paramId,
+                                    ConstParamsId = constParamsId,
+                                    ParameterDataInfoId = parameterDataInfoId,
+                                    Value = mockDynParams.Value
                                 };
 
-                                await SaveParameterDataAsync(newParameterData, cancellationToken);
+                                var dynParamsId = await SaveDynParamsAsync(newDynParams, cancellationToken);
+
+                                if (dynParamsId != Guid.Empty)
+                                {
+                                    var newParameterData = new ParameterDataModel
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        ParamName = $"Device{apcDevice.Num}_{paramId}",
+                                        APCDeviceId = apcDevice.Id,
+                                        ParamGroupId = paramGroup,
+                                        DynParamsId = dynParamsId // newDynParams.Id
+                                    };
+
+                                    await SaveParameterDataAsync(newParameterData, cancellationToken);
+                                }
                             }
                         }
                     }

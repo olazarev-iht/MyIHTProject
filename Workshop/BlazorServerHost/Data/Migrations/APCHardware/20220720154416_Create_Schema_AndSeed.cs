@@ -105,6 +105,7 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     ParamName = table.Column<string>(type: "TEXT", nullable: false),
                     APCDeviceId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ParamGroupId = table.Column<int>(type: "INTEGER", nullable: false),
                     DynParamsId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>

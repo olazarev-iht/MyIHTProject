@@ -86,81 +86,117 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        //public static string GetProcess(UInt16 u16Idx)
-        //{
-        //    return GetProcess(u16Idx, 65535);
-        //}
-        //public static string GetProcess(UInt16 u16Idx, UInt16 u16Value)
-        //{
-        //    IhtModbusParamDyn.eIdxProcess eIdx = (IhtModbusParamDyn.eIdxProcess)u16Idx;
-        //    switch (eIdx)
-        //    {
-        //        case IhtModbusParamDyn.eIdxProcess.RetractHeight: return "Retract Height";
-        //        case IhtModbusParamDyn.eIdxProcess.SlagSensitivity:
-        //            {
-        //                string result = CultureResources.GetString("_CultureParamSlagSensitivity");//"Slag Sensitivity";
-        //                switch (u16Value)
-        //                {
-        //                    case 0: result += $": {CultureResources.GetString("_CultureParamOff")}"/*off"    */; break;
-        //                    case 1: result += $": {CultureResources.GetString("_CultureParamLow")}"/*low"    */; break;
-        //                    case 2: result += $": {CultureResources.GetString("_CultureParamDefault")}"/*default"*/; break;
-        //                    case 3: result += $": {CultureResources.GetString("_CultureParamHigh")}"/*high"   */; break;
-        //                }
-        //                return result;
-        //            }
-        //        case IhtModbusParamDyn.eIdxProcess.HeatO2Temper: return "HeatO2 Temper";
-        //        case IhtModbusParamDyn.eIdxProcess.FuelGasTemper: return "FuelGas Temper";
-        //        case IhtModbusParamDyn.eIdxProcess.HeightTemper: return "Height Temper";
-        //        case IhtModbusParamDyn.eIdxProcess.LinearDriveManualPosSpeed: return "LD Manual Position Speed";
-        //        case IhtModbusParamDyn.eIdxProcess.FuelGasOffset: return "FuelGas Offset";
-        //        case IhtModbusParamDyn.eIdxProcess.FlashbackSensivitity:
-        //            {
-        //                string result = CultureResources.GetString("_CultureParamFlashbackSensitivity");//"Flashback Sensivitity";
-        //                switch (u16Value)
-        //                {
-        //                    case 0: result += $": {CultureResources.GetString("_CultureParamOff")}"/*off"    */; break;
-        //                    case 1: result += $": {CultureResources.GetString("_CultureParamLow")}"/*low"    */; break;
-        //                    case 2: result += $": {CultureResources.GetString("_CultureParamDefault")}"/*default"*/; break;
-        //                    case 3: result += $": {CultureResources.GetString("_CultureParamHigh")}"/*high"   */; break;
-        //                }
-        //                return result;
-        //            }
-        //        #region Slag
-        //        case IhtModbusParamDyn.eIdxProcess.SlagIntervalTime: return "Slag IntervalTime";
-        //        case IhtModbusParamDyn.eIdxProcess.SlagFirstSlagTime: return "Slag FirstSlagTime";
-        //        case IhtModbusParamDyn.eIdxProcess.SlagSecurityTime: return "Slag SecurityTime";
-        //        case IhtModbusParamDyn.eIdxProcess.SlagPostTime: return "Slag PostTime";
-        //        case IhtModbusParamDyn.eIdxProcess.SlagActiveGradient: return "Slag ActiveGradient";
-        //        case IhtModbusParamDyn.eIdxProcess.SlagInActiveGradient: return "Slag InActiveGradient";
-        //        #endregion // Slag
-        //        case IhtModbusParamDyn.eIdxProcess.IgnitionDetectionEnable:
-        //            {
-        //                string result = CultureResources.GetString("_CultureParamIgnitionDetection");//"Ignition Detection";
-        //                switch (u16Value)
-        //                {
-        //                    case 0: result += $": {CultureResources.GetString("_CultureParamDisabled")}"/*": disabled"*/; break;
-        //                    case 1: result += $": {CultureResources.GetString("_CultureParamEnabled")}"/*": enabled" */; break;
-        //                }
-        //                return result;
-        //            }
-        //        case IhtModbusParamDyn.eIdxProcess.PiercingSensorMode:
-        //            {
-        //                string result = CultureResources.GetString("_CultureParamPiercingHeightControl");//"Piercing Height Control";
-        //                switch (u16Value)
-        //                {
-        //                    case 0: result += $": {CultureResources.GetString("_CultureParamDisabled")}"/*": disabled"*/; break;
-        //                    case 1: result += $": {CultureResources.GetString("_CultureParamEnabled")}"/*": enabled" */; break;
-        //                }
-        //                return result;
-        //            }
-        //    }
-        //    return "unknown";
-        //}
+        public static string GetProcess(UInt16 u16Idx)
+        {
+            return GetProcess(u16Idx, 65535);
+        }
+        public static string GetProcess(UInt16 u16Idx, UInt16 u16Value)
+        {
+            IhtModbusParamDyn.eIdxProcess eIdx = (IhtModbusParamDyn.eIdxProcess)u16Idx;
+            switch (eIdx)
+            {
+                case IhtModbusParamDyn.eIdxProcess.RetractHeight: return "Retract Height";
+                case IhtModbusParamDyn.eIdxProcess.SlagSensitivity:
+                    {
+                        //string result = CultureResources.GetString("_CultureParamSlagSensitivity");//"Slag Sensitivity";
+                        //switch (u16Value)
+                        //{
+                        //    case 0: result += $": {CultureResources.GetString("_CultureParamOff")}"/*off"    */; break;
+                        //    case 1: result += $": {CultureResources.GetString("_CultureParamLow")}"/*low"    */; break;
+                        //    case 2: result += $": {CultureResources.GetString("_CultureParamDefault")}"/*default"*/; break;
+                        //    case 3: result += $": {CultureResources.GetString("_CultureParamHigh")}"/*high"   */; break;
+                        //}
+                        //return result;
+
+                        string result = "Slag Sensitivity";
+                        switch (u16Value)
+                        {
+                            case 0: result += $": off"; break;
+                            case 1: result += $": low"; break;
+                            case 2: result += $": default"; break;
+                            case 3: result += $": high"; break;
+                        }
+                        return result;
+                    }
+                case IhtModbusParamDyn.eIdxProcess.HeatO2Temper: return "HeatO2 Temper";
+                case IhtModbusParamDyn.eIdxProcess.FuelGasTemper: return "FuelGas Temper";
+                case IhtModbusParamDyn.eIdxProcess.HeightTemper: return "Height Temper";
+                case IhtModbusParamDyn.eIdxProcess.LinearDriveManualPosSpeed: return "LD Manual Position Speed";
+                case IhtModbusParamDyn.eIdxProcess.FuelGasOffset: return "FuelGas Offset";
+                case IhtModbusParamDyn.eIdxProcess.FlashbackSensivitity:
+                    {
+                        //string result = CultureResources.GetString("_CultureParamFlashbackSensitivity");//"Flashback Sensivitity";
+                        //switch (u16Value)
+                        //{
+                        //    case 0: result += $": {CultureResources.GetString("_CultureParamOff")}"/*off"    */; break;
+                        //    case 1: result += $": {CultureResources.GetString("_CultureParamLow")}"/*low"    */; break;
+                        //    case 2: result += $": {CultureResources.GetString("_CultureParamDefault")}"/*default"*/; break;
+                        //    case 3: result += $": {CultureResources.GetString("_CultureParamHigh")}"/*high"   */; break;
+                        //}
+                        //return result;
+
+                        string result = "Flashback Sensivitity";
+                        switch (u16Value)
+                        {
+                            case 0: result += $": off"; break;
+                            case 1: result += $": low"; break;
+                            case 2: result += $": default"; break;
+                            case 3: result += $": high"; break;
+                        }
+                        return result;
+                    }
+                #region Slag
+                case IhtModbusParamDyn.eIdxProcess.SlagIntervalTime: return "Slag IntervalTime";
+                case IhtModbusParamDyn.eIdxProcess.SlagFirstSlagTime: return "Slag FirstSlagTime";
+                case IhtModbusParamDyn.eIdxProcess.SlagSecurityTime: return "Slag SecurityTime";
+                case IhtModbusParamDyn.eIdxProcess.SlagPostTime: return "Slag PostTime";
+                case IhtModbusParamDyn.eIdxProcess.SlagActiveGradient: return "Slag ActiveGradient";
+                case IhtModbusParamDyn.eIdxProcess.SlagInActiveGradient: return "Slag InActiveGradient";
+                #endregion // Slag
+                case IhtModbusParamDyn.eIdxProcess.IgnitionDetectionEnable:
+                    {
+                        //string result = CultureResources.GetString("_CultureParamIgnitionDetection");//"Ignition Detection";
+                        //switch (u16Value)
+                        //{
+                        //    case 0: result += $": {CultureResources.GetString("_CultureParamDisabled")}"/*": disabled"*/; break;
+                        //    case 1: result += $": {CultureResources.GetString("_CultureParamEnabled")}"/*": enabled" */; break;
+                        //}
+                        //return result;
+
+                        string result = "Ignition Detection";
+                        switch (u16Value)
+                        {
+                            case 0: result += $": disabled"; break;
+                            case 1: result += $": enabled"; break;
+                        }
+                        return result;
+                    }
+                case IhtModbusParamDyn.eIdxProcess.PiercingSensorMode:
+                    {
+                        //string result = CultureResources.GetString("_CultureParamPiercingHeightControl");//"Piercing Height Control";
+                        //switch (u16Value)
+                        //{
+                        //    case 0: result += $": {CultureResources.GetString("_CultureParamDisabled")}"/*": disabled"*/; break;
+                        //    case 1: result += $": {CultureResources.GetString("_CultureParamEnabled")}"/*": enabled" */; break;
+                        //}
+                        //return result;
+
+                        string result = "Piercing Height Control";
+                        switch (u16Value)
+                        {
+                            case 0: result += $": disabled"; break;
+                            case 1: result += $": enabled"; break;
+                        }
+                        return result;
+                    }
+            }
+            return "unknown";
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        public static string GetConfig(UInt16 u16Idx, UInt16 u16Value)
+        public static string GetConfig(UInt16 u16Idx)
         {
             IhtModbusParamDyn.eIdxConfig eIdx = (IhtModbusParamDyn.eIdxConfig)u16Idx;
             switch (eIdx)
@@ -188,7 +224,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        public static string GetService(UInt16 u16Idx, UInt16 u16Value)
+        public static string GetService(UInt16 u16Idx)
         {
             IhtModbusParamDyn.eIdxService eIdx = (IhtModbusParamDyn.eIdxService)u16Idx;
             switch (eIdx)
@@ -214,7 +250,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        public static string GetProcessInfo(UInt16 u16Idx, UInt16 u16Value)
+        public static string GetProcessInfo(UInt16 u16Idx)
         {
             IhtModbusParamDyn.eIdxProcessInfo eIdx = (IhtModbusParamDyn.eIdxProcessInfo)u16Idx;
             switch (eIdx)
@@ -250,7 +286,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        public static string GetCmdExec(UInt16 u16Idx, UInt16 u16Value)
+        public static string GetCmdExec(UInt16 u16Idx)
         {
             IhtModbusParamDyn.eIdxCmdExec eIdx = (IhtModbusParamDyn.eIdxCmdExec)u16Idx;
             switch (eIdx)
@@ -273,7 +309,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        public static string GetSetupExec(UInt16 u16Idx, UInt16 u16Value)
+        public static string GetSetupExec(UInt16 u16Idx)
         {
             IhtModbusParamDyn.eIdxSetupExec eIdx = (IhtModbusParamDyn.eIdxSetupExec)u16Idx;
             switch (eIdx)

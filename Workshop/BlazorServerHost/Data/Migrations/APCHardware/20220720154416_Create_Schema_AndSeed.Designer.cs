@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServerHost.Data.Migrations.APCHardware
 {
     [DbContext(typeof(APCHardwareDBContext))]
-    [Migration("20220627144631_Create_Schema_AndSeed")]
+    [Migration("20220720154416_Create_Schema_AndSeed")]
     partial class Create_Schema_AndSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -117,6 +117,9 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
 
                     b.Property<Guid?>("DynParamsId")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("ParamGroupId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ParamName")
                         .IsRequired()

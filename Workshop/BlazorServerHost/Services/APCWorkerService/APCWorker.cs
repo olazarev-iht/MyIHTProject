@@ -54,20 +54,22 @@ namespace BlazorServerHost.Services.APCWorkerService
 
 		}
 
-		public async Task RefreshDynamicDataAsync(int apcDeviceNum, ParamIds paramId)
+		public async Task RefreshDynamicDataAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId)
 		{
 			try
 			{
 				// Get Dynamic Parameter from Mock DB (APC Device) after client had updated the APC Device
 				var mockParameterData = await _parameterDataInfoManager.GetParamDataFromMockDBByAPCDeviceAndParamIdAsync(
 					apcDeviceNum, 
+					paramGroup,
 					paramId, 
 					CancellationToken.None);
 
 				if (mockParameterData != null && mockParameterData.APCDevice != null && mockParameterData.DynParams != null) {
 					// Update Dynamic Parameter in the Dynamic Params DB
 					await _parameterDataInfoManager.UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(
-						mockParameterData.APCDevice.Num, 
+						mockParameterData.APCDevice.Num,
+						mockParameterData.ParamGroupId,
 						mockParameterData.DynParams.ParamId, 
 						mockParameterData.DynParams.Value, 
 						CancellationToken.None);

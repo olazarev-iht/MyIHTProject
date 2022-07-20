@@ -62,14 +62,14 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			return _mapper.Map<ParameterData, ParameterDataModel>(entry);
 		}
 
-		public async Task<ParameterDataModel?> GetEntryByAPCDeviceAndParamIdAsync(APCDeviceModel apcDevice, ParamIds paramId, CancellationToken cancellationToken)
+		public async Task<ParameterDataModel?> GetEntryByAPCDeviceAndParamIdAsync(APCDeviceModel apcDevice, ParamGroup paramGroup, ParamIds paramId, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
 			var entry = await dbContext.ParameterDatas
 				.AsNoTracking()
 				.Include(p => p.DynParams)
-				.SingleAsync(p => p.DynParams != null && p.APCDevice != null && p.DynParams.ParamId == paramId && p.APCDevice.Id == apcDevice.Id, cancellationToken);
+				.SingleAsync(p => p.DynParams != null && p.APCDevice != null && p.ParamGroupId == paramGroup && p.DynParams.ParamId == paramId && p.APCDevice.Id == apcDevice.Id, cancellationToken);
 
 			return _mapper.Map<ParameterData, ParameterDataModel>(entry);
 		}
