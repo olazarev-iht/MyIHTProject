@@ -168,7 +168,7 @@ button .mud-nav-link-text {
 
 <MudDialog @bind-IsVisible="_setupParamsDialogVisible" Style="width: 600px;">
     <DialogContent>
-    <MudButton OnClick="CloseSetupParamsDialog">Go Back</MudButton>
+    <MudButton OnClick="CloseSetupParamsDialog">&#8592; Go Back</MudButton>
     <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Height="500px" FixedHeader="true"
           Items="@Elements"
           GroupBy="@_groupDefinition"
@@ -185,10 +185,10 @@ button .mud-nav-link-text {
         <col />
     </ColGroup>
     <HeaderContent>
-        <MudTh>Nr</MudTh>
+        <MudTh Style="font-weight:bold;">Nr</MudTh>
         @*<MudTh>Sign</MudTh>*@
-        <MudTh>Parameter</MudTh>
-        <MudTh>Value</MudTh>
+        <MudTh Style="font-weight:bold;">Parameter</MudTh>
+        <MudTh Style="font-weight:bold;">Value</MudTh>
         @*<MudTh>Molar mass</MudTh>*@
     </HeaderContent>
     <GroupHeaderTemplate>
@@ -201,7 +201,8 @@ button .mud-nav-link-text {
         <MudTd DataLabel="Name">@context.Name</MudTd>
         <MudTd DataLabel="Position">
             @if(@context.Number == 1){
-            <MudSelect T="int" @bind-Value="@context.Position" Placeholder="Position" Class="myselect" AnchorOrigin="Origin.CenterCenter" Style="margin-top: 0px;">
+            <MudSelect T="int" @bind-Value="@context.Position" Placeholder="Position" 
+                Class="myselect" AnchorOrigin="Origin.TopCenter" Style="margin-top: 0px;">
                 <MudSelectItem T="int" Value="1">Enabled</MudSelectItem>
                 <MudSelectItem T="int" Value="0">Disabled</MudSelectItem>
             </MudSelect>

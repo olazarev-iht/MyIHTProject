@@ -150,7 +150,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        public static string GetProcess(UInt16 u16Idx, UInt16 u16Value)
+        public static string GetProcess(UInt16 u16Idx)
         {
             IhtModbusParamConst.eIdxProcess eIdx = (IhtModbusParamConst.eIdxProcess)u16Idx;
             switch (eIdx)
@@ -218,7 +218,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        public static string GetConfig(UInt16 u16Idx, UInt16 u16Value)
+        public static string GetConfig(UInt16 u16Idx)
         {
             IhtModbusParamConst.eIdxConfig eIdx = (IhtModbusParamConst.eIdxConfig)u16Idx;
             switch (eIdx)
@@ -278,7 +278,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        public static string GetService(UInt16 u16Idx, UInt16 u16Value)
+        public static string GetService(UInt16 u16Idx)
         {
             IhtModbusParamConst.eIdxService eIdx = (IhtModbusParamConst.eIdxService)u16Idx;
             switch (eIdx)
