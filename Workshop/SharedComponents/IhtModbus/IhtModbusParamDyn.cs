@@ -9,6 +9,28 @@ namespace SharedComponents.IhtModbus
     public class IhtModbusParamDyn
     {
         /// <summary>
+        /// We temporary write params into DynParams DB, 
+        /// but not into Mock DB (APC)
+        /// </summary>
+        public enum eIdxAdditional
+        {
+            // Enabled/Disabled
+            RetractPosition,
+
+            //Yes/No
+            StartPreflow,
+            PreflowActive,
+
+            // Enabled/Disabled
+            PiercingHeightControl,
+            PiercingDetection,
+
+            //Yes/No
+            HeightControlActive,
+        }
+
+
+        /// <summary>
         /// 
         /// </summary>
         public enum eIdxTechnology

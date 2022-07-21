@@ -2,10 +2,12 @@
 
 @using BlazorServerHost.Features.HeightControlFeature.Services.CNC
 @using SharedComponents.Models.APCHardware
+@using SharedComponents.Services.APCHardwareManagers
 @using MudBlazor.Examples.Data.Models
 @inject HttpClient httpClient
 
 @inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
+@inject IParameterDataInfoManager parameterDataInfoManager
 @inherits ComponentBase
 @implements IDisposable
 

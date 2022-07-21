@@ -83,32 +83,6 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			await _apcWorker.RefreshDynamicDataAsync(CurrentDeviceNumber, parameter.ParamGroupId, parameter.DynParams.ParamId);
 		}
 
-		//private bool IsAnOtherUserWorkingWithDeviceNow1()
-  //      {
-		//	var returnVal = false;
-
-		//	// If the current device is free - set up as busy by the current user
-		//	if (currentlyInWorkDevices[CurrentDeviceNumber] == Guid.Empty)
-		//	{
-		//		// Release other devices are busy by the current user
-		//		ReleaseAllTheDevices();
-
-		//		// Set up the device as busy by the current user
-		//		currentlyInWorkDevices[CurrentDeviceNumber] = _userId;
-		//	}
-		//	else
-		//	{
-		//		// Another user is currently working with the device
-		//		// TODO: We can implement the same logic in razor component to get an info message
-		//		if (currentlyInWorkDevices[CurrentDeviceNumber] != _userId)
-		//		{
-		//			returnVal = true;
-		//		}
-		//	}
-
-		//	return returnVal;
-		//}
-
 		private bool IsAnOtherUserWorkingWithDeviceNow()
         {
 			var returnVal = false;

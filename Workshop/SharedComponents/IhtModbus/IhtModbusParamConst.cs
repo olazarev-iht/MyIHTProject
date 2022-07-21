@@ -10,6 +10,32 @@ namespace SharedComponents.IhtModbus
     class IhtModbusParamConst
     {
         /// <summary>
+        /// We temporary write params into DynParams DB, 
+        /// but not into Mock DB (APC)
+        /// </summary>
+        public enum eIdxAdditional
+        {
+            // Enabled/Disabled
+            RetractPositionMin = 0,
+            RetractPositionMax,
+            RetractPositioStep,
+            StartPreflowMin,
+            StartPreflowMax,
+            StartPreflowStep,
+            PreflowActiveMin,
+            PreflowActiveMax,
+            PreflowActiveStep,
+            PiercingHeightControlMin,
+            PiercingHeightControlMax,
+            PiercingHeightControlStep,
+            PiercingDetectionMin,
+            PiercingDetectionMax,
+            PiercingDetectionStep,
+            HeightControlActiveMin,
+            HeightControlActiveMax,
+            HeightControlActiveStep,
+        }
+        /// <summary>
         /// 
         /// </summary>
         public enum eIdxDeviceInfo

@@ -1,0 +1,609 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="_CultureAcetylane" xml:space="preserve">
+    <value>Acetilén</value>
+  </data>
+  <data name="_CultureAddress" xml:space="preserve">
+    <value>Cím</value>
+  </data>
+  <data name="_CultureButAllParameter" xml:space="preserve">
+    <value>Minden paraméter</value>
+  </data>
+  <data name="_CultureButBack" xml:space="preserve">
+    <value>Vissza</value>
+  </data>
+  <data name="_CultureButCalibration" xml:space="preserve">
+    <value>Magasság kalibráció</value>
+  </data>
+  <data name="_CultureButCancel" xml:space="preserve">
+    <value>Mégsem</value>
+  </data>
+  <data name="_CultureButClear" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="_CultureButClose" xml:space="preserve">
+    <value>Bezárás</value>
+  </data>
+  <data name="_CultureButCommunication" xml:space="preserve">
+    <value>Kommunikáció</value>
+  </data>
+  <data name="_CultureButConfiguration" xml:space="preserve">
+    <value>Konfiguráció</value>
+  </data>
+  <data name="_CultureButConnection" xml:space="preserve">
+    <value>Kapcsolat</value>
+  </data>
+  <data name="_CultureButCurrent" xml:space="preserve">
+    <value>Pillanatnyi</value>
+  </data>
+  <data name="_CultureButCutCycleHistory" xml:space="preserve">
+    <value>Vágási ciklus előzmény</value>
+  </data>
+  <data name="_CultureButCutting" xml:space="preserve">
+    <value>Vágás</value>
+  </data>
+  <data name="_CultureButData" xml:space="preserve">
+    <value>Adat</value>
+  </data>
+  <data name="_CultureButDelete" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="_CultureButDeviceInfo" xml:space="preserve">
+    <value>Eszköz leírás</value>
+  </data>
+  <data name="_CultureButDuplicate" xml:space="preserve">
+    <value>Másolat</value>
+  </data>
+  <data name="_CultureButEnablePressureCO2" xml:space="preserve">
+    <value>Nyomás engedélyezése C-O</value>
+  </data>
+  <data name="_CultureButEnablePressureFG" xml:space="preserve">
+    <value>Nyomás engedélyezése F-G</value>
+  </data>
+  <data name="_CultureButEnablePressureHO2" xml:space="preserve">
+    <value>Nyomás engedélyezése H-O</value>
+  </data>
+  <data name="_CultureButEnter" xml:space="preserve">
+    <value>Bevitel</value>
+  </data>
+  <data name="_CultureButErrorCounts" xml:space="preserve">
+    <value>Hibaszámláló</value>
+  </data>
+  <data name="_CultureButErrorLog" xml:space="preserve">
+    <value>Hibanapló</value>
+  </data>
+  <data name="_CultureButFactoryReset" xml:space="preserve">
+    <value>Gyári visszaállítás</value>
+  </data>
+  <data name="_CultureButFwUpdate" xml:space="preserve">
+    <value>Firmware update</value>
+  </data>
+  <data name="_CultureButGeneral" xml:space="preserve">
+    <value>Általános</value>
+  </data>
+  <data name="_CultureButHeating" xml:space="preserve">
+    <value>Hevítés</value>
+  </data>
+  <data name="_CultureButHeightControl" xml:space="preserve">
+    <value>Magasság vezérlés</value>
+  </data>
+  <data name="_CultureButHelp" xml:space="preserve">
+    <value>Segítség</value>
+  </data>
+  <data name="_CultureButHistory" xml:space="preserve">
+    <value>Előzmények</value>
+  </data>
+  <data name="_CultureButIgnite" xml:space="preserve">
+    <value>Gyújt</value>
+  </data>
+  <data name="_CultureButIgnition" xml:space="preserve">
+    <value>Gyújtás</value>
+  </data>
+  <data name="_CultureButIhtService" xml:space="preserve">
+    <value>IhtService</value>
+  </data>
+  <data name="_CultureButInformation" xml:space="preserve">
+    <value>Információ</value>
+  </data>
+  <data name="_CultureButLinearDrive" xml:space="preserve">
+    <value>Lineáris vezető</value>
+  </data>
+  <data name="_CultureButLoad" xml:space="preserve">
+    <value>Betöltés</value>
+  </data>
+  <data name="_CultureButManually" xml:space="preserve">
+    <value>Kézi</value>
+  </data>
+  <data name="_CultureButModify" xml:space="preserve">
+    <value>Módosít</value>
+  </data>
+  <data name="_CultureButNo" xml:space="preserve">
+    <value>Nincs</value>
+  </data>
+  <data name="_CultureButNumbers" xml:space="preserve">
+    <value>Sorszám</value>
+  </data>
+  <data name="_CultureButOff" xml:space="preserve">
+    <value>Kikcsapcsol</value>
+  </data>
+  <data name="_CultureButOk" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="_CultureButPassword" xml:space="preserve">
+    <value>Jelszó</value>
+  </data>
+  <data name="_CultureButPiercing" xml:space="preserve">
+    <value>Lyukasztás</value>
+  </data>
+  <data name="_CultureButPreFlow" xml:space="preserve">
+    <value>Előáramlás</value>
+  </data>
+  <data name="_CultureButPreFlowBreak" xml:space="preserve">
+    <value>Előáramlás megszakítása</value>
+  </data>
+  <data name="_CultureButPreFlowStart" xml:space="preserve">
+    <value>Előáramlás indítása</value>
+  </data>
+  <data name="_CultureButPreHeating" xml:space="preserve">
+    <value>Előhevítés</value>
+  </data>
+  <data name="_CultureButPrevious" xml:space="preserve">
+    <value>Előző</value>
+  </data>
+  <data name="_CultureButRead" xml:space="preserve">
+    <value>Olvas</value>
+  </data>
+  <data name="_CultureButRetract" xml:space="preserve">
+    <value>Visszahúzási magasság</value>
+  </data>
+  <data name="_CultureButSave" xml:space="preserve">
+    <value>Mentés</value>
+  </data>
+  <data name="_CultureButService" xml:space="preserve">
+    <value>Szerviz</value>
+  </data>
+  <data name="_CultureButSet" xml:space="preserve">
+    <value>Beállít</value>
+  </data>
+  <data name="_CultureButSettings" xml:space="preserve">
+    <value>Beállítások</value>
+  </data>
+  <data name="_CultureButSetup" xml:space="preserve">
+    <value>Beállítás</value>
+  </data>
+  <data name="_CultureButSlag" xml:space="preserve">
+    <value>Salak</value>
+  </data>
+  <data name="_CultureButStartPiercing" xml:space="preserve">
+    <value>Lyukasztás indítása</value>
+  </data>
+  <data name="_CultureButStateMessages" xml:space="preserve">
+    <value>Állapot</value>
+  </data>
+  <data name="_CultureButTemper" xml:space="preserve">
+    <value>Kedély</value>
+  </data>
+  <data name="_CultureButTestPressureOutputs" xml:space="preserve">
+    <value>Kimeneti nyomás tesztelése</value>
+  </data>
+  <data name="_CultureButTorch" xml:space="preserve">
+    <value>Égőfej</value>
+  </data>
+  <data name="_CultureButTorchInstalled" xml:space="preserve">
+    <value>Égőfej telepítve</value>
+  </data>
+  <data name="_CultureButUpdate" xml:space="preserve">
+    <value>Frissítés</value>
+  </data>
+  <data name="_CultureButYes" xml:space="preserve">
+    <value>Igen</value>
+  </data>
+  <data name="_CultureCalibrationActive" xml:space="preserve">
+    <value>Magasság kalibráció aktív</value>
+  </data>
+  <data name="_CultureCalibrationInvalid" xml:space="preserve">
+    <value>Érvénytelen kalibráció</value>
+  </data>
+  <data name="_CultureCalibrationValid" xml:space="preserve">
+    <value>Érvényes kalibráció</value>
+  </data>
+  <data name="_CultureCapSetpoint" xml:space="preserve">
+    <value>Égőfej magasság</value>
+  </data>
+  <data name="_CultureClearance" xml:space="preserve">
+    <value>Távolság</value>
+  </data>
+  <data name="_CultureCommand" xml:space="preserve">
+    <value>Parancs</value>
+  </data>
+  <data name="_CultureConnected" xml:space="preserve">
+    <value>Kapcsolódott</value>
+  </data>
+  <data name="_CultureCounter" xml:space="preserve">
+    <value>Számláló</value>
+  </data>
+  <data name="_CultureCuttingSpeed" xml:space="preserve">
+    <value>Vágósebesség</value>
+  </data>
+  <data name="_CultureDataBaseRemarkExist" xml:space="preserve">
+    <value>Ez a megjegyzés már a helyén van!</value>
+  </data>
+  <data name="_CultureDescription" xml:space="preserve">
+    <value>Leírás</value>
+  </data>
+  <data name="_CultureDisable" xml:space="preserve">
+    <value>Letiltás</value>
+  </data>
+  <data name="_CultureDistanceCalibration" xml:space="preserve">
+    <value>Kézi magasság kalibráció</value>
+  </data>
+  <data name="_CultureDynamic" xml:space="preserve">
+    <value>Dinamika</value>
+  </data>
+  <data name="_CultureEnable" xml:space="preserve">
+    <value>Engedélyez</value>
+  </data>
+  <data name="_CultureErrorCode" xml:space="preserve">
+    <value>Hibakód</value>
+  </data>
+  <data name="_CultureExecuteDeviceReset" xml:space="preserve">
+    <value>összes eszköz visszaállítása</value>
+  </data>
+  <data name="_CultureExitProgram" xml:space="preserve">
+    <value>Befejezi a programot ?</value>
+  </data>
+  <data name="_CultureFit3TorchControllerNotConnected" xml:space="preserve">
+    <value>A égőfej (Torch-Controller) nincs csatlakoztatva</value>
+  </data>
+  <data name="_CultureFit3TorchTypeCodeFault" xml:space="preserve">
+    <value>Égőfej típusa kódhiba</value>
+  </data>
+  <data name="_CultureFit3TorchTypeUndefined" xml:space="preserve">
+    <value>A égőfej típusa nem meghatározott</value>
+  </data>
+  <data name="_CultureFlameAdjust" xml:space="preserve">
+    <value>Gyújtóláng állítás</value>
+  </data>
+  <data name="_CultureFlameoffsetEnable" xml:space="preserve">
+    <value>Lángeltolás engedélyezése</value>
+  </data>
+  <data name="_CultureFwSpecial" xml:space="preserve">
+    <value>FW-Special: 9x.xx.xx</value>
+  </data>
+  <data name="_CultureFwUpdate" xml:space="preserve">
+    <value>FW-Update</value>
+  </data>
+  <data name="_CultureHeightControlActive" xml:space="preserve">
+    <value>Magasság vezérlés aktív</value>
+  </data>
+  <data name="_CultureHelp" xml:space="preserve">
+    <value>Segítség</value>
+  </data>
+  <data name="_CultureIgnitionData" xml:space="preserve">
+    <value>Gyújtási paraméterek</value>
+  </data>
+  <data name="_CultureInfoPressureOutputsLocked" xml:space="preserve">
+    <value>Kimeneti nyomások lezárása</value>
+  </data>
+  <data name="_CultureInvalid" xml:space="preserve">
+    <value>Érvénytelen</value>
+  </data>
+  <data name="_CultureKerfWidth" xml:space="preserve">
+    <value>Bejárati hossza</value>
+  </data>
+  <data name="_CultureLanguage" xml:space="preserve">
+    <value>Nyelv</value>
+  </data>
+  <data name="_CultureLanguageImage" xml:space="preserve">
+    <value>IhtImages/LanguageHungary.gif</value>
+  </data>
+  <data name="_CultureLeadInLength" xml:space="preserve">
+    <value>Bejárati hossza</value>
+  </data>
+  <data name="_CultureLengthUnit" xml:space="preserve">
+    <value>Hossz mértékegység</value>
+  </data>
+  <data name="_CultureMaterial" xml:space="preserve">
+    <value>Anyag</value>
+  </data>
+  <data name="_CultureMsgBoxInstallDownloadTool" xml:space="preserve">
+    <value>Telepítés Download Tool</value>
+  </data>
+  <data name="_CultureMsgBoxInstallDownloadToolQuestion" xml:space="preserve">
+    <value>Szeretné telepíteni a Download Tool?</value>
+  </data>
+  <data name="_CultureMsgBoxInstallFdtiUsbDriver" xml:space="preserve">
+    <value>Telepítés FDTI USB Converter driver</value>
+  </data>
+  <data name="_CultureMsgBoxInstallFdtiUsbDriverQuestion" xml:space="preserve">
+    <value>Szeretné telepíteni a FTDI USB átalakító driver?</value>
+  </data>
+  <data name="_CultureMsgLogAppStarted" xml:space="preserve">
+    <value>Alkalmazás elindult...</value>
+  </data>
+  <data name="_CultureMsgLogCommunicIsRtu" xml:space="preserve">
+    <value>RTU kommunikáció</value>
+  </data>
+  <data name="_CultureMsgLogCommunicIsTcp" xml:space="preserve">
+    <value>TCP kommunikáció</value>
+  </data>
+  <data name="_CultureMsgLogConnectingTorch" xml:space="preserve">
+    <value>Égőfej kapcsolódás</value>
+  </data>
+  <data name="_CultureMsgLogFwSpecialActive" xml:space="preserve">
+    <value>FW-Speciális aktív</value>
+  </data>
+  <data name="_CultureMsgLogFwUpdateRequired" xml:space="preserve">
+    <value>FW-frissítés szükséges! Minimális verzió</value>
+  </data>
+  <data name="_CultureMsgLogInvalidSelection" xml:space="preserve">
+    <value>Érvénytelen kiválasztás</value>
+  </data>
+  <data name="_CultureMsgLogRecognizingTorches" xml:space="preserve">
+    <value>Kapcsolódott égőfejek felismerve...</value>
+  </data>
+  <data name="_CultureNaturalGas" xml:space="preserve">
+    <value>Földgáz</value>
+  </data>
+  <data name="_CultureNo" xml:space="preserve">
+    <value>Nem.</value>
+  </data>
+  <data name="_CultureNotConnected" xml:space="preserve">
+    <value>Nem kapcsolódott</value>
+  </data>
+  <data name="_CultureNozzle" xml:space="preserve">
+    <value>Fúvóka</value>
+  </data>
+  <data name="_CultureOrigin" xml:space="preserve">
+    <value>Gyári</value>
+  </data>
+  <data name="_CulturePartNumber" xml:space="preserve">
+    <value>Alkatrész szám</value>
+  </data>
+  <data name="_CulturePosition" xml:space="preserve">
+    <value>Pozíció</value>
+  </data>
+  <data name="_CulturePreFlowActive" xml:space="preserve">
+    <value>Előáramláss aktív</value>
+  </data>
+  <data name="_CulturePreHeatingTime" xml:space="preserve">
+    <value>Előhevítési idő</value>
+  </data>
+  <data name="_CulturePressureOutputsControl" xml:space="preserve">
+    <value>Kimeneti nyomás</value>
+  </data>
+  <data name="_CulturePressureOutputsLocked" xml:space="preserve">
+    <value>Kimeneti nyomás lezárása</value>
+  </data>
+  <data name="_CulturePressureOutputsTest" xml:space="preserve">
+    <value>Kimeneti nyomás teszt</value>
+  </data>
+  <data name="_CulturePressureUnit" xml:space="preserve">
+    <value>Nyomás egység</value>
+  </data>
+  <data name="_CultureProcessActive" xml:space="preserve">
+    <value>Folyamat aktív</value>
+  </data>
+  <data name="_CultureProcessInActive" xml:space="preserve">
+    <value>Folyamat inaktív</value>
+  </data>
+  <data name="_CulturePropane" xml:space="preserve">
+    <value>Propán</value>
+  </data>
+  <data name="_CultureReconnectionRequired" xml:space="preserve">
+    <value>újrakapcsolódás</value>
+  </data>
+  <data name="_CultureRemark" xml:space="preserve">
+    <value>Megjegyzés</value>
+  </data>
+  <data name="_CultureResetAllDevices" xml:space="preserve">
+    <value>összes eszköz visszaállítása. Kérem, várjon …</value>
+  </data>
+  <data name="_CultureRetractPositionEnable" xml:space="preserve">
+    <value>Visszahúzási magasság bekapcsolva</value>
+  </data>
+  <data name="_CultureScanAvailablePorts" xml:space="preserve">
+    <value>Rendelkezésre álló portok keresése</value>
+  </data>
+  <data name="_CultureSecurityFolderProgramData" xml:space="preserve">
+    <value>Change security for Folder C:\ProgramData\IHT Automation</value>
+  </data>
+  <data name="_CultureSensorCollisionOutput" xml:space="preserve">
+    <value>Ütközés érzékelő kimenet</value>
+  </data>
+  <data name="_CultureSerialNumber" xml:space="preserve">
+    <value>Gyári szám</value>
+  </data>
+  <data name="_CultureSetupEndDownloadTool" xml:space="preserve">
+    <value>Download Tool beállítása befejeződött</value>
+  </data>
+  <data name="_CultureSetupEndFdtiUsbDriver" xml:space="preserve">
+    <value>Az Fdti Usb illesztőprogram telepítése befejeződött</value>
+  </data>
+  <data name="_CultureSetupEndUpdateDatabase" xml:space="preserve">
+    <value>Az adatbázis frissítése befejeződött</value>
+  </data>
+  <data name="_CultureSetupFinished" xml:space="preserve">
+    <value>Beállítás befejezve</value>
+  </data>
+  <data name="_CultureSetupNotInstalledDownloadTool" xml:space="preserve">
+    <value>Download Tool nincs telepítve</value>
+  </data>
+  <data name="_CultureSetupNotInstalledFdtiUsbDriver" xml:space="preserve">
+    <value>Nem telepített Fdti USB illesztőprogram</value>
+  </data>
+  <data name="_CultureSetupStartDownloadTool" xml:space="preserve">
+    <value>A beállításoktól kezdve Download Tool</value>
+  </data>
+  <data name="_CultureSetupStartFdtiUsbDriver" xml:space="preserve">
+    <value>Az Fdti Usb illesztőprogram beállításának megkezdése</value>
+  </data>
+  <data name="_CultureSetupStartUpdateDatabase" xml:space="preserve">
+    <value>Az adatbázis frissítése. Kérem, várjon..</value>
+  </data>
+  <data name="_CultureSlaveAddress" xml:space="preserve">
+    <value>Segédcím</value>
+  </data>
+  <data name="_CultureSlaveConnection" xml:space="preserve">
+    <value>Készülék csatlakozás</value>
+  </data>
+  <data name="_CultureSlaveId" xml:space="preserve">
+    <value>Segéd-ID</value>
+  </data>
+  <data name="_CultureState" xml:space="preserve">
+    <value>Állapot</value>
+  </data>
+  <data name="_CultureTactileInitPosFinding" xml:space="preserve">
+    <value>Automatikus magasság kalibráció</value>
+  </data>
+  <data name="_CultureThickness" xml:space="preserve">
+    <value>Vastagság</value>
+  </data>
+  <data name="_CultureTime" xml:space="preserve">
+    <value>Idő</value>
+  </data>
+  <data name="_CultureTorch" xml:space="preserve">
+    <value>Égőfej</value>
+  </data>
+  <data name="_CultureTorchSelection" xml:space="preserve">
+    <value>Égőfej kiválasztás</value>
+  </data>
+  <data name="_CultureTorchType" xml:space="preserve">
+    <value>Égőfej típus</value>
+  </data>
+  <data name="_CultureTorchTypeWrongIdentity" xml:space="preserve">
+    <value>Égőfej hibás azonosítása</value>
+  </data>
+  <data name="_CultureUnit" xml:space="preserve">
+    <value>Egység</value>
+  </data>
+  <data name="_CultureUnknown" xml:space="preserve">
+    <value>Ismeretlen</value>
+  </data>
+  <data name="_CultureValue" xml:space="preserve">
+    <value>Érték</value>
+  </data>
+  <data name="_CultureVersion" xml:space="preserve">
+    <value>Verzió</value>
+  </data>
+  <data name="_CultureWrongTorchType" xml:space="preserve">
+    <value>Hibás égőfej választva</value>
+  </data>
+</root>
