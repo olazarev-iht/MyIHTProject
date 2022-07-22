@@ -54,7 +54,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 
 		}
 
-		public async Task RefreshDynamicDataAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId)
+		public async Task RefreshDynamicDataAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId)
 		{
 			try
 			{

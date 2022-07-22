@@ -248,7 +248,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			_logger.LogDebug($"\nSent Command - Move Torch Down. Device {CurrentDeviceNumber}. User: {_userId}");
 		}
 
-		private async Task UpdateDynParamInAPCDeviceMockDBAsync(int deviceNum, ParamGroup paramGroup, ParamIds paramId, int paramValue)
+		private async Task UpdateDynParamInAPCDeviceMockDBAsync(int deviceNum, ParamGroup paramGroup, int paramId, int paramValue)
         {
 			await _parameterDataInfoManager.UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(deviceNum, paramGroup, paramId, paramValue, CancellationToken.None);
 		}

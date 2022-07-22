@@ -79,7 +79,7 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			return _mapper.Map<ParameterData, ParameterDataModel>(entry);
 		}
 
-		public async Task<ParameterDataModel?> GetEntryByAPCDeviceAndParamIdAsync(APCDeviceModel apcDevice, ParamGroup paramGroup, ParamIds paramId, CancellationToken cancellationToken)
+		public async Task<ParameterDataModel?> GetEntryByAPCDeviceAndParamIdAsync(APCDeviceModel apcDevice, ParamGroup paramGroup, int paramId, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 

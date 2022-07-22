@@ -20,7 +20,7 @@ namespace SharedComponents.Models.APCHardware
 
         public ParameterDataInfoModel() { }
 
-        public ParameterDataInfoModel(ParamGroup paramGroup, ParamIds ? paramId)
+        public ParameterDataInfoModel(ParamGroup paramGroup, int? paramId)
         {
             if (paramId is null) throw new ArgumentNullException($"{nameof(paramId)}");
 

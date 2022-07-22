@@ -20,8 +20,7 @@ namespace SharedComponents.Models.APCHardware
         {
             get
             {
-                var paramNameArr = ParamName.Split("_");
-                var paramName = paramNameArr.Length == 2 ? paramNameArr[1] : paramNameArr[0];
+                var paramName = ParamName.Split("_")[1];
                 return _viewGroupDictionary[paramName];
             }
         }

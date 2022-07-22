@@ -101,7 +101,7 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			}
 		}
 
-		public async Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, int paramValue, CancellationToken cancellationToken)
+		public async Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId, int paramValue, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 

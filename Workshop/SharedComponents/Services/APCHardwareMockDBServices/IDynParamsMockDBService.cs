@@ -8,7 +8,7 @@ namespace SharedComponents.Services.APCHardwareMockDBServices
 		public Task<DynParamsModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken);
 		public Task<Guid> AddEntryAsync(DynParamsModel model, CancellationToken cancellationToken);
 		public Task UpdateEntryAsync(Guid id, DynParamsModel newData, CancellationToken cancellationToken);
-		public Task UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, int paramValue, CancellationToken cancellationToken);
+		public Task UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId, int paramValue, CancellationToken cancellationToken);
 		public Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken);
 	}
 }

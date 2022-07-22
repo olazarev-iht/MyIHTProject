@@ -70,7 +70,7 @@ namespace BlazorServerHost.Services.APCHardwareMoqDBServices
 			}
 		}
 
-		public async Task UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, int paramValue, CancellationToken cancellationToken)
+		public async Task UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId, int paramValue, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 

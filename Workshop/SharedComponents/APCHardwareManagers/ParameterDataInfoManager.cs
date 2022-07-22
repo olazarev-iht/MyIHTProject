@@ -77,7 +77,7 @@ namespace SharedComponents.APCHardwareManagers
             return dynParams;
         }
 
-        public async Task<ParameterDataModel?> GetParamDataFromMockDBByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, CancellationToken cancellationToken)
+        public async Task<ParameterDataModel?> GetParamDataFromMockDBByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId, CancellationToken cancellationToken)
         {
             var parameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDeviceNum, paramGroup, paramId, CancellationToken.None);
             return parameterData;
@@ -93,12 +93,12 @@ namespace SharedComponents.APCHardwareManagers
             await _dynParamsDBService.UpdateDynParamValueAsync(newData, cancellationToken);
         }
 
-        public async Task UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, int paramValue, CancellationToken cancellationToken)
+        public async Task UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId, int paramValue, CancellationToken cancellationToken)
         {
             await _dynParamsMockDBService.UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(apcDeviceNum, paramGroup, paramId, paramValue, cancellationToken);
         }
 
-        public async Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, ParamIds paramId, int paramValue, CancellationToken cancellationToken)
+        public async Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId, int paramValue, CancellationToken cancellationToken)
         {
             await _dynParamsDBService.UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(apcDeviceNum, paramGroup, paramId, paramValue, cancellationToken);
         }
@@ -139,7 +139,7 @@ namespace SharedComponents.APCHardwareManagers
                 {
                     foreach (ParamGroup paramGroup in (ParamGroup[])Enum.GetValues(typeof(ParamGroup)))
                     {
-                        foreach (ParamIds paramId in (ParamIds[])Enum.GetValues(typeof(ParamIds)))
+                        foreach (int paramId in ParamGroupHelper.ParamGroupToParamEnum[paramGroup])
                         {
                             var mockParameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDevice.Num, paramGroup, paramId, cancellationToken);
                             var mockDynParams = mockParameterData?.DynParams;
@@ -166,10 +166,13 @@ namespace SharedComponents.APCHardwareManagers
 
                                 if (dynParamsId != Guid.Empty)
                                 {
+                                    var paramName = ParamGroupHelper.ParamGroupToEnumType[paramGroup].GetEnumName(paramId);
+                                    var deviceName = apcDevice.Num != 0 ? $"Device{apcDevice.Num}" : "System";
+
                                     var newParameterData = new ParameterDataModel
                                     {
                                         Id = Guid.NewGuid(),
-                                        ParamName = $"Device{apcDevice.Num}_{paramId}",
+                                        ParamName = $"{deviceName}_{paramName}",
                                         APCDeviceId = apcDevice.Id,
                                         ParamGroupId = paramGroup,
                                         DynParamsId = dynParamsId // newDynParams.Id
