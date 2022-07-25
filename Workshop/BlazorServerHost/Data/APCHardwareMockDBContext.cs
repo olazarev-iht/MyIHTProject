@@ -43,15 +43,12 @@ namespace BlazorServerHost.Data
 			//base.OnModelCreating(modelBuilder);
 
 			//Seed Departments Table
-			var SystemDeviceId = Guid.NewGuid();
 			var APCDeviceId1 = Guid.NewGuid();
 			var APCDeviceId2 = Guid.NewGuid();
 			var APCDeviceId3 = Guid.NewGuid();
 
 			var APCDeviceList = new List<APCDevice>();
 
-			var SystemDevice = new APCDevice { Id = SystemDeviceId, Num = 0, Name = "System" };
-			APCDeviceList.Add(SystemDevice);
 			var APCDevice1 = new APCDevice { Id = APCDeviceId1, Num = 1, Name = "APCDevice_1" };
 			APCDeviceList.Add(APCDevice1);
 			var APCDevice2 = new APCDevice { Id = APCDeviceId2, Num = 2, Name = "APCDevice_2" };
@@ -71,11 +68,9 @@ namespace BlazorServerHost.Data
 				if (device.Num > 0)
 				{
 					CreateParameterDataForDevice(modelBuilder, device);
+					CreateParameterDataForSystem(modelBuilder, device);
 				}
             }
-
-			CreateParameterDataForSystem(modelBuilder, SystemDevice);
-
 		}
 
 		public void CreateParameterDataForDevice(ModelBuilder modelBuilder, APCDevice apcDevice)
@@ -367,15 +362,15 @@ namespace BlazorServerHost.Data
 			modelBuilder.Entity<DynParams>().HasData(PiercingHeightControl_Dyn);
 			modelBuilder.Entity<DynParams>().HasData(PiercingDetection_Dyn);
 
-			var ParameterData_RetractHeight = new ParameterData { Id = Guid.NewGuid(), ParamName = "System_RetractHeight", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Process, DynParamsId = RetractHeight_Dyn_Id };
-			var ParameterData_RetractPosition = new ParameterData { Id = Guid.NewGuid(), ParamName = $"System_RetractPosition", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = RetractPosition_Dyn_Id };
-			var ParameterData_SlagSensitivity = new ParameterData { Id = Guid.NewGuid(), ParamName = $"System_SlagSensitivity", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Process, DynParamsId = SlagSensitivity_Dyn_Id };
-			var ParameterData_SlagPostTime = new ParameterData { Id = Guid.NewGuid(), ParamName = $"System_SlagPostTime", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Process, DynParamsId = SlagPostTime_Dyn_Id };
-			var ParameterData_SlagCuttingSpeedReduction = new ParameterData { Id = Guid.NewGuid(), ParamName = $"System_SlagCuttingSpeedReduction", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Service, DynParamsId = SlagCuttingSpeedReduction_Dyn_Id };
-			var ParameterData_StartPreflow = new ParameterData { Id = Guid.NewGuid(), ParamName = $"System_StartPreflow", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = StartPreflow_Dyn_Id };
-			var ParameterData_PreflowActive = new ParameterData { Id = Guid.NewGuid(), ParamName = $"System_PreflowActive", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PreflowActive_Dyn_Id };
-			var ParameterData_PiercingHeightControl = new ParameterData { Id = Guid.NewGuid(), ParamName = $"System_PiercingHeightControl", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PiercingHeightControl_Dyn_Id };
-			var ParameterData_PiercingDetection = new ParameterData { Id = Guid.NewGuid(), ParamName = $"System_PiercingDetection", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PiercingDetection_Dyn_Id };
+			var ParameterData_RetractHeight = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_RetractHeight", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Process, DynParamsId = RetractHeight_Dyn_Id };
+			var ParameterData_RetractPosition = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_RetractPosition", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = RetractPosition_Dyn_Id };
+			var ParameterData_SlagSensitivity = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_SlagSensitivity", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Process, DynParamsId = SlagSensitivity_Dyn_Id };
+			var ParameterData_SlagPostTime = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_SlagPostTime", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Process, DynParamsId = SlagPostTime_Dyn_Id };
+			var ParameterData_SlagCuttingSpeedReduction = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_SlagCuttingSpeedReduction", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Service, DynParamsId = SlagCuttingSpeedReduction_Dyn_Id };
+			var ParameterData_StartPreflow = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_StartPreflow", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = StartPreflow_Dyn_Id };
+			var ParameterData_PreflowActive = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_PreflowActive", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PreflowActive_Dyn_Id };
+			var ParameterData_PiercingHeightControl = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_PiercingHeightControl", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PiercingHeightControl_Dyn_Id };
+			var ParameterData_PiercingDetection = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_PiercingDetection", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PiercingDetection_Dyn_Id };
 
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_RetractHeight);
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_RetractPosition);

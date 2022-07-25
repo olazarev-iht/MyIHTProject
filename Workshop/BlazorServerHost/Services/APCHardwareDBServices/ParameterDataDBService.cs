@@ -91,6 +91,36 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			return _mapper.Map<ParameterData, ParameterDataModel>(entry);
 		}
 
+		public async Task<IEnumerable<ParameterDataModel>> GetDeviceSetupParamsAsync(APCDeviceModel apcDevice, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var setupParameters = new ParamIdsHelper().SetupParameters;
+
+			var entry = await dbContext.ParameterDatas
+				.AsNoTracking()
+				.Include(p => p.APCDevice)
+				.Include(p => p.DynParams)
+					.ThenInclude(p => p.ConstParams)
+				.Where(p => p.DynParams != null && p.APCDevice != null && p.APCDevice.Id == apcDevice.Id && p.ParamName != null
+					&& setupParameters.Contains(GetParamName(p.ParamName)))
+				.Select(p => _mapper.Map<ParameterData, ParameterDataModel>(p))
+				.ToArrayAsync(cancellationToken);
+
+			return entry;
+		}
+		
+
+		private string GetParamName(string? paramNameNullable)
+        {
+			if(string.IsNullOrWhiteSpace(paramNameNullable))
+				return string.Empty;
+
+			var returnVal = paramNameNullable.Split("_")[1];
+
+			return returnVal;
+        }
+
 		public async Task<Guid> AddEntryAsync(ParameterDataModel model, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
