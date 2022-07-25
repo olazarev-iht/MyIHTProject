@@ -102,12 +102,14 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 				.Include(p => p.APCDevice)
 				.Include(p => p.DynParams)
 					.ThenInclude(p => p.ConstParams)
+				.Include(p => p.DynParams)
+					.ThenInclude(p => p.ParameterDataInfo)
 				.Where(p => p.DynParams != null && p.APCDevice != null && p.APCDevice.Num == apcDeviceNum && p.ParamName != null)
-				.Select(p => _mapper.Map<ParameterData, ParameterDataModel>(p))
 				.ToArrayAsync(cancellationToken);
 
 			var entry = entryItems
 				.Where(p => setupParameters.Contains(GetParamName(p.ParamName)))
+				.Select(p => _mapper.Map<ParameterData, ParameterDataModel>(p))
 				.ToArray();
 
 			return entry;
@@ -119,7 +121,7 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			if(string.IsNullOrWhiteSpace(paramNameNullable))
 				return string.Empty;
 
-			var returnVal = paramNameNullable.Split("_")[1];
+			var returnVal = paramNameNullable.Contains('_') ? paramNameNullable.Split("_")[1] : paramNameNullable;
 
 			return returnVal;
         }

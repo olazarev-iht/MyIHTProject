@@ -10,7 +10,17 @@ namespace SharedComponents.Models.APCHardware
     public class ParameterDataModel
     {
         public Guid Id { get; set; }
-        public string ParamName { get; set; } = "";
+
+        private string _paramName = string.Empty;
+        public string ParamName 
+        {
+            get 
+            {
+                return _paramName.Contains('_') ? _paramName.Split('_')[1] : _paramName;
+            }
+
+            set => _paramName = value;
+        }
         public Guid APCDeviceId { get; set; }
         public APCDeviceModel? APCDevice { get; set; } = new();
         public ParamGroup ParamGroupId { get; set; }
@@ -20,8 +30,7 @@ namespace SharedComponents.Models.APCHardware
         {
             get
             {
-                var paramName = ParamName.Split("_")[1];
-                return _viewGroupDictionary[paramName];
+                return _viewGroupDictionary[ParamName];
             }
         }
 

@@ -203,7 +203,7 @@ button .mud-nav-link-text {
             <MudButton Variant="Variant.Filled">@context.</MudButton>
         </MudTd>*@
 
-        <MudTd DataLabel="Name">@context.ParamName</MudTd>
+        <MudTd DataLabel="Name">@context.DynParams.ParameterDataInfo?.ValueDescription</MudTd>
         <MudTd DataLabel="Value">
             @if(@context.DynParams?.ConstParams?.Min == 0 && @context.DynParams?.ConstParams?.Max == 1){
             <MudSelect T="int" @bind-Value="@context.DynParams.Value" Placeholder="Position" 
@@ -576,6 +576,7 @@ button .mud-nav-link-text {
     {
         var id = tableRowClickEventArgs.Item.Id;
 
+        if (tableRowClickEventArgs.Item.DynParams.ConstParams.Max == 1) return;
         //if (id == 18)
         //{
         //    OpenParamsListDialog(id);

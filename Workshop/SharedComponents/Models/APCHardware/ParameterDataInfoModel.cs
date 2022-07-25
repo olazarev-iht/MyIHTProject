@@ -44,6 +44,19 @@ namespace SharedComponents.Models.APCHardware
             Multiplier = GetIhtModbusRealMultiplierParam(paramGroup, u16IdxTechnology, IgnorePasswordValid);
         }
 
+        //private void SetUpFormat(ParamGroup paramGroup, int paramId)
+        //{
+        //    var paramName = ParamGroupHelper.ParamGroupToEnumType[paramGroup].GetEnumName(paramId);
+
+        //    switch (paramName)
+        //    {
+        //        case ParamGroupHelper.
+        //    }
+
+        //}
+
+
+
         public string GetIhtModbusUnitParam(ParamGroup paramGroup, ushort u16Idx)
         {
             switch (paramGroup)
@@ -102,6 +115,10 @@ namespace SharedComponents.Models.APCHardware
                     return IhtModbusDescriptionParamDyn.GetCmdExec(u16Idx);
                 case ParamGroup.SetupExec:
                     return IhtModbusDescriptionParamDyn.GetSetupExec(u16Idx);
+                case ParamGroup.Additional:
+                    return IhtModbusDescriptionParamDyn.GetAdditional(u16Idx);
+                case ParamGroup.StatusHeightCtrl:
+                    return IhtModbusDescriptionParamDyn.GetStatusHeightCtrl(u16Idx);
                 default:
                     return string.Empty;
             }

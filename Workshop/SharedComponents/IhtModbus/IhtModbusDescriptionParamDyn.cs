@@ -41,6 +41,34 @@ namespace SharedComponents.IhtModbus
             iGasType = -1;
         }
 
+        public static string GetAdditional(UInt16 u16Idx)
+        {
+            IhtModbusParamDyn.eIdxAdditional Idx = (IhtModbusParamDyn.eIdxAdditional)u16Idx;
+            switch (Idx)
+            {
+                case IhtModbusParamDyn.eIdxAdditional.RetractPosition: return "Retract Position";
+                case IhtModbusParamDyn.eIdxAdditional.StartPreflow: return "Start Preflow";
+                case IhtModbusParamDyn.eIdxAdditional.PreflowActive: return "Preflow Active";
+                case IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl: return "Piercing Height Control";
+                case IhtModbusParamDyn.eIdxAdditional.PiercingDetection: return "Piercing Detection";
+                case IhtModbusParamDyn.eIdxAdditional.HeightControlActive: return "Height Control Active";
+            }
+            return "unknown";
+        }
+
+        public static string GetStatusHeightCtrl(UInt16 u16Idx)
+        {
+            IhtModbusParamDyn.eStatusHeightCtrl Idx = (IhtModbusParamDyn.eStatusHeightCtrl)u16Idx;
+            switch (Idx)
+            {
+                case IhtModbusParamDyn.eStatusHeightCtrl.Off: return "Off";
+                case IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat: return "Height PreHeat";
+                case IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce: return "Height Pierce";
+                case IhtModbusParamDyn.eStatusHeightCtrl.HeightCut: return "Height Cut";
+            }
+            return "unknown";
+        }
+
         /// <summary>
         /// 
         /// </summary>
