@@ -37,7 +37,7 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entries = dbContext.APCDevices.Count();
+			var entries = dbContext.APCDevices.Where(d => d.Num > 0).Count();
 
 			return entries;
 		}
