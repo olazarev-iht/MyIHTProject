@@ -91,21 +91,24 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			return _mapper.Map<ParameterData, ParameterDataModel>(entry);
 		}
 
-		public async Task<IEnumerable<ParameterDataModel>> GetDeviceSetupParamsAsync(APCDeviceModel apcDevice, CancellationToken cancellationToken)
+		public async Task<IEnumerable<ParameterDataModel>> GetDeviceSetupParamsAsync(int apcDeviceNum, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
 			var setupParameters = new ParamIdsHelper().SetupParameters;
 
-			var entry = await dbContext.ParameterDatas
+			var entryItems = await dbContext.ParameterDatas
 				.AsNoTracking()
 				.Include(p => p.APCDevice)
 				.Include(p => p.DynParams)
 					.ThenInclude(p => p.ConstParams)
-				.Where(p => p.DynParams != null && p.APCDevice != null && p.APCDevice.Id == apcDevice.Id && p.ParamName != null
-					&& setupParameters.Contains(GetParamName(p.ParamName)))
+				.Where(p => p.DynParams != null && p.APCDevice != null && p.APCDevice.Num == apcDeviceNum && p.ParamName != null)
 				.Select(p => _mapper.Map<ParameterData, ParameterDataModel>(p))
 				.ToArrayAsync(cancellationToken);
+
+			var entry = entryItems
+				.Where(p => setupParameters.Contains(GetParamName(p.ParamName)))
+				.ToArray();
 
 			return entry;
 		}

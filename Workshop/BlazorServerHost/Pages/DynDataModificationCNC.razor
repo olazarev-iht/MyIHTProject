@@ -151,9 +151,11 @@ button .mud-nav-link-text {
             @*<MudTextField @bind-Value="@dynParamDataModel.Sign" Label="Sign" 
                 For=@(() => dynParamDataModel.Sign) Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>*@
 
-            <MudSlider @onchange="ParameterValChangedBySlider" @bind-Value="@dynParamDataModel.Position" 
-            Min="1" Max="100" Step="1" Color="Color.Info">@dynParamDataModel.Name.ToString(): @dynParamDataModel.Position.ToString()</MudSlider>
-            
+            <MudSlider @onchange="ParameterValChangedBySlider" @bind-Value="@dynParamDataModel.DynParams.Value" 
+                Min="@dynParamDataModel.DynParams.ConstParams.Min" Max="@dynParamDataModel.DynParams.ConstParams.Max" 
+                Step="@dynParamDataModel.DynParams.ConstParams.Step" 
+                Color="Color.Info">@dynParamDataModel.ParamName: @dynParamDataModel.DynParams.Value.ToString()
+            </MudSlider>            
         </MudForm>      
     </DialogContent>
     <DialogActions>
@@ -177,7 +179,7 @@ button .mud-nav-link-text {
           GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
           GroupFooterClass="mb-4"
           Dense="false"
-          ReadOnly="false" OnRowClick="RowClickEvent" T="Element">
+          ReadOnly="false" OnRowClick="RowClickEvent" T="ParameterDataModel">
     <ColGroup>
         <col style="width: 60px;" />
         <col />
@@ -187,29 +189,30 @@ button .mud-nav-link-text {
         <col />
     </ColGroup>
     <HeaderContent>
-        <MudTh Style="font-weight:bold;">Nr</MudTh>
+        @*<MudTh Style="font-weight:bold;">Nr</MudTh>*@
         @*<MudTh>Sign</MudTh>*@
         <MudTh Style="font-weight:bold;">Parameter</MudTh>
         <MudTh Style="font-weight:bold;">Value</MudTh>
         @*<MudTh>Molar mass</MudTh>*@
     </HeaderContent>
     <GroupHeaderTemplate>
-        <MudTh Class="mud-table-cell-custom-group" colspan="5">@($"{context.GroupName}: {context.Key}")</MudTh>
+        <MudTh Class="mud-table-cell-custom-group" colspan="5">@($"{context.Key}")</MudTh>
     </GroupHeaderTemplate>
     <RowTemplate>
-        <MudTd DataLabel="Nr">
-            <MudButton Variant="Variant.Filled">@context.Number</MudButton></MudTd>
-        @*<MudTd DataLabel="Sign">@context.Sign</MudTd>*@
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Position">
-            @if(@context.Number == 1){
-            <MudSelect T="int" @bind-Value="@context.Position" Placeholder="Position" 
+        @*<MudTd DataLabel="Nr">
+            <MudButton Variant="Variant.Filled">@context.</MudButton>
+        </MudTd>*@
+
+        <MudTd DataLabel="Name">@context.ParamName</MudTd>
+        <MudTd DataLabel="Value">
+            @if(@context.DynParams?.ConstParams?.Min == 0 && @context.DynParams?.ConstParams?.Max == 1){
+            <MudSelect T="int" @bind-Value="@context.DynParams.Value" Placeholder="Position" 
                 Class="myselect" AnchorOrigin="Origin.TopCenter" Style="margin-top: 0px;">
                 <MudSelectItem T="int" Value="1">Enabled</MudSelectItem>
                 <MudSelectItem T="int" Value="0">Disabled</MudSelectItem>
             </MudSelect>
             }
-            else if(@context.Number == 2)
+            @*else if(@context.Number == 2)
             {
                 <MudSwitch @bind-Checked="@context.Position" Color="Color.Secondary">@(@context.Position == 1 ? "Enabled" : "Disabled")</MudSwitch>
             }
@@ -225,9 +228,9 @@ button .mud-nav-link-text {
             }
             else if(@context.Number == 18){
                 @context.Sign;
-            }
+            }*@
             else {
-                @context.Position
+                @context.DynParams.Value
             }
             </MudTd>
        @* <MudTd DataLabel="Position">
@@ -245,7 +248,7 @@ button .mud-nav-link-text {
 
 <MudDialog @bind-IsVisible="_isOpenParamsListDialog" Class="SelectDialog">
     <TitleContent>
-        <MudText Typo="Typo.h6">Param: @dynParamDataModel.Name</MudText>
+        <MudText Typo="Typo.h6">Param: @dynParamDataModel.ParamName</MudText>
     </TitleContent>
     <DialogContent>
         <MudForm Model="@dynParamDataModel" @ref="_editParamListFormDialog">
@@ -494,7 +497,7 @@ button .mud-nav-link-text {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private bool _setupParamsDialogVisible = false;
-    private Element dynParamDataModel = new Element();
+    private ParameterDataModel dynParamDataModel = new ParameterDataModel();
     private bool _editParamDialogVisible = false;
     private int _sliderDynParamValue;
     private bool _isOpenParamsListDialog = false;
@@ -504,28 +507,20 @@ button .mud-nav-link-text {
     private MudListItem selectedItem;
     private MudForm _editParamListFormDialog;
 
-    private TableGroupDefinition<Element> _groupDefinition = new()
+    private TableGroupDefinition<ParameterDataModel> _groupDefinition = new()
     {
         GroupName = "Group",
         Indentation = false,
         Expandable = true,
         IsInitiallyExpanded = false,
-        Selector = (e) => e.Group
+        Selector = (e) => e.ViewGroup
     };
 
-    private IEnumerable<Element> Elements = new List<Element>();
+    private IEnumerable<ParameterDataModel> Elements = new List<ParameterDataModel>();
 
     protected override async Task OnInitializedAsync()
     {
-        Elements = await httpClient.GetFromJsonAsync<List<Element>>("https://mudblazor.com/webapi/periodictable");
-
-        if (Elements != null)
-        {
-            Elements.ToArray()[1].Position = 1;
-            Elements.ToArray()[9].Position = 3;
-            Elements.ToArray()[17].Position = 2;
-            Elements.ToArray()[17].Sign = "Value 2";
-        }
+        Elements = await parameterDataInfoManager.GetDeviceSetupParamsAsync(dynDataModificationCNCDataProvider.CurrentDeviceNumber, CancellationToken.None);
     }
 
     private void OpenSetupParamsDialog()
@@ -538,7 +533,7 @@ button .mud-nav-link-text {
         _setupParamsDialogVisible = false;
     }
 
-    private void OpenEditParamDialog(int id)
+    private void OpenEditParamDialog(Guid id)
     {
         GetParamDataModel(id);
         // _sliderDynParamValue = dynParamDataModel.Position;
@@ -546,12 +541,12 @@ button .mud-nav-link-text {
         _editParamDialogVisible = true;
     }
 
-    private void GetParamDataModel(int id)
+    private void GetParamDataModel(Guid id)
     {
-        dynParamDataModel = Elements.FirstOrDefault(c => c.Number == id) ?? new Element();
+        dynParamDataModel = Elements.FirstOrDefault(p => p.Id == id) ?? new ParameterDataModel();
     }
 
-    private void OpenParamsListDialog(int id)
+    private void OpenParamsListDialog(Guid id)
     {
         GetParamDataModel(id);
 
@@ -577,18 +572,18 @@ button .mud-nav-link-text {
         return returnVal;
     }
 
-    private void RowClickEvent(TableRowClickEventArgs<Element> tableRowClickEventArgs)
+    private void RowClickEvent(TableRowClickEventArgs<ParameterDataModel> tableRowClickEventArgs)
     {
-        var id = tableRowClickEventArgs.Item.Number;
+        var id = tableRowClickEventArgs.Item.Id;
 
-        if (id == 18)
-        {
-            OpenParamsListDialog(id);
-        }
-        else if (id > 2 && id != 10)
-        {
+        //if (id == 18)
+        //{
+        //    OpenParamsListDialog(id);
+        //}
+        //else if (id > 2 && id != 10)
+        //{
             OpenEditParamDialog(id);
-        }
+        //}
 
     }
 
@@ -599,11 +594,11 @@ button .mud-nav-link-text {
 
     private void SelectedListItemParamChanged(MudListItem mudListItem)
     {
-        if (mudListItem != null)
-        {
-            dynParamDataModel.Position = (int)mudListItem.Value;
-            dynParamDataModel.Sign = mudListItem.Text;
-        }
+        //if (mudListItem != null)
+        //{
+        //    dynParamDataModel.Position = (int)mudListItem.Value;
+        //    dynParamDataModel.Sign = mudListItem.Text;
+        //}
     }
 
     private void CloseParamsListDialog()
