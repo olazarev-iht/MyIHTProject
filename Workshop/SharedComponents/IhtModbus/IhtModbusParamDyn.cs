@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -165,6 +166,7 @@ namespace SharedComponents.IhtModbus
             SensorCollisionDelay,
             LinearDriveRefSpeed,
             LinearDrivePosSpeed,
+            [Description("Automatic Height Calibration")]
             TactileInitialPosFinding,
             DistanceCalibration,
             HoseLength,

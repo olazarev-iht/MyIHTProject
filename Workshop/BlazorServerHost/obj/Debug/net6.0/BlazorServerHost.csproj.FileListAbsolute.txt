@@ -120,3 +120,4 @@ C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\it-IT\Shared
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\nl-NL\SharedComponents.resources.dll
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\sl-SI\SharedComponents.resources.dll
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
+C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\Newtonsoft.Json.dll

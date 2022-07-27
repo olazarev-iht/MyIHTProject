@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "hQHvVAkRHNDsVreS25vJc+rmG5FPbi/ctaS8MpMEJbgFZqk59iyy7aXvr1txMI26lR9T0ACYzTQAGqSKXBsPAg==",
+  "dgSpecHash": "QIx5DCSf5Tf5j9RGC7Z0dGaMHIHv+AeZnvagkKhGG9iPGU+qh3S1ibAl/3iVUrqDn35IT32xpx7j9pXG8CnfRw==",
   "success": true,
   "projectFilePath": "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj",
   "expectedPackageFiles": [
@@ -17,6 +17,7 @@
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.jsinterop\\6.0.3\\microsoft.jsinterop.6.0.3.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\mudblazor\\6.0.9\\mudblazor.6.0.9.nupkg.sha512",
+    "C:\\Users\\ol\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\system.io.pipelines\\6.0.2\\system.io.pipelines.6.0.2.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
   ],

@@ -205,18 +205,21 @@ button .mud-nav-link-text {
 
         <MudTd DataLabel="Name">@context.DynParams.ParameterDataInfo?.ValueDescription</MudTd>
         <MudTd DataLabel="Value">
-            @if(@context.DynParams?.ConstParams?.Min == 0 && @context.DynParams?.ConstParams?.Max == 1){
+            @*@if(@context.DynParams?.ParameterDataInfo?.ViewParameter?.Mode == "Switch"){
             <MudSelect T="int" @bind-Value="@context.DynParams.Value" Placeholder="Position" 
                 Class="myselect" AnchorOrigin="Origin.TopCenter" Style="margin-top: 0px;">
-                <MudSelectItem T="int" Value="1">Enabled</MudSelectItem>
-                <MudSelectItem T="int" Value="0">Disabled</MudSelectItem>
+                <MudSelectItem T="int" Value="0">@context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[0]</MudSelectItem>
+                <MudSelectItem T="int" Value="0">@context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[1]</MudSelectItem>
             </MudSelect>
-            }
-            @*else if(@context.Number == 2)
+            }*@
+            @if(@context.DynParams?.ParameterDataInfo?.ViewParameter?.Mode == "Switch")
             {
-                <MudSwitch @bind-Checked="@context.Position" Color="Color.Secondary">@(@context.Position == 1 ? "Enabled" : "Disabled")</MudSwitch>
+                <MudSwitch @bind-Checked="@context.DynParams.Value" Color="Color.Secondary">@(@context.DynParams.Value == 1 ? 
+                    @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[1] : 
+                    @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[0])
+                </MudSwitch>
             }
-            else if(@context.Number == 10)
+            @*else if(@context.Number == 10)
             {
             <MudSelect T="int" @bind-Value="@context.Position" Placeholder="Position" Class="myselect" Style="margin-top: 0px;">
                 <MudSelectItem T="int" Value="0">Value 1</MudSelectItem>
