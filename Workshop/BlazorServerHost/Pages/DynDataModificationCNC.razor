@@ -214,22 +214,27 @@ button .mud-nav-link-text {
             }*@
             @if(@context.DynParams?.ParameterDataInfo?.ViewParameter?.Mode == "Switch")
             {
-                <MudSwitch @bind-Checked="@context.DynParams.Value" Color="Color.Secondary">@(@context.DynParams.Value == 1 ? 
+                <MudSwitch @bind-Checked="@context.DynParams.Value" Color="Color.Secondary">
+                    @(@context.DynParams.Value == 1 ? 
                     @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[1] : 
                     @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[0])
                 </MudSwitch>
             }
-            @*else if(@context.Number == 10)
-            {
-            <MudSelect T="int" @bind-Value="@context.Position" Placeholder="Position" Class="myselect" Style="margin-top: 0px;">
-                <MudSelectItem T="int" Value="0">Value 1</MudSelectItem>
-                <MudSelectItem T="int" Value="1">Value 2</MudSelectItem>
-                <MudSelectItem T="int" Value="2">Value 3</MudSelectItem>
-                <MudSelectItem T="int" Value="3">Value 4</MudSelectItem>
-                <MudSelectItem T="int" Value="4">Value 5</MudSelectItem>
-            </MudSelect> 
+            else if(@context.DynParams?.ParameterDataInfo?.ViewParameter?.Mode == "Select"){
+                @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[@context.DynParams.Value]
             }
-            else if(@context.Number == 18){
+            @*else if(@context.DynParams?.ParameterDataInfo?.ViewParameter?.Mode == "Select")
+            { int i = 0; 
+            <MudSelect T="int" @bind-Value="@context.DynParams.Value" Class="myselect" Style="margin-top: 0px;">
+                @foreach (var paramText in @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values)
+                {
+                    <MudSelectItem T="int" Value="@i">@paramText</MudSelectItem>
+
+                    i = i + 1;
+                }
+            </MudSelect> 
+            }*@
+            @*else if(@context.Number == 18){
                 @context.Sign;
             }*@
             else {
@@ -255,20 +260,19 @@ button .mud-nav-link-text {
     </TitleContent>
     <DialogContent>
         <MudForm Model="@dynParamDataModel" @ref="_editParamListFormDialog">
-        <MudList Clickable="true"            
-            @bind-SelectedValue="@selectedItemParamValue"          
+        <MudList Clickable="true"                  
             SelectedItemChanged="SelectedListItemParamChanged">
             @*<MudListSubheader>
             <MudChip Color="Color.Secondary">
                 (@(selectedItemParamValue?.ToString() ?? "0")) -- Position: @dynParamDataModel.Position
             </MudChip>
             </MudListSubheader>*@
-
-            <MudListItem Text="Value 1" Value="1"></MudListItem>
-            <MudListItem Text="Value 2" Value="2"></MudListItem> 
-            <MudListItem Text="Value 3" Value="3"></MudListItem>
-            <MudListItem Text="Value 4" Value="4"></MudListItem>
-            <MudListItem Text="Value 5" Value="5"></MudListItem>
+            @{ int i = 0; }
+            @foreach (var paramText in @dynParamDataModel.DynParams?.ParameterDataInfo?.ViewParameter?.Values)
+            {
+                <MudListItem T="int" Value="@i">@paramText</MudListItem>
+                i = i + 1;
+            }
 
         </MudList>    
         </MudForm>
@@ -578,16 +582,16 @@ button .mud-nav-link-text {
     private void RowClickEvent(TableRowClickEventArgs<ParameterDataModel> tableRowClickEventArgs)
     {
         var id = tableRowClickEventArgs.Item.Id;
+        var editMode = tableRowClickEventArgs.Item.DynParams?.ParameterDataInfo?.ViewParameter?.Mode;
 
-        if (tableRowClickEventArgs.Item.DynParams.ConstParams.Max == 1) return;
-        //if (id == 18)
-        //{
-        //    OpenParamsListDialog(id);
-        //}
-        //else if (id > 2 && id != 10)
-        //{
+        if (editMode != null && editMode == "Slider")
+        {
             OpenEditParamDialog(id);
-        //}
+        }
+        else if (editMode != null && editMode == "Select")
+        {
+            OpenParamsListDialog(id);
+        }
 
     }
 
@@ -598,11 +602,10 @@ button .mud-nav-link-text {
 
     private void SelectedListItemParamChanged(MudListItem mudListItem)
     {
-        //if (mudListItem != null)
-        //{
-        //    dynParamDataModel.Position = (int)mudListItem.Value;
-        //    dynParamDataModel.Sign = mudListItem.Text;
-        //}
+        if (mudListItem != null)
+        {
+            dynParamDataModel.DynParams.Value = (int)mudListItem.Value;
+        }
     }
 
     private void CloseParamsListDialog()
