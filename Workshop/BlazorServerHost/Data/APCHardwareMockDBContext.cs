@@ -310,6 +310,9 @@ namespace BlazorServerHost.Data
 			var PreflowActive_Const_Id = Guid.NewGuid();
 			var PiercingHeightControl_Const_Id = Guid.NewGuid();
 			var PiercingDetection_Const_Id = Guid.NewGuid();
+			var CutO2BlowOutTime_Const_Id = Guid.NewGuid();
+			var CutO2BlowOutPressure_Const_Id = Guid.NewGuid();
+			var CutO2BlowOutTimeOut_Const_Id = Guid.NewGuid();
 
 			var RetractHeight_Const = new ConstParams { Id = RetractHeight_Const_Id, Min = 0, Max = 500, Step = 25 }; // System param
 			var RetractPosition_Const = new ConstParams { Id = RetractPosition_Const_Id, Min = 0, Max = 1, Step = 1 }; // System param - Enabled/Disabled
@@ -320,6 +323,9 @@ namespace BlazorServerHost.Data
 			var PreflowActive_Const = new ConstParams { Id = PreflowActive_Const_Id, Min = 0, Max = 1, Step = 1 }; // System param - Yes/No
 			var PiercingHeightControl_Const = new ConstParams { Id = PiercingHeightControl_Const_Id, Min = 0, Max = 1, Step = 1 }; // System param - Enabled/Disabled
 			var PiercingDetection_Const = new ConstParams { Id = PiercingDetection_Const_Id, Min = 0, Max = 1, Step = 1 }; // System param - Enabled/Disabled
+			var CutO2BlowOutTime_Const = new ConstParams { Id = CutO2BlowOutTime_Const_Id, Min = 0, Max = 30, Step = 1 }; 
+			var CutO2BlowOutPressure_Const = new ConstParams { Id = CutO2BlowOutPressure_Const_Id, Min = 0, Max = 5000, Step = 10 }; 
+			var CutO2BlowOutTimeOut_Const = new ConstParams { Id = CutO2BlowOutTimeOut_Const_Id, Min = 0, Max = 240, Step = 1 }; 
 
 			modelBuilder.Entity<ConstParams>().HasData(RetractHeight_Const);
 			modelBuilder.Entity<ConstParams>().HasData(RetractPosition_Const);
@@ -330,6 +336,9 @@ namespace BlazorServerHost.Data
 			modelBuilder.Entity<ConstParams>().HasData(PreflowActive_Const);
 			modelBuilder.Entity<ConstParams>().HasData(PiercingHeightControl_Const);
 			modelBuilder.Entity<ConstParams>().HasData(PiercingDetection_Const);
+			modelBuilder.Entity<ConstParams>().HasData(CutO2BlowOutTime_Const);
+			modelBuilder.Entity<ConstParams>().HasData(CutO2BlowOutPressure_Const);
+			modelBuilder.Entity<ConstParams>().HasData(CutO2BlowOutTimeOut_Const);
 
 			var RetractHeight_Dyn_Id = Guid.NewGuid();
 			var RetractPosition_Dyn_Id = Guid.NewGuid();
@@ -340,7 +349,9 @@ namespace BlazorServerHost.Data
 			var PreflowActive_Dyn_Id = Guid.NewGuid();
 			var PiercingHeightControl_Dyn_Id = Guid.NewGuid();
 			var PiercingDetection_Dyn_Id = Guid.NewGuid();
-			
+			var CutO2BlowOutTime_Dyn_Id = Guid.NewGuid();
+			var CutO2BlowOutPressure_Dyn_Id = Guid.NewGuid();
+			var CutO2BlowOutTimeOut_Dyn_Id = Guid.NewGuid();
 
 			var RetractHeight_Dyn = new DynParams { Id = RetractHeight_Dyn_Id, ParamId = (int)IhtModbusParamDyn.eIdxProcess.RetractHeight, ConstParamsId = RetractHeight_Const_Id, Value = 100 };
 			var RetractPosition_Dyn = new DynParams { Id = RetractPosition_Dyn_Id, ParamId = (int)IhtModbusParamDyn.eIdxAdditional.RetractPosition, ConstParamsId = RetractPosition_Const_Id, Value = 0 };
@@ -351,6 +362,9 @@ namespace BlazorServerHost.Data
 			var PreflowActive_Dyn = new DynParams { Id = PreflowActive_Dyn_Id, ParamId = (int)IhtModbusParamDyn.eIdxAdditional.PreflowActive, ConstParamsId = PreflowActive_Const_Id, Value = 0 };
 			var PiercingHeightControl_Dyn = new DynParams { Id = PiercingHeightControl_Dyn_Id, ParamId = (int)IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl, ConstParamsId = PiercingHeightControl_Const_Id, Value = 0 };
 			var PiercingDetection_Dyn = new DynParams { Id = PiercingDetection_Dyn_Id, ParamId = (int)IhtModbusParamDyn.eIdxAdditional.PiercingDetection, ConstParamsId = PiercingDetection_Const_Id, Value = 0 };
+			var CutO2BlowOutTime_Dyn = new DynParams { Id = CutO2BlowOutTime_Dyn_Id, ParamId = (int)IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime, ConstParamsId = CutO2BlowOutTime_Const_Id, Value = 5 };
+			var CutO2BlowOutPressure_Dyn = new DynParams { Id = CutO2BlowOutPressure_Dyn_Id, ParamId = (int)IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure, ConstParamsId = CutO2BlowOutPressure_Const_Id, Value = 2500 };
+			var CutO2BlowOutTimeOut_Dyn = new DynParams { Id = CutO2BlowOutTimeOut_Dyn_Id, ParamId = (int)IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut, ConstParamsId = CutO2BlowOutTimeOut_Const_Id, Value = 240 };
 
 			modelBuilder.Entity<DynParams>().HasData(RetractHeight_Dyn);
 			modelBuilder.Entity<DynParams>().HasData(RetractPosition_Dyn);
@@ -361,6 +375,9 @@ namespace BlazorServerHost.Data
 			modelBuilder.Entity<DynParams>().HasData(PreflowActive_Dyn);
 			modelBuilder.Entity<DynParams>().HasData(PiercingHeightControl_Dyn);
 			modelBuilder.Entity<DynParams>().HasData(PiercingDetection_Dyn);
+			modelBuilder.Entity<DynParams>().HasData(CutO2BlowOutTime_Dyn);
+			modelBuilder.Entity<DynParams>().HasData(CutO2BlowOutPressure_Dyn);
+			modelBuilder.Entity<DynParams>().HasData(CutO2BlowOutTimeOut_Dyn);
 
 			var ParameterData_RetractHeight = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_RetractHeight", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Process, DynParamsId = RetractHeight_Dyn_Id };
 			var ParameterData_RetractPosition = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_RetractPosition", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = RetractPosition_Dyn_Id };
@@ -371,6 +388,9 @@ namespace BlazorServerHost.Data
 			var ParameterData_PreflowActive = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_PreflowActive", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PreflowActive_Dyn_Id };
 			var ParameterData_PiercingHeightControl = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_PiercingHeightControl", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PiercingHeightControl_Dyn_Id };
 			var ParameterData_PiercingDetection = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_PiercingDetection", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PiercingDetection_Dyn_Id };
+			var ParameterData_CutO2BlowOutTime = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_CutO2BlowOutTime", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = CutO2BlowOutTime_Dyn_Id };
+			var ParameterData_CutO2BlowOutPressure = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_CutO2BlowOutPressure", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = CutO2BlowOutPressure_Dyn_Id };
+			var ParameterData_CutO2BlowOutTimeOut = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_CutO2BlowOutTimeOut", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = CutO2BlowOutTimeOut_Dyn_Id };
 
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_RetractHeight);
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_RetractPosition);
@@ -381,6 +401,9 @@ namespace BlazorServerHost.Data
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_PreflowActive);
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_PiercingHeightControl);
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_PiercingDetection);
+			modelBuilder.Entity<ParameterData>().HasData(ParameterData_CutO2BlowOutTime);
+			modelBuilder.Entity<ParameterData>().HasData(ParameterData_CutO2BlowOutPressure);
+			modelBuilder.Entity<ParameterData>().HasData(ParameterData_CutO2BlowOutTimeOut);
 		}
 	}
 }

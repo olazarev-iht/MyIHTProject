@@ -81,77 +81,49 @@ namespace SharedComponents.Models.APCHardware
             //}
 
             if (paramName == IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString())
-            {
                 returnValue = @"{ 'Name':'Automatic Height Calibration', 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString())
-            {
                 returnValue = @"{ 'Name':'Manual Height Calibration', 'Mode':'Slider' }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString())
-            {
                 returnValue = @"{ 'Name':'Retract Position', 'Mode':'Slider' }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxAdditional.RetractPosition.ToString())
-            {
                 returnValue = @"{ 'Name':'Retract Position', 'Mode':'Switch', 'Values': ['Disable','Enable'] }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxAdditional.RetractPosition.ToString())
-            {
                 returnValue = @"{ 'Name':'Retract Position', 'Mode':'Switch', 'Values': ['Disable','Enable'] }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString())
-            {
                 returnValue = @"{ 'Name':'Slag Sensitivity', 'Mode':'Select', 'Values': ['Off','Low','Default','High'] }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString())
-            {
                 returnValue = @"{ 'Name':'Slag Post Time', 'Mode':'Slider' }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString())
-            {
                 returnValue = @"{ 'Name':'Slag Cutting Speed Reduction', 'Mode':'Slider' }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString())
-            {
                 returnValue = @"{ 'Name':'Start Preflow', 'Mode':'Switch', 'Values': ['No','Yes'] }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString())
-            {
                 returnValue = @"{ 'Name':'Preflow Active', 'Mode':'Switch', 'Values': ['No','Yes'] }";
-            }
+            /////////////////////
+            else if (paramName == IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString())
+                returnValue = @"{ 'Name':'PreFlow Time', 'Mode':'Slider' }";
+            else if (paramName == IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString())
+                returnValue = @"{ 'Name':'PreFlow Pressure', 'Mode':'Slider' }";
+            else if (paramName == IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString())
+                returnValue = @"{ 'Name':'PreFlow Timeout', 'Mode':'Slider' }";
+            //////////////////////
             else if (paramName == IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl.ToString())
-            {
                 returnValue = @"{ 'Name':'Piercing with Height Control', 'Mode':'Switch', 'Values': ['Disable','Enable'] }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString())
-            {
                 returnValue = @"{ 'Name':'Piercing Detection', 'Mode':'Switch', 'Values': ['Disable','Enable'] }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxConfig.Dynamic.ToString())
-            {
                 returnValue = @"{ 'Name':'Dynamic', 'Mode':'Slider' }";
-            }
             else if (paramName == IhtModbusParamDyn.eIdxAdditional.HeightControlActive.ToString())
-            {
                 returnValue = @"{ 'Name':'Height Control Active', 'Mode':'Switch', 'Values': ['No','Yes'] }";
-            }
             else if (paramName == IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString())
-            {
                 returnValue = @"{ 'Name':'Off', 'Mode':'Switch', 'Values': ['No','Yes'] }";
-            }
             else if (paramName == IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString())
-            {
                 returnValue = @"{ 'Name':'Height PreHeat', 'Mode':'Switch', 'Values': ['No','Yes'] }";
-            }
             else if (paramName == IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString())
-            {
                 returnValue = @"{ 'Name':'Height Pierce', 'Mode':'Switch', 'Values': ['No','Yes'] }";
-            }
             else if (paramName == IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString())
-            {
                 returnValue = @"{ 'Name':'Height Cut', 'Mode':'Switch', 'Values': ['No','Yes'] }";
-            }
 
             return returnValue;
         }
