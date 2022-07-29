@@ -388,9 +388,9 @@ namespace BlazorServerHost.Data
 			var ParameterData_PreflowActive = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_PreflowActive", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PreflowActive_Dyn_Id };
 			var ParameterData_PiercingHeightControl = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_PiercingHeightControl", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PiercingHeightControl_Dyn_Id };
 			var ParameterData_PiercingDetection = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_PiercingDetection", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = PiercingDetection_Dyn_Id };
-			var ParameterData_CutO2BlowOutTime = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_CutO2BlowOutTime", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = CutO2BlowOutTime_Dyn_Id };
-			var ParameterData_CutO2BlowOutPressure = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_CutO2BlowOutPressure", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = CutO2BlowOutPressure_Dyn_Id };
-			var ParameterData_CutO2BlowOutTimeOut = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_CutO2BlowOutTimeOut", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Additional, DynParamsId = CutO2BlowOutTimeOut_Dyn_Id };
+			var ParameterData_CutO2BlowOutTime = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_CutO2BlowOutTime", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Config, DynParamsId = CutO2BlowOutTime_Dyn_Id };
+			var ParameterData_CutO2BlowOutPressure = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_CutO2BlowOutPressure", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Config, DynParamsId = CutO2BlowOutPressure_Dyn_Id };
+			var ParameterData_CutO2BlowOutTimeOut = new ParameterData { Id = Guid.NewGuid(), ParamName = $"Device{apcDevice.Num}_CutO2BlowOutTimeOut", APCDeviceId = apcDevice.Id, ParamGroupId = ParamGroup.Config, DynParamsId = CutO2BlowOutTimeOut_Dyn_Id };
 
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_RetractHeight);
 			modelBuilder.Entity<ParameterData>().HasData(ParameterData_RetractPosition);

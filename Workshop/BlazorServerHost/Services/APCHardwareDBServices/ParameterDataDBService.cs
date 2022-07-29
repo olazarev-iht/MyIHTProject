@@ -110,6 +110,8 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			var entry = entryItems
 				.Where(p => setupParameters.Contains(GetParamName(p.ParamName)))
 				.Select(p => _mapper.Map<ParameterData, ParameterDataModel>(p))
+				.OrderBy(p => p.ViewGroupOrder)
+					.ThenBy(p => p.ViewItemOrder)
 				.ToArray();
 
 			return entry;

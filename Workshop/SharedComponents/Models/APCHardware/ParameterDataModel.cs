@@ -12,9 +12,9 @@ namespace SharedComponents.Models.APCHardware
         public Guid Id { get; set; }
 
         private string _paramName = string.Empty;
-        public string ParamName 
+        public string ParamName
         {
-            get 
+            get
             {
                 return _paramName.Contains('_') ? _paramName.Split('_')[1] : _paramName;
             }
@@ -30,47 +30,65 @@ namespace SharedComponents.Models.APCHardware
         {
             get
             {
-                return _viewGroupDictionary[ParamName];
+                return _viewGroupDictionary[ParamName].Group;
             }
         }
 
-        public Dictionary<string, string> _viewGroupDictionary = new Dictionary<string, string>()
+        public int ViewGroupOrder
         {
-            { IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), ViewGroups.HeightCalibration},
-            { IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), ViewGroups.HeightCalibration},
+            get
+            {
+                return _viewGroupDictionary[ParamName].GroupOrder;
+            }
+        }
 
-            { IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), ViewGroups.RetractPosition},
+        public int ViewItemOrder
+        {
+            get
+            {
+                return _viewGroupDictionary[ParamName].ItemOrder;
+            }
+        }
+
+        public Dictionary<string, (string Group, int GroupOrder, int ItemOrder)> _viewGroupDictionary = new Dictionary<string, (string, int, int)>()
+        {
+            { IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), (ViewGroups.HeightCalibration.Group, ViewGroups.HeightCalibration.Order, 1)},
+            { IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), (ViewGroups.HeightCalibration.Group, ViewGroups.HeightCalibration.Order, 2)},
+
+            { IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), (ViewGroups.RetractPosition.Group, ViewGroups.RetractPosition.Order, 1)},
             // RetractPosition - experimental
-            { IhtModbusParamDyn.eIdxAdditional.RetractPosition.ToString(), ViewGroups.RetractPosition},
+            { IhtModbusParamDyn.eIdxAdditional.RetractPosition.ToString(), (ViewGroups.RetractPosition.Group, ViewGroups.RetractPosition.Order, 2)},
 
-            { IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), ViewGroups.Slag},
-            { IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), ViewGroups.Slag},
-            { IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), ViewGroups.Slag},
+            { IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), (ViewGroups.Slag.Group, ViewGroups.Slag.Order, 1)},
+            { IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), (ViewGroups.Slag.Group, ViewGroups.Slag.Order, 2)},
+            { IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), (ViewGroups.Slag.Group, ViewGroups.Slag.Order, 3)},
 
-            { IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString(), ViewGroups.PreFlow},
-            { IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString(), ViewGroups.PreFlow},
+            { IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 1)},
+            { IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 2)},
+            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 3)},
+            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 4)},
+            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 5)},
 
-            { IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl.ToString(), ViewGroups.Piercing},
-            { IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), ViewGroups.Piercing},
+            { IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl.ToString(), (ViewGroups.Piercing.Group, ViewGroups.Piercing.Order, 1)},
+            { IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), (ViewGroups.Piercing.Group, ViewGroups.Piercing.Order, 2)},
 
-            { IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), ViewGroups.HeightControl},
-            { IhtModbusParamDyn.eIdxAdditional.HeightControlActive.ToString(), ViewGroups.HeightControl},
-            { IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), ViewGroups.HeightControl},
-            { IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), ViewGroups.HeightControl},
-            { IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), ViewGroups.HeightControl},
-            { IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), ViewGroups.HeightControl},
-            
+            { IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 1)},
+            { IhtModbusParamDyn.eIdxAdditional.HeightControlActive.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 2)},
+            { IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 3)},
+            { IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 4)},
+            { IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 5)},
+            { IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 6)}
         };
 
     }
 
     class ViewGroups
     {
-        public static string HeightCalibration = "Height Calibration";
-        public static string RetractPosition = "Retract Position";
-        public static string Slag = "Slag";
-        public static string PreFlow = "Pre Flow";
-        public static string Piercing = "Piercing";
-        public static string HeightControl = "Height Control";       
+        public static (string Group, int Order) HeightCalibration = ("Height Calibration", 1);
+        public static (string Group, int Order) RetractPosition = ("Retract Position", 2);
+        public static (string Group, int Order) Slag = ("Slag", 3);
+        public static (string Group, int Order) PreFlow = ("Pre Flow", 4);
+        public static (string Group, int Order) Piercing = ("Piercing", 5);
+        public static (string Group, int Order) HeightControl = ("Height Control", 6);
     }
 }

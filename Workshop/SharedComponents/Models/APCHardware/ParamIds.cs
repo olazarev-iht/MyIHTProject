@@ -61,7 +61,10 @@ namespace SharedComponents.Models.APCHardware
             IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString(),
             IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString(),
             IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl.ToString(),
-            IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString()
+            IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(),
+            IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(),
+            IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(),
+            IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString()
         };
     }
 
