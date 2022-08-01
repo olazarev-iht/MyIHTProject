@@ -11,8 +11,7 @@ namespace BlazorServerHost.Data.Models.APCHardware
         public ParamGroup ParamGroupId { get; set; }
         public Guid? DynParamsId { get; set; }
         public DynParams? DynParams { get; set; }
-        public Guid? ViewParamGroupId { get; set; }
-        public ViewParamGroup? ViewParamGroup { get; set; }
-        public int? ViewItemOrder { get; set; }
+        public Guid? ViewParamOrderId { get; set; }
+        public ViewParamOrder? ViewParamOrder { get; set; }
     }
 }

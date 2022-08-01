@@ -140,8 +140,7 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     APCDeviceId = table.Column<Guid>(type: "TEXT", nullable: false),
                     ParamGroupId = table.Column<int>(type: "INTEGER", nullable: false),
                     DynParamsId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    ViewParamGroupId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    ViewItemOrder = table.Column<int>(type: "INTEGER", nullable: true)
+                    ViewParamOrderId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -158,141 +157,141 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                         principalTable: "DynParams",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ParameterDatas_ViewGroups_ViewParamGroupId",
-                        column: x => x.ViewParamGroupId,
-                        principalTable: "ViewGroups",
+                        name: "FK_ParameterDatas_ViewParamOrders_ViewParamOrderId",
+                        column: x => x.ViewParamOrderId,
+                        principalTable: "ViewParamOrders",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
                 table: "ViewGroups",
                 columns: new[] { "Id", "Name", "ViewOrder" },
-                values: new object[] { new Guid("25e18de0-70dc-4f99-aa5a-3740e7b93518"), "Height Calibration", 1 });
+                values: new object[] { new Guid("07a083fe-c04a-4bb7-9629-d5544ed58b37"), "Slag", 3 });
 
             migrationBuilder.InsertData(
                 table: "ViewGroups",
                 columns: new[] { "Id", "Name", "ViewOrder" },
-                values: new object[] { new Guid("873a1786-4393-4d2f-ab1f-d842ed92e03a"), "Retract Position", 2 });
+                values: new object[] { new Guid("0f6d7685-9754-460c-8c73-32e906a4ee8b"), "Retract Position", 2 });
 
             migrationBuilder.InsertData(
                 table: "ViewGroups",
                 columns: new[] { "Id", "Name", "ViewOrder" },
-                values: new object[] { new Guid("99c27f84-e212-494e-8b57-ceeddff712d8"), "Pre Flow", 4 });
+                values: new object[] { new Guid("16aa6c33-0b5b-4054-9e6f-8137b50b90b5"), "Height Calibration", 1 });
 
             migrationBuilder.InsertData(
                 table: "ViewGroups",
                 columns: new[] { "Id", "Name", "ViewOrder" },
-                values: new object[] { new Guid("bde14a4a-32e0-4c3b-8c09-f2ec6cee3385"), "Slag", 3 });
+                values: new object[] { new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e"), "Pre Flow", 4 });
 
             migrationBuilder.InsertData(
                 table: "ViewGroups",
                 columns: new[] { "Id", "Name", "ViewOrder" },
-                values: new object[] { new Guid("bf5ac7d9-a663-4c5e-9b28-9a422464fa28"), "Piercing", 5 });
+                values: new object[] { new Guid("d9aaa2b1-a8a3-4890-8e49-278a7bb0772f"), "Piercing", 5 });
 
             migrationBuilder.InsertData(
                 table: "ViewGroups",
                 columns: new[] { "Id", "Name", "ViewOrder" },
-                values: new object[] { new Guid("f58caf59-f142-4cb5-84d5-2f70bf618742"), "Height Control", 6 });
+                values: new object[] { new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4"), "Height Control", 6 });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("062ec58b-e366-4f35-8160-cf83fde54efc"), "RetractPosition", 2, new Guid("873a1786-4393-4d2f-ab1f-d842ed92e03a") });
+                values: new object[] { new Guid("0103fad1-84e3-4fa9-85fb-34d5bdc5d278"), "HeightPierce", 5, new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("0858ee1e-bac5-45b0-abec-88466e47f9af"), "SlagSensitivity", 1, new Guid("bde14a4a-32e0-4c3b-8c09-f2ec6cee3385") });
+                values: new object[] { new Guid("36a28d85-477a-4d7c-937b-782f9e2c7d80"), "HeightCut", 6, new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("0daed1f1-53e6-4c47-a180-47b0cecb0a3f"), "Off", 3, new Guid("f58caf59-f142-4cb5-84d5-2f70bf618742") });
+                values: new object[] { new Guid("413d32f9-b7ae-4b51-8aa9-f5bc2b6f025a"), "SlagPostTime", 2, new Guid("07a083fe-c04a-4bb7-9629-d5544ed58b37") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("1d185725-e330-4acd-ba13-1b41866e0fb5"), "StartPreflow", 1, new Guid("99c27f84-e212-494e-8b57-ceeddff712d8") });
+                values: new object[] { new Guid("4678a33a-4cba-4b70-9f03-5ffce867953b"), "CutO2BlowOutTime", 3, new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("2b61d633-0a94-434c-b879-f272c55aca1a"), "CutO2BlowOutTime", 3, new Guid("99c27f84-e212-494e-8b57-ceeddff712d8") });
+                values: new object[] { new Guid("5014cec9-f067-4756-951f-dfcab8ec18e7"), "TactileInitialPosFinding", 1, new Guid("16aa6c33-0b5b-4054-9e6f-8137b50b90b5") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("2d78eef9-c5f0-45ac-9440-4b431f824f25"), "DistanceCalibration", 2, new Guid("25e18de0-70dc-4f99-aa5a-3740e7b93518") });
+                values: new object[] { new Guid("5e7f2eab-536f-4668-99e9-ded5b9205076"), "DistanceCalibration", 2, new Guid("16aa6c33-0b5b-4054-9e6f-8137b50b90b5") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("3980d18f-4700-4061-aec4-492b6de7b66d"), "PiercingHeightControl", 1, new Guid("bf5ac7d9-a663-4c5e-9b28-9a422464fa28") });
+                values: new object[] { new Guid("63ac32ea-3e27-434d-9819-85b7eab25a90"), "PiercingDetection", 2, new Guid("d9aaa2b1-a8a3-4890-8e49-278a7bb0772f") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("76be0d1a-ba3f-4a39-a802-d98ec1d999d2"), "PreflowActive", 2, new Guid("99c27f84-e212-494e-8b57-ceeddff712d8") });
+                values: new object[] { new Guid("66158424-fdee-43db-bcdc-3db3c562afd6"), "HeightControlActive", 2, new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("8141a08b-be92-416f-a582-ff8ba631b664"), "RetractHeight", 1, new Guid("873a1786-4393-4d2f-ab1f-d842ed92e03a") });
+                values: new object[] { new Guid("67ccb136-8352-4c80-9647-2eaddd87f302"), "RetractPosition", 2, new Guid("0f6d7685-9754-460c-8c73-32e906a4ee8b") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("8db61eed-1906-4bdd-9731-d5900028e005"), "Dynamic", 1, new Guid("f58caf59-f142-4cb5-84d5-2f70bf618742") });
+                values: new object[] { new Guid("6cccae39-d009-4c03-b8dd-e7e2fd14db24"), "RetractHeight", 1, new Guid("0f6d7685-9754-460c-8c73-32e906a4ee8b") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("8e25b7a7-61c3-4fa6-825c-f4a6b7362a8d"), "HeightCut", 6, new Guid("f58caf59-f142-4cb5-84d5-2f70bf618742") });
+                values: new object[] { new Guid("83604e4f-5ffa-442b-ac2c-b9017ea5e8ad"), "SlagCuttingSpeedReduction", 3, new Guid("07a083fe-c04a-4bb7-9629-d5544ed58b37") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("902327fb-4173-4084-9ede-bdec8de982db"), "CutO2BlowOutPressure", 4, new Guid("99c27f84-e212-494e-8b57-ceeddff712d8") });
+                values: new object[] { new Guid("89caf727-fe8c-463a-b355-180524d33402"), "CutO2BlowOutPressure", 4, new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("92d93678-5baf-4f34-b1bb-665765a1346e"), "HeightPierce", 5, new Guid("f58caf59-f142-4cb5-84d5-2f70bf618742") });
+                values: new object[] { new Guid("944d1a7c-8f72-41fd-94db-e5cae46bb692"), "Off", 3, new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("aa87f8ef-48b7-4354-91eb-b184da45239b"), "HeightControlActive", 2, new Guid("f58caf59-f142-4cb5-84d5-2f70bf618742") });
+                values: new object[] { new Guid("bcf35aed-7489-495b-8849-b8fdd372b525"), "CutO2BlowOutTimeOut", 5, new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("b5e9c99a-4bd2-4f52-b05c-65fd33f39b0f"), "CutO2BlowOutTimeOut", 5, new Guid("99c27f84-e212-494e-8b57-ceeddff712d8") });
+                values: new object[] { new Guid("c1c2193f-7669-4ed5-9770-f3fe87ca7439"), "Dynamic", 1, new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("be11e649-9dd6-4b7c-b22f-9b724562a5bf"), "SlagCuttingSpeedReduction", 3, new Guid("bde14a4a-32e0-4c3b-8c09-f2ec6cee3385") });
+                values: new object[] { new Guid("e03d04bd-932a-45bf-9a99-d0a33d67b8a6"), "SlagSensitivity", 1, new Guid("07a083fe-c04a-4bb7-9629-d5544ed58b37") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("c0b7defd-70a1-49c3-85fc-7fe5e940923a"), "SlagPostTime", 2, new Guid("bde14a4a-32e0-4c3b-8c09-f2ec6cee3385") });
+                values: new object[] { new Guid("e848e7d7-13bc-4cb6-b7c3-f923394bb93c"), "PiercingHeightControl", 1, new Guid("d9aaa2b1-a8a3-4890-8e49-278a7bb0772f") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("d0eaae8a-22e8-4b0b-b628-84eb14ca50a4"), "HeightPreHeat", 4, new Guid("f58caf59-f142-4cb5-84d5-2f70bf618742") });
+                values: new object[] { new Guid("ed248f89-b09d-4217-adba-efa0cbdd78e5"), "PreflowActive", 2, new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("d8a4c8fd-2868-4e4f-9f1b-d62207870d31"), "TactileInitialPosFinding", 1, new Guid("25e18de0-70dc-4f99-aa5a-3740e7b93518") });
+                values: new object[] { new Guid("ef0183ef-e08d-468c-99bd-8a834c96d604"), "StartPreflow", 1, new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e") });
 
             migrationBuilder.InsertData(
                 table: "ViewParamOrders",
                 columns: new[] { "Id", "ParamName", "ViewItemOrder", "ViewParamGroupId" },
-                values: new object[] { new Guid("da9a7d1c-75e3-4531-9a9b-a7f96c61e31f"), "PiercingDetection", 2, new Guid("bf5ac7d9-a663-4c5e-9b28-9a422464fa28") });
+                values: new object[] { new Guid("f47c348e-47fa-4f03-96da-2fa5e218d233"), "HeightPreHeat", 4, new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DynParams_ConstParamsId",
@@ -320,9 +319,9 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                 column: "DynParamsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ParameterDatas_ViewParamGroupId",
+                name: "IX_ParameterDatas_ViewParamOrderId",
                 table: "ParameterDatas",
-                column: "ViewParamGroupId");
+                column: "ViewParamOrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ViewParamOrders_ViewParamGroupId",
@@ -339,22 +338,22 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                 name: "ParameterDatas");
 
             migrationBuilder.DropTable(
-                name: "ViewParamOrders");
-
-            migrationBuilder.DropTable(
                 name: "APCDevices");
 
             migrationBuilder.DropTable(
                 name: "DynParams");
 
             migrationBuilder.DropTable(
-                name: "ViewGroups");
+                name: "ViewParamOrders");
 
             migrationBuilder.DropTable(
                 name: "ConstParams");
 
             migrationBuilder.DropTable(
                 name: "ParameterDataInfos");
+
+            migrationBuilder.DropTable(
+                name: "ViewGroups");
         }
     }
 }
