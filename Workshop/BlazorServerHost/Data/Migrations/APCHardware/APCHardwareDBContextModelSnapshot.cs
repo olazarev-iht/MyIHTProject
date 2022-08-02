@@ -184,45 +184,7 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
 
                     b.HasKey("Id");
 
-                    b.ToTable("ViewGroups");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("16aa6c33-0b5b-4054-9e6f-8137b50b90b5"),
-                            Name = "Height Calibration",
-                            ViewOrder = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("0f6d7685-9754-460c-8c73-32e906a4ee8b"),
-                            Name = "Retract Position",
-                            ViewOrder = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("07a083fe-c04a-4bb7-9629-d5544ed58b37"),
-                            Name = "Slag",
-                            ViewOrder = 3
-                        },
-                        new
-                        {
-                            Id = new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e"),
-                            Name = "Pre Flow",
-                            ViewOrder = 4
-                        },
-                        new
-                        {
-                            Id = new Guid("d9aaa2b1-a8a3-4890-8e49-278a7bb0772f"),
-                            Name = "Piercing",
-                            ViewOrder = 5
-                        },
-                        new
-                        {
-                            Id = new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4"),
-                            Name = "Height Control",
-                            ViewOrder = 6
-                        });
+                    b.ToTable("ViewParamGroups");
                 });
 
             modelBuilder.Entity("BlazorServerHost.Data.Models.APCHardware.ViewParamOrder", b =>
@@ -230,6 +192,12 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("APCDeviceNum")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ParamGroupId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ParamName")
                         .IsRequired()
@@ -246,148 +214,6 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     b.HasIndex("ViewParamGroupId");
 
                     b.ToTable("ViewParamOrders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("5014cec9-f067-4756-951f-dfcab8ec18e7"),
-                            ParamName = "TactileInitialPosFinding",
-                            ViewItemOrder = 1,
-                            ViewParamGroupId = new Guid("16aa6c33-0b5b-4054-9e6f-8137b50b90b5")
-                        },
-                        new
-                        {
-                            Id = new Guid("5e7f2eab-536f-4668-99e9-ded5b9205076"),
-                            ParamName = "DistanceCalibration",
-                            ViewItemOrder = 2,
-                            ViewParamGroupId = new Guid("16aa6c33-0b5b-4054-9e6f-8137b50b90b5")
-                        },
-                        new
-                        {
-                            Id = new Guid("6cccae39-d009-4c03-b8dd-e7e2fd14db24"),
-                            ParamName = "RetractHeight",
-                            ViewItemOrder = 1,
-                            ViewParamGroupId = new Guid("0f6d7685-9754-460c-8c73-32e906a4ee8b")
-                        },
-                        new
-                        {
-                            Id = new Guid("67ccb136-8352-4c80-9647-2eaddd87f302"),
-                            ParamName = "RetractPosition",
-                            ViewItemOrder = 2,
-                            ViewParamGroupId = new Guid("0f6d7685-9754-460c-8c73-32e906a4ee8b")
-                        },
-                        new
-                        {
-                            Id = new Guid("e03d04bd-932a-45bf-9a99-d0a33d67b8a6"),
-                            ParamName = "SlagSensitivity",
-                            ViewItemOrder = 1,
-                            ViewParamGroupId = new Guid("07a083fe-c04a-4bb7-9629-d5544ed58b37")
-                        },
-                        new
-                        {
-                            Id = new Guid("413d32f9-b7ae-4b51-8aa9-f5bc2b6f025a"),
-                            ParamName = "SlagPostTime",
-                            ViewItemOrder = 2,
-                            ViewParamGroupId = new Guid("07a083fe-c04a-4bb7-9629-d5544ed58b37")
-                        },
-                        new
-                        {
-                            Id = new Guid("83604e4f-5ffa-442b-ac2c-b9017ea5e8ad"),
-                            ParamName = "SlagCuttingSpeedReduction",
-                            ViewItemOrder = 3,
-                            ViewParamGroupId = new Guid("07a083fe-c04a-4bb7-9629-d5544ed58b37")
-                        },
-                        new
-                        {
-                            Id = new Guid("ef0183ef-e08d-468c-99bd-8a834c96d604"),
-                            ParamName = "StartPreflow",
-                            ViewItemOrder = 1,
-                            ViewParamGroupId = new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e")
-                        },
-                        new
-                        {
-                            Id = new Guid("ed248f89-b09d-4217-adba-efa0cbdd78e5"),
-                            ParamName = "PreflowActive",
-                            ViewItemOrder = 2,
-                            ViewParamGroupId = new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e")
-                        },
-                        new
-                        {
-                            Id = new Guid("4678a33a-4cba-4b70-9f03-5ffce867953b"),
-                            ParamName = "CutO2BlowOutTime",
-                            ViewItemOrder = 3,
-                            ViewParamGroupId = new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e")
-                        },
-                        new
-                        {
-                            Id = new Guid("89caf727-fe8c-463a-b355-180524d33402"),
-                            ParamName = "CutO2BlowOutPressure",
-                            ViewItemOrder = 4,
-                            ViewParamGroupId = new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e")
-                        },
-                        new
-                        {
-                            Id = new Guid("bcf35aed-7489-495b-8849-b8fdd372b525"),
-                            ParamName = "CutO2BlowOutTimeOut",
-                            ViewItemOrder = 5,
-                            ViewParamGroupId = new Guid("a0896d16-6e51-4389-9b78-41bcfafc5a9e")
-                        },
-                        new
-                        {
-                            Id = new Guid("e848e7d7-13bc-4cb6-b7c3-f923394bb93c"),
-                            ParamName = "PiercingHeightControl",
-                            ViewItemOrder = 1,
-                            ViewParamGroupId = new Guid("d9aaa2b1-a8a3-4890-8e49-278a7bb0772f")
-                        },
-                        new
-                        {
-                            Id = new Guid("63ac32ea-3e27-434d-9819-85b7eab25a90"),
-                            ParamName = "PiercingDetection",
-                            ViewItemOrder = 2,
-                            ViewParamGroupId = new Guid("d9aaa2b1-a8a3-4890-8e49-278a7bb0772f")
-                        },
-                        new
-                        {
-                            Id = new Guid("c1c2193f-7669-4ed5-9770-f3fe87ca7439"),
-                            ParamName = "Dynamic",
-                            ViewItemOrder = 1,
-                            ViewParamGroupId = new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4")
-                        },
-                        new
-                        {
-                            Id = new Guid("66158424-fdee-43db-bcdc-3db3c562afd6"),
-                            ParamName = "HeightControlActive",
-                            ViewItemOrder = 2,
-                            ViewParamGroupId = new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4")
-                        },
-                        new
-                        {
-                            Id = new Guid("944d1a7c-8f72-41fd-94db-e5cae46bb692"),
-                            ParamName = "Off",
-                            ViewItemOrder = 3,
-                            ViewParamGroupId = new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4")
-                        },
-                        new
-                        {
-                            Id = new Guid("f47c348e-47fa-4f03-96da-2fa5e218d233"),
-                            ParamName = "HeightPreHeat",
-                            ViewItemOrder = 4,
-                            ViewParamGroupId = new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4")
-                        },
-                        new
-                        {
-                            Id = new Guid("0103fad1-84e3-4fa9-85fb-34d5bdc5d278"),
-                            ParamName = "HeightPierce",
-                            ViewItemOrder = 5,
-                            ViewParamGroupId = new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4")
-                        },
-                        new
-                        {
-                            Id = new Guid("36a28d85-477a-4d7c-937b-782f9e2c7d80"),
-                            ParamName = "HeightCut",
-                            ViewItemOrder = 6,
-                            ViewParamGroupId = new Guid("fffb0a71-f69a-4a74-96c2-7d151ddf85a4")
-                        });
                 });
 
             modelBuilder.Entity("BlazorServerHost.Data.Models.APCHardware.DynParams", b =>
