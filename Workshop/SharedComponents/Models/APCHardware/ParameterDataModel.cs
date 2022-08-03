@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
 
 namespace SharedComponents.Models.APCHardware
@@ -50,6 +51,14 @@ namespace SharedComponents.Models.APCHardware
             }
         }
 
+        public IhtDevices.PasswordLevel_SW PasswordLevel
+        {
+            get
+            {
+                return _passwordLevelDictionary[ParamName];
+            }
+        }
+
         public Dictionary<string, (string Group, int GroupOrder, int ItemOrder)> _viewGroupDictionary = new Dictionary<string, (string, int, int)>()
         {
             { IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), (ViewGroups.HeightCalibration.Group, ViewGroups.HeightCalibration.Order, 1)},
@@ -78,6 +87,36 @@ namespace SharedComponents.Models.APCHardware
             { IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 4)},
             { IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 5)},
             { IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 6)}
+        };
+
+        public Dictionary<string, IhtDevices.PasswordLevel_SW> _passwordLevelDictionary = new Dictionary<string, IhtDevices.PasswordLevel_SW>()
+        {
+            { IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+            { IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+
+            { IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+            // RetractPosition - experimental
+            { IhtModbusParamDyn.eIdxAdditional.RetractPosition.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+
+            { IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+            { IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
+            { IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), IhtDevices.PasswordLevel_SW.Level_2 },
+
+            { IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+            { IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
+            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
+            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
+
+            { IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+            { IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+
+            { IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
+            { IhtModbusParamDyn.eIdxAdditional.HeightControlActive.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+            { IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+            { IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+            { IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+            { IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), IhtDevices.PasswordLevel_SW.Level_0 }
         };
 
     }

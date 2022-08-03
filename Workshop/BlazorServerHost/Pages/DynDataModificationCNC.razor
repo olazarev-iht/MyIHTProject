@@ -1,6 +1,7 @@
 ﻿@page "/dynDataModificationCNC"
 
 @using BlazorServerHost.Features.HeightControlFeature.Services.CNC
+@using SharedComponents.IhtDev
 @using SharedComponents.IhtModbus
 @using SharedComponents.Models.APCHardware
 @using SharedComponents.Services.APCHardwareManagers
@@ -93,6 +94,31 @@ button .mud-nav-link-text {
 {
     top: -65px;
 }
+
+.password-dialog {
+    background-color:aliceblue; 
+    font-weight:bold;
+    cursor: default;
+    text-align: center;
+    width:33%;
+}
+
+th.password-dialog:hover {
+  background-color: lightgrey;
+}
+
+input#password-input {
+  font-size: 25px;
+  border: none;
+  background: transparent;
+  width: 100px;
+  text-indent: 9px;
+  letter-spacing: 5px;
+}
+
+input#password-input:focus {
+  outline: none;
+}
 </style>
 
 <style>
@@ -169,6 +195,47 @@ button .mud-nav-link-text {
             Save
         </MudButton>*@
     </DialogActions>
+</MudDialog>
+
+<MudDialog @bind-IsVisible="_setupPasswordDialogVisible" Style="width:280px">
+    <TitleContent>
+        <MudTh Style="text-align:left;">
+            <MudButton Color="MudBlazor.Color.Primary" OnClick="@(() => ResetPassword())">Reset to Level 0</MudButton>
+        </MudTh>
+    </TitleContent>
+    <DialogContent>
+        <table class="center-mud-text" style="table-layout: fixed; width: 100%;">
+            <tr>
+                <td style="border: 0px solid white;" colspan="2">
+                    <input type="password" id="password-input" minlength="4" maxlength="4" size="4" 
+                    @bind-value="_setupPasswordValue" style="border: 0px solid; width:50%" readonly="readonly"/>
+                </td>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("x"))">&#8592;</MudTh>
+            </tr>
+            <tr>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("7"))">7</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("8"))">8</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("9"))">9</MudTh>
+            </tr>
+            <tr>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("4"))">4</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("5"))">5</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("6"))">6</MudTh>
+            </tr>
+            <tr>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("1"))">1</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("2"))">2</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("3"))">3</MudTh>
+            </tr>
+            <tr>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("0"))">0</MudTh>
+                <MudTh Class="password-dialog" Style="padding: 0px;">&nbsp;</MudTh>
+                <MudTh Class="password-dialog" Style="padding: 0px;">
+                    <MudButton Color="MudBlazor.Color.Secondary" OnClick="@(()=>ClosePasswordSetupDialog())">Close</MudButton>
+                </MudTh>
+            </tr>
+        </table>
+    </DialogContent>
 </MudDialog>
 
 <MudDialog @bind-IsVisible="_setupParamsDialogVisible" Style="width: 600px;">
@@ -288,11 +355,13 @@ button .mud-nav-link-text {
 
 
 <MudDialog @bind-IsVisible="_menuExpanded">
+    <TitleContent><MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText></TitleContent>
     <DialogContent>     
         <MudList Clickable="true" Style="Height:200px;" >
             <MudListItem Icon="@Icons.Filled.Settings" Text="Settings" InitiallyExpanded="false">
                 <NestedList>
                     <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenSetupParamsDialog">Setup</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenPasswordSetupDialog">Password</MudListItem>
                 </NestedList>
             </MudListItem>
         </MudList>          
@@ -517,6 +586,12 @@ button .mud-nav-link-text {
     private MudListItem selectedItem;
     private MudForm _editParamListFormDialog;
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private IhtDevices.PasswordLevel_SW _userPasswordLevel = IhtDevices.PasswordLevel_SW.Level_0;
+    private string _setupPasswordValue = "";
+    private bool _setupPasswordDialogVisible = false;
+
     private TableGroupDefinition<ParameterDataModel> _groupDefinition = new()
     {
         GroupName = "Group",
@@ -528,9 +603,27 @@ button .mud-nav-link-text {
 
     private IEnumerable<ParameterDataModel> Elements = new List<ParameterDataModel>();
 
+    private Dictionary<string, IhtDevices.PasswordLevel_SW> _passwordToLevelDictionary = new Dictionary<string, IhtDevices.PasswordLevel_SW>()
+    {
+        { "0000", IhtDevices.PasswordLevel_SW.Level_0 },
+        { "1111", IhtDevices.PasswordLevel_SW.Level_1 },
+        { "2222", IhtDevices.PasswordLevel_SW.Level_2 },
+        { "3333", IhtDevices.PasswordLevel_SW.Level_3 }
+    };
+
     protected override async Task OnInitializedAsync()
     {
+        await GetSetupParametersAsync();
+    }
+
+    private async Task GetSetupParametersAsync()
+    {
         Elements = await parameterDataInfoManager.GetDeviceSetupParamsAsync(dynDataModificationCNCDataProvider.CurrentDeviceNumber, CancellationToken.None);
+
+        if (Elements != null)
+        {
+            Elements = Elements.Where(p => p.PasswordLevel <= _userPasswordLevel);
+        }
     }
 
     private void OpenSetupParamsDialog()
@@ -541,6 +634,61 @@ button .mud-nav-link-text {
     private void CloseSetupParamsDialog()
     {
         _setupParamsDialogVisible = false;
+    }
+
+    private void OpenPasswordSetupDialog()
+    {
+        _setupPasswordValue = string.Empty;
+
+        _setupPasswordDialogVisible = true;
+    }
+
+    private void ClosePasswordSetupDialog()
+    {
+        _setupPasswordValue = string.Empty;
+
+        _setupPasswordDialogVisible = false;
+    }
+
+    private void SetNewPasswordLevel()
+    {
+        IhtDevices.PasswordLevel_SW newPasswordLevel;
+
+        if (_passwordToLevelDictionary.TryGetValue(_setupPasswordValue, out newPasswordLevel))
+        {
+            _userPasswordLevel = newPasswordLevel;
+
+            GetSetupParametersAsync().Wait();
+        }
+
+        ClosePasswordSetupDialog();
+    }
+
+    private void GetEditPassword(string passSimbol)
+    {
+        if(passSimbol == "x")
+        {
+            if (!string.IsNullOrEmpty(_setupPasswordValue))
+            {
+                _setupPasswordValue = _setupPasswordValue.Remove(_setupPasswordValue.Length - 1);
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            if (_setupPasswordValue.Length < 4)
+            {
+                _setupPasswordValue = $"{_setupPasswordValue}{passSimbol}";
+            }
+
+            if(_setupPasswordValue.Length == 4)
+            {
+                SetNewPasswordLevel();
+            }
+        }
     }
 
     private void OpenEditParamDialog()
@@ -563,6 +711,14 @@ button .mud-nav-link-text {
         // dynParamDataModel.Position = _sliderDynParamValue;
 
         _editParamDialogVisible = false;
+    }
+
+    private void ResetPassword()
+    { 
+        _userPasswordLevel = IhtDevices.PasswordLevel_SW.Level_0;
+
+        GetSetupParametersAsync().Wait();
+        ClosePasswordSetupDialog();
     }
 
     private bool GetReadOnlyStatus(int number)
