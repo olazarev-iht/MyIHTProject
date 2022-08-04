@@ -199,7 +199,7 @@ input#password-input:focus {
 
 <MudDialog @bind-IsVisible="_setupPasswordDialogVisible" Style="width:280px">
     <TitleContent>
-        <MudTh Style="text-align:left;">
+        <MudTh Style="text-align:left;border-bottom:0px">
             <MudButton Color="MudBlazor.Color.Primary" OnClick="@(() => ResetPassword())">Reset to Level 0</MudButton>
         </MudTh>
     </TitleContent>
@@ -664,7 +664,7 @@ input#password-input:focus {
         ClosePasswordSetupDialog();
     }
 
-    private void GetEditPassword(string passSimbol)
+    private async Task GetEditPassword(string passSimbol)
     {
         if(passSimbol == "x")
         {
@@ -686,6 +686,7 @@ input#password-input:focus {
 
             if(_setupPasswordValue.Length == 4)
             {
+                await Task.Delay(TimeSpan.FromSeconds(0.2));
                 SetNewPasswordLevel();
             }
         }
