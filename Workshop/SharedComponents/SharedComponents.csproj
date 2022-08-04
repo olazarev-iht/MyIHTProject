@@ -13,11 +13,43 @@
   <ItemGroup>
     <PackageReference Include="MudBlazor" Version="6.0.9" />
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	<PackageReference Include="System.IO.Ports" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Cultures\" />
+    <Folder Include="IhtModbusCmd\" />
     <Folder Include="Pages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="IhtCommunic">
+      <HintPath>bin\Debug\net6.0\IhtCommunic.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicCutbus">
+      <HintPath>bin\Debug\net6.0\IhtCommunicCutbus.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicManager">
+      <HintPath>bin\Debug\net6.0\IhtCommunicManager.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicManagerApc">
+      <HintPath>bin\Debug\net6.0\IhtCommunicManagerApc.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicManagerService">
+      <HintPath>bin\Debug\net6.0\IhtCommunicManagerService.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicService">
+      <HintPath>bin\Debug\net6.0\IhtCommunicService.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicService.resources">
+      <HintPath>bin\Debug\net6.0\IhtCommunicService.resources.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>bin\Debug\net6.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Modbus">
+      <HintPath>bin\Debug\net6.0\Modbus.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

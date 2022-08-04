@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IhtApcApplication.Properties {
+namespace SharedComponents.Properties {
     using System;
     
     
