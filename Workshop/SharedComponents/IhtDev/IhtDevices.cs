@@ -242,8 +242,8 @@ namespace SharedComponents.IhtDev
             return new IhtDevices();
         }
 
-        private Dictionary<int, IhtDevice> _ihtDevicesDictionary_ = null;
-        private Dictionary<int, IhtDevice> ihtDevices
+        private static Dictionary<int, IhtDevice> _ihtDevicesDictionary_ = null;
+        public static Dictionary<int, IhtDevice> ihtDevices
         {
             get
             {
@@ -273,189 +273,198 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Geräte erzeugen
         /// </summary>
-        private void CreateIhtDevices()
+        private static void CreateIhtDevices()
         {
             _ihtDevicesDictionary_ = new Dictionary<int, IhtDevice>();
-            IhtDevice _ihtDevice = null;
+            IhtDevice _ihtDevice = new();
             //MainWindow _mainWindow = MainWindow.GetMainWindow();
             // Device 1
-            _ihtDevice = GetIhtDeviceDataModelByName("ihtDevice_1") as IhtDevice; //_mainWindow.FindResource("ihtDevice_1") as IhtDevice;
+            _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_01; //_mainWindow.FindResource("ihtDevice_1") as IhtDevice;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_11,
-                               IhtDevices.DeviceNumber.Device_01,
-                               (DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_1"), //_mainWindow.FindResource("dataDeviceInfo_1"),
-                               (DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_1"),
-                               (DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_1"),
-                               (DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_1"),
-                               (DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_1"),
-                               (DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_1"),
-                               (DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_1"),
-                               (DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_1"),
-                               (DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_1"),
-                               (DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_1"),
-                               (DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_1"),
-                               (DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_1")
+                               IhtDevices.DeviceNumber.Device_01, null, null, null, null, null, null, null, null, null, null, null, null
+                               //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_1"), //_mainWindow.FindResource("dataDeviceInfo_1"),
+                               //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_1"),
+                               //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_1"),
+                               //(DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_1"),
+                               //(DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_1"),
+                               //(DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_1"),
+                               //(DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_1"),
+                               //(DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_1"),
+                               //(DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_1"),
+                               //(DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_1"),
+                               //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_1"),
+                               //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_1")
                               );
             _ihtDevicesDictionary_.Add(1 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 2
-            _ihtDevice = GetIhtDeviceDataModelByName("ihtDevice_2") as IhtDevice;
-            _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_12,
-                               IhtDevices.DeviceNumber.Device_02,
-                               (DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_2"),
-                               (DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_2"),
-                               (DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_2"),
-                               (DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_2"),
-                               (DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_2"),
-                               (DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_2"),
-                               (DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_2"),
-                               (DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_2"),
-                               (DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_2"),
-                               (DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_2"),
-                               (DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_2"),
-                               (DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_2")
+            _ihtDevice = new();
+            _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_02;
+            _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_12, 
+                               IhtDevices.DeviceNumber.Device_02, null, null, null, null, null, null, null, null, null, null, null, null
+                               //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_2"),
+                               //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_2"),
+                               //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_2"),
+                               //(DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_2"),
+                               //(DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_2"),
+                               //(DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_2"),
+                               //(DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_2"),
+                               //(DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_2"),
+                               //(DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_2"),
+                               //(DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_2"),
+                               //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_2"),
+                               //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_2")
                               );
             _ihtDevicesDictionary_.Add(2 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 3
-            _ihtDevice = GetIhtDeviceDataModelByName("ihtDevice_3") as IhtDevice;
+            _ihtDevice = new();
+            _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_03;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_13,
-                               IhtDevices.DeviceNumber.Device_03,
-                               (DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_3"),
-                               (DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_3"),
-                               (DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_3"),
-                               (DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_3"),
-                               (DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_3"),
-                               (DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_3"),
-                               (DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_3"),
-                               (DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_3"),
-                               (DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_3"),
-                               (DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_3"),
-                               (DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_3"),
-                               (DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_3")
+                               IhtDevices.DeviceNumber.Device_03, null, null, null, null, null, null, null, null, null, null, null, null
+                               //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_3"),
+                               //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_3"),
+                               //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_3"),
+                               //(DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_3"),
+                               //(DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_3"),
+                               //(DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_3"),
+                               //(DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_3"),
+                               //(DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_3"),
+                               //(DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_3"),
+                               //(DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_3"),
+                               //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_3"),
+                               //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_3")
                               );
             _ihtDevicesDictionary_.Add(3 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 4
-            _ihtDevice = GetIhtDeviceDataModelByName("ihtDevice_4") as IhtDevice;
+            _ihtDevice = new();
+            _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_04;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_14,
-                               IhtDevices.DeviceNumber.Device_04,
-                               (DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_4"),
-                               (DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_4"),
-                               (DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_4"),
-                               (DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_4"),
-                               (DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_4"),
-                               (DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_4"),
-                               (DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_4"),
-                               (DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_4"),
-                               (DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_4"),
-                               (DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_4"),
-                               (DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_4"),
-                               (DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_4")
+                               IhtDevices.DeviceNumber.Device_04, null, null, null, null, null, null, null, null, null, null, null, null
+                               //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_4"),
+                               //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_4"),
+                               //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_4"),
+                               //(DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_4"),
+                               //(DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_4"),
+                               //(DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_4"),
+                               //(DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_4"),
+                               //(DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_4"),
+                               //(DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_4"),
+                               //(DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_4"),
+                               //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_4"),
+                               //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_4")
                               );
             _ihtDevicesDictionary_.Add(4 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 5
-            _ihtDevice = GetIhtDeviceDataModelByName("ihtDevice_5") as IhtDevice;
+            _ihtDevice = new();
+            _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_05;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_15,
-                               IhtDevices.DeviceNumber.Device_05,
-                               (DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_5"),
-                               (DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_5"),
-                               (DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_5"),
-                               (DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_5"),
-                               (DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_5"),
-                               (DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_5"),
-                               (DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_5"),
-                               (DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_5"),
-                               (DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_5"),
-                               (DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_5"),
-                               (DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_5"),
-                               (DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_5")
+                               IhtDevices.DeviceNumber.Device_05, null, null, null, null, null, null, null, null, null, null, null, null
+                               //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_5"),
+                               //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_5"),
+                               //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_5"),
+                               //(DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_5"),
+                               //(DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_5"),
+                               //(DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_5"),
+                               //(DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_5"),
+                               //(DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_5"),
+                               //(DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_5"),
+                               //(DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_5"),
+                               //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_5"),
+                               //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_5")
                               );
             _ihtDevicesDictionary_.Add(5 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 6
-            _ihtDevice = GetIhtDeviceDataModelByName("ihtDevice_6") as IhtDevice;
+            _ihtDevice = new();
+            _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_06;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_16,
-                               IhtDevices.DeviceNumber.Device_06,
-                               (DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_6"),
-                               (DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_6"),
-                               (DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_6"),
-                               (DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_6"),
-                               (DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_6"),
-                               (DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_6"),
-                               (DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_6"),
-                               (DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_6"),
-                               (DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_6"),
-                               (DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_6"),
-                               (DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_6"),
-                               (DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_6")
+                               IhtDevices.DeviceNumber.Device_06, null, null, null, null, null, null, null, null, null, null, null, null
+                               //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_6"),
+                               //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_6"),
+                               //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_6"),
+                               //(DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_6"),
+                               //(DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_6"),
+                               //(DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_6"),
+                               //(DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_6"),
+                               //(DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_6"),
+                               //(DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_6"),
+                               //(DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_6"),
+                               //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_6"),
+                               //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_6")
                               );
             _ihtDevicesDictionary_.Add(6 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 7
-            _ihtDevice = GetIhtDeviceDataModelByName("ihtDevice_7") as IhtDevice;
+            _ihtDevice = new();
+            _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_07;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_17,
-                               IhtDevices.DeviceNumber.Device_07,
-                               (DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_7"),
-                               (DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_7"),
-                               (DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_7"),
-                               (DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_7"),
-                               (DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_7"),
-                               (DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_7"),
-                               (DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_7"),
-                               (DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_7"),
-                               (DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_7"),
-                               (DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_7"),
-                               (DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_7"),
-                               (DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_7")
+                               IhtDevices.DeviceNumber.Device_07, null, null, null, null, null, null, null, null, null, null, null, null
+                               //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_7"),
+                               //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_7"),
+                               //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_7"),
+                               //(DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_7"),
+                               //(DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_7"),
+                               //(DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_7"),
+                               //(DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_7"),
+                               //(DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_7"),
+                               //(DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_7"),
+                               //(DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_7"),
+                               //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_7"),
+                               //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_7")
                               );
             _ihtDevicesDictionary_.Add(7 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 8
-            _ihtDevice = GetIhtDeviceDataModelByName("ihtDevice_8") as IhtDevice;
+            _ihtDevice = new();
+            _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_08;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_18,
-                               IhtDevices.DeviceNumber.Device_08,
-                               (DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_8"),
-                               (DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_8"),
-                               (DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_8"),
-                               (DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_8"),
-                               (DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_8"),
-                               (DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_8"),
-                               (DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_8"),
-                               (DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_8"),
-                               (DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_8"),
-                               (DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_8"),
-                               (DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_8"),
-                               (DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_8")
+                               IhtDevices.DeviceNumber.Device_08, null, null, null, null, null, null, null, null, null, null, null, null
+                               //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_8"),
+                               //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_8"),
+                               //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_8"),
+                               //(DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_8"),
+                               //(DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_8"),
+                               //(DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_8"),
+                               //(DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_8"),
+                               //(DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_8"),
+                               //(DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_8"),
+                               //(DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_8"),
+                               //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_8"),
+                               //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_8")
                               );
             _ihtDevicesDictionary_.Add(8 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 9
-            _ihtDevice = GetIhtDeviceDataModelByName("ihtDevice_9") as IhtDevice;
+            _ihtDevice = new();
+            _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_09;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_19,
-                               IhtDevices.DeviceNumber.Device_09,
-                               (DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_9"),
-                               (DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_9"),
-                               (DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_9"),
-                               (DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_9"),
-                               (DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_9"),
-                               (DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_9"),
-                               (DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_9"),
-                               (DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_9"),
-                               (DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_9"),
-                               (DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_9"),
-                               (DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_9"),
-                               (DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_9")
+                               IhtDevices.DeviceNumber.Device_09, null, null, null, null, null, null, null, null, null, null, null, null
+                               //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_9"),
+                               //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_9"),
+                               //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_9"),
+                               //(DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_9"),
+                               //(DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_9"),
+                               //(DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_9"),
+                               //(DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_9"),
+                               //(DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_9"),
+                               //(DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_9"),
+                               //(DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_9"),
+                               //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_9"),
+                               //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_9")
                               );
             _ihtDevicesDictionary_.Add(9 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 10
-            _ihtDevice = GetIhtDeviceDataModelByName("ihtDevice_10") as IhtDevice;
+            _ihtDevice = new();
+            _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_10;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_20,
-                               IhtDevices.DeviceNumber.Device_10,
-                               (DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_10"),
-                               (DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_10"),
-                               (DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_10"),
-                               (DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_10"),
-                               (DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_10"),
-                               (DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_10"),
-                               (DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_10"),
-                               (DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_10"),
-                               (DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_10"),
-                               (DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_10"),
-                               (DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_10"),
-                               (DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_10")
+                               IhtDevices.DeviceNumber.Device_10, null, null, null, null, null, null, null, null, null, null, null, null
+                               //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_10"),
+                               //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_10"),
+                               //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_10"),
+                               //(DataParamDynTechnology)GetIhtDeviceDataModelByName("dataParamDynTechnology_10"),
+                               //(DataParamConstProcess)GetIhtDeviceDataModelByName("dataParamConstProcess_10"),
+                               //(DataParamDynProcess)GetIhtDeviceDataModelByName("dataParamDynProcess_10"),
+                               //(DataParamConstConfig)GetIhtDeviceDataModelByName("dataParamConstConfig_10"),
+                               //(DataParamDynConfig)GetIhtDeviceDataModelByName("dataParamDynConfig_10"),
+                               //(DataParamConstService)GetIhtDeviceDataModelByName("dataParamConstService_10"),
+                               //(DataParamDynService)GetIhtDeviceDataModelByName("dataParamDynService_10"),
+                               //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_10"),
+                               //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_10")
                               );
             _ihtDevicesDictionary_.Add(10 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
         }
@@ -471,9 +480,9 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Alle Geräte abfragen
         /// </summary>
-        public ArrayList GetDevices()
+        public List<IhtDevice> GetDevices()
         {
-            ArrayList _ihtDevices = new ArrayList();
+            var _ihtDevices = new List<IhtDevice>();
             foreach (KeyValuePair<int, IhtDevice> kvp in ihtDevices)
             {
                 IhtDevice _ihtDevice = kvp.Value;

@@ -7,6 +7,7 @@
 @using SharedComponents.Services.APCHardwareManagers
 @using MudBlazor.Examples.Data.Models
 @inject HttpClient httpClient
+@inject IhtDevices ihtDevices
 
 @inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
 @inject IParameterDataInfoManager parameterDataInfoManager
@@ -362,6 +363,7 @@ input#password-input:focus {
                 <NestedList>
                     <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenSetupParamsDialog">Setup</MudListItem>
                     <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenPasswordSetupDialog">Password</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenTorchInstalledDialog">Torch Installed</MudListItem>
                 </NestedList>
             </MudListItem>
         </MudList>          
@@ -372,6 +374,48 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
+<MudDialog @bind-IsVisible="_torchInstalledDialogVisible" Style="width:500px">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Torch Installed</MudText>
+    </TitleContent>
+    <DialogContent> 
+        <MudForm>
+            <table width="100%">
+                <tr>
+                    <MudTh>Torch selection</MudTh>
+                    <MudTh>Torch Type</MudTh>
+                </tr>
+                <tr>
+                    <td width="50%">
+            <MudGrid>
+        @foreach (IhtDevice ihtDevice in ihtDevices.GetDevices().OrderBy(v => v.DeviceNumber))
+        {
+            <MudItem xs="6">
+                    @*<input type="checkbox" @bind="@device.IsVisible" /> @:@device.DeviceNumber.ToString();*@
+                    <MudCheckBox @bind-Checked="@ihtDevice.IsVisible" Dense="false" Color="Color.Primary">
+                        <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Torch @ihtDevice.DeviceNumber</MudText></MudCheckBox>
+            </MudItem>
+        }  
+            </MudGrid>
+                    </td>
+                    <td width="50%">
+
+                    </td>
+                </tr>
+            </table>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" 
+            OnClick="CloseTorchInstalledDialog" onmousedown="return false">
+            Close
+        </MudButton>
+        @*<MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" 
+            OnClick="CreateParamsAsync">
+            Save
+        </MudButton>*@
+    </DialogActions>
+</MudDialog>
 
 <div class="flex-container" >
     <table id="controlPanel" class="tablemobile" width="540px">
@@ -592,6 +636,8 @@ input#password-input:focus {
     private string _setupPasswordValue = "";
     private bool _setupPasswordDialogVisible = false;
 
+    private bool _torchInstalledDialogVisible = false;
+
     private TableGroupDefinition<ParameterDataModel> _groupDefinition = new()
     {
         GroupName = "Group",
@@ -649,6 +695,17 @@ input#password-input:focus {
 
         _setupPasswordDialogVisible = false;
     }
+
+    private void OpenTorchInstalledDialog()
+    {
+        _torchInstalledDialogVisible = true;
+    }
+
+    private void CloseTorchInstalledDialog()
+    {
+        _torchInstalledDialogVisible = false;
+    } 
+    
 
     private void SetNewPasswordLevel()
     {

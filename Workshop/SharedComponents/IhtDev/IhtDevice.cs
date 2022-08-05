@@ -197,8 +197,8 @@ namespace SharedComponents.IhtDev
         #endregion // INotifyPropertyChanged
 
 
-        public DataProcessInfo dataProcessInfo { get; private set; }
-        public DataDeviceInfo dataDeviceInfo { get; private set; }
+        public DataProcessInfo dataProcessInfo { get; private set; } = new DataProcessInfo();
+        public DataDeviceInfo dataDeviceInfo { get; private set; } //= new DataDeviceInfo();
         public DataParamConstTechnology dataParamConstTechnology { get; private set; }
         public DataParamDynTechnology dataParamDynTechnology { get; private set; }
         public DataParamConstProcess dataParamConstProcess { get; private set; }
@@ -252,7 +252,10 @@ namespace SharedComponents.IhtDev
             dataCmdExecution = _dataCmdExecution;
 
             // Slave_ID auf den Process-Info's setzen
-            dataProcessInfo.SlaveId = SlaveId;
+            if (dataProcessInfo != null)
+            {
+                dataProcessInfo.SlaveId = SlaveId;
+            }
         }
 
         /// <summary>

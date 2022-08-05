@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Services;
 using SharedComponents.APCHardwareManagers;
+using SharedComponents.IhtDev;
 using SharedComponents.Services;
 using SharedComponents.Services.APCHardwareDBServices;
 using SharedComponents.Services.APCHardwareManagers;
@@ -94,6 +95,7 @@ builder.Services.AddSingleton<IParameterDataMockDBService, ParameterDataMockDBSe
 builder.Services.AddSingleton<IParameterDataInfoManager, ParameterDataInfoManager>();
 
 builder.Services.AddSingleton<IHardwareAPCServise, HardwareAPCServise>();
+builder.Services.AddSingleton<IhtDevices>();
 builder.Services.AddSingleton<CommunicationsService>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
