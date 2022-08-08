@@ -17,6 +17,10 @@ namespace SharedComponents.IhtDev
 {
     public class IhtDevices : INotifyPropertyChanged
     {
+        //TO DO: Remove.
+        // Only added for binding on the design page (component)
+        public IhtDevices.TorchType _torchType;
+
         //                                                   V  00  . 02      . 09
         //public static readonly int FwMinimumVersion      = (((0<<8) +  2)<<8) +  9;
         public static int GetFwMinimumVersion(bool isRobot)
@@ -295,6 +299,7 @@ namespace SharedComponents.IhtDev
                                //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_1"),
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_1")
                               );
+            _ihtDevice.IsVisible = true;
             _ihtDevicesDictionary_.Add(1 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 2
             _ihtDevice = new();

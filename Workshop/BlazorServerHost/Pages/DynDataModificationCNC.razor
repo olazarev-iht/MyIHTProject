@@ -393,13 +393,25 @@ input#password-input:focus {
             <MudItem xs="6">
                     @*<input type="checkbox" @bind="@device.IsVisible" /> @:@device.DeviceNumber.ToString();*@
                     <MudCheckBox @bind-Checked="@ihtDevice.IsVisible" Dense="false" Color="Color.Primary">
-                        <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Torch @ihtDevice.DeviceNumber</MudText></MudCheckBox>
+                        <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Torch @ihtDevice.DeviceNumber</MudText>
+                    </MudCheckBox>
             </MudItem>
         }  
             </MudGrid>
                     </td>
-                    <td width="50%">
-
+                    <td width="50%" valign="top" style="border-width: 0 0 0 1px;border-color: #e0e0e0">
+                        <MudRadioGroup @bind-SelectedOption="@ihtDevices._torchType">
+                            <MudRadio Color="Color.Primary" Option="@(IhtDevices.TorchType.Propane)">Propane</MudRadio>
+                            <MudRadio Color="Color.Primary" Option="@(IhtDevices.TorchType.Acetylane)">Acetylene</MudRadio>
+                            <MudRadio Color="Color.Primary" Option="@(IhtDevices.TorchType.NaturalGas)">Natural Gas</MudRadio>
+                        </MudRadioGroup>
+                        
+                        <br/>
+                        <MudTh>Device Connection</MudTh>
+                        <MudButton Variant="Variant.Filled" Style="align-content">Connection</MudButton>
+                        <MudCheckBox @bind-Checked="@_performResetDevices" Dense="false" Color="Color.Primary">
+                            <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Perform a reset for all devices</MudText>
+                        </MudCheckBox>
                     </td>
                 </tr>
             </table>
@@ -637,6 +649,7 @@ input#password-input:focus {
     private bool _setupPasswordDialogVisible = false;
 
     private bool _torchInstalledDialogVisible = false;
+    private bool _performResetDevices = false;
 
     private TableGroupDefinition<ParameterDataModel> _groupDefinition = new()
     {
