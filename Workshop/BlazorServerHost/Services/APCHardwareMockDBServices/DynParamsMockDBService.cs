@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareMockDBServices;
 
-namespace BlazorServerHost.Services.APCHardwareMoqDBServices
+namespace BlazorServerHost.Services.APCHardwareMockDBServices
 {
 	public class DynParamsMockDBService : IDynParamsMockDBService
 	{

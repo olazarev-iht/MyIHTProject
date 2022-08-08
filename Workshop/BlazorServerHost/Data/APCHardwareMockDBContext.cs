@@ -19,6 +19,8 @@ namespace BlazorServerHost.Data
 
 		public DbSet<ParameterData> ParameterDatas { get; set; } = null!;
 
+		public DbSet<APCSimulationData> APCSimulationDatas { get; set; } = null!;
+
 
 		public APCHardwareMockDBContext(DbContextOptions<APCHardwareMockDBContext> options)
 			: base(options)

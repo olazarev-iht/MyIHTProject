@@ -6,7 +6,7 @@ using BlazorServerHost.Data.DataMapper;
 using BlazorServerHost.Features.HeightControlFeature;
 using BlazorServerHost.Services;
 using BlazorServerHost.Services.APCHardwareDBServices;
-using BlazorServerHost.Services.APCHardwareMoqDBServices;
+using BlazorServerHost.Services.APCHardwareMockDBServices;
 using BlazorServerHost.Services.APCWorkerService;
 using BlazorServerHost.Services.CuttingDataDBServices;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -90,6 +90,7 @@ builder.Services.AddSingleton<IConstParamsMockDBService, ConstParamsMockDBServic
 builder.Services.AddSingleton<IDynParamsMockDBService, DynParamsMockDBService>();
 builder.Services.AddSingleton<ILiveParamsMockDBService, LiveParamsMockDBService>();
 builder.Services.AddSingleton<IParameterDataMockDBService, ParameterDataMockDBService>();
+builder.Services.AddSingleton<IAPCSimulationDataMockDBService, APCSimulationDataMockDBService>();
 
 // APC Managers
 builder.Services.AddSingleton<IParameterDataInfoManager, ParameterDataInfoManager>();

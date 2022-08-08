@@ -22,6 +22,7 @@ namespace SharedComponents.APCHardwareManagers
         protected readonly IConstParamsMockDBService _constParamsMockDBService;
         protected readonly IDynParamsMockDBService _dynParamsMockDBService;
         protected readonly IParameterDataMockDBService _parameterDataMockDBService;
+        protected readonly IAPCSimulationDataMockDBService _apcSimulationDataMockDBService;
 
         public ParameterDataInfoManager(
             IAPCDeviceDBService apcDeviceDBService,
@@ -32,7 +33,8 @@ namespace SharedComponents.APCHardwareManagers
             IAPCDeviceMockDBService apcDeviceMockDBService,
             IConstParamsMockDBService constParamsMockDBService,
             IDynParamsMockDBService dynParamsMockDBService,
-            IParameterDataMockDBService parameterDataMockDBService)
+            IParameterDataMockDBService parameterDataMockDBService,
+            IAPCSimulationDataMockDBService apcSimulationDataMockDBService)
         {
             _apcDeviceDBService = apcDeviceDBService ??
                throw new ArgumentNullException($"{nameof(apcDeviceDBService)}");
@@ -61,7 +63,15 @@ namespace SharedComponents.APCHardwareManagers
             _parameterDataMockDBService = parameterDataMockDBService ??
                throw new ArgumentNullException($"{nameof(parameterDataInfoDBService)}");
 
+            _apcSimulationDataMockDBService = apcSimulationDataMockDBService ??
+               throw new ArgumentNullException($"{nameof(apcSimulationDataMockDBService)}");
+        }
 
+        public async Task<int> GetValueFromSimulationDataByAddress(int address, CancellationToken cancellationToken)
+        {
+            var value = await _apcSimulationDataMockDBService.GetEntryByAddressAsync(address, cancellationToken);
+            if (value == null) return 0;
+            return value.Value;
         }
 
         public async Task<IEnumerable<ParameterDataModel>> GetDeviceSetupParamsAsync(int deviceNum, CancellationToken cancellationToken)
