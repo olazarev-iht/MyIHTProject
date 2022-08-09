@@ -43,10 +43,14 @@ namespace BlazorServerHost.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			//base.OnModelCreating(modelBuilder);
+            //base.OnModelCreating(modelBuilder);
 
-			//Seed Departments Table
-			var APCDeviceId1 = Guid.NewGuid();
+            modelBuilder.Entity<APCSimulationData>()
+                .HasIndex(u => u.Address)
+                .IsUnique();
+
+            //Seed Departments Table
+            var APCDeviceId1 = Guid.NewGuid();
 			var APCDeviceId2 = Guid.NewGuid();
 			var APCDeviceId3 = Guid.NewGuid();
 
@@ -74,14 +78,14 @@ namespace BlazorServerHost.Data
 					CreateParameterDataForSystem(modelBuilder, device);
 				}
             }
-            
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            for(var apcDeviceNum = 1; apcDeviceNum <= 10; apcDeviceNum++)
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            for (var apcDeviceNum = 1; apcDeviceNum <= 10; apcDeviceNum++)
             {
                 CreateAPCSimulationDataForDevice(modelBuilder, apcDeviceNum);
             }
-			
+
         }
 
         public void CreateAPCSimulationDataForDevice(ModelBuilder modelBuilder, int apcDevice)
