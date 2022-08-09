@@ -137,6 +137,3 @@ C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\IhtCommunicS
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\IhtCommunicManager.dll
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\log4net.dll
 C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\IhtCommunicCutbus.dll
-C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\Modbus.pdb
-C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\Modbus.xml
-C:\Examples\MyIHTProject\Workshop\BlazorServerHost\bin\Debug\net6.0\log4net.xml

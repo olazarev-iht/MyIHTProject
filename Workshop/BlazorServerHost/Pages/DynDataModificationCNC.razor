@@ -400,12 +400,12 @@ input#password-input:focus {
             </MudGrid>
                     </td>
                     <td width="50%" valign="top" style="border-width: 0 0 0 1px;border-color: #e0e0e0">
-                        <MudRadioGroup @bind-SelectedOption="@ihtDevices._torchType">
-                            <MudRadio Color="Color.Primary" Option="@(IhtDevices.TorchType.Propane)">Propane</MudRadio>
-                            <MudRadio Color="Color.Primary" Option="@(IhtDevices.TorchType.Acetylane)">Acetylene</MudRadio>
-                            <MudRadio Color="Color.Primary" Option="@(IhtDevices.TorchType.NaturalGas)">Natural Gas</MudRadio>
-                        </MudRadioGroup>
-                        
+                        <MudSelect T="IhtDevices.TorchType" @bind-Value="@ihtDevices.TorchTypeSetup" Class="myselect" Style="margin-top: 0px;">             
+                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.Propane)">Propane</MudSelectItem>
+                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.Acetylane)">Acetylene</MudSelectItem>
+                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.NaturalGas)">Natural Gas</MudSelectItem>
+                        </MudSelect>
+
                         <br/>
                         <MudTh>Device Connection</MudTh>
                         <MudButton Variant="Variant.Filled" Style="align-content">Connection</MudButton>

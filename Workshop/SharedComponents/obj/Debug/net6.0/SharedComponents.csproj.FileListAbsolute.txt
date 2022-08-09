@@ -46,7 +46,4 @@ C:\Examples\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\it-IT\Shared
 C:\Examples\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\nl-NL\SharedComponents.resources.dll
 C:\Examples\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\sl-SI\SharedComponents.resources.dll
 C:\Examples\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
-C:\Examples\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\log4net.xml
-C:\Examples\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\Modbus.pdb
-C:\Examples\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\Modbus.xml
 C:\Examples\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.CopyComplete

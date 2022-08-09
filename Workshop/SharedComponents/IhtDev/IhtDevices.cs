@@ -17,10 +17,6 @@ namespace SharedComponents.IhtDev
 {
     public class IhtDevices : INotifyPropertyChanged
     {
-        //TO DO: Remove.
-        // Only added for binding on the design page (component)
-        public IhtDevices.TorchType _torchType;
-
         //                                                   V  00  . 02      . 09
         //public static readonly int FwMinimumVersion      = (((0<<8) +  2)<<8) +  9;
         public static int GetFwMinimumVersion(bool isRobot)
@@ -203,6 +199,40 @@ namespace SharedComponents.IhtDev
             }
         }
 
+        private TorchType _torchTypeSetup;
+        public TorchType TorchTypeSetup
+        {
+            get
+            {
+                return _torchTypeSetup;
+            }
+
+            set
+            {
+                _torchTypeSetup = value;
+
+                //switch (TorchTypeSetup)
+                //{
+                //    case TorchType.Propane:
+                //        IsPropane = true;
+                //        IsAcetylane = false;
+                //        IsNaturalGas = false;
+                //        break;
+                //    case TorchType.Acetylane:
+                //        IsPropane = false;
+                //        IsAcetylane = true;
+                //        IsNaturalGas = false;
+                //        break;
+                //    case TorchType.NaturalGas:
+                //        IsPropane = false;
+                //        IsAcetylane = false;
+                //        IsNaturalGas = true;
+                //        break;
+                //    default:
+                //        return;
+                //}
+            }
+        }
         // IsUnitInchFractional -> Anzeige z.B. 1 1/8
         private bool _isUnitInchFractional { get; set; }
         public bool IsUnitInchFractional
