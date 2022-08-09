@@ -45,9 +45,9 @@ namespace BlazorServerHost.Data
 		{
             //base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<APCSimulationData>()
-                .HasIndex(u => u.Address)
-                .IsUnique();
+            //modelBuilder.Entity<APCSimulationData>()
+            //    .HasIndex(u => u.Address)
+            //    .IsUnique();
 
             //Seed Departments Table
             var APCDeviceId1 = Guid.NewGuid();
