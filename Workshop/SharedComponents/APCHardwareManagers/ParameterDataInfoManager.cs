@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharedComponents.IhtDev;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareManagers;
 using SharedComponents.Services.APCHardwareDBServices;
@@ -135,7 +136,9 @@ namespace SharedComponents.APCHardwareManagers
                 await _dynParamsDBService.DeleteAllEntriesAsync(cancellationToken);
                 await _constParamsDBService.DeleteAllEntriesAsync(cancellationToken);
                 await _parameterDataInfoDBService.DeleteAllEntriesAsync(cancellationToken);
-                await _apcDeviceDBService.DeleteAllEntriesAsync(cancellationToken);
+
+                // since we don't copy this table every time any more we don't delete it
+                // await _apcDeviceDBService.DeleteAllEntriesAsync(cancellationToken);
             }
             catch (Exception ex)
             {
@@ -144,6 +147,79 @@ namespace SharedComponents.APCHardwareManagers
         }
 
         private async Task<bool> FillParameterDataAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                // await FillAPCDevicesAsync(CancellationToken.None);
+
+                var apcDeviceList = await _apcDeviceDBService.GetEntriesAsync(cancellationToken);
+
+                var ihtDevices = IhtDevices.ihtDevices.Select(kpv => kpv.Value).OrderBy(kvp => kvp.DeviceNumber).ToList();
+
+                // Not BD Model devices
+                foreach (var apcDevice in ihtDevices)
+                {
+                    var deviceDBModel = apcDeviceList.FirstOrDefault(dev => dev.Num == apcDevice.DeviceNumber);
+                    if (deviceDBModel == null) throw new Exception("There is no device in the collwction");
+
+                    foreach (ParamGroup paramGroup in (ParamGroup[])Enum.GetValues(typeof(ParamGroup)))
+                    {
+                        foreach (int paramId in ParamGroupHelper.ParamGroupToParamEnum[paramGroup])
+                        {
+                            var mockParameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDevice.DeviceNumber, paramGroup, paramId, cancellationToken);
+                            var mockDynParams = mockParameterData?.DynParams;
+
+                            if (mockDynParams == null || mockDynParams.ConstParams == null) continue;
+
+                            var constParamsId = await SaveConstParamsAsync(mockDynParams.ConstParams, cancellationToken);
+
+                            var parameterDataInfoModel = new ParameterDataInfoModel(paramGroup, paramId);
+                            var parameterDataInfoId = await SaveParameterDataInfoAsync(parameterDataInfoModel, cancellationToken);
+
+                            if (constParamsId != Guid.Empty && parameterDataInfoId != Guid.Empty)
+                            {
+                                var newDynParams = new DynParamsModel
+                                {
+                                    Id = Guid.NewGuid(),
+                                    ParamId = paramId,
+                                    ConstParamsId = constParamsId,
+                                    ParameterDataInfoId = parameterDataInfoId,
+                                    Value = mockDynParams.Value
+                                };
+
+                                var dynParamsId = await SaveDynParamsAsync(newDynParams, cancellationToken);
+
+                                if (dynParamsId != Guid.Empty)
+                                {
+                                    var paramName = ParamGroupHelper.ParamGroupToEnumType[paramGroup].GetEnumName(paramId);
+                                    var deviceName = apcDevice.DeviceNumber != 0 ? $"Device{apcDevice.DeviceNumber}" : "System";
+
+                                    var newParameterData = new ParameterDataModel
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        ParamName = $"{deviceName}_{paramName}",
+                                        APCDeviceId = deviceDBModel.Id,
+                                        ParamGroupId = paramGroup,
+                                        DynParamsId = dynParamsId // newDynParams.Id
+                                    };
+
+                                    await SaveParameterDataAsync(newParameterData, cancellationToken);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+                return false;
+            }
+
+        }
+        private async Task<bool> FillParameterDataAsync_old(CancellationToken cancellationToken)
         {
             try
             {

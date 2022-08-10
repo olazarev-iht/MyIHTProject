@@ -50,6 +50,14 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			return _mapper.Map<APCDevice, APCDeviceModel>(entry);
 		}
 
+		public async Task<APCDeviceModel?> GetEntryByDevNumAsync(int id, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+			var entry = await dbContext.APCDevices.SingleAsync(s => s.Num == id, cancellationToken);
+
+			return _mapper.Map<APCDevice, APCDeviceModel>(entry);
+		}
+
 		public async Task<Guid> AddEntryAsync(APCDeviceModel model, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
