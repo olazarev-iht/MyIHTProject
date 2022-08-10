@@ -19,7 +19,32 @@ namespace SharedComponents.Models.APCHardware
         StatusHeightCtrl, // ???
         Additional,
     }
-
+    public enum DynParamsForAreas  //only for that order -> GetAreasDataSimulationData()
+    {
+        StartTechnologyConst = 2,
+        // NumberTechnologyConst,
+        //-------------------
+        StartTechnologyDyn = 4,
+        // NumberTechnologyDyn,
+        //-------------------
+        StartProcessConst = 6,
+        // NumberProcessConst,
+        //-------------------
+        StartProcessDyn = 8,
+        // NumberProcessDyn,
+        //-------------------
+        StartConfigConst = 10,
+        // NumberConfigConst,
+        //-------------------
+        StartConfigDyn = 12,
+        // NumberConfigDyn,
+        //-------------------
+        StartServiceConst = 14,
+        // NumberServiceConst,
+        //-------------------
+        StartServiceDyn = 16,
+        //NumberServiceDyn
+    }
     public class ParamGroupHelper
     {
         public static Dictionary<ParamGroup, int[]> ParamGroupToParamEnum = new Dictionary<ParamGroup, int[]>()
@@ -33,6 +58,18 @@ namespace SharedComponents.Models.APCHardware
             { ParamGroup.SetupExec, (int[])Enum.GetValues(typeof(IhtModbusParamDyn.eIdxSetupExec)) },
             { ParamGroup.StatusHeightCtrl, (int[])Enum.GetValues(typeof(IhtModbusParamDyn.eStatusHeightCtrl)) },
             { ParamGroup.Additional, (int[])Enum.GetValues(typeof(IhtModbusParamDyn.eIdxAdditional)) }
+        };
+
+        public static Dictionary<DynParamsForAreas, ParamGroup> DynParamsToAreasToParamEnum = new ()
+        {
+            { DynParamsForAreas.StartTechnologyConst, ParamGroup.Technology },
+            { DynParamsForAreas.StartTechnologyDyn, ParamGroup.Technology },
+            { DynParamsForAreas.StartProcessConst, ParamGroup.Process },
+            { DynParamsForAreas.StartProcessDyn, ParamGroup.Process },
+            { DynParamsForAreas.StartConfigConst, ParamGroup.Config },
+            { DynParamsForAreas.StartConfigDyn, ParamGroup.Config },
+            { DynParamsForAreas.StartServiceConst, ParamGroup.Config },
+            { DynParamsForAreas.StartServiceDyn, ParamGroup.Config },
         };
 
         public static Dictionary<ParamGroup, Type> ParamGroupToEnumType = new Dictionary<ParamGroup, Type>()

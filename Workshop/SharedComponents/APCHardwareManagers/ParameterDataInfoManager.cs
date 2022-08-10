@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharedComponents.IhtDev;
+using SharedComponents.IhtModbus;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareManagers;
 using SharedComponents.Services.APCHardwareDBServices;
@@ -156,14 +157,27 @@ namespace SharedComponents.APCHardwareManagers
 
                 var ihtDevices = IhtDevices.ihtDevices.Select(kpv => kpv.Value).OrderBy(kvp => kvp.DeviceNumber).ToList();
 
+                var areasAddrDataSimulation = IhtModbusData.GetAreasDataSimulationData();
+
+
                 // Not BD Model devices
                 foreach (var apcDevice in ihtDevices)
                 {
+                    // DB Model - remove in the future (we need only for APCDeviceId = deviceDBModel.Id)
                     var deviceDBModel = apcDeviceList.FirstOrDefault(dev => dev.Num == apcDevice.DeviceNumber);
-                    if (deviceDBModel == null) throw new Exception("There is no device in the collwction");
+                    if (deviceDBModel == null) throw new Exception("There is no device in the collaction");
 
-                    foreach (ParamGroup paramGroup in (ParamGroup[])Enum.GetValues(typeof(ParamGroup)))
+                    foreach (DynParamsForAreas dynParamsForAreas in (DynParamsForAreas[])Enum.GetValues(typeof(DynParamsForAreas)))
                     {
+                        var areaIndex = (int)dynParamsForAreas;
+
+                        var startAddress = areasAddrDataSimulation[areaIndex];
+                        var numParams = areasAddrDataSimulation[areaIndex + 1];
+
+                        var apcSimulationData = _apcSimulationDataMockDBService.GetApcSimulationDataSetByAddressAndNumber(startAddress, numParams, cancellationToken);
+                        var paramGroup = ParamGroupHelper.DynParamsToAreasToParamEnum[dynParamsForAreas];
+
+
                         foreach (int paramId in ParamGroupHelper.ParamGroupToParamEnum[paramGroup])
                         {
                             var mockParameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDevice.DeviceNumber, paramGroup, paramId, cancellationToken);

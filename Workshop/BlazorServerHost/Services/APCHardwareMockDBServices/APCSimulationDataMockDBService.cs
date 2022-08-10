@@ -33,6 +33,20 @@ namespace BlazorServerHost.Services.APCHardwareMockDBServices
 			return entries;
 		}
 
+		public async Task<IEnumerable<APCSimulationDataModel>> GetApcSimulationDataSetByAddressAndNumber(ushort startAddress, ushort numParams, CancellationToken cancellationToken)
+        {
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var entries = await dbContext.APCSimulationDatas
+				.AsNoTracking()
+				.Where(p => p.Address >= startAddress && p.Address < startAddress + numParams)
+				.OrderBy(p => p.Address)
+				.Select(p => _mapper.Map<APCSimulationData, APCSimulationDataModel>(p))
+				.ToArrayAsync(cancellationToken);
+
+			return entries;
+		}
+
 		public async Task<APCSimulationDataModel?> GetEntryByAddressAsync(int address, CancellationToken cancellationToken)
         {
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
