@@ -157,8 +157,8 @@ namespace SharedComponents.APCHardwareManagers
 
                 var ihtDevices = IhtDevices.ihtDevices.Select(kpv => kpv.Value).OrderBy(kvp => kvp.DeviceNumber).ToList();
 
-                var areasAddrDataSimulation = IhtModbusData.GetAreasDataSimulationData();
-
+                // Getting the initial set up array with simulation data with start address of prams group and number of parameters
+                //var areasAddrDataSimulation = IhtModbusData.GetAreasDataSimulationData();
 
                 // Not BD Model devices
                 foreach (var apcDevice in ihtDevices)
@@ -167,61 +167,18 @@ namespace SharedComponents.APCHardwareManagers
                     var deviceDBModel = apcDeviceList.FirstOrDefault(dev => dev.Num == apcDevice.DeviceNumber);
                     if (deviceDBModel == null) throw new Exception("There is no device in the collaction");
 
-                    foreach (DynParamsForAreas dynParamsForAreas in (DynParamsForAreas[])Enum.GetValues(typeof(DynParamsForAreas)))
-                    {
-                        var areaIndex = (int)dynParamsForAreas;
+                    await SaveParameterDatasForDeviceAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroupHelper.startTechnologyConstStoreValue,
+                        ParamGroupHelper.numberTechnologyConstStoreValue, ParamGroupHelper.startTechnologyDynStoreValue, ParamGroupHelper.numberTechnologyDynStoreValue);
 
-                        var startAddress = areasAddrDataSimulation[areaIndex];
-                        var numParams = areasAddrDataSimulation[areaIndex + 1];
+                    await SaveParameterDatasForDeviceAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroupHelper.startProcessConstStoreValue,
+                        ParamGroupHelper.numberProcessConstStoreValue, ParamGroupHelper.startProcessDynStoreValue, ParamGroupHelper.numberProcessDynStoreValue);
 
-                        var apcSimulationData = _apcSimulationDataMockDBService.GetApcSimulationDataSetByAddressAndNumber(startAddress, numParams, cancellationToken);
-                        var paramGroup = ParamGroupHelper.DynParamsToAreasToParamEnum[dynParamsForAreas];
+                    await SaveParameterDatasForDeviceAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroupHelper.startConfigConstStoreValue,
+                        ParamGroupHelper.numberConfigConstStoreValue, ParamGroupHelper.startConfigDynStoreValue, ParamGroupHelper.numberConfigDynStoreValue);
 
+                    await SaveParameterDatasForDeviceAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroupHelper.startServiceConstStoreValue,
+                        ParamGroupHelper.numberServiceConstStoreValue, ParamGroupHelper.startServiceDynStoreValue, ParamGroupHelper.numberServiceDynStoreValue);
 
-                        foreach (int paramId in ParamGroupHelper.ParamGroupToParamEnum[paramGroup])
-                        {
-                            var mockParameterData = await _parameterDataMockDBService.GetEntryByAPCDeviceAndParamIdAsync(apcDevice.DeviceNumber, paramGroup, paramId, cancellationToken);
-                            var mockDynParams = mockParameterData?.DynParams;
-
-                            if (mockDynParams == null || mockDynParams.ConstParams == null) continue;
-
-                            var constParamsId = await SaveConstParamsAsync(mockDynParams.ConstParams, cancellationToken);
-
-                            var parameterDataInfoModel = new ParameterDataInfoModel(paramGroup, paramId);
-                            var parameterDataInfoId = await SaveParameterDataInfoAsync(parameterDataInfoModel, cancellationToken);
-
-                            if (constParamsId != Guid.Empty && parameterDataInfoId != Guid.Empty)
-                            {
-                                var newDynParams = new DynParamsModel
-                                {
-                                    Id = Guid.NewGuid(),
-                                    ParamId = paramId,
-                                    ConstParamsId = constParamsId,
-                                    ParameterDataInfoId = parameterDataInfoId,
-                                    Value = mockDynParams.Value
-                                };
-
-                                var dynParamsId = await SaveDynParamsAsync(newDynParams, cancellationToken);
-
-                                if (dynParamsId != Guid.Empty)
-                                {
-                                    var paramName = ParamGroupHelper.ParamGroupToEnumType[paramGroup].GetEnumName(paramId);
-                                    var deviceName = apcDevice.DeviceNumber != 0 ? $"Device{apcDevice.DeviceNumber}" : "System";
-
-                                    var newParameterData = new ParameterDataModel
-                                    {
-                                        Id = Guid.NewGuid(),
-                                        ParamName = $"{deviceName}_{paramName}",
-                                        APCDeviceId = deviceDBModel.Id,
-                                        ParamGroupId = paramGroup,
-                                        DynParamsId = dynParamsId // newDynParams.Id
-                                    };
-
-                                    await SaveParameterDataAsync(newParameterData, cancellationToken);
-                                }
-                            }
-                        }
-                    }
                 }
 
                 return true;
@@ -233,6 +190,75 @@ namespace SharedComponents.APCHardwareManagers
             }
 
         }
+
+        private async Task SaveParameterDatasForDeviceAsync(Guid deviceDBModelId, int deviceNumber, ushort startConstStoreValue, ushort numberConstStoreValue,
+            ushort startDynStoreValue, ushort numberDynStoreValue)
+        {
+            var constParamsValuesArray = await GetParamsSubGroupValuesFromMockDB((byte)deviceNumber, startConstStoreValue, numberConstStoreValue);
+
+            var dynParamsValuesArray = await GetParamsSubGroupValuesFromMockDB((byte)deviceNumber, startDynStoreValue, numberDynStoreValue);
+
+            var paramGroup = ParamGroup.Technology;
+
+            await SaveParameterDatasForParamGroupAsync(deviceDBModelId, deviceNumber, paramGroup, constParamsValuesArray, dynParamsValuesArray);
+        }
+
+
+        private async Task SaveParameterDatasForParamGroupAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup, ushort[] constParamsValuesArray, 
+            ushort[] dynParamsValuesArray)
+        {
+            foreach (int paramId in ParamGroupHelper.ParamGroupToParamEnum[paramGroup])
+            {
+                var constParamsModel = new ConstParamsModel(paramId, constParamsValuesArray);
+                var constParamsId = await SaveConstParamsAsync(constParamsModel, CancellationToken.None);
+
+                var parameterDataInfoModel = new ParameterDataInfoModel(paramGroup, paramId);
+                var parameterDataInfoId = await SaveParameterDataInfoAsync(parameterDataInfoModel, CancellationToken.None);
+
+                if (constParamsId != Guid.Empty && parameterDataInfoId != Guid.Empty)
+                {
+                    var newDynParams = new DynParamsModel
+                    {
+                        Id = Guid.NewGuid(),
+                        ParamId = paramId,
+                        ConstParamsId = constParamsId,
+                        ParameterDataInfoId = parameterDataInfoId,
+                        Value = dynParamsValuesArray[paramId]
+                    };
+
+                    var dynParamsId = await SaveDynParamsAsync(newDynParams, CancellationToken.None);
+
+                    if (dynParamsId != Guid.Empty)
+                    {
+                        var paramName = ParamGroupHelper.ParamGroupToEnumType[paramGroup].GetEnumName(paramId);
+                        var deviceName = deviceNumber != 0 ? $"Device{deviceNumber}" : "System";
+
+                        var newParameterData = new ParameterDataModel
+                        {
+                            Id = Guid.NewGuid(),
+                            ParamName = $"{deviceName}_{paramName}",
+                            APCDeviceId = deviceDBModelId,
+                            ParamGroupId = paramGroup,
+                            DynParamsId = dynParamsId // newDynParams.Id
+                        };
+
+                        await SaveParameterDataAsync(newParameterData, CancellationToken.None);
+                    }
+                }
+            }
+        }
+
+        private async Task<ushort[]> GetParamsSubGroupValuesFromMockDB(byte deviceNum, ushort startStoreValue, ushort numberStoreValue)
+        {
+            var paramsStartAddr = (await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(deviceNum, startStoreValue, 1)).FirstOrDefault();
+
+            var paramsNumber = (await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(deviceNum, numberStoreValue, 1)).FirstOrDefault();
+
+            var paramsValues = await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(deviceNum, paramsStartAddr, paramsNumber);
+
+            return paramsValues;
+        }
+
         private async Task<bool> FillParameterDataAsync_old(CancellationToken cancellationToken)
         {
             try
@@ -345,7 +371,7 @@ namespace SharedComponents.APCHardwareManagers
             {
                 var newConstParams = new ConstParamsModel
                 {
-                    Id = Guid.NewGuid(),
+                    Id = constParamsModel.Id == Guid.Empty ? Guid.NewGuid() : constParamsModel.Id,
                     Min = constParamsModel.Min,
                     Max = constParamsModel.Max,
                     Step = constParamsModel.Step

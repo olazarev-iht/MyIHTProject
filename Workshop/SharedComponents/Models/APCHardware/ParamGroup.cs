@@ -19,7 +19,7 @@ namespace SharedComponents.Models.APCHardware
         StatusHeightCtrl, // ???
         Additional,
     }
-    public enum DynParamsForAreas  //only for that order -> GetAreasDataSimulationData()
+    public enum DynParamsForAreasEnum  //only for that order -> GetAreasDataSimulationData()
     {
         StartTechnologyConst = 2,
         // NumberTechnologyConst,
@@ -47,6 +47,30 @@ namespace SharedComponents.Models.APCHardware
     }
     public class ParamGroupHelper
     {
+        public static ushort startTechnologyConstStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.StartTechnologyConst;
+        public static ushort numberTechnologyConstStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.NumberTechnologyConst;
+
+        public static ushort startTechnologyDynStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.StartTechnologyDyn;
+        public static ushort numberTechnologyDynStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.NumberTechnologyDyn;
+
+        public static ushort startProcessConstStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.StartProcessConst;
+        public static ushort numberProcessConstStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.NumberProcessConst;
+
+        public static ushort startProcessDynStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.StartProcessDyn;
+        public static ushort numberProcessDynStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.NumberProcessDyn;
+
+        public static ushort startConfigConstStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.StartProcessConst;
+        public static ushort numberConfigConstStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.NumberProcessConst;
+
+        public static ushort startConfigDynStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.StartConfigDyn;
+        public static ushort numberConfigDynStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.NumberConfigDyn;
+
+        public static ushort startServiceConstStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.StartServiceConst;
+        public static ushort numberServiceConstStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.NumberServiceConst;
+
+        public static ushort startServiceDynStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.StartServiceDyn;
+        public static ushort numberServiceDynStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.NumberServiceDyn;
+
         public static Dictionary<ParamGroup, int[]> ParamGroupToParamEnum = new Dictionary<ParamGroup, int[]>()
         {
             { ParamGroup.Technology, (int[])Enum.GetValues(typeof(ParamIds)) },
@@ -60,16 +84,16 @@ namespace SharedComponents.Models.APCHardware
             { ParamGroup.Additional, (int[])Enum.GetValues(typeof(IhtModbusParamDyn.eIdxAdditional)) }
         };
 
-        public static Dictionary<DynParamsForAreas, ParamGroup> DynParamsToAreasToParamEnum = new ()
+        public static Dictionary<DynParamsForAreasEnum, Type> DynParamsAreasToSubGroupTypeEnum = new ()
         {
-            { DynParamsForAreas.StartTechnologyConst, ParamGroup.Technology },
-            { DynParamsForAreas.StartTechnologyDyn, ParamGroup.Technology },
-            { DynParamsForAreas.StartProcessConst, ParamGroup.Process },
-            { DynParamsForAreas.StartProcessDyn, ParamGroup.Process },
-            { DynParamsForAreas.StartConfigConst, ParamGroup.Config },
-            { DynParamsForAreas.StartConfigDyn, ParamGroup.Config },
-            { DynParamsForAreas.StartServiceConst, ParamGroup.Config },
-            { DynParamsForAreas.StartServiceDyn, ParamGroup.Config },
+            { DynParamsForAreasEnum.StartTechnologyConst, typeof(IhtModbusParamConst.eIdxTechnology) },
+            { DynParamsForAreasEnum.StartTechnologyDyn, typeof(IhtModbusParamDyn.eIdxTechnology) },
+            { DynParamsForAreasEnum.StartProcessConst, typeof(IhtModbusParamConst.eIdxProcess) },
+            { DynParamsForAreasEnum.StartProcessDyn, typeof(IhtModbusParamDyn.eIdxProcess) },
+            { DynParamsForAreasEnum.StartConfigConst, typeof(IhtModbusParamConst.eIdxConfig) },
+            { DynParamsForAreasEnum.StartConfigDyn, typeof(IhtModbusParamDyn.eIdxConfig) },
+            { DynParamsForAreasEnum.StartServiceConst, typeof(IhtModbusParamConst.eIdxService) },
+            { DynParamsForAreasEnum.StartServiceDyn, typeof(IhtModbusParamDyn.eIdxService) },
         };
 
         public static Dictionary<ParamGroup, Type> ParamGroupToEnumType = new Dictionary<ParamGroup, Type>()

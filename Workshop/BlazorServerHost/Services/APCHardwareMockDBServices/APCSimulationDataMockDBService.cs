@@ -2,6 +2,7 @@
 using BlazorServerHost.Data.DataMapper;
 using BlazorServerHost.Data.Models.APCHardwareMock;
 using Microsoft.EntityFrameworkCore;
+using SharedComponents.IhtModbus;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareMockDBServices;
 
@@ -45,6 +46,13 @@ namespace BlazorServerHost.Services.APCHardwareMockDBServices
 				.ToArrayAsync(cancellationToken);
 
 			return entries;
+		}
+
+		public async Task<UInt16[]> ReadHoldingRegistersAsync(byte slaveAddress, ushort startAddress, ushort numRegisters, IhtModbusResult? ihtModbusResult = null)
+		{
+			var simulationData = await GetApcSimulationDataSetByAddressAndNumber(startAddress, numRegisters, CancellationToken.None);
+
+			return simulationData.Select(x => (ushort)x.Value).ToArray();
 		}
 
 		public async Task<APCSimulationDataModel?> GetEntryByAddressAsync(int address, CancellationToken cancellationToken)

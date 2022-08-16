@@ -1,4 +1,5 @@
-﻿using SharedComponents.Models.APCHardware;
+﻿using SharedComponents.IhtModbus;
+using SharedComponents.Models.APCHardware;
 
 namespace SharedComponents.Services.APCHardwareMockDBServices
 {
@@ -11,5 +12,7 @@ namespace SharedComponents.Services.APCHardwareMockDBServices
         public Task<Guid> AddEntryAsync(APCSimulationDataModel model, CancellationToken cancellationToken);
         public Task UpdateEntryAsync(Guid id, APCSimulationDataModel newData, CancellationToken cancellationToken);
         public Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken);
+        public Task<UInt16[]> ReadHoldingRegistersAsync(byte slaveAddress, ushort startAddress, ushort numRegisters, IhtModbusResult? ihtModbusResult = null);
+
     }
 }
