@@ -167,17 +167,13 @@ namespace SharedComponents.APCHardwareManagers
                     var deviceDBModel = apcDeviceList.FirstOrDefault(dev => dev.Num == apcDevice.DeviceNumber);
                     if (deviceDBModel == null) throw new Exception("There is no device in the collaction");
 
-                    await SaveParameterDatasForDeviceAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroupHelper.startTechnologyConstStoreValue,
-                        ParamGroupHelper.numberTechnologyConstStoreValue, ParamGroupHelper.startTechnologyDynStoreValue, ParamGroupHelper.numberTechnologyDynStoreValue);
+                    await SaveParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Technology);
 
-                    await SaveParameterDatasForDeviceAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroupHelper.startProcessConstStoreValue,
-                        ParamGroupHelper.numberProcessConstStoreValue, ParamGroupHelper.startProcessDynStoreValue, ParamGroupHelper.numberProcessDynStoreValue);
+                    await SaveParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Process);
 
-                    await SaveParameterDatasForDeviceAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroupHelper.startConfigConstStoreValue,
-                        ParamGroupHelper.numberConfigConstStoreValue, ParamGroupHelper.startConfigDynStoreValue, ParamGroupHelper.numberConfigDynStoreValue);
+                    await SaveParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Config);
 
-                    await SaveParameterDatasForDeviceAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroupHelper.startServiceConstStoreValue,
-                        ParamGroupHelper.numberServiceConstStoreValue, ParamGroupHelper.startServiceDynStoreValue, ParamGroupHelper.numberServiceDynStoreValue);
+                    await SaveParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Service);
 
                 }
 
@@ -191,24 +187,26 @@ namespace SharedComponents.APCHardwareManagers
 
         }
 
-        private async Task SaveParameterDatasForDeviceAsync(Guid deviceDBModelId, int deviceNumber, ushort startConstStoreValue, ushort numberConstStoreValue,
-            ushort startDynStoreValue, ushort numberDynStoreValue)
+        private async Task SaveParameterDatasForDeviceAndGroupAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup)
         {
-            var constParamsValuesArray = await GetParamsSubGroupValuesFromMockDB((byte)deviceNumber, startConstStoreValue, numberConstStoreValue);
+            var constParamsValuesArray = await GetParamsSubGroupValuesFromMockDB((byte)deviceNumber, 
+                ParamGroupHelper._groupAddressesDictionary[paramGroup].startConstStoreValue,
+                ParamGroupHelper._groupAddressesDictionary[paramGroup].numberConstStoreValue);
 
-            var dynParamsValuesArray = await GetParamsSubGroupValuesFromMockDB((byte)deviceNumber, startDynStoreValue, numberDynStoreValue);
-
-            var paramGroup = ParamGroup.Technology;
+            var dynParamsValuesArray = await GetParamsSubGroupValuesFromMockDB((byte)deviceNumber,
+                ParamGroupHelper._groupAddressesDictionary[paramGroup].startDynStoreValue,
+                ParamGroupHelper._groupAddressesDictionary[paramGroup].numberDynStoreValue);
 
             await SaveParameterDatasForParamGroupAsync(deviceDBModelId, deviceNumber, paramGroup, constParamsValuesArray, dynParamsValuesArray);
         }
-
 
         private async Task SaveParameterDatasForParamGroupAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup, ushort[] constParamsValuesArray, 
             ushort[] dynParamsValuesArray)
         {
             foreach (int paramId in ParamGroupHelper.ParamGroupToParamEnum[paramGroup])
             {
+                if (paramId > dynParamsValuesArray.Length - 1) break;
+
                 var constParamsModel = new ConstParamsModel(paramId, constParamsValuesArray);
                 var constParamsId = await SaveConstParamsAsync(constParamsModel, CancellationToken.None);
 

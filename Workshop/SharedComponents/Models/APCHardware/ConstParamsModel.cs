@@ -19,9 +19,9 @@ namespace SharedComponents.Models.APCHardware
         {
             if (paramId is null) throw new ArgumentNullException($"{nameof(paramId)}");
 
-            var u16IdxTechnology = (ushort)paramId;
+            var u16Idx = (ushort)paramId;
 
-            var idx = (ushort)(u16IdxTechnology * 3);
+            var idx = (ushort)(u16Idx * 3);
             var minId = (ushort)(idx + 0);
             var maxId = (ushort)(idx + 1);
             var stepId = (ushort)(idx + 2);

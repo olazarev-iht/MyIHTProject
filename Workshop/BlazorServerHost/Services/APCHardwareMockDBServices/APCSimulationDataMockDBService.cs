@@ -34,13 +34,13 @@ namespace BlazorServerHost.Services.APCHardwareMockDBServices
 			return entries;
 		}
 
-		public async Task<IEnumerable<APCSimulationDataModel>> GetApcSimulationDataSetByAddressAndNumber(ushort startAddress, ushort numParams, CancellationToken cancellationToken)
+		public async Task<IEnumerable<APCSimulationDataModel>> GetApcSimulationDataSetByAddressAndNumber(int deviceNum, ushort startAddress, ushort numParams, CancellationToken cancellationToken)
         {
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
 			var entries = await dbContext.APCSimulationDatas
 				.AsNoTracking()
-				.Where(p => p.Address >= startAddress && p.Address < startAddress + numParams)
+				.Where(p => p.Device == deviceNum && p.Address >= startAddress && p.Address < startAddress + numParams)
 				.OrderBy(p => p.Address)
 				.Select(p => _mapper.Map<APCSimulationData, APCSimulationDataModel>(p))
 				.ToArrayAsync(cancellationToken);
@@ -50,7 +50,7 @@ namespace BlazorServerHost.Services.APCHardwareMockDBServices
 
 		public async Task<UInt16[]> ReadHoldingRegistersAsync(byte slaveAddress, ushort startAddress, ushort numRegisters, IhtModbusResult? ihtModbusResult = null)
 		{
-			var simulationData = await GetApcSimulationDataSetByAddressAndNumber(startAddress, numRegisters, CancellationToken.None);
+			var simulationData = await GetApcSimulationDataSetByAddressAndNumber(slaveAddress, startAddress, numRegisters, CancellationToken.None);
 
 			return simulationData.Select(x => (ushort)x.Value).ToArray();
 		}

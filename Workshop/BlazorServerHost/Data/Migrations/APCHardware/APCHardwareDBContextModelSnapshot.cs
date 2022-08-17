@@ -33,6 +33,68 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     b.HasKey("Id");
 
                     b.ToTable("APCDevices");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ff317f11-80f7-42e0-914e-8033dd295221"),
+                            Name = "APCDevice_1",
+                            Num = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("b9c2ab74-0838-453d-8d64-f0599728be63"),
+                            Name = "APCDevice_2",
+                            Num = 2
+                        },
+                        new
+                        {
+                            Id = new Guid("2e42f269-6a16-4ad3-b997-7cf486ade704"),
+                            Name = "APCDevice_3",
+                            Num = 3
+                        },
+                        new
+                        {
+                            Id = new Guid("cc2b489b-df2b-491a-9bca-99a19a095129"),
+                            Name = "APCDevice_4",
+                            Num = 4
+                        },
+                        new
+                        {
+                            Id = new Guid("78c9b00e-3f46-41ec-968b-3fa038443431"),
+                            Name = "APCDevice_5",
+                            Num = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("7710f161-c29b-4f4a-8c85-98e237589b23"),
+                            Name = "APCDevice_6",
+                            Num = 6
+                        },
+                        new
+                        {
+                            Id = new Guid("95c10467-aaa4-4525-9b8b-90b56ed44f67"),
+                            Name = "APCDevice_7",
+                            Num = 7
+                        },
+                        new
+                        {
+                            Id = new Guid("cfd2f82a-56a9-4381-8779-159d269e1bb0"),
+                            Name = "APCDevice_8",
+                            Num = 8
+                        },
+                        new
+                        {
+                            Id = new Guid("43c6f36b-9902-4c22-9744-5412150165aa"),
+                            Name = "APCDevice_9",
+                            Num = 9
+                        },
+                        new
+                        {
+                            Id = new Guid("10016b22-d775-45d5-abf4-eeb6fc3bc28c"),
+                            Name = "APCDevice_10",
+                            Num = 10
+                        });
                 });
 
             modelBuilder.Entity("BlazorServerHost.Data.Models.APCHardware.ConstParams", b =>
