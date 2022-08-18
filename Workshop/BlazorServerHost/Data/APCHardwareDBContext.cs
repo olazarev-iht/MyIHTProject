@@ -35,6 +35,8 @@ namespace BlazorServerHost.Data
 			lock (Lock)
 			{
 				return base.SaveChangesAsync(cancellationToken);
+
+				//return Task.FromResult(0);
 			}
 		}
 

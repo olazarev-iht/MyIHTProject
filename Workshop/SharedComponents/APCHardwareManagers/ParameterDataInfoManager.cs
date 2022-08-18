@@ -197,21 +197,31 @@ namespace SharedComponents.APCHardwareManagers
                 ParamGroupHelper._groupAddressesDictionary[paramGroup].startDynStoreValue,
                 ParamGroupHelper._groupAddressesDictionary[paramGroup].numberDynStoreValue);
 
-            await SaveParameterDatasForParamGroupAsync(deviceDBModelId, deviceNumber, paramGroup, constParamsValuesArray, dynParamsValuesArray);
+            await SaveParameterDatasForArraysAsync(deviceDBModelId, deviceNumber, paramGroup, constParamsValuesArray, dynParamsValuesArray);
         }
 
-        private async Task SaveParameterDatasForParamGroupAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup, ushort[] constParamsValuesArray, 
+        private async Task SaveParameterDatasForArraysAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup, ushort[] constParamsValuesArray, 
             ushort[] dynParamsValuesArray)
         {
-            foreach (int paramId in ParamGroupHelper.ParamGroupToParamEnum[paramGroup])
+            Guid? parameterDataInfoId = null;
+
+            // Array from the ParamGroup Enum
+            var knownParamIdArray = ParamGroupHelper.ParamGroupToParamEnum[paramGroup];
+            
+            //foreach (int paramId in ParamGroupHelper.ParamGroupToParamEnum[paramGroup])
+            for (var paramId = 0; paramId < dynParamsValuesArray.Length; paramId++)
             {
-                if (paramId > dynParamsValuesArray.Length - 1) break;
+                // Parameter is known if it's Id less than the last enum Id in the ParanGroup (but not the "Length")
+                var isKnownParameter = paramId < knownParamIdArray.Length - 1;
 
                 var constParamsModel = new ConstParamsModel(paramId, constParamsValuesArray);
                 var constParamsId = await SaveConstParamsAsync(constParamsModel, CancellationToken.None);
 
-                var parameterDataInfoModel = new ParameterDataInfoModel(paramGroup, paramId);
-                var parameterDataInfoId = await SaveParameterDataInfoAsync(parameterDataInfoModel, CancellationToken.None);
+                if (isKnownParameter)
+                {
+                    var parameterDataInfoModel = new ParameterDataInfoModel(paramGroup, paramId);
+                    parameterDataInfoId = await SaveParameterDataInfoAsync(parameterDataInfoModel, CancellationToken.None);
+                }
 
                 if (constParamsId != Guid.Empty && parameterDataInfoId != Guid.Empty)
                 {
@@ -228,7 +238,7 @@ namespace SharedComponents.APCHardwareManagers
 
                     if (dynParamsId != Guid.Empty)
                     {
-                        var paramName = ParamGroupHelper.ParamGroupToEnumType[paramGroup].GetEnumName(paramId);
+                        var paramName = isKnownParameter ? ParamGroupHelper.ParamGroupToEnumType[paramGroup].GetEnumName(paramId) : $"Param_{paramId}";
                         var deviceName = deviceNumber != 0 ? $"Device{deviceNumber}" : "System";
 
                         var newParameterData = new ParameterDataModel

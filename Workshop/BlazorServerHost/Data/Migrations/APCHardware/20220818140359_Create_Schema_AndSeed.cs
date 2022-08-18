@@ -127,52 +127,52 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("10016b22-d775-45d5-abf4-eeb6fc3bc28c"), "APCDevice_10", 10 });
+                values: new object[] { new Guid("0c364bd4-12fb-4332-a7da-d16944b49506"), "APCDevice_2", 2 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("2e42f269-6a16-4ad3-b997-7cf486ade704"), "APCDevice_3", 3 });
+                values: new object[] { new Guid("0f1a31b8-c77d-4d76-bccc-f5769c9a87e6"), "APCDevice_3", 3 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("43c6f36b-9902-4c22-9744-5412150165aa"), "APCDevice_9", 9 });
+                values: new object[] { new Guid("2f7f42b5-862b-4f3f-afb7-58c3542ef56a"), "APCDevice_1", 1 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("7710f161-c29b-4f4a-8c85-98e237589b23"), "APCDevice_6", 6 });
+                values: new object[] { new Guid("5b2999a8-c84b-4435-8359-c90e06ceb6e4"), "APCDevice_10", 10 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("78c9b00e-3f46-41ec-968b-3fa038443431"), "APCDevice_5", 5 });
+                values: new object[] { new Guid("86bacfd9-7702-4cdc-9982-9981e12514dc"), "APCDevice_7", 7 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("95c10467-aaa4-4525-9b8b-90b56ed44f67"), "APCDevice_7", 7 });
+                values: new object[] { new Guid("8ca2bef1-83bc-411a-987b-eaf646146335"), "APCDevice_9", 9 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("b9c2ab74-0838-453d-8d64-f0599728be63"), "APCDevice_2", 2 });
+                values: new object[] { new Guid("a055e2e7-e8a1-45e5-ad6b-606a8feb19c8"), "APCDevice_5", 5 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("cc2b489b-df2b-491a-9bca-99a19a095129"), "APCDevice_4", 4 });
+                values: new object[] { new Guid("b32feba9-eb73-43a0-a048-82afccef1c8a"), "APCDevice_6", 6 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("cfd2f82a-56a9-4381-8779-159d269e1bb0"), "APCDevice_8", 8 });
+                values: new object[] { new Guid("db0fc6ba-2d1b-49a2-84d1-f2b0e0844df6"), "APCDevice_8", 8 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("ff317f11-80f7-42e0-914e-8033dd295221"), "APCDevice_1", 1 });
+                values: new object[] { new Guid("ebe4c304-de25-4c75-9590-efe3e8599e17"), "APCDevice_4", 4 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DynParams_ConstParamsId",
