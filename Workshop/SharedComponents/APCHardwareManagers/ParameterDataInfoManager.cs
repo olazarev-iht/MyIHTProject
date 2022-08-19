@@ -168,14 +168,15 @@ namespace SharedComponents.APCHardwareManagers
                     if (deviceDBModel == null) throw new Exception("There is no device in the collaction");
 
                     await SaveParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Technology);
-
                     await SaveParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Process);
-
                     await SaveParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Config);
-
                     await SaveParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Service);
-
                 }
+
+                await _constParamsDBService.AddRangeAsync(constParamsModels, CancellationToken.None);
+                await _parameterDataInfoDBService.AddRangeAsync(parameterDataInfoModels, CancellationToken.None);
+                await _dynParamsDBService.AddRangeAsync(dynParamsModels, CancellationToken.None);
+                await _parameterDataDBService.AddRangeAsync(parameterDataModels, CancellationToken.None);
 
                 return true;
             }
@@ -200,6 +201,11 @@ namespace SharedComponents.APCHardwareManagers
             await SaveParameterDatasForArraysAsync(deviceDBModelId, deviceNumber, paramGroup, constParamsValuesArray, dynParamsValuesArray);
         }
 
+        private List<ConstParamsModel> constParamsModels = new();
+        private List<ParameterDataInfoModel> parameterDataInfoModels = new();
+        private List<DynParamsModel> dynParamsModels = new();
+        private List<ParameterDataModel> parameterDataModels = new();
+
         private async Task SaveParameterDatasForArraysAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup, ushort[] constParamsValuesArray, 
             ushort[] dynParamsValuesArray)
         {
@@ -215,15 +221,19 @@ namespace SharedComponents.APCHardwareManagers
                 var isKnownParameter = paramId < knownParamIdArray.Length - 1;
 
                 var constParamsModel = new ConstParamsModel(paramId, constParamsValuesArray);
-                var constParamsId = await SaveConstParamsAsync(constParamsModel, CancellationToken.None);
+                // var constParamsId = await SaveConstParamsAsync(constParamsModel, CancellationToken.None);
+                var constParamsId = constParamsModel.Id;
+                constParamsModels.Add(constParamsModel);
 
                 if (isKnownParameter)
                 {
                     var parameterDataInfoModel = new ParameterDataInfoModel(paramGroup, paramId);
-                    parameterDataInfoId = await SaveParameterDataInfoAsync(parameterDataInfoModel, CancellationToken.None);
+                    parameterDataInfoId = parameterDataInfoModel.Id;
+                    // parameterDataInfoId = await SaveParameterDataInfoAsync(parameterDataInfoModel, CancellationToken.None);
+                    parameterDataInfoModels.Add(parameterDataInfoModel);
                 }
 
-                if (constParamsId != Guid.Empty && parameterDataInfoId != Guid.Empty)
+                if (constParamsModel.Id != Guid.Empty && parameterDataInfoId != Guid.Empty)
                 {
                     var newDynParams = new DynParamsModel
                     {
@@ -234,7 +244,9 @@ namespace SharedComponents.APCHardwareManagers
                         Value = dynParamsValuesArray[paramId]
                     };
 
-                    var dynParamsId = await SaveDynParamsAsync(newDynParams, CancellationToken.None);
+                    //var dynParamsId = await SaveDynParamsAsync(newDynParams, CancellationToken.None);
+                    var dynParamsId = newDynParams.Id;
+                    dynParamsModels.Add(newDynParams);
 
                     if (dynParamsId != Guid.Empty)
                     {
@@ -250,7 +262,8 @@ namespace SharedComponents.APCHardwareManagers
                             DynParamsId = dynParamsId // newDynParams.Id
                         };
 
-                        await SaveParameterDataAsync(newParameterData, CancellationToken.None);
+                        //await SaveParameterDataAsync(newParameterData, CancellationToken.None);
+                        parameterDataModels.Add(newParameterData);
                     }
                 }
             }
@@ -385,7 +398,7 @@ namespace SharedComponents.APCHardwareManagers
                     Step = constParamsModel.Step
                 };
 
-                return await _constParamsDBService.AddEntryAsync(newConstParams, cancellationToken); ;
+                return await _constParamsDBService.AddEntryAsync(newConstParams, cancellationToken);
             }
             catch (Exception ex)
             {

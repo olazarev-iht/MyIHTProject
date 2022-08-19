@@ -53,20 +53,41 @@ namespace BlazorServerHost.Data
             var APCDeviceId1 = Guid.NewGuid();
 			var APCDeviceId2 = Guid.NewGuid();
 			var APCDeviceId3 = Guid.NewGuid();
+            var APCDeviceId4 = Guid.NewGuid();
+            var APCDeviceId5 = Guid.NewGuid();
+            var APCDeviceId6 = Guid.NewGuid();
+            var APCDeviceId7 = Guid.NewGuid();
+            var APCDeviceId8 = Guid.NewGuid();
+            var APCDeviceId9 = Guid.NewGuid();
+            var APCDeviceId10 = Guid.NewGuid();
 
-			var APCDeviceList = new List<APCDevice>();
+            var APCDeviceList = new List<APCDevice>();
 
-			var APCDevice1 = new APCDevice { Id = APCDeviceId1, Num = 1, Name = "APCDevice_1" };
-			APCDeviceList.Add(APCDevice1);
-			var APCDevice2 = new APCDevice { Id = APCDeviceId2, Num = 2, Name = "APCDevice_2" };
-			APCDeviceList.Add(APCDevice2);
-			var APCDevice3 = new APCDevice { Id = APCDeviceId3, Num = 3, Name = "APCDevice_3" };
-			APCDeviceList.Add(APCDevice3);
+            var APCDevice1 = new APCDevice { Id = APCDeviceId1, Num = 1, Name = "APCDevice_1" };
+            APCDeviceList.Add(APCDevice1);
+            var APCDevice2 = new APCDevice { Id = APCDeviceId2, Num = 2, Name = "APCDevice_2" };
+            APCDeviceList.Add(APCDevice2);
+            var APCDevice3 = new APCDevice { Id = APCDeviceId3, Num = 3, Name = "APCDevice_3" };
+            APCDeviceList.Add(APCDevice3);
+            var APCDevice4 = new APCDevice { Id = APCDeviceId4, Num = 4, Name = "APCDevice_4" };
+            APCDeviceList.Add(APCDevice4);
+            var APCDevice5 = new APCDevice { Id = APCDeviceId5, Num = 5, Name = "APCDevice_5" };
+            APCDeviceList.Add(APCDevice5);
+            var APCDevice6 = new APCDevice { Id = APCDeviceId6, Num = 6, Name = "APCDevice_6" };
+            APCDeviceList.Add(APCDevice6);
+            var APCDevice7 = new APCDevice { Id = APCDeviceId7, Num = 7, Name = "APCDevice_7" };
+            APCDeviceList.Add(APCDevice7);
+            var APCDevice8 = new APCDevice { Id = APCDeviceId8, Num = 8, Name = "APCDevice_8" };
+            APCDeviceList.Add(APCDevice8);
+            var APCDevice9 = new APCDevice { Id = APCDeviceId9, Num = 9, Name = "APCDevice_9" };
+            APCDeviceList.Add(APCDevice9);
+            var APCDevice10 = new APCDevice { Id = APCDeviceId10, Num = 10, Name = "APCDevice_10" };
+            APCDeviceList.Add(APCDevice10);
 
-			// var APCDeviceList1 = APCDeviceList.ToDictionary(d => d.Num);
-			// var APCDeviceList1 = APCDeviceList.ToArray();
+            // var APCDeviceList1 = APCDeviceList.ToDictionary(d => d.Num);
+            // var APCDeviceList1 = APCDeviceList.ToArray();
 
-			modelBuilder.Entity<APCDevice>().HasData(APCDeviceList);
+            modelBuilder.Entity<APCDevice>().HasData(APCDeviceList);
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
@@ -550,36 +571,57 @@ namespace BlazorServerHost.Data
 
         public void CreateParameterDataForDevice(ModelBuilder modelBuilder, APCDevice apcDevice)
         {
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//
-			//ConstParams
-			//
-			//HeatO2IgnitionMin  : FuelGasIgnitionMin
-			//HeatO2IgnitionMax  : FuelGasIgnitionMax
-			//HeatO2IgnitionStep : FuelGasIgnitionStep
-			//
-			//HeatO2PreHeatMin  : FuelGasPreHeatMin
-			//HeatO2PreHeatMax  : FuelGasPreHeatMax
-			//HeatO2PreHeatStep : FuelGasPreHeatStep
-			//
-			//HeatO2PierceMin   : FuelGasPierceMin  : CutO2PierceMin
-			//HeatO2PierceMax   : FuelGasPierceMax  : CutO2PierceMax
-			//HeatO2PierceStep  : FuelGasPierceStep : CutO2PierceStep
-			//
-			//HeatO2CutMin  : FuelGasCutMin  : CutO2CutMin
-			//HeatO2CutMax  : FuelGasCutMax  : CutO2CutMax
-			//HeatO2CutStep : FuelGasCutStep : CutO2CutStep
-			//
-			//H-O
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //
+            //ConstParams
+            //
+            //HeatO2IgnitionMin  : FuelGasIgnitionMin
+            //HeatO2IgnitionMax  : FuelGasIgnitionMax
+            //HeatO2IgnitionStep : FuelGasIgnitionStep
+            //
+            //HeatO2PreHeatMin  : FuelGasPreHeatMin
+            //HeatO2PreHeatMax  : FuelGasPreHeatMax
+            //HeatO2PreHeatStep : FuelGasPreHeatStep
+            //
+            //HeatO2PierceMin   : FuelGasPierceMin  : CutO2PierceMin
+            //HeatO2PierceMax   : FuelGasPierceMax  : CutO2PierceMax
+            //HeatO2PierceStep  : FuelGasPierceStep : CutO2PierceStep
+            //
+            //HeatO2CutMin  : FuelGasCutMin  : CutO2CutMin
+            //HeatO2CutMax  : FuelGasCutMax  : CutO2CutMax
+            //HeatO2CutStep : FuelGasCutStep : CutO2CutStep
+            //
+            //H-O
 
-			//Technology Params
-			var HeatO2Ignition_Const_Id = Guid.NewGuid();
+            //Technology Params
+            //var PreHeatHeight_Const_Id = Guid.NewGuid();
+            //var PierceHeight_Const_Id = Guid.NewGuid();
+            //var CutHeight_Const_Id = Guid.NewGuid();
+            var HeatO2Ignition_Const_Id = Guid.NewGuid();
 			var HeatO2PreHeat_Const_Id = Guid.NewGuid();
 			var HeatO2Pierce_Const_Id = Guid.NewGuid();
 			var HeatO2Cut_Const_Id = Guid.NewGuid();
+            //var CutO2Pierce = Guid.NewGuid(),
+            //var CutO2Cut = Guid.NewGuid(),
+            //var FuelGasIgnition = Guid.NewGuid(),
+            //var FuelGasPreHeat = Guid.NewGuid(),
+            //var FuelGasPierce = Guid.NewGuid(),
+            //var FuelGasCut = Guid.NewGuid(),
+            //var PreHeatTime = Guid.NewGuid(),
+            //var PiercePreTime = Guid.NewGuid(),
+            //var PierceTime = Guid.NewGuid(),
+            //var PiercePostTime = Guid.NewGuid(),
+            //var PierceHeightRampTime,
+            //var CutHeightRampTime,
+            //var PierceMode,
+            //var IgnitionFlameAdjust,
+            //var GasType,
+            //var CuttingSpeed,
+            //var PierceCuttingSpeedChange,
+            //var ControlBits
 
-			// Setup Params
-			var TactileInitialPosFinding_Const_Id = Guid.NewGuid();
+            // Setup Params
+            var TactileInitialPosFinding_Const_Id = Guid.NewGuid();
 			var DistanceCalibration_Const_Id = Guid.NewGuid();
 			var Dynamic_Const_Id = Guid.NewGuid();
 			var HeightControlActive_Const_Id = Guid.NewGuid();

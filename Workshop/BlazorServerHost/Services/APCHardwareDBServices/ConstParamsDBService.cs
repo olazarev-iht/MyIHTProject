@@ -46,8 +46,8 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 
 			var entity = _mapper.Map<ConstParamsModel, ConstParams>(model);
 
-			await dbContext.ConstParams.AddAsync(entity, cancellationToken);
-			await dbContext.SaveChangesAsync(cancellationToken);
+			// await dbContext.ConstParams.AddAsync(entity, cancellationToken);
+			// await dbContext.SaveChangesAsync(cancellationToken);
 
 			return entity.Id;
 		}
