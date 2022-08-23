@@ -2,6 +2,7 @@
 using BlazorServerHost.Data.DataMapper;
 using BlazorServerHost.Data.Models.APCHardware;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareDBServices;
 
@@ -187,9 +188,13 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			dbContext.RemoveRange(dbContext.ParameterDatas);
+			//dbContext.RemoveRange(dbContext.ParameterDatas);
 
-			await dbContext.SaveChangesAsync(cancellationToken);
+			//await dbContext.SaveChangesAsync(cancellationToken);
+
+			string cmd = $"DELETE FROM ParameterDatas";
+
+			await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
 		}
 	}
 }

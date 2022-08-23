@@ -98,9 +98,13 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			dbContext.RemoveRange(dbContext.ConstParams);
+			//dbContext.RemoveRange(dbContext.ConstParams);
 
-			await dbContext.SaveChangesAsync(cancellationToken);
+			//await dbContext.SaveChangesAsync(cancellationToken);
+
+			string cmd = $"DELETE FROM ConstParams";
+
+			await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
 		}
 	}
 }
