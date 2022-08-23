@@ -214,14 +214,13 @@ namespace SharedComponents.APCHardwareManagers
             // Array from the ParamGroup Enum
             var knownParamIdArray = ParamGroupHelper.ParamGroupToParamEnum[paramGroup];
             
-            //foreach (int paramId in ParamGroupHelper.ParamGroupToParamEnum[paramGroup])
             for (var paramId = 0; paramId < dynParamsValuesArray.Length; paramId++)
             {
                 // Parameter is known if it's Id less than the last enum Id in the ParanGroup (but not the "Length")
                 var isKnownParameter = paramId < knownParamIdArray.Length - 1;
 
                 var constParamsModel = new ConstParamsModel(paramId, constParamsValuesArray);
-                // var constParamsId = await SaveConstParamsAsync(constParamsModel, CancellationToken.None);
+                // Save into Const Params List 
                 var constParamsId = constParamsModel.Id;
                 constParamsModels.Add(constParamsModel);
 
@@ -229,7 +228,7 @@ namespace SharedComponents.APCHardwareManagers
                 {
                     var parameterDataInfoModel = new ParameterDataInfoModel(paramGroup, paramId);
                     parameterDataInfoId = parameterDataInfoModel.Id;
-                    // parameterDataInfoId = await SaveParameterDataInfoAsync(parameterDataInfoModel, CancellationToken.None);
+                    // Save into the Param Data Info List
                     parameterDataInfoModels.Add(parameterDataInfoModel);
                 }
 
@@ -244,7 +243,7 @@ namespace SharedComponents.APCHardwareManagers
                         Value = dynParamsValuesArray[paramId]
                     };
 
-                    //var dynParamsId = await SaveDynParamsAsync(newDynParams, CancellationToken.None);
+                    // Save into Dyn Params List
                     var dynParamsId = newDynParams.Id;
                     dynParamsModels.Add(newDynParams);
 
@@ -262,7 +261,7 @@ namespace SharedComponents.APCHardwareManagers
                             DynParamsId = dynParamsId // newDynParams.Id
                         };
 
-                        //await SaveParameterDataAsync(newParameterData, CancellationToken.None);
+                        // Save into Parameter Data List
                         parameterDataModels.Add(newParameterData);
                     }
                 }

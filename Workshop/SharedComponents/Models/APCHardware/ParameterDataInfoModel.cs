@@ -53,7 +53,6 @@ namespace SharedComponents.Models.APCHardware
             var stepId = (ushort)(idx + 2);
 
             MinDescription = GetIhtModbusDescriptionParamConst(paramGroup, minId);
-
             MaxDescription = GetIhtModbusDescriptionParamConst(paramGroup, maxId);
             StepDescription = GetIhtModbusDescriptionParamConst(paramGroup, stepId);
             ValueDescription = GetIhtModbusDescriptionParamDyn(paramGroup, u16IdxTechnology);

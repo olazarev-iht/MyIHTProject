@@ -3,6 +3,7 @@ using System;
 using BlazorServerHost.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServerHost.Data.Migrations.APCHardwareMock
 {
     [DbContext(typeof(APCHardwareMockDBContext))]
-    partial class APCHardwareMockDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220823071943_Create_Schema_AndSeed")]
+    partial class Create_Schema_AndSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");

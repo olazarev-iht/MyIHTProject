@@ -20,7 +20,9 @@ namespace BlazorServerHost.Data
 
 		public DbSet<ParameterData> ParameterDatas { get; set; } = null!;
 
-		public DbSet<APCSimulationData> APCSimulationDatas { get; set; } = null!;
+        public DbSet<ParameterDataInfo> ParameterDataInfos { get; set; } = null!;
+
+        public DbSet<APCSimulationData> APCSimulationDatas { get; set; } = null!;
 
 
 		public APCHardwareMockDBContext(DbContextOptions<APCHardwareMockDBContext> options)
@@ -96,477 +98,16 @@ namespace BlazorServerHost.Data
 				if (device.Num > 0)
 				{
 					CreateParameterDataForDevice(modelBuilder, device);
-					//CreateParameterDataForSystem(modelBuilder, device);
 				}
             }
-
+            
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             for (var apcDeviceNum = 1; apcDeviceNum <= 10; apcDeviceNum++)
             {
-                CreateAPCSimulationDataForDevice(modelBuilder, apcDeviceNum);
+                APCHardwareMockDBHelper.CreateAPCSimulationDataForDevice(modelBuilder, apcDeviceNum);
             }
 
-        }
-
-        public void CreateAPCSimulationDataForDevice(ModelBuilder modelBuilder, int apcDevice)
-        {
-            var APCSimulationDataList = new List<APCSimulationData>();
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4000, Value = 264 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4001, Value = 14 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4002, Value = 256 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4003, Value = 65000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4004, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4005, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4006, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4007, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4008, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4009, Value = 0 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4010, Value = 4100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4011, Value = 16 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4012, Value = 4200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4013, Value = 72 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4014, Value = 4300 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4015, Value = 24 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4016, Value = 4400 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4017, Value = 42 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4018, Value = 4450 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4019, Value = 14 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4020, Value = 4500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4021, Value = 48 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4022, Value = 4550 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4023, Value = 16 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4024, Value = 4600 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4025, Value = 42 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4026, Value = 4650 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4027, Value = 14 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4028, Value = 4700 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4029, Value = 22 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4030, Value = 4800 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4031, Value = 11 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4032, Value = 4850 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4033, Value = 7 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4034, Value = 6000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4035, Value = 69 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4036, Value = 6100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4037, Value = 9 });
-
-            // SetDevInfoSimulationData(ref UInt16[] au16DeviceInfo) Device Info
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4100, Value = 35653 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4101, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4102, Value = 12345 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4103, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4104, Value = 0 });
-            int fwMinimumVersion = IhtDevices.GetFwMinimumVersion(isRobot: false);
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4105, Value = (UInt16)((fwMinimumVersion & 0xFFFF) >> 8) });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4106, Value = (UInt16)(fwMinimumVersion & 0xFF) });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4107, Value = 9430 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4108, Value = 2 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4109, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4110, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4111, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4112, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4113, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4114, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4115, Value = (UInt16)IhtDevices.TorchType.Propane });
-
-            // SetTechnologySimulationData(ref UInt16[] au16TechnologyConst) Technology Const
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4200, Value = 20 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4201, Value = 200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4202, Value = 5 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4203, Value = 20 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4204, Value = 500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4205, Value = 5 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4206, Value = 20 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4207, Value = 200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4208, Value = 5 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4209, Value = 500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4210, Value = 5000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4211, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4212, Value = 500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4213, Value = 5000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4214, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4215, Value = 500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4216, Value = 5000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4217, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4218, Value = 500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4219, Value = 5000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4220, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4221, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4222, Value = 10000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4223, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4224, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4225, Value = 10000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4226, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4227, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4228, Value = 1000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4229, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4230, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4231, Value = 1000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4232, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4233, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4234, Value = 1000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4235, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4236, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4237, Value = 1000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4238, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4239, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4240, Value = 3000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4241, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4242, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4243, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4244, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4245, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4246, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4247, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4248, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4249, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4250, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4251, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4252, Value = 30 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4253, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4254, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4255, Value = 30 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4256, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4257, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4258, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4259, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4260, Value = 200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4261, Value = 1000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4262, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4263, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4264, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4265, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4266, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4267, Value = 2000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4268, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4269, Value = 50 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4270, Value = 150 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4271, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4272, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4273, Value = 65535 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4274, Value = 1 });
-
-            // SetTechnologySimulationData(ref UInt16[] au16TechnologyDyn) Technology Dyn
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4300, Value = 80 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4301, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4302, Value = 50 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4303, Value = 2000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4304, Value = 2000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4305, Value = 4000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4306, Value = 2000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4307, Value = 1500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4308, Value = 6000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4309, Value = 200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4310, Value = 200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4311, Value = 200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4312, Value = 200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4313, Value = 150 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4314, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4315, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4316, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4317, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4318, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4319, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4320, Value = 500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4321, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4322, Value = 460 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4323, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4324, Value = 0 });
-
-            // SetProcessSimulationData(ref UInt16[] au16ProcessConst) Process Const
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4400, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4401, Value = 500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4402, Value = 25 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4403, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4404, Value = 3 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4405, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4406, Value = 500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4407, Value = 5000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4408, Value = 10 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4409, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4410, Value = 1000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4411, Value = 10 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4412, Value = 20 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4413, Value = 200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4414, Value = 5 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4415, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4416, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4417, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4418, Value = 50 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4419, Value = 150 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4420, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4421, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4422, Value = 3 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4423, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4424, Value = 25 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4425, Value = 150 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4426, Value = 5 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4427, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4428, Value = 50 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4429, Value = 5 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4430, Value = 50 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4431, Value = 300 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4432, Value = 5 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4433, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4434, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4435, Value = 5 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4436, Value = 50 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4437, Value = 150 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4438, Value = 5 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4439, Value = 50 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4440, Value = 150 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4441, Value = 5 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4442, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4443, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4444, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4445, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4446, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4447, Value = 1 });
-
-            // SetProcessSimulationData(ref UInt16[] au16ProcessDyn) Process Dyn 
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4450, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4451, Value = 2 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4452, Value = 500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4453, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4454, Value = 80 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4455, Value = 20 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4456, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4457, Value = 2 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4458, Value = 50 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4459, Value = 25 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4460, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4461, Value = 20 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4462, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4463, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4464, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4465, Value = 1 });
-
-            // SetConfigSimulationData(ref UInt16[] au16ConfigConst) Config Const
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4500, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4501, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4502, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4503, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4504, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4505, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4506, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4507, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4508, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4509, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4510, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4511, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4512, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4513, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4514, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4515, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4516, Value = 20 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4517, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4518, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4519, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4520, Value = 0 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4521, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4522, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4523, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4524, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4525, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4526, Value = 10 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4527, Value = 500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4528, Value = 20000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4529, Value = 10 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4530, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4531, Value = 30 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4532, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4533, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4534, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4535, Value = 5 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4536, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4537, Value = 5000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4538, Value = 10 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4539, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4540, Value = 240 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4541, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4542, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4543, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4544, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4545, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4546, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4547, Value = 1 });
-
-            // SetConfigSimulationData(ref UInt16[] au16ConfigDyn) Config Dyn
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4550, Value = 90 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4551, Value = 45 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4552, Value = 65 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4553, Value = 45 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4554, Value = 35 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4555, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4556, Value = 43 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4557, Value = 95 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4558, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4559, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4560, Value = 1500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4561, Value = 5 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4562, Value = 2500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4563, Value = 240 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4564, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4565, Value = 0 });
-
-            // SetServiceSimulationData(ref UInt16[] au16ServiceConst) Service Const
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4600, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4601, Value = 20 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4602, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4603, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4604, Value = 3000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4605, Value = 100 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4606, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4607, Value = 20 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4608, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4609, Value = 500 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4610, Value = 5000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4611, Value = 250 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4612, Value = 50 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4613, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4614, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4615, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4616, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4617, Value = 1 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4618, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4619, Value = 200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4620, Value = 10 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4621, Value = 10 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4622, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4623, Value = 10 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4624, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4625, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4626, Value = 10 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4627, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4628, Value = 5000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4629, Value = 50 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4630, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4631, Value = 5000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4632, Value = 50 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4633, Value = 1000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4634, Value = 5000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4635, Value = 50 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4636, Value = 1200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4637, Value = 1800 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4638, Value = 50 });
-
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4639, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4640, Value = 1 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4641, Value = 1 });
-
-            // SetServiceSimulationData(ref UInt16[] au16ServiceDyn) Service Dyn
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4650, Value = 4 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4651, Value = 1000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4652, Value = 7 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4653, Value = 1000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4654, Value = 100 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4655, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4656, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4657, Value = 50 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4658, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4659, Value = 3200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4660, Value = 200 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4661, Value = 3000 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4662, Value = 1400 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4663, Value = 0 });
-
-            // SetProcessInfoSimulationData(ref UInt16[] au16ProcInfo) Process Info
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4700, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4701, Value = 2369 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4702, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4703, Value = 64 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4704, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4705, Value = 4 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4706, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4707, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4708, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4709, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4710, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4711, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4712, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4713, Value = 240 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4714, Value = 239 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4715, Value = 241 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4716, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4717, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4718, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4719, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4720, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4721, Value = (UInt16)IhtModbusData.ePassword.Level_2 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4722, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4723, Value = 0 });
-
-            // SetCmdExecSimulationData(ref UInt16[] au16CmdExec) Cmd Exec
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4800, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4801, Value = 4 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4802, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4803, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4804, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4805, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4806, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4807, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4808, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4809, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4810, Value = 0 });
-
-            // SetSetupExecSimulationData(ref UInt16[] au16SetupExec) Setup Exec
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4850, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4851, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4852, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4853, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4854, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4855, Value = 0 });
-            APCSimulationDataList.Add(new APCSimulationData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4856, Value = 0 });
-
-            // 
-
-            modelBuilder.Entity<APCSimulationData>().HasData(APCSimulationDataList);
         }
 
         public void CreateParameterDataForDevice(ModelBuilder modelBuilder, APCDevice apcDevice)
@@ -652,6 +193,59 @@ namespace BlazorServerHost.Data
             modelBuilder.Entity<ConstParams>().HasData(PierceCuttingSpeedChange_Const);
             modelBuilder.Entity<ConstParams>().HasData(ControlBits_Const);
 
+            // Technology Params Info
+            var PreHeatHeight_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.PreHeatHeight));
+            var PierceHeight_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.PierceHeight));
+            var CutHeight_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.CutHeight));
+            var HeatO2Ignition_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.HeatO2Ignition));
+            var HeatO2PreHeat_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.HeatO2PreHeat));
+            var HeatO2Pierce_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.HeatO2Pierce));
+            var HeatO2Cut_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.HeatO2Cut));
+            var CutO2Pierce_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.CutO2Pierce));
+            var CutO2Cut_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.CutO2Cut));
+            var FuelGasIgnition_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.FuelGasIgnition));
+            var FuelGasPreHeat_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.FuelGasPreHeat));
+            var FuelGasPierce_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.FuelGasPierce));
+            var FuelGasCut_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.FuelGasCut));
+            var PreHeatTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.PreHeatTime));
+            var PiercePreTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.PiercePreTime));
+            var PierceTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.PierceTime));
+            var PiercePostTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.PiercePostTime));
+            var PierceHeightRampTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.PierceHeightRampTime));
+            var CutHeightRampTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.CutHeightRampTime));
+            var PierceMode_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.PierceMode));
+            var IgnitionFlameAdjust_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.IgnitionFlameAdjust));
+            var GasType_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.GasType));
+            var CuttingSpeed_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.PreHeatHeight));
+            var PierceCuttingSpeedChange_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.PierceCuttingSpeedChange));
+            var ControlBits_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Technology, (int)ParamIds.ControlBits));
+
+            modelBuilder.Entity<ParameterDataInfo>().HasData(PreHeatHeight_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(PierceHeight_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(CutHeight_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(HeatO2Ignition_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(HeatO2PreHeat_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(HeatO2Pierce_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(HeatO2Cut_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(CutO2Pierce_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(CutO2Cut_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(FuelGasIgnition_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(FuelGasPreHeat_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(FuelGasPierce_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(FuelGasCut_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(PreHeatTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(PiercePreTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(PierceTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(PiercePostTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(PierceHeightRampTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(CutHeightRampTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(PierceMode_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(IgnitionFlameAdjust_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(GasType_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(CuttingSpeed_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(PierceCuttingSpeedChange_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(ControlBits_Info);
+
             //Technology Params Dyn
             var PreHeatHeight_Dyn_Id = Guid.NewGuid();
             var PierceHeight_Dyn_Id = Guid.NewGuid();
@@ -679,31 +273,31 @@ namespace BlazorServerHost.Data
             var PierceCuttingSpeedChange_Dyn_Id = Guid.NewGuid();
             var ControlBits_Dyn_Id = Guid.NewGuid();
 
-            var PreHeatHeight_Dyn = new DynParams { Id = PreHeatHeight_Dyn_Id, ParamId = (int)ParamIds.PreHeatHeight, ConstParamsId = PreHeatHeight_Const_Id, Value = 80 };
-            var PierceHeight_Dyn = new DynParams { Id = PierceHeight_Dyn_Id, ParamId = (int)ParamIds.PierceHeight, ConstParamsId = PierceHeight_Const_Id, Value = 100 };
-            var CutHeight_Dyn = new DynParams { Id = CutHeight_Dyn_Id, ParamId = (int)ParamIds.CutHeight, ConstParamsId = CutHeight_Const_Id, Value = 50 };
-            var HeatO2Ignition_Dyn = new DynParams { Id = HeatO2Ignition_Dyn_Id, ParamId = (int)ParamIds.HeatO2Ignition, ConstParamsId = HeatO2Ignition_Const_Id, Value = 2000 };
-            var HeatO2PreHeat_Dyn = new DynParams { Id = HeatO2PreHeat_Dyn_Id, ParamId = (int)ParamIds.HeatO2PreHeat, ConstParamsId = HeatO2PreHeat_Const_Id, Value = 2000 };
-            var HeatO2Pierce_Dyn = new DynParams { Id = HeatO2Pierce_Dyn_Id, ParamId = (int)ParamIds.HeatO2Pierce, ConstParamsId = HeatO2Pierce_Const_Id, Value = 4000 };
-            var HeatO2Cut_Dyn = new DynParams { Id = HeatO2Cut_Dyn_Id, ParamId = (int)ParamIds.HeatO2Cut, ConstParamsId = HeatO2Cut_Const_Id, Value = 2000 };
-            var CutO2Pierce_Dyn = new DynParams { Id = CutO2Pierce_Dyn_Id, ParamId = (int)ParamIds.CutO2Pierce, ConstParamsId = CutO2Pierce_Const_Id, Value = 1500 };
-            var CutO2Cut_Dyn = new DynParams { Id = CutO2Cut_Dyn_Id, ParamId = (int)ParamIds.CutO2Cut, ConstParamsId = CutO2Cut_Const_Id, Value = 6000 };
-            var FuelGasIgnition_Dyn = new DynParams { Id = FuelGasIgnition_Dyn_Id, ParamId = (int)ParamIds.FuelGasIgnition, ConstParamsId = FuelGasIgnition_Const_Id, Value = 200 };
-            var FuelGasPreHeat_Dyn = new DynParams { Id = FuelGasPreHeat_Dyn_Id, ParamId = (int)ParamIds.FuelGasPreHeat, ConstParamsId = FuelGasPreHeat_Const_Id, Value = 200 };
-            var FuelGasPierce_Dyn = new DynParams { Id = FuelGasPierce_Dyn_Id, ParamId = (int)ParamIds.FuelGasPierce, ConstParamsId = FuelGasPierce_Const_Id, Value = 200 };
-            var FuelGasCut_Dyn = new DynParams { Id = FuelGasCut_Dyn_Id, ParamId = (int)ParamIds.FuelGasCut, ConstParamsId = FuelGasCut_Const_Id, Value = 200 };
-            var PreHeatTime_Dyn = new DynParams { Id = PreHeatTime_Dyn_Id, ParamId = (int)ParamIds.PreHeatTime, ConstParamsId = PreHeatTime_Const_Id, Value = 150 };
-            var PiercePreTime_Dyn = new DynParams { Id = PiercePreTime_Dyn_Id, ParamId = (int)ParamIds.PiercePreTime, ConstParamsId = PiercePreTime_Const_Id, Value = 0 };
-            var PierceTime_Dyn = new DynParams { Id = PierceTime_Dyn_Id, ParamId = (int)ParamIds.PierceTime, ConstParamsId = PierceTime_Const_Id, Value = 10 };
-            var PiercePostTime_Dyn = new DynParams { Id = PiercePostTime_Dyn_Id, ParamId = (int)ParamIds.PiercePostTime, ConstParamsId = PiercePostTime_Const_Id, Value = 0 };
-            var PierceHeightRampTime_Dyn = new DynParams { Id = PierceHeightRampTime_Dyn_Id, ParamId = (int)ParamIds.PierceHeightRampTime, ConstParamsId = PierceHeightRampTime_Const_Id, Value = 0 };
-            var CutHeightRampTime_Dyn = new DynParams { Id = CutHeightRampTime_Dyn_Id, ParamId = (int)ParamIds.CutHeightRampTime, ConstParamsId = CutHeightRampTime_Const_Id, Value = 0 };
-            var PierceMode_Dyn = new DynParams { Id = PierceMode_Dyn_Id, ParamId = (int)ParamIds.PierceMode, ConstParamsId = PierceMode_Const_Id, Value = 0 };
-            var IgnitionFlameAdjust_Dyn = new DynParams { Id = IgnitionFlameAdjust_Dyn_Id, ParamId = (int)ParamIds.IgnitionFlameAdjust, ConstParamsId = IgnitionFlameAdjust_Const_Id, Value = 500 };
-            var GasType_Dyn = new DynParams { Id = GasType_Dyn_Id, ParamId = (int)ParamIds.GasType, ConstParamsId = GasType_Const_Id, Value = 0 };
-            var CuttingSpeed_Dyn = new DynParams { Id = CuttingSpeed_Dyn_Id, ParamId = (int)ParamIds.CuttingSpeed, ConstParamsId = CuttingSpeed_Const_Id, Value = 460 };
-            var PierceCuttingSpeedChange_Dyn = new DynParams { Id = PierceCuttingSpeedChange_Dyn_Id, ParamId = (int)ParamIds.PierceCuttingSpeedChange, ConstParamsId = PierceCuttingSpeedChange_Const_Id, Value = 100 };
-            var ControlBits_Dyn = new DynParams { Id = ControlBits_Dyn_Id, ParamId = (int)ParamIds.ControlBits, ConstParamsId = ControlBits_Const_Id, Value = 0 };
+            var PreHeatHeight_Dyn = new DynParams { Id = PreHeatHeight_Dyn_Id, ParamId = (int)ParamIds.PreHeatHeight, ConstParamsId = PreHeatHeight_Const_Id, ParameterDataInfoId = PreHeatHeight_Info.Id, Value = 80 };
+            var PierceHeight_Dyn = new DynParams { Id = PierceHeight_Dyn_Id, ParamId = (int)ParamIds.PierceHeight, ConstParamsId = PierceHeight_Const_Id, ParameterDataInfoId = PierceHeight_Info.Id, Value = 100 };
+            var CutHeight_Dyn = new DynParams { Id = CutHeight_Dyn_Id, ParamId = (int)ParamIds.CutHeight, ConstParamsId = CutHeight_Const_Id, ParameterDataInfoId = CutHeight_Info.Id, Value = 50 };
+            var HeatO2Ignition_Dyn = new DynParams { Id = HeatO2Ignition_Dyn_Id, ParamId = (int)ParamIds.HeatO2Ignition, ConstParamsId = HeatO2Ignition_Const_Id, ParameterDataInfoId = HeatO2Ignition_Info.Id, Value = 2000 };
+            var HeatO2PreHeat_Dyn = new DynParams { Id = HeatO2PreHeat_Dyn_Id, ParamId = (int)ParamIds.HeatO2PreHeat, ConstParamsId = HeatO2PreHeat_Const_Id, ParameterDataInfoId = HeatO2PreHeat_Info.Id, Value = 2000 };
+            var HeatO2Pierce_Dyn = new DynParams { Id = HeatO2Pierce_Dyn_Id, ParamId = (int)ParamIds.HeatO2Pierce, ConstParamsId = HeatO2Pierce_Const_Id, ParameterDataInfoId = HeatO2Pierce_Info.Id, Value = 4000 };
+            var HeatO2Cut_Dyn = new DynParams { Id = HeatO2Cut_Dyn_Id, ParamId = (int)ParamIds.HeatO2Cut, ConstParamsId = HeatO2Cut_Const_Id, ParameterDataInfoId = HeatO2Cut_Info.Id, Value = 2000 };
+            var CutO2Pierce_Dyn = new DynParams { Id = CutO2Pierce_Dyn_Id, ParamId = (int)ParamIds.CutO2Pierce, ConstParamsId = CutO2Pierce_Const_Id, ParameterDataInfoId = CutO2Pierce_Info.Id, Value = 1500 };
+            var CutO2Cut_Dyn = new DynParams { Id = CutO2Cut_Dyn_Id, ParamId = (int)ParamIds.CutO2Cut, ConstParamsId = CutO2Cut_Const_Id, ParameterDataInfoId = CutO2Cut_Info.Id, Value = 6000 };
+            var FuelGasIgnition_Dyn = new DynParams { Id = FuelGasIgnition_Dyn_Id, ParamId = (int)ParamIds.FuelGasIgnition, ConstParamsId = FuelGasIgnition_Const_Id, ParameterDataInfoId = FuelGasIgnition_Info.Id, Value = 200 };
+            var FuelGasPreHeat_Dyn = new DynParams { Id = FuelGasPreHeat_Dyn_Id, ParamId = (int)ParamIds.FuelGasPreHeat, ConstParamsId = FuelGasPreHeat_Const_Id, ParameterDataInfoId = FuelGasPreHeat_Info.Id, Value = 200 };
+            var FuelGasPierce_Dyn = new DynParams { Id = FuelGasPierce_Dyn_Id, ParamId = (int)ParamIds.FuelGasPierce, ConstParamsId = FuelGasPierce_Const_Id, ParameterDataInfoId = FuelGasPierce_Info.Id, Value = 200 };
+            var FuelGasCut_Dyn = new DynParams { Id = FuelGasCut_Dyn_Id, ParamId = (int)ParamIds.FuelGasCut, ConstParamsId = FuelGasCut_Const_Id, ParameterDataInfoId = FuelGasCut_Info.Id, Value = 200 };
+            var PreHeatTime_Dyn = new DynParams { Id = PreHeatTime_Dyn_Id, ParamId = (int)ParamIds.PreHeatTime, ConstParamsId = PreHeatTime_Const_Id, ParameterDataInfoId = PreHeatTime_Info.Id, Value = 150 };
+            var PiercePreTime_Dyn = new DynParams { Id = PiercePreTime_Dyn_Id, ParamId = (int)ParamIds.PiercePreTime, ConstParamsId = PiercePreTime_Const_Id, ParameterDataInfoId = PiercePreTime_Info.Id, Value = 0 };
+            var PierceTime_Dyn = new DynParams { Id = PierceTime_Dyn_Id, ParamId = (int)ParamIds.PierceTime, ConstParamsId = PierceTime_Const_Id, ParameterDataInfoId = PierceTime_Info.Id, Value = 10 };
+            var PiercePostTime_Dyn = new DynParams { Id = PiercePostTime_Dyn_Id, ParamId = (int)ParamIds.PiercePostTime, ConstParamsId = PiercePostTime_Const_Id, ParameterDataInfoId = PiercePostTime_Info.Id, Value = 0 };
+            var PierceHeightRampTime_Dyn = new DynParams { Id = PierceHeightRampTime_Dyn_Id, ParamId = (int)ParamIds.PierceHeightRampTime, ConstParamsId = PierceHeightRampTime_Const_Id, ParameterDataInfoId = PierceHeightRampTime_Info.Id, Value = 0 };
+            var CutHeightRampTime_Dyn = new DynParams { Id = CutHeightRampTime_Dyn_Id, ParamId = (int)ParamIds.CutHeightRampTime, ConstParamsId = CutHeightRampTime_Const_Id, ParameterDataInfoId = CutHeightRampTime_Info.Id, Value = 0 };
+            var PierceMode_Dyn = new DynParams { Id = PierceMode_Dyn_Id, ParamId = (int)ParamIds.PierceMode, ConstParamsId = PierceMode_Const_Id, ParameterDataInfoId = PierceMode_Info.Id, Value = 0 };
+            var IgnitionFlameAdjust_Dyn = new DynParams { Id = IgnitionFlameAdjust_Dyn_Id, ParamId = (int)ParamIds.IgnitionFlameAdjust, ConstParamsId = IgnitionFlameAdjust_Const_Id, ParameterDataInfoId = IgnitionFlameAdjust_Info.Id, Value = 500 };
+            var GasType_Dyn = new DynParams { Id = GasType_Dyn_Id, ParamId = (int)ParamIds.GasType, ConstParamsId = GasType_Const_Id, ParameterDataInfoId = GasType_Info.Id, Value = 0 };
+            var CuttingSpeed_Dyn = new DynParams { Id = CuttingSpeed_Dyn_Id, ParamId = (int)ParamIds.CuttingSpeed, ConstParamsId = CuttingSpeed_Const_Id, ParameterDataInfoId = CuttingSpeed_Info.Id, Value = 460 };
+            var PierceCuttingSpeedChange_Dyn = new DynParams { Id = PierceCuttingSpeedChange_Dyn_Id, ParamId = (int)ParamIds.PierceCuttingSpeedChange, ConstParamsId = PierceCuttingSpeedChange_Const_Id, ParameterDataInfoId = PierceCuttingSpeedChange_Info.Id, Value = 100 };
+            var ControlBits_Dyn = new DynParams { Id = ControlBits_Dyn_Id, ParamId = (int)ParamIds.ControlBits, ConstParamsId = ControlBits_Const_Id, ParameterDataInfoId = ControlBits_Info.Id, Value = 0 };
 
             modelBuilder.Entity<DynParams>().HasData(PreHeatHeight_Dyn);
             modelBuilder.Entity<DynParams>().HasData(PierceHeight_Dyn);
@@ -782,6 +376,41 @@ namespace BlazorServerHost.Data
             modelBuilder.Entity<ConstParams>().HasData(SlagInActiveGradient_Const);
             modelBuilder.Entity<ConstParams>().HasData(IgnitionDetectionEnable_Const);
             modelBuilder.Entity<ConstParams>().HasData(PiercingSensorMode_Const);
+
+            // Process Params Info
+            var RetractHeight_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.RetractHeight));
+            var SlagSensitivity_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.SlagSensitivity));
+            var HeatO2Temper_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.HeatO2Temper));
+            var FuelGasTemper_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.FuelGasTemper));
+            var HeightTemper_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.HeightTemper));
+            var LinearDriveManualPosSpeed_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.LinearDriveManualPosSpeed));
+            var FuelGasOffset_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.FuelGasOffset));
+            var FlashbackSensivitity_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.FlashbackSensivitity));
+            var SlagIntervalTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.SlagIntervalTime));
+            var SlagFirstSlagTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.SlagFirstSlagTime));
+            var SlagSecurityTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.SlagSecurityTime));
+            var SlagPostTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.SlagPostTime));
+            var SlagActiveGradient_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.SlagActiveGradient));
+            var SlagInActiveGradient_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.SlagInActiveGradient));
+            var IgnitionDetectionEnable_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.IgnitionDetectionEnable));
+            var PiercingSensorMode_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Process, (int)IhtModbusParamDyn.eIdxProcess.PiercingSensorMode));
+
+            modelBuilder.Entity<ParameterDataInfo>().HasData(RetractHeight_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(SlagSensitivity_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(HeatO2Temper_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(FuelGasTemper_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(HeightTemper_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(LinearDriveManualPosSpeed_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(FuelGasOffset_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(FlashbackSensivitity_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(SlagIntervalTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(SlagFirstSlagTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(SlagSecurityTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(SlagPostTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(SlagActiveGradient_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(SlagInActiveGradient_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(IgnitionDetectionEnable_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(PiercingSensorMode_Info);
 
             // Process Dyn
             var RetractHeight_Dyn_Id = Guid.NewGuid();
@@ -887,6 +516,41 @@ namespace BlazorServerHost.Data
             modelBuilder.Entity<ConstParams>().HasData(CapSetpointFlameOffs_Const);
             modelBuilder.Entity<ConstParams>().HasData(LoadDefaultParameter_Const);
 
+            // Config Params Info
+            var LinearDriveUpSpeedFast_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.LinearDriveUpSpeedFast));
+            var LinearDriveUpSpeedSlow_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.LinearDriveUpSpeedSlow));
+            var LinearDriveDnSpeedFast_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.LinearDriveDnSpeedFast));
+            var LinearDriveDnSpeedSlow_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.LinearDriveDnSpeedSlow));
+            var SensorCollisionDelay_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.SensorCollisionDelay));
+            var LinearDriveRefSpeed_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.LinearDriveRefSpeed));
+            var LinearDrivePosSpeed_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.LinearDrivePosSpeed));
+            var TactileInitialPosFinding_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding));
+            var DistanceCalibration_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.DistanceCalibration));
+            var Dynamic_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.Dynamic));
+            var HoseLength_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.HoseLength));
+            var CutO2BlowOutTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime));
+            var CutO2BlowOutPressure_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure));
+            var CutO2BlowOutTimeOut_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut));
+            var CapSetpointFlameOffs_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.CapSetpointFlameOffs));
+            var LoadDefaultParameter_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Config, (int)IhtModbusParamDyn.eIdxConfig.LoadDefaultParameter));
+
+            modelBuilder.Entity<ParameterDataInfo>().HasData(LinearDriveUpSpeedFast_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(LinearDriveUpSpeedSlow_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(LinearDriveDnSpeedFast_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(LinearDriveDnSpeedSlow_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(SensorCollisionDelay_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(LinearDriveRefSpeed_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(LinearDrivePosSpeed_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(TactileInitialPosFinding_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(DistanceCalibration_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(Dynamic_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(HoseLength_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(CutO2BlowOutTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(CutO2BlowOutPressure_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(CutO2BlowOutTimeOut_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(CapSetpointFlameOffs_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(LoadDefaultParameter_Info);
+
             // Config Params Dyn
             var LinearDriveUpSpeedFast_Dyn_Id = Guid.NewGuid();
             var LinearDriveUpSpeedSlow_Dyn_Id = Guid.NewGuid();
@@ -991,6 +655,37 @@ namespace BlazorServerHost.Data
             modelBuilder.Entity<ConstParams>().HasData(Fit3GlowPlugDuration_Const);
             modelBuilder.Entity<ConstParams>().HasData(Fit3GlowPlugSetpoint_Const);
             modelBuilder.Entity<ConstParams>().HasData(Fit3SaveIgnitionData_Const);
+
+            // Service Params Info
+            var IgnitionPreFlowMultiplier_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.IgnitionPreFlowMultiplier));
+            var IgnitionOnDurationTime_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.IgnitionOnDurationTime));
+            var HeatO2PostFlowMultiplier_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.HeatO2PostFlowMultiplier));
+            var HeatO2PostFlowPressure_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.HeatO2PostFlowPressure));
+            var SlagCuttingSpeedReduction_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction));
+            var SensorCollisionOutputDisable_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.SensorCollisionOutputDisable));
+            var PidErrorThresholdDelay_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.PidErrorThresholdDelay));
+            var ToleranceInPosition_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.ToleranceInPosition));
+            var Fit3ValveDelay_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.Fit3ValveDelay));
+            var Fit3ValveDuration_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.Fit3ValveDuration));
+            var Fit3GlowPlugDelay_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.Fit3GlowPlugDelay));
+            var Fit3GlowPlugDuration_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.Fit3GlowPlugDuration));
+            var Fit3GlowPlugSetpoint_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.Fit3GlowPlugSetpoint));
+            var Fit3SaveIgnitionData_Info = GetParameterDataInfo(new ParameterDataInfoModel(ParamGroup.Service, (int)IhtModbusParamDyn.eIdxService.Fit3SaveIgnitionData));
+
+            modelBuilder.Entity<ParameterDataInfo>().HasData(IgnitionPreFlowMultiplier_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(IgnitionOnDurationTime_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(HeatO2PostFlowMultiplier_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(HeatO2PostFlowPressure_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(SlagCuttingSpeedReduction_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(SensorCollisionOutputDisable_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(PidErrorThresholdDelay_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(ToleranceInPosition_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(Fit3ValveDelay_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(Fit3ValveDuration_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(Fit3GlowPlugDelay_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(Fit3GlowPlugDuration_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(Fit3GlowPlugSetpoint_Info);
+            modelBuilder.Entity<ParameterDataInfo>().HasData(Fit3SaveIgnitionData_Info);
 
             // Service Params Dyn
             var IgnitionPreFlowMultiplier_Dyn_Id = Guid.NewGuid();
@@ -1206,6 +901,23 @@ namespace BlazorServerHost.Data
             modelBuilder.Entity<ParameterData>().HasData(ParameterData_Fit3GlowPlugSetpoint);
             modelBuilder.Entity<ParameterData>().HasData(ParameterData_Fit3SaveIgnitionData);
         }
-		
-	}
+
+        public ParameterDataInfo GetParameterDataInfo(ParameterDataInfoModel parameterDataInfoModel)
+        {
+            var parameterDataInfo = new ParameterDataInfo();
+
+            parameterDataInfo.Id = parameterDataInfoModel.Id;
+            parameterDataInfo.Unit = parameterDataInfoModel.Unit;
+            parameterDataInfo.MinDescription = parameterDataInfoModel.MinDescription;
+            parameterDataInfo.MaxDescription = parameterDataInfoModel.MaxDescription;   
+            parameterDataInfo.StepDescription = parameterDataInfoModel.StepDescription;
+            parameterDataInfo.ValueDescription = parameterDataInfoModel.ValueDescription;
+            parameterDataInfo.Multiplier = parameterDataInfoModel.Multiplier;
+            parameterDataInfo.Format = parameterDataInfoModel.Format;
+
+            return parameterDataInfo;
+
+        }
+
+    }
 }

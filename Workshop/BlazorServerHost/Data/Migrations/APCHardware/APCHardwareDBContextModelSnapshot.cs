@@ -37,61 +37,61 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2f7f42b5-862b-4f3f-afb7-58c3542ef56a"),
+                            Id = new Guid("49b48143-e54e-446c-ab42-c93223128995"),
                             Name = "APCDevice_1",
                             Num = 1
                         },
                         new
                         {
-                            Id = new Guid("0c364bd4-12fb-4332-a7da-d16944b49506"),
+                            Id = new Guid("8a5f6bd9-411b-4ab3-a53b-b74e459c554d"),
                             Name = "APCDevice_2",
                             Num = 2
                         },
                         new
                         {
-                            Id = new Guid("0f1a31b8-c77d-4d76-bccc-f5769c9a87e6"),
+                            Id = new Guid("5899f7d8-7589-47ae-a283-439672ff6d1e"),
                             Name = "APCDevice_3",
                             Num = 3
                         },
                         new
                         {
-                            Id = new Guid("ebe4c304-de25-4c75-9590-efe3e8599e17"),
+                            Id = new Guid("ad782530-dc06-4db9-8211-180303d01f90"),
                             Name = "APCDevice_4",
                             Num = 4
                         },
                         new
                         {
-                            Id = new Guid("a055e2e7-e8a1-45e5-ad6b-606a8feb19c8"),
+                            Id = new Guid("a692c421-822f-40c3-b15d-e2b37ca0a0bb"),
                             Name = "APCDevice_5",
                             Num = 5
                         },
                         new
                         {
-                            Id = new Guid("b32feba9-eb73-43a0-a048-82afccef1c8a"),
+                            Id = new Guid("72d74b14-b355-459b-91a4-a08866084c7d"),
                             Name = "APCDevice_6",
                             Num = 6
                         },
                         new
                         {
-                            Id = new Guid("86bacfd9-7702-4cdc-9982-9981e12514dc"),
+                            Id = new Guid("f94a1e02-3ea2-4a69-b941-1817f29c19e3"),
                             Name = "APCDevice_7",
                             Num = 7
                         },
                         new
                         {
-                            Id = new Guid("db0fc6ba-2d1b-49a2-84d1-f2b0e0844df6"),
+                            Id = new Guid("0451dfff-80f6-488d-907f-ca7830831b82"),
                             Name = "APCDevice_8",
                             Num = 8
                         },
                         new
                         {
-                            Id = new Guid("8ca2bef1-83bc-411a-987b-eaf646146335"),
+                            Id = new Guid("d6db00df-acdf-418b-a56c-ff5cba7c46c2"),
                             Name = "APCDevice_9",
                             Num = 9
                         },
                         new
                         {
-                            Id = new Guid("5b2999a8-c84b-4435-8359-c90e06ceb6e4"),
+                            Id = new Guid("56d457a3-58ec-4f0e-85c4-fef3052754b0"),
                             Name = "APCDevice_10",
                             Num = 10
                         });

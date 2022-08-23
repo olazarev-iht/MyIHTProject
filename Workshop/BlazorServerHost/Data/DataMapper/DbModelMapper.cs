@@ -52,6 +52,7 @@ namespace BlazorServerHost.Data.DataMapper
                 cfg.CreateMap<ConstParamsModel, APCHardwareMoq.ConstParams>().ReverseMap();
                 cfg.CreateMap<LiveParamsModel, APCHardwareMoq.LiveParams>().ReverseMap();
                 cfg.CreateMap<APCSimulationDataModel, APCHardwareMoq.APCSimulationData>().ReverseMap();
+                cfg.CreateMap<ParameterDataInfoModel, APCHardwareMoq.ParameterDataInfo>().ReverseMap();
                 cfg.CreateMap<DynParamsModel, APCHardwareMoq.DynParams>()
                 .ForMember(
                     dest => dest.ConstParams,
