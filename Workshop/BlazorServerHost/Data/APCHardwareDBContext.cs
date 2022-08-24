@@ -20,6 +20,8 @@ namespace BlazorServerHost.Data
 
 		public DbSet<ParameterDataInfo> ParameterDataInfos { get; set; } = null!;
 
+		public DbSet<APCDefaultData> APCDefaultDatas { get; set; } = null!;
+
 		public APCHardwareDBContext(DbContextOptions<APCHardwareDBContext> options)
 			: base(options)
 		{
@@ -91,6 +93,11 @@ namespace BlazorServerHost.Data
 			// var APCDeviceList1 = APCDeviceList.ToArray();
 
 			modelBuilder.Entity<APCDevice>().HasData(APCDeviceList);
+
+			for (var apcDeviceNum = 1; apcDeviceNum <= 10; apcDeviceNum++)
+			{
+				APCHardwareDBHelper.CreateAPCDefaultDataForDevice(modelBuilder, apcDeviceNum);
+			}
 		}
 	}
 }
