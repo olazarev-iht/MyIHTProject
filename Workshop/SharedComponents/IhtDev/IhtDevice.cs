@@ -197,6 +197,52 @@ namespace SharedComponents.IhtDev
         #endregion // INotifyPropertyChanged
 
 
+        public void IsEnabledChangedHandler(object? sender, PropertyChangedEventArgs eventArgs)
+        {
+            if(eventArgs.PropertyName == "IsVisible")
+            {
+                var ihtDevice = sender as IhtDevice;
+
+
+                if (ihtDevice != null)
+                {
+                    var deviceNum = ihtDevice.DeviceNumber;
+
+                    if (deviceNum > 0)
+                    {
+                        // IsVisible switched to true
+                        if (ihtDevice.IsVisible)
+                        {
+                            IhtDevices.ihtDevices.ToList().ForEach(kvp =>
+                            {
+                                if (kvp.Value.DeviceNumber > deviceNum)
+                                {
+                                    kvp.Value.IsEnabled = false;
+                                }
+                                if (kvp.Value.DeviceNumber == deviceNum + 1)
+                                {
+                                    kvp.Value.IsEnabled = true;
+                                }
+                            });
+                        }
+                        else
+                        {
+                            IhtDevices.ihtDevices.ToList().ForEach(kvp =>
+                            {
+                                if (kvp.Value.DeviceNumber > deviceNum)
+                                {
+                                    kvp.Value.IsVisible = false;
+                                    kvp.Value.IsEnabled = false;
+                                }
+                            });
+                        }
+                    }
+                }
+                
+            }
+        }
+
+
         public DataProcessInfo dataProcessInfo { get; private set; } = new DataProcessInfo();
         public DataDeviceInfo dataDeviceInfo { get; private set; } //= new DataDeviceInfo();
         public DataParamConstTechnology dataParamConstTechnology { get; private set; }
@@ -217,6 +263,7 @@ namespace SharedComponents.IhtDev
         /// </summary>
         public IhtDevice()
         {
+            PropertyChanged += IsEnabledChangedHandler;
         }
 
         public void SetData(IhtModbusCommunic.SlaveId _slaveId,

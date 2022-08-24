@@ -50,7 +50,9 @@ namespace BlazorServerHost.Services.APCHardwareMockDBServices
 
 		public async Task<UInt16[]> ReadHoldingRegistersAsync(byte slaveAddress, ushort startAddress, ushort numRegisters, IhtModbusResult? ihtModbusResult = null)
 		{
-			var simulationData = await GetApcSimulationDataSetByAddressAndNumber(slaveAddress, startAddress, numRegisters, CancellationToken.None);
+			var deviceId = slaveAddress > 10 ? slaveAddress - 10 : slaveAddress;
+
+			var simulationData = await GetApcSimulationDataSetByAddressAndNumber(deviceId, startAddress, numRegisters, CancellationToken.None);
 
 			return simulationData.Select(x => (ushort)x.Value).ToArray();
 		}

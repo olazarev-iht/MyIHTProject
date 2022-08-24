@@ -5,12 +5,15 @@
 @using SharedComponents.IhtModbus
 @using SharedComponents.Models.APCHardware
 @using SharedComponents.Services.APCHardwareManagers
+@using SharedComponents.Services.APCHardwareMockDBServices
 @using MudBlazor.Examples.Data.Models
+
 @inject HttpClient httpClient
 @inject IhtDevices ihtDevices
 
 @inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
 @inject IParameterDataInfoManager parameterDataInfoManager
+@inject IAPCSimulationDataMockDBService apcSimulationDataMockDBService
 @inherits ComponentBase
 @implements IDisposable
 
@@ -392,7 +395,7 @@ input#password-input:focus {
         {
             <MudItem xs="6">
                     @*<input type="checkbox" @bind="@device.IsVisible" /> @:@device.DeviceNumber.ToString();*@
-                    <MudCheckBox @bind-Checked="@ihtDevice.IsVisible" Dense="false" Color="Color.Primary">
+                    <MudCheckBox @bind-Checked="@ihtDevice.IsVisible" Dense="false" Color="Color.Primary" Disabled="@IsDeviceDisabled(ihtDevice.IsEnabled)">
                         <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Torch @ihtDevice.DeviceNumber</MudText>
                     </MudCheckBox>
             </MudItem>
@@ -408,7 +411,7 @@ input#password-input:focus {
 
                         <br/>
                         <MudTh>Device Connection</MudTh>
-                        <MudButton Variant="Variant.Filled" Style="align-content">Connection</MudButton>
+                        <MudButton Variant="Variant.Filled" Style="align-content" OnClick="Connection">Connection</MudButton>
                         <MudCheckBox @bind-Checked="@_performResetDevices" Dense="false" Color="Color.Primary">
                             <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Perform a reset for all devices</MudText>
                         </MudCheckBox>
@@ -684,6 +687,19 @@ input#password-input:focus {
             Elements = Elements.Where(p => p.PasswordLevel <= _userPasswordLevel);
         }
     }
+
+    private async Task Connection()
+    {
+        var ihtModbusCommunicInfo = new IhtModbusCommunicInfo(ihtDevices, apcSimulationDataMockDBService);
+
+        await ihtModbusCommunicInfo.ConnectAsync();
+    }
+
+    private bool IsDeviceDisabled(bool IsEnableds)
+    {
+        return !IsEnableds;
+    }
+
 
     private void OpenSetupParamsDialog()
     {

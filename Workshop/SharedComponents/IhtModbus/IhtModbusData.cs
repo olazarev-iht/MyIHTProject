@@ -398,6 +398,8 @@ namespace SharedComponents.IhtModbus
 
         public IhtModbusData(int _slaveId, ushort[] data, bool _IsSimulation)
         {
+            if (!data.Any()) return;
+
             this.Connected = false;
             this.SlaveId = _slaveId;
             UInt16 idx = (UInt16)eIdxAddr.AreasNumber;

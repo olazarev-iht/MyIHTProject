@@ -263,7 +263,7 @@ namespace SharedComponents.IhtDev
         {
             if (_ihtDevices_ == null)
             {
-                _ihtDevices_ = GetIhtDevicesDataModel(); //Application.Current.MainWindow.FindResource("ihtDevices") as IhtDevices;
+                _ihtDevices_ = new IhtDevices(); //Application.Current.MainWindow.FindResource("ihtDevices") as IhtDevices;
             }
             return _ihtDevices_;
         }
@@ -330,6 +330,7 @@ namespace SharedComponents.IhtDev
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_1")
                               );
             _ihtDevice.IsVisible = true;
+            _ihtDevice.IsEnabled = false;
             _ihtDevicesDictionary_.Add(1 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 2
             _ihtDevice = new();
@@ -350,6 +351,7 @@ namespace SharedComponents.IhtDev
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_2")
                               );
             _ihtDevicesDictionary_.Add(2 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
+            _ihtDevice.IsEnabled = true;
             // Device 3
             _ihtDevice = new();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_03;
