@@ -19,6 +19,7 @@ namespace SharedComponents.APCHardwareManagers
         protected readonly IDynParamsDBService _dynParamsDBService;
         protected readonly IParameterDataDBService _parameterDataDBService;
         protected readonly IParameterDataInfoDBService _parameterDataInfoDBService;
+        protected readonly IAPCDefaultDataDBService _apcDefaultDataDBService;
 
         protected readonly IAPCDeviceMockDBService _apcDeviceMockDBService;
         protected readonly IConstParamsMockDBService _constParamsMockDBService;
@@ -32,6 +33,7 @@ namespace SharedComponents.APCHardwareManagers
             IDynParamsDBService dynParamsDBService,
             IParameterDataDBService parameterDataDBService,
             IParameterDataInfoDBService parameterDataInfoDBService,
+            IAPCDefaultDataDBService apcDefaultDataDBService,
             IAPCDeviceMockDBService apcDeviceMockDBService,
             IConstParamsMockDBService constParamsMockDBService,
             IDynParamsMockDBService dynParamsMockDBService,
@@ -52,6 +54,9 @@ namespace SharedComponents.APCHardwareManagers
 
             _parameterDataInfoDBService = parameterDataInfoDBService ??
                throw new ArgumentNullException($"{nameof(parameterDataInfoDBService)}");
+
+            _apcDefaultDataDBService = apcDefaultDataDBService ??
+               throw new ArgumentNullException($"{nameof(apcDefaultDataDBService)}");
 
             _apcDeviceMockDBService = apcDeviceMockDBService ??
                throw new ArgumentNullException($"{nameof(apcDeviceMockDBService)}");
@@ -123,10 +128,27 @@ namespace SharedComponents.APCHardwareManagers
 
         public async Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken)
         {
-            await DeleteAllAPCHardwareDataAsync(CancellationToken.None);
+            await UpdateSimulationDataMockWithDefaultData(CancellationToken.None);
 
-            await FillParameterDataAsync(CancellationToken.None);
+            var isParameterDataEmpty = !(await _parameterDataDBService.GetEntriesAsync(CancellationToken.None)).Any();
 
+            if (isParameterDataEmpty)
+            {
+                await DeleteAllAPCHardwareDataAsync(CancellationToken.None);
+                await FillParameterDataAsync(CancellationToken.None);
+            }
+        }
+
+        public async Task UpdateSimulationDataMockWithDefaultData(CancellationToken cancellationToken)
+        {
+            // Delete the old data
+            await _apcSimulationDataMockDBService.DeleteAllEntriesAsync(cancellationToken);
+
+            // Get the new data
+            var defaultData = await _apcDefaultDataDBService.GetEntriesAsync(cancellationToken);
+
+            // Save the new data
+            await _apcSimulationDataMockDBService.AddRangeAsync(defaultData, cancellationToken);
         }
 
         private async Task DeleteAllAPCHardwareDataAsync(CancellationToken cancellationToken)

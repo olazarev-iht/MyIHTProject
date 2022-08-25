@@ -85,6 +85,24 @@ namespace BlazorServerHost.Services.APCHardwareMockDBServices
 			return entity.Id;
 		}
 
+		public async Task<IEnumerable<APCSimulationDataModel>> AddRangeAsync(IEnumerable<APCDefaultDataModel> entities, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var entries = _mapper.Map<IEnumerable<APCDefaultDataModel>, IEnumerable<APCSimulationData>>(entities);
+
+            //foreach (var entry in entries)
+            //    dbContext.Entry<APCSimulationData>(entry).State = EntityState.Detached;
+
+            //dbContext.Configuration.AutoDetectChangesEnabled = false;
+
+            await dbContext.Set<APCSimulationData>().AddRangeAsync(entries);
+			await dbContext.SaveChangesAsync();
+
+			return _mapper.Map<IEnumerable<APCSimulationData>, IEnumerable<APCSimulationDataModel>>(entries);
+
+		}
+
 		public async Task UpdateEntryAsync(Guid id, APCSimulationDataModel newData, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
@@ -109,6 +127,15 @@ namespace BlazorServerHost.Services.APCHardwareMockDBServices
 			dbContext.APCSimulationDatas.Remove(stub);
 
 			await dbContext.SaveChangesAsync(cancellationToken);
+		}
+
+		public async Task DeleteAllEntriesAsync(CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			string cmd = $"DELETE FROM APCSimulationDatas";
+
+			await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
 		}
 
 	}

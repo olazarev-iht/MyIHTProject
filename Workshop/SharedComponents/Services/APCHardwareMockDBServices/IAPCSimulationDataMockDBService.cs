@@ -13,6 +13,7 @@ namespace SharedComponents.Services.APCHardwareMockDBServices
         public Task UpdateEntryAsync(Guid id, APCSimulationDataModel newData, CancellationToken cancellationToken);
         public Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken);
         public Task<UInt16[]> ReadHoldingRegistersAsync(byte slaveAddress, ushort startAddress, ushort numRegisters, IhtModbusResult? ihtModbusResult = null);
-
+        public Task DeleteAllEntriesAsync(CancellationToken cancellationToken);
+        public Task<IEnumerable<APCSimulationDataModel>> AddRangeAsync(IEnumerable<APCDefaultDataModel> entities, CancellationToken cancellationToken);
     }
 }

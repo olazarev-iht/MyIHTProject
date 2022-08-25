@@ -28,7 +28,7 @@ namespace SharedComponents.IhtModbus
         public readonly IAPCSimulationDataMockDBService _apcSimulationDataMockDBService;
 
         // TODO: remove when we will read from command line 
-        bool IsSimulation = true;
+        static bool IsSimulation = true;
 
         private IModbusMaster modbusMaster = null;
 
