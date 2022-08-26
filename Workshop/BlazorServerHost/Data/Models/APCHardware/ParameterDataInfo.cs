@@ -10,5 +10,7 @@
         public string? StepDescription { get; set; }
         public string? ValueDescription { get; set; }
         public double Multiplier { get; set; }
+
+        public ICollection<DynParams> DynParams { get; set; } = new List<DynParams>();
     }
 }

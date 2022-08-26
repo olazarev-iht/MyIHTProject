@@ -91,7 +91,7 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}
 
-		public async Task DeleteAllEntriesAsync(CancellationToken cancellationToken)
+		public async Task DeleteAllEntriesAsync(CancellationToken cancellationToken, int? devicesAmount = null)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
@@ -100,6 +100,12 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			//await dbContext.SaveChangesAsync(cancellationToken);
 
 			string cmd = $"DELETE FROM ParameterDataInfos";
+
+			if (devicesAmount != null)
+			{
+				cmd += $" Select pdi.Id From ParameterDataInfos pdi left join DynParams dyn on pdi.Id = dyn.ParameterDataInfoId" +
+                    $" Where dyn.ParameterDataInfoId is null";
+			}
 
 			await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
 		}

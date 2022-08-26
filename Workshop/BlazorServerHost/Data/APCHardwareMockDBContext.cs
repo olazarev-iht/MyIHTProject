@@ -93,6 +93,7 @@ namespace BlazorServerHost.Data
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
+            // TODO: remove
             foreach (var device in APCDeviceList)
             {
 				if (device.Num > 0)

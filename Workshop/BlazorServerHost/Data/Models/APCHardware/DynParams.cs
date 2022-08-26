@@ -11,5 +11,7 @@ namespace BlazorServerHost.Data.Models.APCHardware
         public Guid? ParameterDataInfoId { get; set; }
         public ParameterDataInfo? ParameterDataInfo { get; set; }
         public int Value { get; set; }
+
+        public ICollection<ParameterData> ParameterDatas { get; set; } = new List<ParameterData>();
     }
 }

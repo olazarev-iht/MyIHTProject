@@ -44,17 +44,23 @@ namespace BlazorServerHost.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			//base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<DynParams>()
+            .HasOne(s => s.ConstParams)
+            .WithMany(p => p.DynParams)
+            .HasForeignKey(t => t.ConstParamsId)
+            .OnDelete(DeleteBehavior.ClientCascade);
 
-			//Seed Departments Table
+            //base.OnModelCreating(modelBuilder);
 
-			//modelBuilder.Entity<ParameterData>()
-			//	.HasOne(pd => pd.APCDevice)
-			//	.WithMany(d => d.parameterDatas)
-			//	.HasForeignKey(t => t.APCDeviceId);
+            //Seed Departments Table
 
-			//Seed Departments Table
-			var APCDeviceId1 = Guid.NewGuid();
+            //modelBuilder.Entity<ParameterData>()
+            //.HasOne(pd => pd.APCDevice)
+            //.WithMany(d => d.parameterDatas)
+            //.HasForeignKey(t => t.APCDeviceId);
+
+            //Seed Departments Table
+            var APCDeviceId1 = Guid.NewGuid();
 			var APCDeviceId2 = Guid.NewGuid();
 			var APCDeviceId3 = Guid.NewGuid();
 			var APCDeviceId4 = Guid.NewGuid();

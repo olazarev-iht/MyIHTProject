@@ -6,6 +6,6 @@
         public int Num { get; set; }
         public string Name { get; set; }
 
-        public ICollection<ParameterData> parameterDatas { get; set; } = new List<ParameterData>();
+        public ICollection<ParameterData> ParameterDatas { get; set; } = new List<ParameterData>();
     }
 }

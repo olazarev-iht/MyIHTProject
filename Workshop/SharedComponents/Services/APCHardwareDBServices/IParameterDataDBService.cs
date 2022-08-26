@@ -13,6 +13,6 @@ namespace SharedComponents.Services.APCHardwareDBServices
 		public Task<IEnumerable<ParameterDataModel>> AddRangeAsync(IEnumerable<ParameterDataModel> entities, CancellationToken cancellationToken);
 		public Task UpdateEntryAsync(Guid id, ParameterDataModel newData, CancellationToken cancellationToken);
 		public Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken);
-		public Task DeleteAllEntriesAsync(CancellationToken cancellationToken);
+		public Task DeleteAllEntriesAsync(CancellationToken cancellationToken, int? devicesAmount = null);
 	}
 }

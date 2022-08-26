@@ -133,7 +133,7 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}
 
-		public async Task DeleteAllEntriesAsync(CancellationToken cancellationToken)
+		public async Task DeleteAllEntriesAsync(CancellationToken cancellationToken, int? devicesAmount = null)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
@@ -142,6 +142,12 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			//await dbContext.SaveChangesAsync(cancellationToken);
 
 			string cmd = $"DELETE FROM DynParams";
+
+			if (devicesAmount != null)
+			{
+				cmd += $" Where Id in (Select pd.DynParamId From ParameterDatas pd join APCDEvices apc " +
+                    $" on pd.APCDEviceId = apc.Id  Where apc.Num <= {devicesAmount} )";
+			}
 
 			await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
 		}

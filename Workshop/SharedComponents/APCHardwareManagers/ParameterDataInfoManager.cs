@@ -128,6 +128,10 @@ namespace SharedComponents.APCHardwareManagers
 
         public async Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken)
         {
+            // Example for deleting data for devices
+            // await DeleteAllAPCHardwareDataAsync(CancellationToken.None, 10);
+
+            // We Update SimulationData mock table every time we turn the device on
             await UpdateSimulationDataMockWithDefaultData(CancellationToken.None);
 
             var isParameterDataEmpty = !(await _parameterDataDBService.GetEntriesAsync(CancellationToken.None)).Any();
@@ -151,14 +155,16 @@ namespace SharedComponents.APCHardwareManagers
             await _apcSimulationDataMockDBService.AddRangeAsync(defaultData, cancellationToken);
         }
 
-        private async Task DeleteAllAPCHardwareDataAsync(CancellationToken cancellationToken)
+        private async Task DeleteAllAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null)
         {
             try
             {
-                await _parameterDataDBService.DeleteAllEntriesAsync(cancellationToken);
-                await _dynParamsDBService.DeleteAllEntriesAsync(cancellationToken);
-                await _constParamsDBService.DeleteAllEntriesAsync(cancellationToken);
-                await _parameterDataInfoDBService.DeleteAllEntriesAsync(cancellationToken);
+                await _constParamsDBService.DeleteAllEntriesAsync(cancellationToken, devicesAmount);
+                await _parameterDataInfoDBService.DeleteAllEntriesAsync(cancellationToken, devicesAmount);
+
+                // Since we use cascade delete (onDelete: ReferentialAction.Cascade) we do not need the following commands
+                // await _dynParamsDBService.DeleteAllEntriesAsync(cancellationToken, devicesAmount);
+                // await _parameterDataDBService.DeleteAllEntriesAsync(cancellationToken, devicesAmount);
 
                 // since we don't copy this table every time any more we don't delete it
                 // await _apcDeviceDBService.DeleteAllEntriesAsync(cancellationToken);
