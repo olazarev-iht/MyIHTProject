@@ -690,7 +690,8 @@ input#password-input:focus {
 
     private async Task Connection()
     {
-        var ihtModbusCommunicInfo = new IhtModbusCommunicInfo(ihtDevices, apcSimulationDataMockDBService);
+        //TODO: Change: use dependency injection instead of the "new IhtModbusCommunicInfo(...)"
+        var ihtModbusCommunicInfo = new IhtModbusCommunicInfo(ihtDevices, apcSimulationDataMockDBService, parameterDataInfoManager);
 
         await ihtModbusCommunicInfo.ConnectAsync();
     }
@@ -981,7 +982,8 @@ input#password-input:focus {
         if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber){
             cssClass = "SelectedDeviceNum device_tabcell";
         }
-        else if(selectedNum <= dynDataModificationCNCDataProvider.APCDevicesCount){
+        else if(selectedNum <= ihtDevices.GetDevices().Where(d => d.IsVisible).Count())   //dynDataModificationCNCDataProvider.APCDevicesCount)
+        {
             cssClass = "UnselectedDeviceNum device_tabcell";
         }
 

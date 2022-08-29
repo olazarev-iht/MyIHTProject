@@ -10,6 +10,8 @@ namespace BlazorServerHost.Data
 
         public static void CreateAPCDefaultDataForDevice(ModelBuilder modelBuilder, int apcDevice)
         {
+            // TODO: Remove
+            /*
             var APCDefaultDataList = new List<APCDefaultData>();
 
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4000, Value = 264 });
@@ -466,6 +468,7 @@ namespace BlazorServerHost.Data
             // 
 
             modelBuilder.Entity<APCDefaultData>().HasData(APCDefaultDataList);
+            */
         }
     }
 }

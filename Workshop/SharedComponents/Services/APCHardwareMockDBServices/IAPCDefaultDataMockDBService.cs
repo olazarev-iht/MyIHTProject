@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using SharedComponents.Models.APCHardware;
 
-namespace SharedComponents.Services.APCHardwareDBServices
+namespace SharedComponents.Services.APCHardwareMockDBServices
 {
-    public interface IAPCDefaultDataDBService
+    public interface IAPCDefaultDataMockDBService
     {
 		public Task<IEnumerable<APCDefaultDataModel>> GetEntriesAsync(CancellationToken cancellationToken);
 		public Task<APCDefaultDataModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken);

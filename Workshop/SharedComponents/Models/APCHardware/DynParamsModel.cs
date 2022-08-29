@@ -11,6 +11,7 @@ namespace SharedComponents.Models.APCHardware
         // may be delete the Id
         public Guid Id { get; set; }
         public int ParamId { get; set; }
+        public int Address { get; set; }
         public Guid? ConstParamsId { get; set; }
         public ConstParamsModel? ConstParams { get; set; } = new();
         public Guid? ParameterDataInfoId { get; set; }

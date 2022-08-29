@@ -18,5 +18,6 @@ namespace SharedComponents.Services.APCHardwareManagers
         public Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId, int paramValue, CancellationToken cancellationToken);
         public Task<int> GetAPCDevicesNumber(CancellationToken cancellationToken);
         public Task<int> GetValueFromSimulationDataByAddress(int address, CancellationToken cancellationToken);
+        public Task UpdateAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null);
     }
 }

@@ -57,6 +57,15 @@ namespace BlazorServerHost.Services.APCHardwareMockDBServices
 			return simulationData.Select(x => (ushort)x.Value).ToArray();
 		}
 
+		public async Task<(ushort Address, ushort Value)[]> GetHoldingRegistersWithAddressAsync(byte slaveAddress, ushort startAddress, ushort numRegisters, IhtModbusResult? ihtModbusResult = null)
+		{
+			var deviceId = slaveAddress > 10 ? slaveAddress - 10 : slaveAddress;
+
+			var simulationData = await GetApcSimulationDataSetByAddressAndNumber(deviceId, startAddress, numRegisters, CancellationToken.None);
+
+			return simulationData.Select(x => ((ushort)x.Address, (ushort)x.Value)).ToArray();
+		}
+
 		public async Task<APCSimulationDataModel?> GetEntryByAddressAsync(int address, CancellationToken cancellationToken)
         {
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
@@ -115,6 +124,15 @@ namespace BlazorServerHost.Services.APCHardwareMockDBServices
 				entry = _mapper.Map<APCSimulationDataModel, APCSimulationData>(newData);
 				await dbContext.SaveChangesAsync(cancellationToken);
 			}
+		}
+
+		public async Task UpdateFromDefaultDataAsync(CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			string cmd = $"DELETE FROM APCSimulationDatas; INSERT INTO APCSimulationDatas SELECT * FROM APCDefaultDatas";
+
+			await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
 		}
 
 		public async Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken)

@@ -24,8 +24,10 @@ namespace BlazorServerHost.Data
 
         public DbSet<APCSimulationData> APCSimulationDatas { get; set; } = null!;
 
+        public DbSet<APCDefaultData> APCDefaultDatas { get; set; } = null!;
 
-		public APCHardwareMockDBContext(DbContextOptions<APCHardwareMockDBContext> options)
+
+        public APCHardwareMockDBContext(DbContextOptions<APCHardwareMockDBContext> options)
 			: base(options)
 		{
 		}
@@ -94,19 +96,19 @@ namespace BlazorServerHost.Data
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
             // TODO: remove
-            foreach (var device in APCDeviceList)
-            {
-				if (device.Num > 0)
-				{
-					CreateParameterDataForDevice(modelBuilder, device);
-				}
-            }
+    //        foreach (var device in APCDeviceList)
+    //        {
+				//if (device.Num > 0)
+				//{
+				//	CreateParameterDataForDevice(modelBuilder, device);
+				//}
+    //        }
             
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             for (var apcDeviceNum = 1; apcDeviceNum <= 10; apcDeviceNum++)
             {
-                APCHardwareMockDBHelper.CreateAPCSimulationDataForDevice(modelBuilder, apcDeviceNum);
+                APCHardwareMockDBHelper.CreateAPCDefaultDataForDevice(modelBuilder, apcDeviceNum);
             }
 
         }

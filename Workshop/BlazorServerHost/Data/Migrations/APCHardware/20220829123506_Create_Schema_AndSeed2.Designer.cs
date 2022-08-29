@@ -11,33 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServerHost.Data.Migrations.APCHardware
 {
     [DbContext(typeof(APCHardwareDBContext))]
-    [Migration("20220826150953_Create_Schema_AndSeed")]
-    partial class Create_Schema_AndSeed
+    [Migration("20220829123506_Create_Schema_AndSeed2")]
+    partial class Create_Schema_AndSeed2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
-
-            modelBuilder.Entity("BlazorServerHost.Data.Models.APCHardware.APCDefaultData", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Address")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Device")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("APCDefaultDatas");
-                });
 
             modelBuilder.Entity("BlazorServerHost.Data.Models.APCHardware.APCDevice", b =>
                 {
@@ -59,61 +39,61 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9514f1e3-65b4-4e10-9aaf-4e75f4086074"),
+                            Id = new Guid("ebaba5d0-6dd5-47ae-b449-6aa288d1ff2a"),
                             Name = "APCDevice_1",
                             Num = 1
                         },
                         new
                         {
-                            Id = new Guid("e5546c19-f8aa-448d-ae8f-24912d9268c8"),
+                            Id = new Guid("89044ff4-8dec-4684-be7f-79091200be89"),
                             Name = "APCDevice_2",
                             Num = 2
                         },
                         new
                         {
-                            Id = new Guid("065cbd72-41cb-48c6-9cf0-085f93529ccf"),
+                            Id = new Guid("b538dd00-79d5-4372-869b-f07fa4a9c307"),
                             Name = "APCDevice_3",
                             Num = 3
                         },
                         new
                         {
-                            Id = new Guid("6ef6ede2-4372-4fff-9326-4b94af83b436"),
+                            Id = new Guid("de554c33-f016-46b0-8f61-7823668d63b7"),
                             Name = "APCDevice_4",
                             Num = 4
                         },
                         new
                         {
-                            Id = new Guid("827801d3-27e1-4361-8463-2f1c93c7ed4b"),
+                            Id = new Guid("01406338-2398-4548-9101-c3c2cd3f2540"),
                             Name = "APCDevice_5",
                             Num = 5
                         },
                         new
                         {
-                            Id = new Guid("10475279-6c70-49ca-8f20-8651530a64be"),
+                            Id = new Guid("0725e0fe-72d3-4663-bcbe-9e3924ed2290"),
                             Name = "APCDevice_6",
                             Num = 6
                         },
                         new
                         {
-                            Id = new Guid("b9975371-5d2a-414f-bce8-f521b11bb173"),
+                            Id = new Guid("4d3390ff-a8c5-43df-ae69-12455bf7ef2f"),
                             Name = "APCDevice_7",
                             Num = 7
                         },
                         new
                         {
-                            Id = new Guid("1ef416ab-d390-45ab-8673-98bb7d07cbd9"),
+                            Id = new Guid("5f26916e-fd7a-4b67-9b3d-ee406d63b41e"),
                             Name = "APCDevice_8",
                             Num = 8
                         },
                         new
                         {
-                            Id = new Guid("7e6d91ff-3dcc-4c53-b77f-6513022cca94"),
+                            Id = new Guid("04e502b4-fa2f-40f3-aeca-f1070d98d35e"),
                             Name = "APCDevice_9",
                             Num = 9
                         },
                         new
                         {
-                            Id = new Guid("e0806ed0-cf44-42fb-bed7-da4861e3c1b8"),
+                            Id = new Guid("e61d8d0a-db1a-4d7d-b6c0-c329d6de4eda"),
                             Name = "APCDevice_10",
                             Num = 10
                         });
@@ -144,6 +124,9 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Address")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("ConstParamsId")
                         .HasColumnType("TEXT");
@@ -252,8 +235,7 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                 {
                     b.HasOne("BlazorServerHost.Data.Models.APCHardware.ConstParams", "ConstParams")
                         .WithMany("DynParams")
-                        .HasForeignKey("ConstParamsId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .HasForeignKey("ConstParamsId");
 
                     b.HasOne("BlazorServerHost.Data.Models.APCHardware.ParameterDataInfo", "ParameterDataInfo")
                         .WithMany("DynParams")

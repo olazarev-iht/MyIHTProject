@@ -1,4 +1,4 @@
-﻿namespace BlazorServerHost.Data.Models.APCHardware
+﻿namespace BlazorServerHost.Data.Models.APCHardwareMock
 {
     public class APCDefaultData
     {

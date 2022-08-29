@@ -1,19 +1,19 @@
 ﻿using BlazorServerHost.Data;
 using BlazorServerHost.Data.DataMapper;
-using BlazorServerHost.Data.Models.APCHardware;
+using BlazorServerHost.Data.Models.APCHardwareMock;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models.APCHardware;
-using SharedComponents.Services.APCHardwareDBServices;
+using SharedComponents.Services.APCHardwareMockDBServices;
 
 namespace BlazorServerHost.Services
 {
-    public class APCDefaultDataDBService : IAPCDefaultDataDBService
+    public class APCDefaultDataMockDBService : IAPCDefaultDataMockDBService
     {
-		private readonly IDbContextFactory<APCHardwareDBContext> _dbContextFactory;
+		private readonly IDbContextFactory<APCHardwareMockDBContext> _dbContextFactory;
 
 		private readonly DbModelMapper _mapper;
 
-		public APCDefaultDataDBService(IDbContextFactory<APCHardwareDBContext> dbContextFactory, DbModelMapper mapper)
+		public APCDefaultDataMockDBService(IDbContextFactory<APCHardwareMockDBContext> dbContextFactory, DbModelMapper mapper)
 		{
 			_dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
 

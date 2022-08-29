@@ -20,8 +20,6 @@ namespace BlazorServerHost.Data
 
 		public DbSet<ParameterDataInfo> ParameterDataInfos { get; set; } = null!;
 
-		public DbSet<APCDefaultData> APCDefaultDatas { get; set; } = null!;
-
 		public APCHardwareDBContext(DbContextOptions<APCHardwareDBContext> options)
 			: base(options)
 		{
@@ -44,11 +42,11 @@ namespace BlazorServerHost.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-            modelBuilder.Entity<DynParams>()
-            .HasOne(s => s.ConstParams)
-            .WithMany(p => p.DynParams)
-            .HasForeignKey(t => t.ConstParamsId)
-            .OnDelete(DeleteBehavior.ClientCascade);
+            //modelBuilder.Entity<DynParams>()
+            //.HasOne(s => s.ConstParams)
+            //.WithMany(p => p.DynParams)
+            //.HasForeignKey(t => t.ConstParamsId)
+            //.OnDelete(DeleteBehavior.ClientCascade);
 
             //base.OnModelCreating(modelBuilder);
 
@@ -58,6 +56,7 @@ namespace BlazorServerHost.Data
             //.HasOne(pd => pd.APCDevice)
             //.WithMany(d => d.parameterDatas)
             //.HasForeignKey(t => t.APCDeviceId);
+
 
             //Seed Departments Table
             var APCDeviceId1 = Guid.NewGuid();
@@ -100,10 +99,13 @@ namespace BlazorServerHost.Data
 
 			modelBuilder.Entity<APCDevice>().HasData(APCDeviceList);
 
+			// TODO: remove
+			/*
 			for (var apcDeviceNum = 1; apcDeviceNum <= 10; apcDeviceNum++)
 			{
 				APCHardwareDBHelper.CreateAPCDefaultDataForDevice(modelBuilder, apcDeviceNum);
 			}
+			*/
 		}
 	}
 }

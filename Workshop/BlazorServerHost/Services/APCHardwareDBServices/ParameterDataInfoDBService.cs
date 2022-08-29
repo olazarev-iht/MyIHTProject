@@ -103,8 +103,8 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 
 			if (devicesAmount != null)
 			{
-				cmd += $" Select pdi.Id From ParameterDataInfos pdi left join DynParams dyn on pdi.Id = dyn.ParameterDataInfoId" +
-                    $" Where dyn.ParameterDataInfoId is null";
+				cmd += $" Where Id in (Select pdi.Id From ParameterDataInfos pdi left join DynParams dyn on pdi.Id = dyn.ParameterDataInfoId" +
+                    $" Where dyn.ParameterDataInfoId is null)";
 			}
 
 			await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);

@@ -19,13 +19,13 @@ namespace SharedComponents.APCHardwareManagers
         protected readonly IDynParamsDBService _dynParamsDBService;
         protected readonly IParameterDataDBService _parameterDataDBService;
         protected readonly IParameterDataInfoDBService _parameterDataInfoDBService;
-        protected readonly IAPCDefaultDataDBService _apcDefaultDataDBService;
 
         protected readonly IAPCDeviceMockDBService _apcDeviceMockDBService;
         protected readonly IConstParamsMockDBService _constParamsMockDBService;
         protected readonly IDynParamsMockDBService _dynParamsMockDBService;
         protected readonly IParameterDataMockDBService _parameterDataMockDBService;
         protected readonly IAPCSimulationDataMockDBService _apcSimulationDataMockDBService;
+        protected readonly IAPCDefaultDataMockDBService _apcDefaultDataMockDBService;
 
         public ParameterDataInfoManager(
             IAPCDeviceDBService apcDeviceDBService,
@@ -33,12 +33,12 @@ namespace SharedComponents.APCHardwareManagers
             IDynParamsDBService dynParamsDBService,
             IParameterDataDBService parameterDataDBService,
             IParameterDataInfoDBService parameterDataInfoDBService,
-            IAPCDefaultDataDBService apcDefaultDataDBService,
             IAPCDeviceMockDBService apcDeviceMockDBService,
             IConstParamsMockDBService constParamsMockDBService,
             IDynParamsMockDBService dynParamsMockDBService,
             IParameterDataMockDBService parameterDataMockDBService,
-            IAPCSimulationDataMockDBService apcSimulationDataMockDBService)
+            IAPCSimulationDataMockDBService apcSimulationDataMockDBService,
+            IAPCDefaultDataMockDBService apcDefaultDataMockDBService)
         {
             _apcDeviceDBService = apcDeviceDBService ??
                throw new ArgumentNullException($"{nameof(apcDeviceDBService)}");
@@ -55,9 +55,6 @@ namespace SharedComponents.APCHardwareManagers
             _parameterDataInfoDBService = parameterDataInfoDBService ??
                throw new ArgumentNullException($"{nameof(parameterDataInfoDBService)}");
 
-            _apcDefaultDataDBService = apcDefaultDataDBService ??
-               throw new ArgumentNullException($"{nameof(apcDefaultDataDBService)}");
-
             _apcDeviceMockDBService = apcDeviceMockDBService ??
                throw new ArgumentNullException($"{nameof(apcDeviceMockDBService)}");
 
@@ -72,6 +69,22 @@ namespace SharedComponents.APCHardwareManagers
 
             _apcSimulationDataMockDBService = apcSimulationDataMockDBService ??
                throw new ArgumentNullException($"{nameof(apcSimulationDataMockDBService)}");
+
+            _apcDefaultDataMockDBService = apcDefaultDataMockDBService ??
+               throw new ArgumentNullException($"{nameof(apcDefaultDataMockDBService)}");
+        }
+
+        private List<ConstParamsModel> constParamsModels = new();
+        private List<ParameterDataInfoModel> parameterDataInfoModels = new();
+        private List<DynParamsModel> dynParamsModels = new();
+        private List<ParameterDataModel> parameterDataModels = new();
+
+        private void ResetParamsLists()
+        {
+            constParamsModels = new();
+            parameterDataInfoModels = new();
+            dynParamsModels = new();
+            parameterDataModels = new();
         }
 
         public async Task<int> GetValueFromSimulationDataByAddress(int address, CancellationToken cancellationToken)
@@ -138,24 +151,22 @@ namespace SharedComponents.APCHardwareManagers
 
             if (isParameterDataEmpty)
             {
-                await DeleteAllAPCHardwareDataAsync(CancellationToken.None);
-                await FillParameterDataAsync(CancellationToken.None);
+                await UpdateAPCHardwareDataAsync(cancellationToken);
             }
+        }
+
+        public async Task UpdateAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null)
+        {
+            await DeleteAPCHardwareDataAsync(cancellationToken, devicesAmount);
+            await FillAPCHardwareDataAsync(cancellationToken, devicesAmount);
         }
 
         public async Task UpdateSimulationDataMockWithDefaultData(CancellationToken cancellationToken)
         {
-            // Delete the old data
-            await _apcSimulationDataMockDBService.DeleteAllEntriesAsync(cancellationToken);
-
-            // Get the new data
-            var defaultData = await _apcDefaultDataDBService.GetEntriesAsync(cancellationToken);
-
-            // Save the new data
-            await _apcSimulationDataMockDBService.AddRangeAsync(defaultData, cancellationToken);
+            await _apcSimulationDataMockDBService.UpdateFromDefaultDataAsync(cancellationToken);
         }
 
-        private async Task DeleteAllAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null)
+        private async Task DeleteAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null)
         {
             try
             {
@@ -175,15 +186,17 @@ namespace SharedComponents.APCHardwareManagers
             }
         }
 
-        private async Task<bool> FillParameterDataAsync(CancellationToken cancellationToken)
+        private async Task<bool> FillAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null)
         {
             try
             {
-                // await FillAPCDevicesAsync(CancellationToken.None);
+                ResetParamsLists();
 
-                var apcDeviceList = await _apcDeviceDBService.GetEntriesAsync(cancellationToken);
+                var apcDeviceList = (await _apcDeviceDBService.GetEntriesAsync(cancellationToken))
+                    .Where(d => devicesAmount == null || d.Num <= devicesAmount);
 
-                var ihtDevices = IhtDevices.ihtDevices.Select(kpv => kpv.Value).OrderBy(kvp => kvp.DeviceNumber).ToList();
+                var ihtDevices = IhtDevices.ihtDevices.Select(kpv => kpv.Value)
+                    .Where(kvp => devicesAmount == null || kvp.DeviceNumber <= devicesAmount).OrderBy(kvp => kvp.DeviceNumber).ToList();
 
                 // Getting the initial set up array with simulation data with start address of prams group and number of parameters
                 //var areasAddrDataSimulation = IhtModbusData.GetAreasDataSimulationData();
@@ -229,25 +242,20 @@ namespace SharedComponents.APCHardwareManagers
             await SaveParameterDatasForArraysAsync(deviceDBModelId, deviceNumber, paramGroup, constParamsValuesArray, dynParamsValuesArray);
         }
 
-        private List<ConstParamsModel> constParamsModels = new();
-        private List<ParameterDataInfoModel> parameterDataInfoModels = new();
-        private List<DynParamsModel> dynParamsModels = new();
-        private List<ParameterDataModel> parameterDataModels = new();
-
-        private async Task SaveParameterDatasForArraysAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup, ushort[] constParamsValuesArray, 
-            ushort[] dynParamsValuesArray)
+        private async Task SaveParameterDatasForArraysAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup, 
+            (ushort Address, ushort Value)[] constParamsArray, (ushort Address, ushort Value)[] dynParamsArray)
         {
             Guid? parameterDataInfoId = null;
 
             // Array from the ParamGroup Enum
             var knownParamIdArray = ParamGroupHelper.ParamGroupToParamEnum[paramGroup];
             
-            for (var paramId = 0; paramId < dynParamsValuesArray.Length; paramId++)
+            for (var paramId = 0; paramId < dynParamsArray.Length; paramId++)
             {
                 // Parameter is known if it's Id less than the last enum Id in the ParanGroup (but not the "Length")
                 var isKnownParameter = paramId < knownParamIdArray.Length - 1;
 
-                var constParamsModel = new ConstParamsModel(paramId, constParamsValuesArray);
+                var constParamsModel = new ConstParamsModel(paramId, constParamsArray.Select(x => x.Value).ToArray());
                 // Save into Const Params List 
                 var constParamsId = constParamsModel.Id;
                 constParamsModels.Add(constParamsModel);
@@ -266,9 +274,10 @@ namespace SharedComponents.APCHardwareManagers
                     {
                         Id = Guid.NewGuid(),
                         ParamId = paramId,
+                        Address = dynParamsArray[paramId].Address,
                         ConstParamsId = constParamsId,
                         ParameterDataInfoId = parameterDataInfoId,
-                        Value = dynParamsValuesArray[paramId]
+                        Value = dynParamsArray[paramId].Value
                     };
 
                     // Save into Dyn Params List
@@ -296,13 +305,13 @@ namespace SharedComponents.APCHardwareManagers
             }
         }
 
-        private async Task<ushort[]> GetParamsSubGroupValuesFromMockDB(byte deviceNum, ushort startStoreValue, ushort numberStoreValue)
+        private async Task<(ushort Address, ushort Value)[]> GetParamsSubGroupValuesFromMockDB(byte deviceNum, ushort startStoreValue, ushort numberStoreValue)
         {
             var paramsStartAddr = (await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(deviceNum, startStoreValue, 1)).FirstOrDefault();
 
             var paramsNumber = (await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(deviceNum, numberStoreValue, 1)).FirstOrDefault();
 
-            var paramsValues = await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(deviceNum, paramsStartAddr, paramsNumber);
+            var paramsValues = await _apcSimulationDataMockDBService.GetHoldingRegistersWithAddressAsync(deviceNum, paramsStartAddr, paramsNumber);
 
             return paramsValues;
         }

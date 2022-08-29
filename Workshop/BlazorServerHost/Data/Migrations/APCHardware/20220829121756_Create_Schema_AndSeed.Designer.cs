@@ -3,6 +3,7 @@ using System;
 using BlazorServerHost.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServerHost.Data.Migrations.APCHardware
 {
     [DbContext(typeof(APCHardwareDBContext))]
-    partial class APCHardwareDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220829121756_Create_Schema_AndSeed")]
+    partial class Create_Schema_AndSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
@@ -33,68 +35,6 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                     b.HasKey("Id");
 
                     b.ToTable("APCDevices");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("ebaba5d0-6dd5-47ae-b449-6aa288d1ff2a"),
-                            Name = "APCDevice_1",
-                            Num = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("89044ff4-8dec-4684-be7f-79091200be89"),
-                            Name = "APCDevice_2",
-                            Num = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("b538dd00-79d5-4372-869b-f07fa4a9c307"),
-                            Name = "APCDevice_3",
-                            Num = 3
-                        },
-                        new
-                        {
-                            Id = new Guid("de554c33-f016-46b0-8f61-7823668d63b7"),
-                            Name = "APCDevice_4",
-                            Num = 4
-                        },
-                        new
-                        {
-                            Id = new Guid("01406338-2398-4548-9101-c3c2cd3f2540"),
-                            Name = "APCDevice_5",
-                            Num = 5
-                        },
-                        new
-                        {
-                            Id = new Guid("0725e0fe-72d3-4663-bcbe-9e3924ed2290"),
-                            Name = "APCDevice_6",
-                            Num = 6
-                        },
-                        new
-                        {
-                            Id = new Guid("4d3390ff-a8c5-43df-ae69-12455bf7ef2f"),
-                            Name = "APCDevice_7",
-                            Num = 7
-                        },
-                        new
-                        {
-                            Id = new Guid("5f26916e-fd7a-4b67-9b3d-ee406d63b41e"),
-                            Name = "APCDevice_8",
-                            Num = 8
-                        },
-                        new
-                        {
-                            Id = new Guid("04e502b4-fa2f-40f3-aeca-f1070d98d35e"),
-                            Name = "APCDevice_9",
-                            Num = 9
-                        },
-                        new
-                        {
-                            Id = new Guid("e61d8d0a-db1a-4d7d-b6c0-c329d6de4eda"),
-                            Name = "APCDevice_10",
-                            Num = 10
-                        });
                 });
 
             modelBuilder.Entity("BlazorServerHost.Data.Models.APCHardware.ConstParams", b =>

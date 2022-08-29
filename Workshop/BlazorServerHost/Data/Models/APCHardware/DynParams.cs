@@ -6,6 +6,7 @@ namespace BlazorServerHost.Data.Models.APCHardware
     {
         public Guid Id { get; set; }
         public int ParamId { get; set; }
+        public int Address { get; set; }
         public Guid? ConstParamsId { get; set; }
         public ConstParams? ConstParams { get; set; }
         public Guid? ParameterDataInfoId { get; set; }

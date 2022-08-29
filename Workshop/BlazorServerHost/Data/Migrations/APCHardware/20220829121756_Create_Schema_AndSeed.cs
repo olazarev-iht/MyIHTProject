@@ -10,20 +10,6 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "APCDefaultDatas",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Device = table.Column<int>(type: "INTEGER", nullable: false),
-                    Address = table.Column<int>(type: "INTEGER", nullable: false),
-                    Value = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_APCDefaultDatas", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "APCDevices",
                 columns: table => new
                 {
@@ -74,6 +60,7 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     ParamId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Address = table.Column<int>(type: "INTEGER", nullable: false),
                     ConstParamsId = table.Column<Guid>(type: "TEXT", nullable: true),
                     ParameterDataInfoId = table.Column<Guid>(type: "TEXT", nullable: true),
                     Value = table.Column<int>(type: "INTEGER", nullable: false)
@@ -141,56 +128,6 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "APCDevices",
-                columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("065cbd72-41cb-48c6-9cf0-085f93529ccf"), "APCDevice_3", 3 });
-
-            migrationBuilder.InsertData(
-                table: "APCDevices",
-                columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("10475279-6c70-49ca-8f20-8651530a64be"), "APCDevice_6", 6 });
-
-            migrationBuilder.InsertData(
-                table: "APCDevices",
-                columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("1ef416ab-d390-45ab-8673-98bb7d07cbd9"), "APCDevice_8", 8 });
-
-            migrationBuilder.InsertData(
-                table: "APCDevices",
-                columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("6ef6ede2-4372-4fff-9326-4b94af83b436"), "APCDevice_4", 4 });
-
-            migrationBuilder.InsertData(
-                table: "APCDevices",
-                columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("7e6d91ff-3dcc-4c53-b77f-6513022cca94"), "APCDevice_9", 9 });
-
-            migrationBuilder.InsertData(
-                table: "APCDevices",
-                columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("827801d3-27e1-4361-8463-2f1c93c7ed4b"), "APCDevice_5", 5 });
-
-            migrationBuilder.InsertData(
-                table: "APCDevices",
-                columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("9514f1e3-65b4-4e10-9aaf-4e75f4086074"), "APCDevice_1", 1 });
-
-            migrationBuilder.InsertData(
-                table: "APCDevices",
-                columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("b9975371-5d2a-414f-bce8-f521b11bb173"), "APCDevice_7", 7 });
-
-            migrationBuilder.InsertData(
-                table: "APCDevices",
-                columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("e0806ed0-cf44-42fb-bed7-da4861e3c1b8"), "APCDevice_10", 10 });
-
-            migrationBuilder.InsertData(
-                table: "APCDevices",
-                columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("e5546c19-f8aa-448d-ae8f-24912d9268c8"), "APCDevice_2", 2 });
-
             migrationBuilder.CreateIndex(
                 name: "IX_DynParams_ConstParamsId",
                 table: "DynParams",
@@ -219,9 +156,6 @@ namespace BlazorServerHost.Data.Migrations.APCHardware
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "APCDefaultDatas");
-
             migrationBuilder.DropTable(
                 name: "LiveParams");
 

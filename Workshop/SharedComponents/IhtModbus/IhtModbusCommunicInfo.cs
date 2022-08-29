@@ -16,6 +16,7 @@ using SharedComponents.IhtDev;
 using SharedComponents.IhtModbusTable;
 using SharedComponents.Cultures;
 using System.Collections.Generic;
+using SharedComponents.Services.APCHardwareManagers;
 using SharedComponents.Services.APCHardwareMockDBServices;
 using SharedComponents.StatusInfo;
 
@@ -58,6 +59,7 @@ namespace SharedComponents.IhtModbus
 
         public IhtDevices _ihtDevices;
         public readonly IAPCSimulationDataMockDBService _apcSimulationDataMockDBService;
+        public readonly IParameterDataInfoManager _parameterDataInfoManager;
 
         // TODO: remove when we will read from command line ?
         static bool IsSimulation = true;
@@ -66,10 +68,18 @@ namespace SharedComponents.IhtModbus
 
         public IhtModbusCommunicInfo(
             IhtDevices ihtDevices, 
-            IAPCSimulationDataMockDBService apcSimulationDataMockDBService)
+            IAPCSimulationDataMockDBService apcSimulationDataMockDBService,
+            IParameterDataInfoManager parameterDataInfoManager
+            )
         {
-            _ihtDevices = ihtDevices;
-            _apcSimulationDataMockDBService = apcSimulationDataMockDBService;
+            _ihtDevices = ihtDevices ??
+               throw new ArgumentNullException($"{nameof(ihtDevices)}");
+
+            _apcSimulationDataMockDBService = apcSimulationDataMockDBService ??
+               throw new ArgumentNullException($"{nameof(apcSimulationDataMockDBService)}");
+
+            _parameterDataInfoManager = parameterDataInfoManager ??
+               throw new ArgumentNullException($"{nameof(parameterDataInfoManager)}");
         }
 
         public static int GetStationNo(int slaveId)
@@ -151,6 +161,8 @@ namespace SharedComponents.IhtModbus
                 ihtModbusResult.Result = ihtModbusResult.Result && (ihtModbusResult.Result = await Read_ServiceDynAsync(ihtModbusData, true).ConfigureAwait(false));
             }
 
+            var devicesAmount = _ihtDevices.GetVisibleDevices().Count;
+            await _parameterDataInfoManager.UpdateAPCHardwareDataAsync(CancellationToken.None, devicesAmount);
 
         }
 

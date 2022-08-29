@@ -83,7 +83,7 @@ builder.Services.AddSingleton<IDynParamsDBService, DynParamsDBService>();
 builder.Services.AddSingleton<ILiveParamsDBService, LiveParamsDBService>();
 builder.Services.AddSingleton<IParameterDataDBService, ParameterDataDBService>();
 builder.Services.AddSingleton<IParameterDataInfoDBService, ParameterDataInfoDBService>();
-builder.Services.AddSingleton<IAPCDefaultDataDBService, APCDefaultDataDBService>();
+builder.Services.AddSingleton<IAPCDefaultDataMockDBService, APCDefaultDataMockDBService>();
 
 
 // APC Mock DB
