@@ -788,11 +788,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj",
+      "projectUniqueName": "C:\\IHT_Proj\\Workshop\\SharedComponents\\SharedComponents.csproj",
       "projectName": "SharedComponents",
-      "projectPath": "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj",
+      "projectPath": "C:\\IHT_Proj\\Workshop\\SharedComponents\\SharedComponents.csproj",
       "packagesPath": "C:\\Users\\ol\\.nuget\\packages\\",
-      "outputPath": "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\obj\\",
+      "outputPath": "C:\\IHT_Proj\\Workshop\\SharedComponents\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

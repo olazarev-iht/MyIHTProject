@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "40Y5250k1fH9tOGAGMULRf1fmb59jNjUY1tA0/A0One5uQPBNJ48k6JxQ5eNj6snd1bsPXtyKxLiIJDQ3sKcfA==",
+  "dgSpecHash": "/wXrzdWkGQLPSAS0x0vqUuyB9Gi8oMgbJKRY8sFvXDkT8mPhY8/3cORH15gDGcspyq/ikNDb43pTqYlnMuG6xw==",
   "success": true,
-  "projectFilePath": "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj",
+  "projectFilePath": "C:\\IHT_Proj\\Workshop\\SharedComponents\\SharedComponents.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.3\\microsoft.aspnetcore.authorization.6.0.3.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.aspnetcore.components\\6.0.3\\microsoft.aspnetcore.components.6.0.3.nupkg.sha512",

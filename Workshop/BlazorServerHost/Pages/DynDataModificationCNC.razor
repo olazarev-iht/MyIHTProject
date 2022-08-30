@@ -8,6 +8,7 @@
 @using SharedComponents.Services.APCHardwareMockDBServices
 @using MudBlazor.Examples.Data.Models
 
+@inject NavigationManager navigationManager
 @inject HttpClient httpClient
 @inject IhtDevices ihtDevices
 
@@ -390,6 +391,7 @@ input#password-input:focus {
                 </tr>
                 <tr>
                     <td width="50%">
+                        <MudOverlay Visible="_torchInstalledDialogIsBlocked" LightBackground="true" Absolute="true" />
             <MudGrid>
         @foreach (IhtDevice ihtDevice in ihtDevices.GetDevices().OrderBy(v => v.DeviceNumber))
         {
@@ -653,6 +655,7 @@ input#password-input:focus {
 
     private bool _torchInstalledDialogVisible = false;
     private bool _performResetDevices = false;
+    private bool _torchInstalledDialogIsBlocked = false;
 
     private TableGroupDefinition<ParameterDataModel> _groupDefinition = new()
     {
@@ -690,10 +693,16 @@ input#password-input:focus {
 
     private async Task Connection()
     {
+        _torchInstalledDialogIsBlocked = true;
+
+        await Task.Delay(TimeSpan.FromSeconds(0.05));
+
         //TODO: Change: use dependency injection instead of the "new IhtModbusCommunicInfo(...)"
         var ihtModbusCommunicInfo = new IhtModbusCommunicInfo(ihtDevices, apcSimulationDataMockDBService, parameterDataInfoManager);
 
         await ihtModbusCommunicInfo.ConnectAsync();
+
+        navigationManager.NavigateTo(navigationManager.Uri, true);
     }
 
     private bool IsDeviceDisabled(bool IsEnableds)

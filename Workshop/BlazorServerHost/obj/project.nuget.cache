@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ubIehNt6VAeAqFN6xooXbNHwjfZoF6H5aFD1zO8kQSEFQg6EqlXMnqOLkAHitWlCTRfI25pvokOAfZvaEPiXhQ==",
+  "dgSpecHash": "n84k5p2al9ud/ABkVIfED4JNUf6Cngd0PmAQS3zjjQ5vIAyMCxVfwxkDgOuyqYs+Mnk2E0IvvzjquhFSB7gdEw==",
   "success": true,
-  "projectFilePath": "C:\\Examples\\MyIHTProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj",
+  "projectFilePath": "C:\\IHT_Proj\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ol\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\blazored.localstorage\\4.2.0\\blazored.localstorage.4.2.0.nupkg.sha512",
