@@ -390,6 +390,13 @@ input#password-input:focus {
                     <MudTh>Torch Type</MudTh>
                 </tr>
                 <tr>
+                    <td colspan="2">
+                        <div style="position:absolute; top: 150px; left: 250px;">
+                            <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" Class="@drawerDisplay" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <td width="50%">
                         <MudOverlay Visible="_torchInstalledDialogIsBlocked" LightBackground="true" Absolute="true" />
             <MudGrid>
@@ -744,7 +751,7 @@ input#password-input:focus {
     {
         _torchInstalledDialogVisible = false;
     } 
-    
+
 
     private void SetNewPasswordLevel()
     {
@@ -921,7 +928,8 @@ input#password-input:focus {
     private string drawerDisplay {
         get
         {
-            return _menuExpanded ? DISPLAY_CLASS : NONE_DISPLAY_CLASS;
+            //return DISPLAY_CLASS;
+            return _torchInstalledDialogIsBlocked ? DISPLAY_CLASS : NONE_DISPLAY_CLASS;
         }
     }
 
