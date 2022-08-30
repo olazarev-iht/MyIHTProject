@@ -11,6 +11,7 @@ namespace SharedComponents.Services.APCHardwareDBServices
 		public Task UpdateEntryAsync(Guid id, DynParamsModel newData, CancellationToken cancellationToken);
 		public Task UpdateDynParamValueAsync(DynParamsModel newData, CancellationToken cancellationToken);
 		public Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId, int paramValue, CancellationToken cancellationToken);
+		public Task UpdateDynParamValueByDeviceNumAndAddressAsync(int deviceNumber, int paramAddress, int paramValue, CancellationToken cancellationToken);
 		public Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken);
 		public Task DeleteAllEntriesAsync(CancellationToken cancellationToken, int? devicesAmount = null);
 	}

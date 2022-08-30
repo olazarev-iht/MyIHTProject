@@ -134,9 +134,19 @@ namespace SharedComponents.APCHardwareManagers
             await _dynParamsMockDBService.UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(apcDeviceNum, paramGroup, paramId, paramValue, cancellationToken);
         }
 
+        public async Task WriteHoldingRegistersAsync(int apcDeviceNum, int paramAddress, int paramValue, IhtModbusResult? ihtModbusResult = null)
+        {
+            await _apcSimulationDataMockDBService.WriteHoldingRegistersAsync((byte)apcDeviceNum, (ushort)paramAddress, paramValue, ihtModbusResult);
+        }
+
         public async Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId, int paramValue, CancellationToken cancellationToken)
         {
             await _dynParamsDBService.UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(apcDeviceNum, paramGroup, paramId, paramValue, cancellationToken);
+        }
+
+        public async Task UpdateDynParamValueByDeviceNumAndAddressAsync(int deviceNum, int paramAddress, int paramValue, CancellationToken cancellationToken)
+        {
+            await _dynParamsDBService.UpdateDynParamValueByDeviceNumAndAddressAsync(deviceNum, paramAddress, paramValue, cancellationToken);
         }
 
         public async Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken)
@@ -314,6 +324,15 @@ namespace SharedComponents.APCHardwareManagers
             var paramsValues = await _apcSimulationDataMockDBService.GetHoldingRegistersWithAddressAsync(deviceNum, paramsStartAddr, paramsNumber);
 
             return paramsValues;
+        }
+
+        public async Task<UInt16?> ReadOneHoldingRegisterAsync(byte slaveAddress, ushort startAddress)
+        {
+            var deviceId = slaveAddress > 10 ? slaveAddress - 10 : slaveAddress;
+
+            var simulationData = (await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync((byte)deviceId, startAddress, 1)).FirstOrDefault();
+
+            return simulationData;
         }
 
         private async Task<bool> FillParameterDataAsync_old(CancellationToken cancellationToken)

@@ -1,5 +1,6 @@
 ﻿//using BlazorServerHost.Features.Models.CNC;
 using BlazorServerHost.Services.APCWorkerService;
+using SharedComponents.IhtModbus;
 using SharedComponents.Models;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services;
@@ -75,12 +76,12 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			if (parameter == null || parameter.DynParams == null) return;
 
 			// Update prameter value in the APC Device (Mock DB)
-			await UpdateDynParamInAPCDeviceMockDBAsync(CurrentDeviceNumber, parameter.ParamGroupId, parameter.DynParams.ParamId, parameter.DynParams.Value);
+			await UpdateDynParamInAPCDeviceMockDBAsync(CurrentDeviceNumber, parameter.DynParams.Address, parameter.DynParams.Value);
 
 			// Only to show the flow
 			//await Task.Delay(TimeSpan.FromSeconds(5));
 
-			await _apcWorker.RefreshDynamicDataAsync(CurrentDeviceNumber, parameter.ParamGroupId, parameter.DynParams.ParamId);
+			await _apcWorker.RefreshDynamicDataAsync(CurrentDeviceNumber, parameter.DynParams.Address);
 		}
 
 		private bool IsAnOtherUserWorkingWithDeviceNow()
@@ -249,9 +250,9 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			_logger.LogDebug($"\nSent Command - Move Torch Down. Device {CurrentDeviceNumber}. User: {_userId}");
 		}
 
-		private async Task UpdateDynParamInAPCDeviceMockDBAsync(int deviceNum, ParamGroup paramGroup, int paramId, int paramValue)
+		private async Task UpdateDynParamInAPCDeviceMockDBAsync(int deviceNum, int paramAddress, int paramValue, IhtModbusResult? ihtModbusResult = null)
         {
-			await _parameterDataInfoManager.UpdateMockDynParamValueByAPCDeviceAndParamIdAsync(deviceNum, paramGroup, paramId, paramValue, CancellationToken.None);
+			await _parameterDataInfoManager.WriteHoldingRegistersAsync(deviceNum, paramAddress, paramValue, ihtModbusResult);
 		}
 
 		private async void _apcWorkerService_DymanicDataChanged(object? sender, EventArgs e)

@@ -392,7 +392,7 @@ input#password-input:focus {
                 <tr>
                     <td colspan="2">
                         <div style="position:absolute; top: 150px; left: 250px;">
-                            <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" Class="@drawerDisplay" />
+                            <MudProgressCircular Style="height:70px;width:70px;" Color="Color.Primary" Indeterminate="true" Class="@drawerDisplay" />
                         </div>
                     </td>
                 </tr>
@@ -925,6 +925,13 @@ input#password-input:focus {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    private int APCDevicesCount {
+        get
+        {
+            return ihtDevices.GetDevices().Where(d => d.IsVisible).Count();
+        }
+    }
+
     private string drawerDisplay {
         get
         {
@@ -969,7 +976,7 @@ input#password-input:focus {
 
     private async void SetDeviceNum(int deviceNum)
     {
-        if (deviceNum <= dynDataModificationCNCDataProvider.APCDevicesCount)
+        if (deviceNum <= APCDevicesCount)
         {
             // Stop the SP moving
             StopTorchMoving();
@@ -999,7 +1006,7 @@ input#password-input:focus {
         if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber){
             cssClass = "SelectedDeviceNum device_tabcell";
         }
-        else if(selectedNum <= ihtDevices.GetDevices().Where(d => d.IsVisible).Count())   //dynDataModificationCNCDataProvider.APCDevicesCount)
+        else if(selectedNum <= APCDevicesCount)
         {
             cssClass = "UnselectedDeviceNum device_tabcell";
         }

@@ -121,6 +121,25 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			}
 		}
 
+		public async Task UpdateDynParamValueByDeviceNumAndAddressAsync(int deviceNumber, int paramAddress, int paramValue, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var entry = await dbContext.ParameterDatas
+				.Include(p => p.APCDevice)
+				.Include(p => p.DynParams)
+				.Where(d => d.APCDevice != null && d.APCDevice.Num == deviceNumber)
+				.Where(d => d.DynParams != null && d.DynParams.Address == paramAddress)
+				.SingleAsync();
+
+			if (entry != null && entry.DynParams != null)
+			{
+				entry.DynParams.Value = paramValue;
+
+				await dbContext.SaveChangesAsync(cancellationToken);
+			}
+		}
+
 		public async Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
