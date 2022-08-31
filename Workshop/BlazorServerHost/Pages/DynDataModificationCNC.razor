@@ -621,6 +621,7 @@ input#password-input:focus {
     public event EventHandler? APCTorchPositionChanged;
     public event EventHandler? APCTorchPositionStoped;
     public static event EventHandler? ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded;
+    public static event EventHandler? ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded;
 
     private ParameterDataModel paramHeatO2 = new();
     private ParameterDataModel paramFuelGas = new();
@@ -708,6 +709,8 @@ input#password-input:focus {
         var ihtModbusCommunicInfo = new IhtModbusCommunicInfo(ihtDevices, apcSimulationDataMockDBService, parameterDataInfoManager);
 
         await ihtModbusCommunicInfo.ConnectAsync();
+
+        ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
 
         navigationManager.NavigateTo(navigationManager.Uri, true);
     }
@@ -960,6 +963,9 @@ input#password-input:focus {
         // Subscribe for event of client stopping working with the torch
         ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
 
+        // Subscribe for event of client connected to the devices and received the data
+        ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded += DynamicAPCParamsOnConnectedTorchesInstalled;
+
         base.OnInitialized();
     }
 
@@ -1081,6 +1087,12 @@ input#password-input:focus {
         await InvokeAsync(StateHasChanged);
     }
 
+    private async void DynamicAPCParamsOnConnectedTorchesInstalled(object? sender, EventArgs e)
+    {
+        await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+
     public void Dispose()
     {
         dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
@@ -1094,6 +1106,8 @@ input#password-input:focus {
         ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
 
         ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+
+        ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded -= DynamicAPCParamsOnConnectedTorchesInstalled;
     }
 
     private void ParamSelected1(ChangeEventArgs args)
