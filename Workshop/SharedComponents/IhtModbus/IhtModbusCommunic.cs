@@ -4,7 +4,7 @@ using System.Windows;
 using System.IO.Ports;
 using System.Net.Sockets;
 //using log4net;
-using Modbus.Device;
+//using Modbus.Device;
 using System.Collections;
 using SharedComponents;
 using SharedComponents.Helpers;
@@ -17,6 +17,10 @@ using SharedComponents.IhtModbusTable;
 using SharedComponents.Cultures;
 using System.Collections.Generic;
 using SharedComponents.StatusInfo;
+using NModbus;
+using NModbus.Serial;
+using NModbus.Utility;
+using static IhtCommunicService.CutbusData.DownloadKernelInfoData;
 
 namespace SharedComponents.IhtModbus
 {
@@ -294,7 +298,9 @@ namespace SharedComponents.IhtModbus
                 mainWndHlp.SetStatusMsg(IhtMsgLog.Info.Info, msg);
 
                 // create modbus master
-                modbusMaster = ModbusSerialMaster.CreateRtu(port);
+                var factory = new ModbusFactory();
+                modbusMaster = factory.CreateRtuMaster(port);
+                //modbusMaster = ModbusSerialMaster.CreateRtu(port);
 
                 IsStarted = true;
                 await ConnectRdDataAsync(SlaveIds, u16OnSlaveIdBits, isRobot).ConfigureAwait(false);
@@ -352,7 +358,9 @@ namespace SharedComponents.IhtModbus
                     mainWndHlp.SetStatusMsg(IhtMsgLog.Info.Info, msg);
 
                     // create modbus master
-                    modbusMaster = ModbusSerialMaster.CreateRtu(port);
+                    //modbusMaster = ModbusSerialMaster.CreateRtu(port);
+                    var factory = new ModbusFactory();
+                    modbusMaster = factory.CreateRtuMaster(port);
 
                     IsStarted = true;
                     await ConnectRdDataAsync(SlaveIds, u16OnSlaveIdBits, isRobot).ConfigureAwait(false);
@@ -421,7 +429,9 @@ namespace SharedComponents.IhtModbus
             {
                 port.Open();
                 // create modbus master
-                modbusMaster = ModbusSerialMaster.CreateRtu(port);
+                //modbusMaster = ModbusSerialMaster.CreateRtu(port);
+                var factory = new ModbusFactory();
+                modbusMaster = factory.CreateRtuMaster(port);
             }
         }
 
@@ -478,7 +488,9 @@ namespace SharedComponents.IhtModbus
                 client = new TcpClient(communicData.IpAddress, communicData.IpPort);
 
                 // create modbus master
-                modbusMaster = ModbusIpMaster.CreateIp(client);
+                //modbusMaster = ModbusIpMaster.CreateIp(client);
+                var factory = new ModbusFactory();
+                IModbusMaster master = factory.CreateMaster(client);
                 IsStarted = true;
 
                 await ConnectRdDataAsync(SlaveIds, u16OnSlaveIdBits, isRobot).ConfigureAwait(false);

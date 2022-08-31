@@ -1,24 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Examples\\MyIHTProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj": {}
+    "C:\\_MyIHTProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj": {}
   },
   "projects": {
-    "C:\\Examples\\MyIHTProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj": {
+    "C:\\_MyIHTProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Examples\\MyIHTProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj",
+        "projectUniqueName": "C:\\_MyIHTProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj",
         "projectName": "BlazorServerHost",
-        "projectPath": "C:\\Examples\\MyIHTProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj",
-        "packagesPath": "C:\\Users\\ol\\.nuget\\packages\\",
-        "outputPath": "C:\\Examples\\MyIHTProject\\Workshop\\BlazorServerHost\\obj\\",
+        "projectPath": "C:\\_MyIHTProject\\Workshop\\BlazorServerHost\\BlazorServerHost.csproj",
+        "packagesPath": "C:\\Users\\gr\\.nuget\\packages\\",
+        "outputPath": "C:\\_MyIHTProject\\Workshop\\BlazorServerHost\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\ol\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\gr\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
@@ -28,17 +29,18 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Examples\\MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj": {
-                "projectPath": "C:\\Examples\\MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj"
+              "C:\\_MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj": {
+                "projectPath": "C:\\_MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj"
               },
-              "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj": {
-                "projectPath": "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj"
+              "C:\\_MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj": {
+                "projectPath": "C:\\_MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj"
               }
             }
           }
@@ -104,7 +106,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -116,25 +119,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Examples\\MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj": {
+    "C:\\_MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Examples\\MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj",
+        "projectUniqueName": "C:\\_MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj",
         "projectName": "MudBlazor.Examples.Data",
-        "projectPath": "C:\\Examples\\MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj",
-        "packagesPath": "C:\\Users\\ol\\.nuget\\packages\\",
-        "outputPath": "C:\\Examples\\MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\obj\\",
+        "projectPath": "C:\\_MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\MudBlazor.Examples.Data.csproj",
+        "packagesPath": "C:\\Users\\gr\\.nuget\\packages\\",
+        "outputPath": "C:\\_MyIHTProject\\Workshop\\MudBlazor-dev\\src\\MudBlazor.Examples.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\ol\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\gr\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
@@ -144,6 +148,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -168,7 +173,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -177,25 +183,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj": {
+    "C:\\_MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj",
+        "projectUniqueName": "C:\\_MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj",
         "projectName": "SharedComponents",
-        "projectPath": "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj",
-        "packagesPath": "C:\\Users\\ol\\.nuget\\packages\\",
-        "outputPath": "C:\\Examples\\MyIHTProject\\Workshop\\SharedComponents\\obj\\",
+        "projectPath": "C:\\_MyIHTProject\\Workshop\\SharedComponents\\SharedComponents.csproj",
+        "packagesPath": "C:\\Users\\gr\\.nuget\\packages\\",
+        "outputPath": "C:\\_MyIHTProject\\Workshop\\SharedComponents\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\ol\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\gr\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
@@ -205,6 +212,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -242,7 +250,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -251,7 +260,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

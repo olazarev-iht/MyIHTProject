@@ -163,7 +163,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			}
 			finally
 			{
-				tokenSource.Dispose();
+				tokenSource?.Dispose();
 				mutexModbusMaster.Release();
 			}
 
@@ -181,7 +181,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			// Set up the device as free
 			currentlyInWorkDevices[CurrentDeviceNumber] = Guid.Empty;
 
-			tokenSource.Cancel();
+			tokenSource?.Cancel();
 
 			// Dispose token source instead of finally block
 			//tokenSource.Dispose();

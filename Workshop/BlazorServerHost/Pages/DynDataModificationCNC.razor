@@ -7,6 +7,7 @@
 @using SharedComponents.Services.APCHardwareManagers
 @using SharedComponents.Services.APCHardwareMockDBServices
 @using MudBlazor.Examples.Data.Models
+@using System.IO.Ports
 
 @inject HttpClient httpClient
 @inject IhtDevices ihtDevices
@@ -409,12 +410,25 @@ input#password-input:focus {
                             <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.NaturalGas)">Natural Gas</MudSelectItem>
                         </MudSelect>
 
+                        <br />
+                        <MudTh>COM Port</MudTh>
+                        <MudSelect T="string" @bind-Value="@_nameComPort" Class="myselect" Style="margin-top: 0px;">             
+                          @foreach (string s in SerialPort.GetPortNames())
+                          {
+                            <MudSelectItem T="string" Value="@s">@s</MudSelectItem>
+                          }  
+                        </MudSelect>
+
                         <br/>
                         <MudTh>Device Connection</MudTh>
-                        <MudButton Variant="Variant.Filled" Style="align-content" OnClick="Connection">Connection</MudButton>
+                        <MudButton Variant="Variant.Filled" Style="align-content" OnClick="Connection" Disabled="@IsDeviceConnectionDisabled()">Connection</MudButton>
                         <MudCheckBox @bind-Checked="@_performResetDevices" Dense="false" Color="Color.Primary">
                             <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Perform a reset for all devices</MudText>
                         </MudCheckBox>
+                        <MudCheckBox @bind-Checked="@_isSimulation" Dense="false" Color="Color.Primary">
+                            <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Simulation (Demo-Mode)</MudText>
+                        </MudCheckBox>
+
                     </td>
                 </tr>
             </table>
@@ -607,7 +621,11 @@ input#password-input:focus {
 
 }
 @code {
+    private bool _isSimulation = false;
+    private string _nameComPort = string.Empty;
 
+    private bool IsDeviceConnectionDisabled() => _nameComPort?.Length == 0; 
+    
     public event EventHandler? DynamicAPCParamsClientChanged;
     public event EventHandler? APCTorchPositionChanged;
     public event EventHandler? APCTorchPositionStoped;
@@ -693,7 +711,7 @@ input#password-input:focus {
         //TODO: Change: use dependency injection instead of the "new IhtModbusCommunicInfo(...)"
         var ihtModbusCommunicInfo = new IhtModbusCommunicInfo(ihtDevices, apcSimulationDataMockDBService, parameterDataInfoManager);
 
-        await ihtModbusCommunicInfo.ConnectAsync();
+        await ihtModbusCommunicInfo.ConnectAsync(_nameComPort, _isSimulation, _performResetDevices);
     }
 
     private bool IsDeviceDisabled(bool IsEnableds)

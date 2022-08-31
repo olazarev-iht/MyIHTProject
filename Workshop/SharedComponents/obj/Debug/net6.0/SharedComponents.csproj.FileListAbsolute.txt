@@ -47,3 +47,220 @@ C:\Examples\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\nl-NL\Shared
 C:\Examples\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\sl-SI\SharedComponents.resources.dll
 C:\Examples\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
 C:\Examples\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.CopyComplete
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\Properties\launchSettings.json
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.staticwebassets.runtime.json
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.deps.json
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.pdb
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\de-DE\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\en-US\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\fr-FR\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\hu-HU\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\it-IT\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\nl-NL\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\sl-SI\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunic.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicCutbus.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManager.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManagerApc.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManagerService.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicService.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicService.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\log4net.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\Modbus.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.AssemblyReference.cache
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.resources
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.de-DE.resources
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.en-US.resources
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.fr-FR.resources
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.hu-HU.resources
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.it-IT.resources
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.nl-NL.resources
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.sl-SI.resources
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.zH-Hans.resources
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.GenerateResource.cache
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.AssemblyInfoInputs.cache
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.AssemblyInfo.cs
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.CoreCompileInputs.cache
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\de-DE\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\en-US\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\fr-FR\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\hu-HU\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\it-IT\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\nl-NL\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\sl-SI\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\scopedcss\bundle\SharedComponents.styles.css
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.CopyComplete
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\refint\SharedComponents.dll
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.pdb
+C:\Users\gr\source\repos\MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\ref\SharedComponents.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\Properties\launchSettings.json
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.staticwebassets.runtime.json
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.deps.json
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.pdb
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\de-DE\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\en-US\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\fr-FR\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\hu-HU\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\it-IT\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\nl-NL\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\sl-SI\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunic.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicCutbus.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManager.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManagerApc.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManagerService.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicService.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicService.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\log4net.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\Modbus.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.AssemblyReference.cache
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.de-DE.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.en-US.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.fr-FR.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.hu-HU.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.it-IT.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.nl-NL.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.sl-SI.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.zH-Hans.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.GenerateResource.cache
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.GeneratedMSBuildEditorConfig.editorconfig
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.AssemblyInfoInputs.cache
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.AssemblyInfo.cs
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.CoreCompileInputs.cache
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\de-DE\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\en-US\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\fr-FR\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\hu-HU\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\it-IT\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\nl-NL\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\sl-SI\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\staticwebassets.build.json
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\staticwebassets.development.json
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\scopedcss\bundle\SharedComponents.styles.css
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.CopyComplete
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\refint\SharedComponents.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.pdb
+C:\_Visual 2013 Projekte\_MyIHTProject\MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\ref\SharedComponents.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\Properties\launchSettings.json
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.staticwebassets.runtime.json
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.deps.json
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.pdb
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\de-DE\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\en-US\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\fr-FR\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\hu-HU\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\it-IT\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\nl-NL\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\sl-SI\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunic.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicCutbus.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManager.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManagerApc.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManagerService.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicService.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicService.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\log4net.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\Modbus.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.AssemblyReference.cache
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.de-DE.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.en-US.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.fr-FR.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.hu-HU.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.it-IT.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.nl-NL.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.sl-SI.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.zH-Hans.resources
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.GenerateResource.cache
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.GeneratedMSBuildEditorConfig.editorconfig
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.AssemblyInfoInputs.cache
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.AssemblyInfo.cs
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.CoreCompileInputs.cache
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\de-DE\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\en-US\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\fr-FR\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\hu-HU\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\it-IT\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\nl-NL\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\sl-SI\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\staticwebassets.build.json
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\staticwebassets.development.json
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\scopedcss\bundle\SharedComponents.styles.css
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.CopyComplete
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\refint\SharedComponents.dll
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.pdb
+C:\_Visual 2013 Projekte\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\ref\SharedComponents.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\Properties\launchSettings.json
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.staticwebassets.runtime.json
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.deps.json
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\SharedComponents.pdb
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\de-DE\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\en-US\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\fr-FR\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\hu-HU\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\it-IT\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\nl-NL\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\sl-SI\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunic.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicCutbus.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManager.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManagerApc.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManagerService.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicService.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicService.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.AssemblyReference.cache
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.resources
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.de-DE.resources
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.en-US.resources
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.fr-FR.resources
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.hu-HU.resources
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.it-IT.resources
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.nl-NL.resources
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.sl-SI.resources
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.Cultures.Resources.zH-Hans.resources
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.GenerateResource.cache
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.GeneratedMSBuildEditorConfig.editorconfig
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.AssemblyInfoInputs.cache
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.AssemblyInfo.cs
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.CoreCompileInputs.cache
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\de-DE\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\en-US\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\fr-FR\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\hu-HU\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\it-IT\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\nl-NL\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\sl-SI\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\staticwebassets.build.json
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\staticwebassets.development.json
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\scopedcss\bundle\SharedComponents.styles.css
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.csproj.CopyComplete
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.dll
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\refint\SharedComponents.dll
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.pdb
+C:\_MyIHTProject\Workshop\SharedComponents\obj\Debug\net6.0\ref\SharedComponents.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\MQTTnet.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\NModbus.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\NModbus.Serial.dll
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\NModbus.pdb
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\NModbus.xml
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\NModbus.Serial.pdb
+C:\_MyIHTProject\Workshop\SharedComponents\bin\Debug\net6.0\NModbus.Serial.xml
