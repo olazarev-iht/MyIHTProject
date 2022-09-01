@@ -16,6 +16,7 @@ using Microsoft.Extensions.Localization;
 using MudBlazor.Services;
 using SharedComponents.APCHardwareManagers;
 using SharedComponents.IhtDev;
+using SharedComponents.IhtModbus;
 using SharedComponents.Services;
 using SharedComponents.Services.APCHardwareDBServices;
 using SharedComponents.Services.APCHardwareManagers;
@@ -99,6 +100,7 @@ builder.Services.AddSingleton<IParameterDataInfoManager, ParameterDataInfoManage
 
 builder.Services.AddSingleton<IHardwareAPCServise, HardwareAPCServise>();
 builder.Services.AddSingleton<IhtDevices>();
+builder.Services.AddSingleton<IhtModbusCommunicInfo>();
 builder.Services.AddSingleton<CommunicationsService>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>

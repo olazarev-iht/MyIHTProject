@@ -24,31 +24,34 @@
 
   <ItemGroup>
     <Reference Include="IhtCommunic">
-      <HintPath>bin\Debug\net6.0\IhtCommunic.dll</HintPath>
+      <HintPath>..\Dlls\IhtCommunic.dll</HintPath>
     </Reference>
     <Reference Include="IhtCommunicCutbus">
-      <HintPath>bin\Debug\net6.0\IhtCommunicCutbus.dll</HintPath>
+      <HintPath>..\Dlls\IhtCommunicCutbus.dll</HintPath>
     </Reference>
     <Reference Include="IhtCommunicManager">
-      <HintPath>bin\Debug\net6.0\IhtCommunicManager.dll</HintPath>
+      <HintPath>..\Dlls\IhtCommunicManager.dll</HintPath>
     </Reference>
     <Reference Include="IhtCommunicManagerApc">
-      <HintPath>bin\Debug\net6.0\IhtCommunicManagerApc.dll</HintPath>
+      <HintPath>..\Dlls\IhtCommunicManagerApc.dll</HintPath>
     </Reference>
     <Reference Include="IhtCommunicManagerService">
-      <HintPath>bin\Debug\net6.0\IhtCommunicManagerService.dll</HintPath>
+      <HintPath>..\Dlls\IhtCommunicManagerService.dll</HintPath>
     </Reference>
     <Reference Include="IhtCommunicService">
-      <HintPath>bin\Debug\net6.0\IhtCommunicService.dll</HintPath>
+      <HintPath>..\Dlls\IhtCommunicService.dll</HintPath>
     </Reference>
     <Reference Include="IhtCommunicService.resources">
-      <HintPath>bin\Debug\net6.0\IhtCommunicService.resources.dll</HintPath>
+      <HintPath>..\Dlls\IhtCommunicService.resources.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>bin\Debug\net6.0\log4net.dll</HintPath>
+    <Reference Include="MQTTnet">
+      <HintPath>..\Dlls\MQTTnet.dll</HintPath>
     </Reference>
-    <Reference Include="Modbus">
-      <HintPath>bin\Debug\net6.0\Modbus.dll</HintPath>
+    <Reference Include="NModbus">
+      <HintPath>..\Dlls\NModbus.dll</HintPath>
+    </Reference>
+    <Reference Include="NModbus.Serial">
+      <HintPath>..\Dlls\NModbus.Serial.dll</HintPath>
     </Reference>
   </ItemGroup>
 

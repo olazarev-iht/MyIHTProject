@@ -164,8 +164,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			}
 			finally
 			{
-				if (tokenSource != null) tokenSource.Dispose();
-				if (mutexModbusMaster != null) mutexModbusMaster.Release();
+				tokenSource?.Dispose();
+				mutexModbusMaster?.Release();
 			}
 
 		}

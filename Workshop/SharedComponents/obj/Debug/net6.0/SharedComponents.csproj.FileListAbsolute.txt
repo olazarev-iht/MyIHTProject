@@ -91,3 +91,13 @@ C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.dll
 C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\refint\SharedComponents.dll
 C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\SharedComponents.pdb
 C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\ref\SharedComponents.dll
+C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunic.dll
+C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicCutbus.dll
+C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManager.dll
+C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManagerApc.dll
+C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicManagerService.dll
+C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicService.dll
+C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicService.resources.dll
+C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\MQTTnet.dll
+C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\NModbus.dll
+C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\NModbus.Serial.dll

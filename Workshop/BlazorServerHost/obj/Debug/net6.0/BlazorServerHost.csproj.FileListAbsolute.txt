@@ -226,13 +226,11 @@ C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\runtimes\win\lib\net6.0\S
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.ServiceProcess.ServiceController.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\MudBlazor.Examples.Data.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\SharedComponents.dll
-C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\Modbus.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\IhtCommunic.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\IhtCommunicManagerService.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\IhtCommunicManagerApc.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\IhtCommunicService.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\IhtCommunicManager.dll
-C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\log4net.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\IhtCommunicCutbus.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\MudBlazor.Examples.Data.pdb
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\SharedComponents.pdb
@@ -263,3 +261,5 @@ C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\refint\BlazorServerHost.d
 C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.pdb
 C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.genruntimeconfig.cache
 C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\ref\BlazorServerHost.dll
+C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\NModbus.dll
+C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\NModbus.Serial.dll
