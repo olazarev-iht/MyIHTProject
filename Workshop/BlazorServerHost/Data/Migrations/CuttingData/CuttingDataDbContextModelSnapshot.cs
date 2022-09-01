@@ -120,10 +120,9 @@ namespace BlazorServerHost.Data.Migrations.CuttingData
 
             modelBuilder.Entity("BlazorServerHost.Data.Models.CuttingData.CuttingData", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("(lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))))");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Controlbits")
                         .HasColumnType("INTEGER");
@@ -221,8 +220,8 @@ namespace BlazorServerHost.Data.Migrations.CuttingData
                     b.Property<float>("Thickness")
                         .HasColumnType("REAL");
 
-                    b.Property<Guid?>("idCutDataParent")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("idCutDataParent")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -255,19 +254,19 @@ namespace BlazorServerHost.Data.Migrations.CuttingData
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2954fb92-ba01-43ee-9f49-37f74870a5bf"),
+                            Id = new Guid("1cc5e035-f66d-4a20-b398-5f77314cb1a7"),
                             GasId = 0,
                             Name = "Propan"
                         },
                         new
                         {
-                            Id = new Guid("324929b4-cc09-4a9c-a766-af62cd9e8dc3"),
+                            Id = new Guid("78eb87d8-9348-4546-8888-0fa9b40758a2"),
                             GasId = 1,
                             Name = "Acetylene"
                         },
                         new
                         {
-                            Id = new Guid("d9b6ac85-21e1-4eaa-8c4b-1ea325488592"),
+                            Id = new Guid("493a1c7f-a291-4d58-92aa-77174f83b676"),
                             GasId = 2,
                             Name = "NaturalGas"
                         });
@@ -290,7 +289,7 @@ namespace BlazorServerHost.Data.Migrations.CuttingData
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7bec44e6-f1a6-4351-9d8e-83110c12ed47"),
+                            Id = new Guid("48572777-e81b-4b9f-ade7-a04a63838fbf"),
                             Name = "Mild Steel"
                         });
                 });
@@ -320,168 +319,168 @@ namespace BlazorServerHost.Data.Migrations.CuttingData
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f3073d90-aa2a-4615-9d6c-678c4d3d67ca"),
+                            Id = new Guid("6b3e0e3a-5af8-46cb-8b53-d3320ea782d1"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "ARC 3-40"
                         },
                         new
                         {
-                            Id = new Guid("6049d13d-14ab-4104-a0a3-ea8bdccbea7d"),
+                            Id = new Guid("7eb6c257-8d0e-4fca-bfec-1761e3d296f9"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "ARC 3-70"
                         },
                         new
                         {
-                            Id = new Guid("16bdec60-b332-4990-89be-6d298bd33248"),
+                            Id = new Guid("130a9f6b-257f-43b2-9df7-aa1c40b85b8b"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PRC 5-40"
                         },
                         new
                         {
-                            Id = new Guid("6f9d6e4b-0b74-4f4b-86dc-c5f06d497c8d"),
+                            Id = new Guid("2efc5fec-2fb8-44e6-b3f2-2c7b77715d3a"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PRC 5-70"
                         },
                         new
                         {
-                            Id = new Guid("f76245f5-be8a-4679-86c2-16ccab10a47f"),
+                            Id = new Guid("57e041e1-25d2-4b75-8f73-917cb8c6959c"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "ASF 3-5"
                         },
                         new
                         {
-                            Id = new Guid("a5d53216-522a-478e-ba8c-72466306adbd"),
+                            Id = new Guid("3fb1cda4-2472-4baa-95a8-5b43ced19a3f"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "ASF 6-10"
                         },
                         new
                         {
-                            Id = new Guid("49bf3360-33ec-49e8-860a-51663cb4fe60"),
+                            Id = new Guid("2164ec4b-d449-4b39-8a78-1252daf125be"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "ASF 10-25"
                         },
                         new
                         {
-                            Id = new Guid("83fdb324-00fd-480d-b11b-3dfc9274f3c8"),
+                            Id = new Guid("21772aa1-f93d-4059-bd77-07abc42a6d7d"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "ASF 25-40"
                         },
                         new
                         {
-                            Id = new Guid("0d01574b-51b9-4d75-9e17-a6a3c30da53a"),
+                            Id = new Guid("ce2f8d33-087d-4b95-a3eb-e3a8b1cd3e3c"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "ASF 40-60"
                         },
                         new
                         {
-                            Id = new Guid("48d71e0e-eb05-455d-bfc3-01d472f4691b"),
+                            Id = new Guid("4870a16c-d70d-4a31-aee8-0747e2819be4"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "ASF 60-100"
                         },
                         new
                         {
-                            Id = new Guid("3c192581-5a28-4b30-b28f-5d26ae83fc98"),
+                            Id = new Guid("01f2562d-a871-4bc2-ae42-6850aad10dc4"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "ASF 100-150"
                         },
                         new
                         {
-                            Id = new Guid("ef11c212-e58b-402b-9b80-d82aaa33a09c"),
+                            Id = new Guid("7238f412-e053-472f-ae0f-5c46ffcd298f"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "ASF 150-230"
                         },
                         new
                         {
-                            Id = new Guid("ca396626-2734-459b-bdce-ffcee3358910"),
+                            Id = new Guid("a04b9d1a-e2cf-4b05-b967-f04e7cba2730"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "ASF 230-300"
                         },
                         new
                         {
-                            Id = new Guid("282d6eb3-b05d-498b-a4b4-5eb48e32db10"),
+                            Id = new Guid("a1fa74c3-f8e1-4e78-989f-309e729b4b75"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PSF 3-6"
                         },
                         new
                         {
-                            Id = new Guid("5186f845-a0cf-4141-b090-6b8614331b9c"),
+                            Id = new Guid("6921c3c4-a74d-44c6-8d02-10533d97295c"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PSF 7-15"
                         },
                         new
                         {
-                            Id = new Guid("240a7084-18a6-46f6-b64b-6564edde0948"),
+                            Id = new Guid("e2b88477-b228-4663-bcf3-8e595b19d715"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PSF 15-25"
                         },
                         new
                         {
-                            Id = new Guid("fd943b93-4da2-458f-9e3d-fb952e2599a4"),
+                            Id = new Guid("bb436ec3-8975-4919-8124-42bc5c50ba5e"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PSF 25-40"
                         },
                         new
                         {
-                            Id = new Guid("e4fe487c-69d8-42a5-975f-c2cadf0a61ea"),
+                            Id = new Guid("87c00c4d-eebf-46f8-abac-f34ea2fa902b"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PSF 40-60"
                         },
                         new
                         {
-                            Id = new Guid("0f772844-faae-418f-9da6-ed08a43c5893"),
+                            Id = new Guid("50333815-3f76-4e3b-824f-cc8921048398"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PSF 60-100"
                         },
                         new
                         {
-                            Id = new Guid("7fe3388c-8739-4f8c-9252-7abe83249571"),
+                            Id = new Guid("e3f8079b-3ac2-4d85-b1f1-d92cbb8be7a1"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PSF 100-150"
                         },
                         new
                         {
-                            Id = new Guid("65cc1e77-6971-4c93-a08a-a4303e324018"),
+                            Id = new Guid("981144ca-e835-49f9-b3c4-fa566eb2c9af"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PSF 100-200"
                         },
                         new
                         {
-                            Id = new Guid("6626573c-e195-4a1c-987c-64861b9a9f1f"),
+                            Id = new Guid("55d2d908-ef74-4640-a1c4-8d9761d01fe2"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PSF 150-200"
                         },
                         new
                         {
-                            Id = new Guid("7a0cfbdd-d9a2-41bc-b510-1e614c7d34ba"),
+                            Id = new Guid("d1ce5e52-780d-4add-bb63-018681932286"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PSF 200-250"
                         },
                         new
                         {
-                            Id = new Guid("63e6bde7-d079-4439-85be-c586f2506963"),
+                            Id = new Guid("a9e636fc-f227-4ba1-95fe-707298990163"),
                             ImgPathBegin = "",
                             ImgPathEnd = "",
                             Name = "PSF 250-300"

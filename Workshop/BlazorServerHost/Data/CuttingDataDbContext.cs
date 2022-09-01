@@ -35,11 +35,13 @@ namespace BlazorServerHost.Data
 		{
 			modelBuilder.Entity<APCCuttingParametersIHT>().HasNoKey();
 
-            modelBuilder.Entity<CuttingData>().Property(x => x.Id).HasDefaultValueSql(
-                @"(lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))))"
-                );
+			//modelBuilder.Entity<CuttingData>().Property(x => x.Id).HasDefaultValueSql(
+			//    @"(lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))))"
+			//    );
 
-            modelBuilder.Entity<Gas>().HasData(new Gas { Id = Guid.NewGuid(), GasId = 0, Name = "Propan" });
+			modelBuilder.Entity<CuttingData>().Property(f => f.Id).ValueGeneratedOnAdd();
+
+			modelBuilder.Entity<Gas>().HasData(new Gas { Id = Guid.NewGuid(), GasId = 0, Name = "Propan" });
 			modelBuilder.Entity<Gas>().HasData(new Gas { Id = Guid.NewGuid(), GasId = 1, Name = "Acetylene" });
 			modelBuilder.Entity<Gas>().HasData(new Gas { Id = Guid.NewGuid(), GasId = 2, Name = "NaturalGas" });
 
@@ -71,7 +73,7 @@ namespace BlazorServerHost.Data
 			modelBuilder.Entity<Nozzle>().HasData(new Nozzle { Id = Guid.NewGuid(), Name = "PSF 250-300" });
 
 
-//			this.Database.ExecuteSqlRaw(@"insert into [CuttingData]
+//            this.Database.ExecuteSqlRaw(@"insert into [CuttingData]
 // ( MaterialId, NozzleId, Thickness, LeadInLength, Kerf, GasId, CuttingSpeed, IgnitionFlameAdjustment, PI0, PI1, PreHeatHeight, PreHeatHeatingOxygenPressure, 
 // PreHeatFuelGasPressure, PreHeatTime, PierceHeight, PierceHeatingOxygenPressure, PierceCuttingOxygenPressure, PierceFuelGasPressure, PierceCuttingSpeedChange, 
 // PierceTime, PP0, PP1, PP2, PP3, PP4, CutHeight, CutHeatingOxygenPressure, CutCuttingOxygenPressure, CutFuelGasPressure, Remark, ExtKey, ControlBits ) 
@@ -81,6 +83,6 @@ namespace BlazorServerHost.Data
 //apc.PP4, apc.CutHeight, apc.CutHeatingOxygenPressure, apc.CutCuttingOxygenPressure, apc.CutFuelGasPressure, apc.Remark, apc.ExtKey, apc.ControlBits
 //FROM APCCuttingParametersIHT apc LEFT JOIN Nozzle ON apc.Nozzle = Nozzle.Name LEFT JOIN Material ON apc.Material = Material.Name LEFT JOIN Gas on apc.IdGas = Gas.GasId");
 
-		}
+        }
 	}
 }

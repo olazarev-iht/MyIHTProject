@@ -9,7 +9,7 @@ namespace BlazorServerHost.Data.Models.CuttingData
     {
         [Required]
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
         public Guid? MaterialId { get; set; }
         public Material? Material { get; set; }
         public Guid? NozzleId { get; set; }
@@ -45,7 +45,7 @@ namespace BlazorServerHost.Data.Models.CuttingData
         public float PP4 { get; set; }
         public string? Remark { get; set; }
         public string? ExtKey { get; set; }
-        public string? idCutDataParent { get; set; }
+        public int? idCutDataParent { get; set; }
         public int Controlbits { get; set; }
     }
 }

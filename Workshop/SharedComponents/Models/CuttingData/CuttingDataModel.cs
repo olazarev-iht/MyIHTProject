@@ -8,7 +8,7 @@ namespace SharedComponents.Models.CuttingData
 {
     public class CuttingDataModel
     {
-        public string Id { get; set; } = string.Empty;
+        public int Id { get; set; }
         public Guid MaterialId { get; set; }
         public MaterialModel Material { get; set; } = new MaterialModel();
         public Guid NozzleId { get; set; }
@@ -42,7 +42,7 @@ namespace SharedComponents.Models.CuttingData
         public float PP3 { get; set; } = 0;
         public float PP4 { get; set; } = 0;
         public string? Remark { get; set; }
-        public string? idCutDataParent { get; set; }
+        public int? idCutDataParent { get; set; }
         public int Controlbits { get; set; } = 0;
     }
 }

@@ -4,6 +4,7 @@ using BlazorServerHost.Data.Models.CuttingData;
 using SharedComponents.Models.CuttingData;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Services.CuttingDataDBServices;
+using System.Transactions;
 
 namespace BlazorServerHost.Services.CuttingDataDBServices
 {
@@ -36,7 +37,7 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			return entries;
 		}
 
-		public async Task<CuttingDataModel?> GetEntryByIdAsync(string id, CancellationToken cancellationToken)
+		public async Task<CuttingDataModel?> GetEntryByIdAsync(int id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 			var entry = await dbContext.CuttingData
@@ -48,14 +49,14 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			return _mapper.Map<CuttingData, CuttingDataModel>(entry);
 		}
 
-		public async Task<string?> AddEntryAsync(CuttingDataModel model, CancellationToken cancellationToken)
+		public async Task<int?> AddEntryAsync(CuttingDataModel model, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
 			var entity = _mapper.Map<CuttingDataModel, CuttingData>(model);
 
-			entity.Id = Guid.NewGuid().ToString();
-			entity.idCutDataParent = model.Id;
+			entity.Id = 0;
+			entity.idCutDataParent = !string.IsNullOrWhiteSpace(model.idCutDataParent.ToString()) ? model.idCutDataParent : model.Id;
 
 			await dbContext.CuttingData.AddAsync(entity, cancellationToken);
 			await dbContext.SaveChangesAsync(cancellationToken);
@@ -63,13 +64,13 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			return entity.Id;
 		}
 
-		public async Task UpdateEntryAsync(string id, CuttingDataModel newData, CancellationToken cancellationToken)
+		public async Task UpdateEntryAsync(int id, CuttingDataModel newData, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
 			try
 			{
-				var entry = await dbContext.CuttingData.FirstOrDefaultAsync(p => p.Id.ToUpper() == id.ToUpper(), cancellationToken);
+				var entry = await dbContext.CuttingData.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 
 				if (entry != null)
 				{
@@ -112,9 +113,11 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			}
 		}
 
-		public async Task DeleteEntryAsync(string id, CancellationToken cancellationToken)
+		public async Task DeleteEntryAsync(int id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			using var tx = dbContext.Database.BeginTransaction();
 
 			var stub = new CuttingData() { Id = id, };
 
@@ -122,6 +125,12 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			dbContext.CuttingData.Remove(stub);
 
 			await dbContext.SaveChangesAsync(cancellationToken);
+
+
+			string cmd = $"DELETE FROM sqlite_sequence WHERE name = 'CuttingData'";
+			await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
+
+			await tx.CommitAsync(cancellationToken);
 		}
 	}
 }

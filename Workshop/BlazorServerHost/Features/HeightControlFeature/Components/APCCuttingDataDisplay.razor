@@ -298,11 +298,11 @@
         <MudTd DataLabel="Thickness">@context.Thickness</MudTd>
         <MudTd DataLabel="Nozzle">@context.Nozzle?.Name</MudTd>
         <MudTd DataLabel="Cutting speed">@context.CuttingSpeed</MudTd>
-        <MudTd DataLabel="Origin">@(string.IsNullOrWhiteSpace(@context.idCutDataParent) ? "*" : "")</MudTd>
+        <MudTd DataLabel="Origin">@(string.IsNullOrWhiteSpace(@context.idCutDataParent.ToString()) ? "*" : "")</MudTd>
         <MudTd DataLabel="">
             <MudFab @onclick="@(()=>Duplicate(@context.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Title="Duplicate" Size="Size.Small" IconSize="Size.Small" />
-            <MudFab @onclick="@(()=>Edit(@context.Id))" Disabled="@IsDisabled(@context.idCutDataParent)" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Title="Edit" Size="Size.Small" IconSize="Size.Small" />
-            <MudFab @onclick="@(()=>Delete(@context.Id))" Disabled="@IsDisabled(@context.idCutDataParent)" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />
+            <MudFab @onclick="@(()=>Edit(@context.Id))" Disabled="@IsDisabled(@context.idCutDataParent.ToString())" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Title="Edit" Size="Size.Small" IconSize="Size.Small" />
+            <MudFab @onclick="@(()=>Delete(@context.Id))" Disabled="@IsDisabled(@context.idCutDataParent.ToString())" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />
         </MudTd>
     </RowTemplate>
     <PagerContent>
@@ -382,7 +382,7 @@
     {
         if (_editForm.IsValid)
         {
-            await cuttingDataDBService.UpdateEntryAsync(cuttingDataModel.Id.ToString(), cuttingDataModel, CancellationToken.None);
+            await cuttingDataDBService.UpdateEntryAsync(cuttingDataModel.Id, cuttingDataModel, CancellationToken.None);
             _editParamsDialogVisible = false;
             await GetEntriesAsync();
 
@@ -459,25 +459,25 @@
         _editOneParamDialogVisible = false;
     }
 
-    private void Edit(string id)
+    private void Edit(int id)
     {
         cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
         _editParamsDialogVisible = true;
     }
 
-    private void Duplicate(string id)
+    private void Duplicate(int id)
     {
         cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
         _createParamsDialogVisible = true;
     }
 
-    private void Delete(string id)
+    private void Delete(int id)
     {
         cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
         _deleteParamsDialogVisible = true;
     }
 
-    private void EditOneParam(string paramName, float paramValue, float paramMin, float paramMax, float paramDelta, string id)
+    private void EditOneParam(string paramName, float paramValue, float paramMin, float paramMax, float paramDelta, int id)
     {
         cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
         _sliderVarName = paramName;
