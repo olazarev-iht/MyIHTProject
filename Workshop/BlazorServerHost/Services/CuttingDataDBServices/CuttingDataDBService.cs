@@ -128,7 +128,7 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 
 
 			string cmd = $"DELETE FROM sqlite_sequence WHERE name = 'CuttingData'";
-			await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
+			//await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
 
 			await tx.CommitAsync(cancellationToken);
 		}

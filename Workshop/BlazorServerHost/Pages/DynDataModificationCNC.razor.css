@@ -34,3 +34,36 @@
         flex-direction: column;
     }
 }*/
+.button_container {
+    /*height: calc(100vh - 74px);*/
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn {
+    border: 0;
+    outline: 0;
+    /*padding: 1.5rem 2rem;*/
+    font-size: 1.1rem;
+    font-family: monospace;
+    font-weight: 600;
+    box-shadow: 0px 0px 0px #0057ab;
+    /*cursor: pointer;*/
+    color: #ffff;
+    border-radius: 5px;
+    background-color: #3D6FB4;
+    width: 90%;
+    height: 75px;
+    /* text-align: center; */
+    /* to center text in the div - use 3 following rows: */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .btn.active {
+        box-shadow: 0px 0px 0px #0065c8;
+        background-color: #FF584F;
+    }

@@ -66,6 +66,9 @@ table#controlPanel td  {
 .flex-container {
   display: flex;
   flex-direction: row;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 .flex-item-left {
@@ -581,13 +584,30 @@ input#password-input:focus {
                                 <table width="100%" height="100%">
                                     <tr>
                                         <td width="50%" height="50%">
-                                            <MudButton Variant="Variant.Filled" Color="Color.Primary">Up</MudButton>
+                                            @*<MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@_isActive"
+                                            @onpointerdown="@(async (e) => await ActivatateAsync("slot"))"
+                                            @onpointerup="@((_) => DeactiveButton())" @ontouchend="@((_) => DeactiveButton())" 
+                                            @onmouseup="@((_) => DeactiveButton())"  @onmouseout="@((_) => DeactiveButton())"
+                                            >Up</MudButton>*@
+                                            <div class="button_container">
+                                            <div id="MoveTorchUp" class="@(_isTorchUpActive ? "btn active" : "btn")"
+                                                @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
+                                                @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
+                                                @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">Up
+                                            </div>
+                                            </div>
                                         </td>
                                         <td width="50%" height="50%">Calib2</td>
                                     </tr>
                                     <tr>
                                         <td rowspan="2">
-                                            <MudButton Variant="Variant.Filled" Color="Color.Primary">Down</MudButton>
+                                            <div class="button_container">
+                                            <div id="MoveTorchDown" class="@(_isTorchDownActive ? "btn active" : "btn")"
+                                                @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
+                                                @onpointerup="@((_) => DeactiveButton("MoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("MoveTorchDown"))"
+                                                @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">Down
+                                            </div>
+                                            </div>
                                         </td>
                                         <td>
                                             <table width="100%" height="100%">
@@ -635,11 +655,12 @@ input#password-input:focus {
 
 }
 @code {
+
     private bool _isSimulation = false;
     private string _nameComPort = string.Empty;
 
     private bool IsDeviceConnectionDisabled() => _nameComPort?.Length == 0 && !_isSimulation;
-	
+
     public event EventHandler? DynamicAPCParamsClientChanged;
     public event EventHandler? APCTorchPositionChanged;
     public event EventHandler? APCTorchPositionStoped;
@@ -664,8 +685,6 @@ input#password-input:focus {
     private string currentTorchEventName = string.Empty;
     private bool isTorchStartedMoving = false;
     private bool _menuExpanded = false;
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private bool _setupParamsDialogVisible = false;
     private ParameterDataModel dynParamDataModel = new ParameterDataModel();
