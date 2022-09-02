@@ -570,45 +570,42 @@ input#password-input:focus {
                 <div class="flex-item-right">
                     <table class="internal_div_table">
                         <tr>
-                            <td class="device_tabcell">Up 
-                                <MudSlider @onchange="OnTorchStateChanged" @bind-Value="@spValueCurrent" Style="height:50%"
+                            <td class="device_tabcell">
+                                @*<MudSlider @onchange="OnTorchStateChanged" @bind-Value="@spValueCurrent" Style="height:50%"
                                 Disabled="@dynDataModificationCNCDataProvider.IsCurrentDeviceBusy" 
                                 Vertical="true"
                                 Min="49" 
                                 Max="51"
                                 Step="1" 
                                 Color="Color.Info">Stop</MudSlider>
-                                Down 
+                                Down *@
+                                <MudPaper Style="position:relative;">
+                                <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
+                                <div class="button_container">
+                                    <div id="MoveTorchUp" class="@(_isTorchUpActive ? "btn active" : "btn")"
+                                        @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
+                                        @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
+                                        @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">Up
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="button_container">
+                                    <div id="MoveTorchDown" class="@(_isTorchDownActive ? "btn active" : "btn")"
+                                        @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
+                                        @onpointerup="@((_) => DeactiveButton("MoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("MoveTorchDown"))"
+                                        @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">Down
+                                    </div>
+                               </div>
+                              </MudPaper>
                             </td>
                             <td colspan="2">
                                 <table width="100%" height="100%">
                                     <tr>
-                                        <td width="50%" height="50%">
-                                            @*<MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@_isActive"
-                                            @onpointerdown="@(async (e) => await ActivatateAsync("slot"))"
-                                            @onpointerup="@((_) => DeactiveButton())" @ontouchend="@((_) => DeactiveButton())" 
-                                            @onmouseup="@((_) => DeactiveButton())"  @onmouseout="@((_) => DeactiveButton())"
-                                            >Up</MudButton>*@
-                                            <div class="button_container">
-                                            <div id="MoveTorchUp" class="@(_isTorchUpActive ? "btn active" : "btn")"
-                                                @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
-                                                @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
-                                                @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">Up
-                                            </div>
-                                            </div>
-                                        </td>
+                                        <td width="50%" height="50%">Calib1</td>
                                         <td width="50%" height="50%">Calib2</td>
                                     </tr>
                                     <tr>
-                                        <td rowspan="2">
-                                            <div class="button_container">
-                                            <div id="MoveTorchDown" class="@(_isTorchDownActive ? "btn active" : "btn")"
-                                                @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
-                                                @onpointerup="@((_) => DeactiveButton("MoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("MoveTorchDown"))"
-                                                @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">Down
-                                            </div>
-                                            </div>
-                                        </td>
+                                        <td rowspan="2">Empty</td>
                                         <td>
                                             <table width="100%" height="100%">
                                                 <tr><td>img1</td></tr>
@@ -680,7 +677,7 @@ input#password-input:focus {
     private string NONE_DISPLAY_CLASS = "d-none";
     private string DISPLAY_CLASS = "d-block";
 
-    private int spValueOriginal = 50;
+    //private int spValueOriginal = 50;
     private int spValueCurrent = 50;
     private string currentTorchEventName = string.Empty;
     private bool isTorchStartedMoving = false;
@@ -760,6 +757,11 @@ input#password-input:focus {
     private bool IsDeviceDisabled(bool IsEnableds)
     {
         return !IsEnableds;
+    }
+
+    private bool IsSPButtonsDisabled()
+    {
+        return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy;
     }
 
 
@@ -1075,38 +1077,38 @@ input#password-input:focus {
         }
     }
 
-    private void OnTorchStateChanged()
-    {
-        var newEventName = string.Empty;
+    //private void OnTorchStateChanged()
+    //{
+    //    var newEventName = string.Empty;
 
-        //if (isTorchStartedMoving) return;
+    //    //if (isTorchStartedMoving) return;
 
-        if (spValueOriginal < spValueCurrent)
-        {
-            newEventName = "MoveTorchUp";
-        }
-        else if (spValueOriginal > spValueCurrent)
-        {
-            newEventName = "MoveTorchDown";
-        }
-        else
-        {
-            StopTorchMoving();
-        }
+    //    if (spValueOriginal < spValueCurrent)
+    //    {
+    //        newEventName = "MoveTorchUp";
+    //    }
+    //    else if (spValueOriginal > spValueCurrent)
+    //    {
+    //        newEventName = "MoveTorchDown";
+    //    }
+    //    else
+    //    {
+    //        StopTorchMoving();
+    //    }
 
-        if (!string.IsNullOrWhiteSpace(newEventName))
-        {
-            // We change torch moving direction witout switching to stop position
-            if (isTorchStartedMoving)
-            {
-                StopTorchMoving();
-            }
+    //    if (!string.IsNullOrWhiteSpace(newEventName))
+    //    {
+    //        // We change torch moving direction witout switching to stop position
+    //        if (isTorchStartedMoving)
+    //        {
+    //            StopTorchMoving();
+    //        }
 
-            currentTorchEventName = newEventName;
+    //        currentTorchEventName = newEventName;
 
-            StartMovingTorch(currentTorchEventName);
-        }
-    }
+    //        StartMovingTorch(currentTorchEventName);
+    //    }
+    //}
 
     private void StartMovingTorch(string eventName)
     {
