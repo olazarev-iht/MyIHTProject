@@ -285,8 +285,11 @@ namespace SharedComponents.IhtModbus
                     continue;
                 }
 
-
+               
                 var values = await Rd_AddrPreAreasAsync(slaveId, ihtModbusResult).ConfigureAwait(false);
+
+                // TODO: if values is null - process this and hadle an error
+                if (values == null) return;
 
                 var ihtModbusData = new IhtModbusData(slaveId, (ushort[])values, IsSimulation);
 
@@ -539,10 +542,10 @@ namespace SharedComponents.IhtModbus
             catch (Exception exc)
             {
                 ihtModbusResult.Result = false;
-                string txtSlaveId = CultureResources.GetString("_CultureSlaveId");
-                string msg = String.Format("{0}={1}: {2}", txtSlaveId, slaveAddress.ToString(), exc.Message);
-                // mainWndHlp.SetStatusMsg(IhtMsgLog.Info.Error, msg);
-                _ihtDevices.SetCommunicError((int)slaveAddress);
+                //string txtSlaveId = CultureResources.GetString("_CultureSlaveId");
+                //string msg = String.Format("{0}={1}: {2}", txtSlaveId, slaveAddress.ToString(), exc.Message);
+                //// mainWndHlp.SetStatusMsg(IhtMsgLog.Info.Error, msg);
+                //_ihtDevices.SetCommunicError((int)slaveAddress);
             }
             finally
             {
