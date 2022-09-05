@@ -55,6 +55,29 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 
 			var entity = _mapper.Map<CuttingDataModel, CuttingData>(model);
 
+			using var tx = dbContext.Database.BeginTransaction();
+
+			var customCounter = await dbContext.CustomCounter.SingleAsync();
+			
+			entity.Id = customCounter.Ids ;
+			entity.idCutDataParent = !string.IsNullOrWhiteSpace(model.idCutDataParent.ToString()) ? model.idCutDataParent : model.Id;
+
+			await dbContext.Database.ExecuteSqlRawAsync($@"update CustomCounter Set Ids = {++customCounter.Ids}");
+
+			await dbContext.CuttingData.AddAsync(entity, cancellationToken);
+			await dbContext.SaveChangesAsync(cancellationToken);
+
+			await tx.CommitAsync();
+
+			return entity.Id;
+		}
+
+		public async Task<int?> AddBaseEntryAsync(CuttingDataModel model, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			var entity = _mapper.Map<CuttingDataModel, CuttingData>(model);
+
 			entity.Id = 0;
 			entity.idCutDataParent = !string.IsNullOrWhiteSpace(model.idCutDataParent.ToString()) ? model.idCutDataParent : model.Id;
 

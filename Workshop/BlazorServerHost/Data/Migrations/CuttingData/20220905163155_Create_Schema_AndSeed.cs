@@ -51,6 +51,16 @@ namespace BlazorServerHost.Data.Migrations.CuttingData
                 });
 
             migrationBuilder.CreateTable(
+                name: "CustomCounter",
+                columns: table => new
+                {
+                    Ids = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Gas",
                 columns: table => new
                 {
@@ -152,142 +162,142 @@ namespace BlazorServerHost.Data.Migrations.CuttingData
             migrationBuilder.InsertData(
                 table: "Gas",
                 columns: new[] { "Id", "GasId", "Name" },
-                values: new object[] { new Guid("1cc5e035-f66d-4a20-b398-5f77314cb1a7"), 0, "Propan" });
+                values: new object[] { new Guid("0a47c070-14c2-4b41-a0ae-17f252a59ec0"), 2, "NaturalGas" });
 
             migrationBuilder.InsertData(
                 table: "Gas",
                 columns: new[] { "Id", "GasId", "Name" },
-                values: new object[] { new Guid("493a1c7f-a291-4d58-92aa-77174f83b676"), 2, "NaturalGas" });
+                values: new object[] { new Guid("0b308f5f-4a5f-4b05-b984-7e7d71a59427"), 0, "Propan" });
 
             migrationBuilder.InsertData(
                 table: "Gas",
                 columns: new[] { "Id", "GasId", "Name" },
-                values: new object[] { new Guid("78eb87d8-9348-4546-8888-0fa9b40758a2"), 1, "Acetylene" });
+                values: new object[] { new Guid("b3bd2527-f662-45f3-8253-14a9c4ed7dba"), 1, "Acetylene" });
 
             migrationBuilder.InsertData(
                 table: "Material",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("48572777-e81b-4b9f-ade7-a04a63838fbf"), "Mild Steel" });
+                values: new object[] { new Guid("474ff776-f1a0-4360-af07-a43e9a0bb4da"), "Mild Steel" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("01f2562d-a871-4bc2-ae42-6850aad10dc4"), "", "", "ASF 100-150" });
+                values: new object[] { new Guid("0d27f707-bb73-49a7-82a7-6bf1a32bcd7c"), "", "", "PSF 15-25" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("130a9f6b-257f-43b2-9df7-aa1c40b85b8b"), "", "", "PRC 5-40" });
+                values: new object[] { new Guid("16fe64a1-b634-4d9b-ab1d-fe162aca6c3d"), "", "", "ARC 3-40" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("2164ec4b-d449-4b39-8a78-1252daf125be"), "", "", "ASF 10-25" });
+                values: new object[] { new Guid("1ab52a1a-6d49-4559-9e82-6a919f2fba15"), "", "", "ASF 25-40" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("21772aa1-f93d-4059-bd77-07abc42a6d7d"), "", "", "ASF 25-40" });
+                values: new object[] { new Guid("1fd87b73-09ba-40b1-b21f-7a33bcb29f4d"), "", "", "ASF 3-5" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("2efc5fec-2fb8-44e6-b3f2-2c7b77715d3a"), "", "", "PRC 5-70" });
+                values: new object[] { new Guid("26f51de0-61b7-417b-90d4-b034395b6040"), "", "", "ASF 10-25" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("3fb1cda4-2472-4baa-95a8-5b43ced19a3f"), "", "", "ASF 6-10" });
+                values: new object[] { new Guid("3584be73-4d68-4106-ac40-f92f01828edb"), "", "", "ASF 150-230" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("4870a16c-d70d-4a31-aee8-0747e2819be4"), "", "", "ASF 60-100" });
+                values: new object[] { new Guid("3a768ddc-34eb-4394-8cdf-7d5813a4c895"), "", "", "ASF 230-300" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("50333815-3f76-4e3b-824f-cc8921048398"), "", "", "PSF 60-100" });
+                values: new object[] { new Guid("4f51f31b-39f2-44ce-89e6-206bf2ea5dbf"), "", "", "ASF 6-10" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("55d2d908-ef74-4640-a1c4-8d9761d01fe2"), "", "", "PSF 150-200" });
+                values: new object[] { new Guid("6786a9bf-1e8c-4a6f-b13a-3705da73469e"), "", "", "PSF 100-150" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("57e041e1-25d2-4b75-8f73-917cb8c6959c"), "", "", "ASF 3-5" });
+                values: new object[] { new Guid("6bf0fc51-cf29-47ee-89aa-c4e56361ee4a"), "", "", "PRC 5-70" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("6921c3c4-a74d-44c6-8d02-10533d97295c"), "", "", "PSF 7-15" });
+                values: new object[] { new Guid("7305f4b0-7515-41a8-bf1a-7f3ad03cf715"), "", "", "PSF 150-200" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("6b3e0e3a-5af8-46cb-8b53-d3320ea782d1"), "", "", "ARC 3-40" });
+                values: new object[] { new Guid("73add5e2-3cef-4d25-b124-06bbf2881089"), "", "", "PSF 100-200" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("7238f412-e053-472f-ae0f-5c46ffcd298f"), "", "", "ASF 150-230" });
+                values: new object[] { new Guid("83e71cc5-ac88-45ee-933d-73aa45a00e49"), "", "", "PRC 5-40" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("7eb6c257-8d0e-4fca-bfec-1761e3d296f9"), "", "", "ARC 3-70" });
+                values: new object[] { new Guid("8998c991-1bf9-4728-8eb8-c1fc538a39e2"), "", "", "PSF 7-15" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("87c00c4d-eebf-46f8-abac-f34ea2fa902b"), "", "", "PSF 40-60" });
+                values: new object[] { new Guid("8ad4c91d-d28a-4483-aa11-2851508bc71b"), "", "", "ASF 40-60" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("981144ca-e835-49f9-b3c4-fa566eb2c9af"), "", "", "PSF 100-200" });
+                values: new object[] { new Guid("a778b0f5-66c7-4a01-b340-b5b5843b6d5c"), "", "", "PSF 200-250" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("a04b9d1a-e2cf-4b05-b967-f04e7cba2730"), "", "", "ASF 230-300" });
+                values: new object[] { new Guid("c480bc52-e55e-4be1-9cc3-9566c9ecc01e"), "", "", "PSF 3-6" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("a1fa74c3-f8e1-4e78-989f-309e729b4b75"), "", "", "PSF 3-6" });
+                values: new object[] { new Guid("c87ab98e-2c5e-491d-8e4d-181f356d0df6"), "", "", "ARC 3-70" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("a9e636fc-f227-4ba1-95fe-707298990163"), "", "", "PSF 250-300" });
+                values: new object[] { new Guid("d615c277-bb82-470a-aa8a-5cdb4bd63424"), "", "", "ASF 60-100" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("bb436ec3-8975-4919-8124-42bc5c50ba5e"), "", "", "PSF 25-40" });
+                values: new object[] { new Guid("db9cae5b-113b-467e-b52c-e3d9b61f948c"), "", "", "PSF 40-60" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("ce2f8d33-087d-4b95-a3eb-e3a8b1cd3e3c"), "", "", "ASF 40-60" });
+                values: new object[] { new Guid("e3fe9592-3e0c-4eac-95b8-6cab078a9a1e"), "", "", "PSF 25-40" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("d1ce5e52-780d-4add-bb63-018681932286"), "", "", "PSF 200-250" });
+                values: new object[] { new Guid("ef462061-71a2-4b64-8b76-e60ebb41cbe6"), "", "", "PSF 60-100" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("e2b88477-b228-4663-bcf3-8e595b19d715"), "", "", "PSF 15-25" });
+                values: new object[] { new Guid("efc1fb0b-3533-4c17-949b-605a5fc4d43c"), "", "", "PSF 250-300" });
 
             migrationBuilder.InsertData(
                 table: "Nozzle",
                 columns: new[] { "Id", "ImgPathBegin", "ImgPathEnd", "Name" },
-                values: new object[] { new Guid("e3f8079b-3ac2-4d85-b1f1-d92cbb8be7a1"), "", "", "PSF 100-150" });
+                values: new object[] { new Guid("f8f1c2ba-3ab5-4820-a237-b419c071aff4"), "", "", "ASF 100-150" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CuttingData_GasId",
@@ -309,6 +319,9 @@ namespace BlazorServerHost.Data.Migrations.CuttingData
         {
             migrationBuilder.DropTable(
                 name: "APCCuttingParametersIHT");
+
+            migrationBuilder.DropTable(
+                name: "CustomCounter");
 
             migrationBuilder.DropTable(
                 name: "CuttingData");

@@ -217,6 +217,7 @@ try
 	{
 		using var tx = ctx.Database.BeginTransaction();
 		await ctx.Database.MigrateAsync();
+		// await ctx.Database.ExecuteSqlRawAsync(@"insert into sqlite_sequence(name,seq) values('CuttingData', 50000);");
 		await tx.CommitAsync();
 	}
 
