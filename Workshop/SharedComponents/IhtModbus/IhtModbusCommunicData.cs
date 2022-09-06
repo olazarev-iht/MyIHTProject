@@ -15,7 +15,7 @@ using SharedComponents.Properties;
 
 namespace SharedComponents.IhtModbus
 {
-    class IhtModbusCommunicData : INotifyPropertyChanged
+    public class IhtModbusCommunicData : INotifyPropertyChanged
     {
         private bool _isTcp { get; set; }
         private bool _isRtu { get; set; }

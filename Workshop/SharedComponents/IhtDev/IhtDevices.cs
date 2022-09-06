@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.AspNetCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SharedComponents.IhtDev
 {
@@ -256,24 +258,18 @@ namespace SharedComponents.IhtDev
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         #endregion // INotifyPropertyChanged
 
-        public IhtModbusCommunic ihtModbusCommunic { get { return IhtModbusCommunic.GetIhtModbusCommunic(); } }
+        private static IServiceProvider _provider;
+
+        public IhtModbusCommunic ihtModbusCommunic; // { get { return IhtModbusCommunic.GetIhtModbusCommunic(); } }
 
         static private IhtDevices _ihtDevices_ = null;
         static public IhtDevices GetIhtDevices()
         {
             if (_ihtDevices_ == null)
             {
-                _ihtDevices_ = new IhtDevices(); //Application.Current.MainWindow.FindResource("ihtDevices") as IhtDevices;
+                _ihtDevices_ = _provider?.GetService<IhtDevices>(); //Application.Current.MainWindow.FindResource("ihtDevices") as IhtDevices;
             }
             return _ihtDevices_;
-        }
-
-        static private IhtDevices GetIhtDevicesDataModel()
-        {
-            throw new NotImplementedException();
-
-            // TODO: implement
-            return new IhtDevices();
         }
 
         private static Dictionary<int, IhtDevice> _ihtDevicesDictionary_ = null;
@@ -294,14 +290,15 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public IhtDevices()
+        public IhtDevices(
+            IServiceProvider provider,
+            IhtModbusCommunic ihtModbusCommunic)
         {
-        }
+            _provider = provider ??
+               throw new ArgumentNullException($"{nameof(provider)}");
 
-
-        private object GetIhtDeviceDataModelByName(string devName)
-        {
-            throw new NotImplementedException();
+            this.ihtModbusCommunic = ihtModbusCommunic ??
+               throw new ArgumentNullException($"{nameof(ihtModbusCommunic)}");
         }
 
         /// <summary>
@@ -711,6 +708,8 @@ namespace SharedComponents.IhtDev
             ArrayList _ihtDevices = GetVisibleDevices();
             foreach (IhtDevice _ihtDevice in _ihtDevices)
             {
+                if (_ihtDevice.dataProcessInfo == null) return;
+
                 // Evt. zuletzt gesetzter Fehler und/oder Warnung löschen
                 _ihtDevice.dataProcessInfo.IsError = false;
                 _ihtDevice.dataProcessInfo.IsWarning = false;

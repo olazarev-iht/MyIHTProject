@@ -3,6 +3,7 @@
 @using BlazorServerHost.Features.HeightControlFeature.Services.CNC
 @using SharedComponents.IhtDev
 @using SharedComponents.IhtModbus
+@using SharedComponents.APCCommunic
 @using SharedComponents.Models.APCHardware
 @using SharedComponents.Services.APCHardwareManagers
 @using SharedComponents.Services.APCHardwareMockDBServices
@@ -16,7 +17,7 @@
 @inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
 @inject IParameterDataInfoManager parameterDataInfoManager
 @inject IAPCSimulationDataMockDBService apcSimulationDataMockDBService
-@inject IhtModbusCommunicInfo ihtModbusCommunicInfo
+@inject APCCommunicManager apcCommunicManager
 @inherits ComponentBase
 @implements IDisposable
 
@@ -747,7 +748,7 @@ input#password-input:focus {
         //TODO: Change: use dependency injection instead of the "new IhtModbusCommunicInfo(...)"
         //var ihtModbusCommunicInfo = new IhtModbusCommunicInfo(ihtDevices, apcSimulationDataMockDBService, parameterDataInfoManager);
 
-        await ihtModbusCommunicInfo.ConnectAsync(_nameComPort, _isSimulation, _performResetDevices);
+        await apcCommunicManager.Init(_nameComPort, _isSimulation, _performResetDevices);
 
         ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
 

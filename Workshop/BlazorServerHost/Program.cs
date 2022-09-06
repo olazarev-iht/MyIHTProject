@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Services;
+using SharedComponents.APCCommunic;
 using SharedComponents.APCHardwareManagers;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
@@ -100,7 +101,9 @@ builder.Services.AddSingleton<IParameterDataInfoManager, ParameterDataInfoManage
 
 builder.Services.AddSingleton<IHardwareAPCServise, HardwareAPCServise>();
 builder.Services.AddSingleton<IhtDevices>();
-builder.Services.AddSingleton<IhtModbusCommunicInfo>();
+builder.Services.AddSingleton<IhtModbusCommunic>();
+builder.Services.AddSingleton<IhtModbusCommunicData>(); 
+builder.Services.AddSingleton<APCCommunicManager>();
 builder.Services.AddSingleton<CommunicationsService>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>

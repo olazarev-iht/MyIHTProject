@@ -15,6 +15,8 @@ using SharedComponents.IhtData;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbusTable;
 using SharedComponents.Cultures;
+using SharedComponents.Services.APCHardwareManagers;
+using SharedComponents.Services.APCHardwareMockDBServices;
 using System.Collections.Generic;
 using SharedComponents.StatusInfo;
 using NModbus;
@@ -130,18 +132,19 @@ namespace SharedComponents.IhtModbus
         /// 
         /// </summary>
         static private IhtModbusCommunic _ihtModbusCommunic_ = null;
-        static public IhtModbusCommunic GetIhtModbusCommunic()
+
+        public readonly IAPCSimulationDataMockDBService _apcSimulationDataMockDBService;
+        public readonly IParameterDataInfoManager _parameterDataInfoManager;
+
+        // instead of ---> in file IhtDevices
+        // { get { return IhtModbusCommunic.GetIhtModbusCommunic(); } }
+        public IhtModbusCommunic GetIhtModbusCommunic()
         {
             if (_ihtModbusCommunic_ == null)
             {
-                _ihtModbusCommunic_ = GetIhtModbusCommunic111(); // Application.Current.MainWindow.FindResource("ihtModbusCommunic") as IhtModbusCommunic;
+                _ihtModbusCommunic_ = this; // Application.Current.MainWindow.FindResource("ihtModbusCommunic") as IhtModbusCommunic;
             }
             return _ihtModbusCommunic_;
-        }
-
-        static public IhtModbusCommunic GetIhtModbusCommunic111()
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -150,6 +153,17 @@ namespace SharedComponents.IhtModbus
         static IhtModbusCommunic()
         {
             CurrOnSlaveBits = 0;
+        }
+
+        public IhtModbusCommunic(
+            IAPCSimulationDataMockDBService apcSimulationDataMockDBService,
+            IParameterDataInfoManager parameterDataInfoManager)
+        {
+            _apcSimulationDataMockDBService = apcSimulationDataMockDBService ??
+               throw new ArgumentNullException($"{nameof(apcSimulationDataMockDBService)}");
+
+            _parameterDataInfoManager = parameterDataInfoManager ??
+               throw new ArgumentNullException($"{nameof(parameterDataInfoManager)}");
         }
 
         /// <summary>
@@ -167,9 +181,9 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// Konstruktor
         /// </summary>
-        internal IhtModbusCommunic()
-        {
-        }
+        //internal IhtModbusCommunic()
+        //{
+        //}
 
         /// <summary>
         /// Init
@@ -522,7 +536,7 @@ namespace SharedComponents.IhtModbus
                 }
                 else
                 {
-                    datas = ReadSimulationData((int)slaveAddress, startAddress, numRegisters);
+                    datas = await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(slaveAddress, startAddress, numRegisters);
                 }
                 ihtModbusResult.Result = true;
                 ihtDevices.ClrCommunicError((int)slaveAddress);
@@ -648,17 +662,29 @@ namespace SharedComponents.IhtModbus
             bool isCuPartNo_100685 = false; // Roboter-Anwnedung
             try
             {
-                string connectingTorch = CultureResources.GetString("_CultureMsgLogConnectingTorch");
-                string torch = CultureResources.GetString("_CultureTorch");
-                string torchType = CultureResources.GetString("_CultureTorchType");
-                string txtSlaveId = CultureResources.GetString("_CultureSlaveId");
-                string notConnected = CultureResources.GetString("_CultureNotConnected");
-                string connected = CultureResources.GetString("_CultureConnected");
-                string fwSpecialActive = CultureResources.GetString("_CultureMsgLogFwSpecialActive");
-                string fwUpdateRequired = CultureResources.GetString("_CultureMsgLogFwUpdateRequired");
-                string torchWrongIdentity = CultureResources.GetString("_CultureTorchTypeWrongIdentity");
-                string calibrationInvalid = CultureResources.GetString("_CultureCalibrationInvalid");
-                string pressureOutputsLocked = CultureResources.GetString("_CultureInfoPressureOutputsLocked");
+                //string connectingTorch = CultureResources.GetString("_CultureMsgLogConnectingTorch");
+                //string torch = CultureResources.GetString("_CultureTorch");
+                //string torchType = CultureResources.GetString("_CultureTorchType");
+                //string txtSlaveId = CultureResources.GetString("_CultureSlaveId");
+                //string notConnected = CultureResources.GetString("_CultureNotConnected");
+                //string connected = CultureResources.GetString("_CultureConnected");
+                //string fwSpecialActive = CultureResources.GetString("_CultureMsgLogFwSpecialActive");
+                //string fwUpdateRequired = CultureResources.GetString("_CultureMsgLogFwUpdateRequired");
+                //string torchWrongIdentity = CultureResources.GetString("_CultureTorchTypeWrongIdentity");
+                //string calibrationInvalid = CultureResources.GetString("_CultureCalibrationInvalid");
+                //string pressureOutputsLocked = CultureResources.GetString("_CultureInfoPressureOutputsLocked");
+
+                string connectingTorch = "connectingTorch"; 
+                string torch = "torch";
+                string torchType = "torchType";
+                string txtSlaveId = "txtSlaveId";
+                string notConnected = "notConnected";
+                string connected = "connected";
+                string fwSpecialActive = "fwSpecialActive";
+                string fwUpdateRequired = "fwUpdateRequired";
+                string torchWrongIdentity = "torchWrongIdentity";
+                string calibrationInvalid = "calibrationInvalid";
+                string pressureOutputsLocked = "pressureOutputsLocked";
 
                 //TODO: implement ?
                 //mainWndHlp.mainWnd.StopBackgroundWorker();
@@ -1379,7 +1405,7 @@ namespace SharedComponents.IhtModbus
             ushort startAddress = (ushort)IhtModbusData.eAddress.StartAddress;
             ushort numRegisters = (ushort)IhtModbusData.eIdxAddr.StartDeviceInfo;
             var values = !IsSimulation ? await ReadHoldingRegistersAsync((byte)slaveId, startAddress, numRegisters, ihtModbusResult).ConfigureAwait(false)
-                                       : IhtModbusData.GetAddrAreasSimulationData(264/*V01.08*/);
+                                       : await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync((byte)slaveId, startAddress, numRegisters, ihtModbusResult).ConfigureAwait(false);
             return values;
         }
 
@@ -1396,7 +1422,7 @@ namespace SharedComponents.IhtModbus
             numRegisters += (ushort)(ihtModbusData.GetAreasNumber() * 2);
 
             var values = !IsSimulation ? await ReadHoldingRegistersAsync((byte)ihtModbusData.SlaveId, startAddress, numRegisters, ihtModbusResult).ConfigureAwait(false)
-                                       : IhtModbusData.GetAreasDataSimulationData();
+                                       : await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync((byte)ihtModbusData.SlaveId, startAddress, numRegisters, ihtModbusResult).ConfigureAwait(false);
 
             if (ihtModbusResult.Result)
             {
