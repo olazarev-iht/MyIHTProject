@@ -244,17 +244,17 @@ namespace SharedComponents.IhtDev
 
 
         public DataProcessInfo dataProcessInfo { get; private set; } = new DataProcessInfo();
-        public DataDeviceInfo dataDeviceInfo { get; private set; } //= new DataDeviceInfo();
-        public DataParamConstTechnology dataParamConstTechnology { get; private set; }
-        public DataParamDynTechnology dataParamDynTechnology { get; private set; }
-        public DataParamConstProcess dataParamConstProcess { get; private set; }
-        public DataParamDynProcess dataParamDynProcess { get; private set; }
-        public DataParamConstConfig dataParamConstConfig { get; private set; }
-        public DataParamDynConfig dataParamDynConfig { get; private set; }
-        public DataParamConstService dataParamConstService { get; private set; }
-        public DataParamDynService dataParamDynService { get; private set; }
-        public DataSetupExecution dataSetupExecution { get; private set; }
-        public DataCmdExecution dataCmdExecution { get; private set; }
+        public DataDeviceInfo dataDeviceInfo { get; private set; } = new DataDeviceInfo();
+        public DataParamConstTechnology dataParamConstTechnology { get; private set; } = new DataParamConstTechnology();
+        public DataParamDynTechnology dataParamDynTechnology { get; private set; } = new DataParamDynTechnology();
+        public DataParamConstProcess dataParamConstProcess { get; private set; } = new DataParamConstProcess();
+        public DataParamDynProcess dataParamDynProcess { get; private set; } = new DataParamDynProcess();
+        public DataParamConstConfig dataParamConstConfig { get; private set; } = new DataParamConstConfig();
+        public DataParamDynConfig dataParamDynConfig { get; private set; } = new DataParamDynConfig();
+        public DataParamConstService dataParamConstService { get; private set; } = new DataParamConstService();
+        public DataParamDynService dataParamDynService { get; private set; } = new DataParamDynService();
+        public DataSetupExecution dataSetupExecution { get; private set; } = new DataSetupExecution();
+        public DataCmdExecution dataCmdExecution { get; private set; } = new DataCmdExecution();
 
         public ErrorCodeLables errorCodeLabels = new ErrorCodeLables();
 
@@ -267,36 +267,36 @@ namespace SharedComponents.IhtDev
         }
 
         public void SetData(IhtModbusCommunic.SlaveId _slaveId,
-                            IhtDevices.DeviceNumber _eDeviceNubmer,
-                            DataDeviceInfo _dataDeviceInfo,
-                            DataProcessInfo _dataProcessInfo,
-                            DataParamConstTechnology _dataParamConstTechnology,
-                            DataParamDynTechnology _dataParamDynTechnology,
-                            DataParamConstProcess _dataParamConstProcess,
-                            DataParamDynProcess _dataParamDynProcess,
-                            DataParamConstConfig _dataParamConstConfig,
-                            DataParamDynConfig _dataParamDynConfig,
-                            DataParamConstService _dataParamConstService,
-                            DataParamDynService _dataParamDynService,
-                            DataSetupExecution _dataSetupExecution,
-                            DataCmdExecution _dataCmdExecution
+                            IhtDevices.DeviceNumber _eDeviceNubmer
+                            //DataDeviceInfo _dataDeviceInfo,
+                            //DataProcessInfo _dataProcessInfo,
+                            //DataParamConstTechnology _dataParamConstTechnology,
+                            //DataParamDynTechnology _dataParamDynTechnology,
+                            //DataParamConstProcess _dataParamConstProcess,
+                            //DataParamDynProcess _dataParamDynProcess,
+                            //DataParamConstConfig _dataParamConstConfig,
+                            //DataParamDynConfig _dataParamDynConfig,
+                            //DataParamConstService _dataParamConstService,
+                            //DataParamDynService _dataParamDynService,
+                            //DataSetupExecution _dataSetupExecution,
+                            //DataCmdExecution _dataCmdExecution
                            )
         {
             SlaveId = (int)_slaveId;
             DeviceNumber = (int)_eDeviceNubmer;
 
-            dataDeviceInfo = _dataDeviceInfo;
-            dataProcessInfo = _dataProcessInfo;
-            dataParamConstTechnology = _dataParamConstTechnology;
-            dataParamDynTechnology = _dataParamDynTechnology;
-            dataParamConstProcess = _dataParamConstProcess;
-            dataParamDynProcess = _dataParamDynProcess;
-            dataParamConstConfig = _dataParamConstConfig;
-            dataParamDynConfig = _dataParamDynConfig;
-            dataParamConstService = _dataParamConstService;
-            dataParamDynService = _dataParamDynService;
-            dataSetupExecution = _dataSetupExecution;
-            dataCmdExecution = _dataCmdExecution;
+            //dataDeviceInfo = _dataDeviceInfo;
+            //dataProcessInfo = _dataProcessInfo;
+            //dataParamConstTechnology = _dataParamConstTechnology;
+            //dataParamDynTechnology = _dataParamDynTechnology;
+            //dataParamConstProcess = _dataParamConstProcess;
+            //dataParamDynProcess = _dataParamDynProcess;
+            //dataParamConstConfig = _dataParamConstConfig;
+            //dataParamDynConfig = _dataParamDynConfig;
+            //dataParamConstService = _dataParamConstService;
+            //dataParamDynService = _dataParamDynService;
+            //dataSetupExecution = _dataSetupExecution;
+            //dataCmdExecution = _dataCmdExecution;
 
             // Slave_ID auf den Process-Info's setzen
             if (dataProcessInfo != null)

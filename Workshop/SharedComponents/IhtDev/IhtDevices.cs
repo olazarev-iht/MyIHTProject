@@ -311,8 +311,10 @@ namespace SharedComponents.IhtDev
             //MainWindow _mainWindow = MainWindow.GetMainWindow();
             // Device 1
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_01; //_mainWindow.FindResource("ihtDevice_1") as IhtDevice;
-            _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_11,
-                               IhtDevices.DeviceNumber.Device_01, null, null, null, null, null, null, null, null, null, null, null, null
+            _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_11, 
+                               IhtDevices.DeviceNumber.Device_01
+                               //, new DataDeviceInfo(), new DataProcessInfo(), new DataParamConstTechnology(), 
+                               //null, null, null, null, null, null, null, null, null
                                //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_1"), //_mainWindow.FindResource("dataDeviceInfo_1"),
                                //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_1"),
                                //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_1"),
@@ -328,12 +330,13 @@ namespace SharedComponents.IhtDev
                               );
             _ihtDevice.IsVisible = true;
             _ihtDevice.IsEnabled = false;
-            _ihtDevicesDictionary_.Add(1 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
+            _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 2
             _ihtDevice = new();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_02;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_12, 
-                               IhtDevices.DeviceNumber.Device_02, null, null, null, null, null, null, null, null, null, null, null, null
+                               IhtDevices.DeviceNumber.Device_02
+                               //, new DataDeviceInfo(), null, null, null, null, null, null, null, null, null, null, null
                                //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_2"),
                                //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_2"),
                                //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_2"),
@@ -347,13 +350,14 @@ namespace SharedComponents.IhtDev
                                //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_2"),
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_2")
                               );
-            _ihtDevicesDictionary_.Add(2 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
+            _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             _ihtDevice.IsEnabled = true;
             // Device 3
             _ihtDevice = new();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_03;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_13,
-                               IhtDevices.DeviceNumber.Device_03, null, null, null, null, null, null, null, null, null, null, null, null
+                               IhtDevices.DeviceNumber.Device_03
+                               //, null, null, null, null, null, null, null, null, null, null, null, null
                                //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_3"),
                                //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_3"),
                                //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_3"),
@@ -367,12 +371,13 @@ namespace SharedComponents.IhtDev
                                //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_3"),
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_3")
                               );
-            _ihtDevicesDictionary_.Add(3 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
+            _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 4
             _ihtDevice = new();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_04;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_14,
-                               IhtDevices.DeviceNumber.Device_04, null, null, null, null, null, null, null, null, null, null, null, null
+                               IhtDevices.DeviceNumber.Device_04
+                               //, null, null, null, null, null, null, null, null, null, null, null, null
                                //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_4"),
                                //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_4"),
                                //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_4"),
@@ -386,12 +391,13 @@ namespace SharedComponents.IhtDev
                                //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_4"),
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_4")
                               );
-            _ihtDevicesDictionary_.Add(4 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
+            _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 5
             _ihtDevice = new();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_05;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_15,
-                               IhtDevices.DeviceNumber.Device_05, null, null, null, null, null, null, null, null, null, null, null, null
+                               IhtDevices.DeviceNumber.Device_05
+                               //, null, null, null, null, null, null, null, null, null, null, null, null
                                //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_5"),
                                //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_5"),
                                //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_5"),
@@ -405,12 +411,13 @@ namespace SharedComponents.IhtDev
                                //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_5"),
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_5")
                               );
-            _ihtDevicesDictionary_.Add(5 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
+            _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 6
             _ihtDevice = new();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_06;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_16,
-                               IhtDevices.DeviceNumber.Device_06, null, null, null, null, null, null, null, null, null, null, null, null
+                               IhtDevices.DeviceNumber.Device_06
+                               //, null, null, null, null, null, null, null, null, null, null, null, null
                                //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_6"),
                                //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_6"),
                                //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_6"),
@@ -424,12 +431,13 @@ namespace SharedComponents.IhtDev
                                //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_6"),
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_6")
                               );
-            _ihtDevicesDictionary_.Add(6 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
+            _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 7
             _ihtDevice = new();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_07;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_17,
-                               IhtDevices.DeviceNumber.Device_07, null, null, null, null, null, null, null, null, null, null, null, null
+                               IhtDevices.DeviceNumber.Device_07
+                               //, null, null, null, null, null, null, null, null, null, null, null, null
                                //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_7"),
                                //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_7"),
                                //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_7"),
@@ -443,12 +451,13 @@ namespace SharedComponents.IhtDev
                                //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_7"),
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_7")
                               );
-            _ihtDevicesDictionary_.Add(7 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
+            _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 8
             _ihtDevice = new();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_08;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_18,
-                               IhtDevices.DeviceNumber.Device_08, null, null, null, null, null, null, null, null, null, null, null, null
+                               IhtDevices.DeviceNumber.Device_08
+                               //, null, null, null, null, null, null, null, null, null, null, null, null
                                //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_8"),
                                //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_8"),
                                //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_8"),
@@ -462,12 +471,13 @@ namespace SharedComponents.IhtDev
                                //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_8"),
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_8")
                               );
-            _ihtDevicesDictionary_.Add(8 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
+            _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 9
             _ihtDevice = new();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_09;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_19,
-                               IhtDevices.DeviceNumber.Device_09, null, null, null, null, null, null, null, null, null, null, null, null
+                               IhtDevices.DeviceNumber.Device_09
+                               //, null, null, null, null, null, null, null, null, null, null, null, null
                                //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_9"),
                                //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_9"),
                                //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_9"),
@@ -481,12 +491,13 @@ namespace SharedComponents.IhtDev
                                //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_9"),
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_9")
                               );
-            _ihtDevicesDictionary_.Add(9 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
+            _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 10
             _ihtDevice = new();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_10;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_20,
-                               IhtDevices.DeviceNumber.Device_10, null, null, null, null, null, null, null, null, null, null, null, null
+                               IhtDevices.DeviceNumber.Device_10
+                               //, null, null, null, null, null, null, null, null, null, null, null, null
                                //(DataDeviceInfo)GetIhtDeviceDataModelByName("dataDeviceInfo_10"),
                                //(DataProcessInfo)GetIhtDeviceDataModelByName("dataProcessInfo_10"),
                                //(DataParamConstTechnology)GetIhtDeviceDataModelByName("dataParamConstTechnology_10"),
@@ -500,7 +511,7 @@ namespace SharedComponents.IhtDev
                                //(DataSetupExecution)GetIhtDeviceDataModelByName("dataSetupExecution_10"),
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_10")
                               );
-            _ihtDevicesDictionary_.Add(10 /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
+            _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
         }
 
         /// <summary>
@@ -1893,11 +1904,11 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Aufwärtsbewegung
         /// </summary>
-        internal async Task MoveManUpAsync(int _slaveId)
+        public async Task MoveManUpAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.MoveManUpAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task StopManUpAsync(int _slaveId)
+        public async Task StopManUpAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopManUpAsync(_slaveId).ConfigureAwait(false);
         }
@@ -1905,11 +1916,11 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Abwärtsbewegung
         /// </summary>
-        internal async Task MoveManDownAsync(int _slaveId)
+        public async Task MoveManDownAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.MoveManDownAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task StopManDownAsync(int _slaveId)
+        public async Task StopManDownAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopManDownAsync(_slaveId).ConfigureAwait(false);
         }
@@ -1917,11 +1928,11 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Abstandseinstellung nach oben
         /// </summary>
-        internal async Task HeightCtrlUpAsync(int _slaveId)
+        public async Task HeightCtrlUpAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.HeightCtrlUpAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task StopHeightCtrlUpAsync(int _slaveId)
+        public async Task StopHeightCtrlUpAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopHeightCtrlUpAsync(_slaveId).ConfigureAwait(false);
         }
@@ -1929,11 +1940,11 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Abstandseinstellung nach unten
         /// </summary>
-        internal async Task HeightCtrlDownAsync(int _slaveId)
+        public async Task HeightCtrlDownAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.HeightCtrlDownAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task StopHeightCtrlDownAsync(int _slaveId)
+        public async Task StopHeightCtrlDownAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopHeightCtrlDownAsync(_slaveId).ConfigureAwait(false);
         }
@@ -1941,11 +1952,11 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Aufwärtsbewegung Gemeinsam
         /// </summary>
-        internal async Task MoveManUpCommonAsync()
+        public async Task MoveManUpCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.MoveManUpAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
-        internal async Task StopManUpCommonAsync()
+        public async Task StopManUpCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopManUpAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
@@ -1953,11 +1964,11 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Abwärtsbewegung Gemeinsam
         /// </summary>
-        internal async Task MoveManDownCommonAsync()
+        public async Task MoveManDownCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.MoveManDownAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
-        internal async Task StopManDownCommonAsync()
+        public async Task StopManDownCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopManDownAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }

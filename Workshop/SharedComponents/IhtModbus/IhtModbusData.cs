@@ -948,52 +948,52 @@ namespace SharedComponents.IhtModbus
             {
                 case DataDeviceInfoValue.PartNo:
                     u32Data = ((UInt32)GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.PartNoHWord) << 16) + (UInt32)GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.PartNoLWord);
-                    desc = String.Format("CU+ {0}", CultureResources.GetString("_CulturePartNumber"));
+                    //desc = String.Format("CU+ {0}", CultureResources.GetString("_CulturePartNumber"));
                     val = String.Format("{0}", u32Data);
                     data = descData == DescriptionData.All ? String.Format("{0}: {1}", desc, val)
                                                          : descData == DescriptionData.OnlyDescritpion ? desc : val;
                     break;
                 case DataDeviceInfoValue.SerialNo:
                     u32Data = ((UInt32)GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.SerialNoHWord) << 16) + (UInt32)GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.SerialNoLWord);
-                    desc = String.Format("CU+ {0}", CultureResources.GetString("_CultureSerialNumber"));
+                    //desc = String.Format("CU+ {0}", CultureResources.GetString("_CultureSerialNumber"));
                     val = String.Format("{0}", u32Data);
                     data = descData == DescriptionData.All ? String.Format("{0}: {1}", desc, val)
                                                          : descData == DescriptionData.OnlyDescritpion ? desc : val;
                     break;
                 case DataDeviceInfoValue.HwVersion:
-                    desc = String.Format("CU+ HW-{0}", CultureResources.GetString("_CultureVersion"));
+                    //desc = String.Format("CU+ HW-{0}", CultureResources.GetString("_CultureVersion"));
                     val = String.Format("V{0,2:00}.{1,2:00}", (GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.HwVersion) >> 8), (GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.HwVersion) & 0xFF));
                     data = descData == DescriptionData.All ? String.Format("{0}: {1}", desc, val)
                                                          : descData == DescriptionData.OnlyDescritpion ? desc : val;
                     break;
                 case DataDeviceInfoValue.FwVersion:
-                    desc = String.Format("CU+ FW-{0}", CultureResources.GetString("_CultureVersion"));
+                    //desc = String.Format("CU+ FW-{0}", CultureResources.GetString("_CultureVersion"));
                     val = String.Format("V{0,2:00}.{1,2:00}.{2,2:00}", (GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.FwVersion) >> 8), (GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.FwVersion) & 0xFF), (GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.FwSubVersion) & 0xFF));
                     data = descData == DescriptionData.All ? String.Format("{0}: {1}", desc, val)
                                                          : descData == DescriptionData.OnlyDescritpion ? desc : val;
                     break;
                 case DataDeviceInfoValue.TorchPartNo:
                     u32Data = ((UInt32)GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.TorchPartNoHWord) << 16) + (UInt32)GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.TorchPartNoLWord);
-                    desc = String.Format("FIT+3 {0}", CultureResources.GetString("_CulturePartNumber"));
+                    //desc = String.Format("FIT+3 {0}", CultureResources.GetString("_CulturePartNumber"));
                     val = String.Format("{0}", u32Data);
                     data = descData == DescriptionData.All ? String.Format("{0}: {1}", desc, val)
                                                          : descData == DescriptionData.OnlyDescritpion ? desc : val;
                     break;
                 case DataDeviceInfoValue.TorchSerialNo:
                     u32Data = ((UInt32)GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.TorchSerialNoHWord) << 16) + (UInt32)GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.TorchSerialNoLWord);
-                    desc = String.Format("FIT+3 {0}", CultureResources.GetString("_CultureSerialNumber"));
+                    //desc = String.Format("FIT+3 {0}", CultureResources.GetString("_CultureSerialNumber"));
                     val = String.Format("{0}", u32Data);
                     data = descData == DescriptionData.All ? String.Format("{0}: {1}", desc, val)
                                                          : descData == DescriptionData.OnlyDescritpion ? desc : val;
                     break;
                 case DataDeviceInfoValue.TorchHwVersion:
-                    desc = String.Format("FIT+3 HW-{0}", CultureResources.GetString("_CultureVersion"));
+                    //desc = String.Format("FIT+3 HW-{0}", CultureResources.GetString("_CultureVersion"));
                     val = String.Format("V{0,2:00}.{1,2:00}", (GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.TorchHwVersion) >> 8), (GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.TorchHwVersion) & 0xFF));
                     data = descData == DescriptionData.All ? String.Format("{0}: {1}", desc, val)
                                                          : descData == DescriptionData.OnlyDescritpion ? desc : val;
                     break;
                 case DataDeviceInfoValue.TorchFwVersion:
-                    desc = String.Format("FIT+3 FW-{0}", CultureResources.GetString("_CultureVersion"));
+                    //desc = String.Format("FIT+3 FW-{0}", CultureResources.GetString("_CultureVersion"));
                     val = String.Format("V{0,2:00}.{1,2:00}.{2,2:00}", (GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.TorchFwVersion) >> 8), (GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.TorchFwVersion) & 0xFF), (GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo.TorchFwSubVersion) & 0xFF));
                     data = descData == DescriptionData.All ? String.Format("{0}: {1}", desc, val)
                                                          : descData == DescriptionData.OnlyDescritpion ? desc : val;

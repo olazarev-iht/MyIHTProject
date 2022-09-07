@@ -544,9 +544,9 @@ namespace SharedComponents.IhtModbus
             catch (Exception exc)
             {
                 ihtModbusResult.Result = false;
-                string txtSlaveId = CultureResources.GetString("_CultureSlaveId");
-                string msg = String.Format("{0}={1}: {2}", txtSlaveId, slaveAddress.ToString(), exc.Message);
-                mainWndHlp.SetStatusMsg(IhtMsgLog.Info.Error, msg);
+                //string txtSlaveId = CultureResources.GetString("_CultureSlaveId");
+                //string msg = String.Format("{0}={1}: {2}", txtSlaveId, slaveAddress.ToString(), exc.Message);
+                //mainWndHlp.SetStatusMsg(IhtMsgLog.Info.Error, msg);
                 ihtDevices.SetCommunicError((int)slaveAddress);
             }
             finally
@@ -573,7 +573,8 @@ namespace SharedComponents.IhtModbus
             }
             catch (Exception exc)
             {
-                string txtSlaveId = CultureResources.GetString("_CultureSlaveId");
+                //string txtSlaveId = CultureResources.GetString("_CultureSlaveId");
+                string txtSlaveId = "_CultureSlaveId";
                 string msg = String.Format("{0}={1}: {2}", txtSlaveId, slaveAddress.ToString(), exc.Message);
                 mainWndHlp.SetStatusMsg(IhtMsgLog.Info.Error, msg);
             }
@@ -618,7 +619,8 @@ namespace SharedComponents.IhtModbus
             }
             catch (Exception exc)
             {
-                string txtSlaveId = CultureResources.GetString("_CultureSlaveId");
+                //string txtSlaveId = CultureResources.GetString("_CultureSlaveId");
+                string txtSlaveId = "_CultureSlaveId";
                 string msg = String.Format("{0}={1}: {2}", txtSlaveId, slaveAddress.ToString(), exc.Message);
                 mainWndHlp.SetStatusMsg(IhtMsgLog.Info.Error, msg);
                 ihtDevices.SetCommunicError((int)slaveAddress);
@@ -709,7 +711,8 @@ namespace SharedComponents.IhtModbus
                 if (isExecReset)
                 {
                     mainWndHlp.SetStatusMsg(IhtMsgLog.Info.None, "");
-                    msg = CultureResources.GetString("_CultureResetAllDevices");
+                    //msg = CultureResources.GetString("_CultureResetAllDevices");
+                    msg = "_CultureResetAllDevices";
                     mainWndHlp.SetStatusMsg(IhtMsgLog.Info.Info, msg);
                     // Reset-Befehl an alle angeschlossene Geräte senden
                     ushort[] registers = { (ushort)IhtModbusCmdExecTactile.eCmdBit.ExecuteReset };
@@ -1230,6 +1233,11 @@ namespace SharedComponents.IhtModbus
                         }
                     }
                 }
+
+                // Update Dyn Params in DB
+                var devicesAmount = ihtDevices.GetVisibleDevices().Count;
+                await _parameterDataInfoManager.UpdateAPCHardwareDataAsync(CancellationToken.None, devicesAmount);
+
                 #endregion // foreach
                 mainWndHlp.SetStatusMsg(IhtMsgLog.Info.None, "");
                 // Wenn es eine Roboteranwendung ist

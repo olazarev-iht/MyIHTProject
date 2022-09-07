@@ -1,5 +1,6 @@
 ﻿//using BlazorServerHost.Features.Models.CNC;
 using BlazorServerHost.Services.APCWorkerService;
+using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
 using SharedComponents.Models;
 using SharedComponents.Models.APCHardware;
@@ -14,30 +15,28 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		private readonly ILogger<DynDataModificationCNCDataProvider> _logger;
 
-		//public DynDataModificationParamsModel CurrentDynamicAPCParams { get; set; }
-		//public DynamicAPCParamsModel CurrentDynamicAPCParams { get; set; } = new();
-
 		public int CurrentDeviceNumber { get; set; } = 1;
+
+		public int CurrentSlaveId
+        {
+			get { return CurrentDeviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default; }
+        }
 		public string CurrentParamsType { get; set; } = "Ignition";
 
-		public int APCDevicesCount { 
-			get {
-				return GeAPCDevicesNumber().Result;
-			}
+		public int APCDevicesCount 
+		{ 
+			get { return GeAPCDevicesNumber().Result; }
 		}
 
 		public bool IsCurrentDeviceBusy
 		{
-            get
-            {
-				return IsAnOtherUserWorkingWithDeviceNow();
-            } 
+            get { return IsAnOtherUserWorkingWithDeviceNow(); } 
 			
 		}
 
 		private readonly IAPCWorker _apcWorker;
-
 		private readonly IParameterDataInfoManager _parameterDataInfoManager;
+		private readonly IhtDevices _ihtDevices;
 
 		public ParameterDataModel _paramHeatO2 = new ParameterDataModel();
 		public ParameterDataModel _paramFuelGas = new ParameterDataModel();
@@ -57,13 +56,16 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		public DynDataModificationCNCDataProvider(
 			IAPCWorker apcWorker, 
 			IParameterDataInfoManager parameterDataInfoManager,
-			ILogger<DynDataModificationCNCDataProvider> logger)
+			ILogger<DynDataModificationCNCDataProvider> logger,
+			IhtDevices ihtDevices)
 		{
 			_apcWorker = apcWorker ?? throw new ArgumentNullException(nameof(apcWorker));
 
 			_parameterDataInfoManager = parameterDataInfoManager ?? throw new ArgumentNullException(nameof(parameterDataInfoManager));
 
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+			_ihtDevices = ihtDevices ?? throw new ArgumentNullException(nameof(ihtDevices));
 
 			_apcWorker.DynamicDataChanged += _apcWorkerService_DymanicDataChanged;
 
@@ -132,6 +134,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			//Action<CancellationToken> doHeartBeatWork = null;
 			//var tokenSource = new CancellationTokenSource();
 
+			try { if (tokenSource != null) { tokenSource.Cancel(); tokenSource.Dispose(); } } catch { }
+
 			await mutexModbusMaster.WaitAsync().ConfigureAwait(false);
 
 			tokenSource = new CancellationTokenSource();
@@ -172,7 +176,11 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		public async void dynamicParamsDysplay_APCTorchPositionStoped(object? sender, EventArgs e)
 		{
-			await StopMovingTorchAsync();
+			try
+			{
+				await StopMovingTorchAsync();
+			}
+			catch { };
 		}
 
 		public async Task StopMovingTorchAsync()
@@ -185,8 +193,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			if (tokenSource != null) 
 				tokenSource.Cancel();
 
-			// Dispose token source instead of finally block
-			//tokenSource.Dispose();
+			//Dispose token source instead of finally block
+			//tokenSource?.Dispose();
 
 			Console.WriteLine("\nTask cancellation requested.");
 
@@ -219,7 +227,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 				if(taskSendHeartBeat != null) await taskSendHeartBeat;
 
 				//In the production Delay must be < 0.750 sec
-				await Task.Delay(TimeSpan.FromSeconds(1));
+				await Task.Delay(TimeSpan.FromSeconds(0.250));
 
 				if (ct.IsCancellationRequested)
 				{
@@ -233,6 +241,10 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		{
 			// TODO: call APC device API function to Move Torch Up instead.
 			//await Task.Run(() => { _logger.LogDebug("\nSent Command - StopTorch"); });
+			
+			await _ihtDevices.StopManUpAsync(CurrentSlaveId);
+			await _ihtDevices.StopManDownAsync(CurrentSlaveId);
+
 			_logger.LogDebug($"\n\n\n\nSent Command - Stop Torch. Device: {CurrentDeviceNumber}. User: {_userId}\n\n\n\n");
 		}
 
@@ -240,6 +252,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		{
 			// TODO: call APC device API function to Move Torch Up instead.
 			//await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchUp"); });
+			await _ihtDevices.MoveManUpAsync(CurrentSlaveId);
+
 			_logger.LogDebug($"\nSent Command - Move Torch Up. Device {CurrentDeviceNumber}. User: {_userId}");
 		}
 
@@ -247,6 +261,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		{
 			// TODO: call APC device API function to Move Torch Down instead.
 			//await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchDown"); });
+			await _ihtDevices.MoveManDownAsync(CurrentSlaveId);
+
 			_logger.LogDebug($"\nSent Command - Move Torch Down. Device {CurrentDeviceNumber}. User: {_userId}");
 		}
 
