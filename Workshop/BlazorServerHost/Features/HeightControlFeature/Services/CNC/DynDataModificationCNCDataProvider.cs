@@ -110,7 +110,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		}
 
 
-		//SemaphoreSlim mutexModbusMaster = new SemaphoreSlim(1,1);
+		SemaphoreSlim mutexModbusMaster = new SemaphoreSlim(1,1);
 
 		public async void dynamicParamsDysplay_APCTorchPositionChanged(object? sender, EventArgs e)
 		{
@@ -120,6 +120,9 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			// If the device is busy - stop the command
 			if (IsAnOtherUserWorkingWithDeviceNow()) return;
 
+			// To prevent the mutex queue from growing
+			if (mutexModbusMaster.CurrentCount == 0)
+				return;
 
 			// If the current device is free - set up it as busy by the current user
 			if (currentlyInWorkDevices[CurrentDeviceNumber] == Guid.Empty)
@@ -133,8 +136,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 			//Action<CancellationToken> doHeartBeatWork = null;
 
-			// Since when quickly pressing doesn't help
-			//await mutexModbusMaster.WaitAsync().ConfigureAwait(false);
+			await mutexModbusMaster.WaitAsync();
 
 			tokenSource = new CancellationTokenSource();
 			var token = tokenSource.Token;
@@ -143,38 +145,39 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			{
 				await Task.Run(async () => await StartSendingHeartBeatForTorchAsync(commandType, token), token);
 			}
-			catch (AggregateException ex1)
+            catch (AggregateException ex1)
+            {
+                // catch whatever was thrown
+                foreach (Exception eex in ex1.InnerExceptions)
+                    Console.WriteLine(eex.Message);
+            }
+            catch (OperationCanceledException ex)
 			{
-				// catch whatever was thrown
-				foreach (Exception eex in ex1.InnerExceptions)
-					Console.WriteLine(eex.Message);
-			}
-			catch (OperationCanceledException ex)
-			{
-				Console.WriteLine($"\n{nameof(OperationCanceledException)} thrown\n");
+                Console.WriteLine($"\n{nameof(OperationCanceledException)} thrown\n");
 
-				if (ex.InnerException != null)
-				{
-					var innerExMessage = ex.InnerException.Message;
-				}
+                if (ex.InnerException != null)
+                {
+                    var innerExMessage = ex.InnerException.Message;
+                }
 
-				var exMessage = ex.Message;
-			}
-			catch (Exception ex2)
+                var exMessage = ex.Message;
+            }
+            catch (Exception ex2)
 			{
-				Console.WriteLine(ex2.Message);
+				//Console.WriteLine(ex2.Message);
 			}
 			finally
 			{
-				//tokenSource?.Dispose();
-				//mutexModbusMaster?.Release();
+				tokenSource?.Dispose();
+				//tokenSource = null;
+				mutexModbusMaster?.Release();
 			}
 
 		}
 
 		public async void dynamicParamsDysplay_APCTorchPositionStoped(object? sender, EventArgs e)
 		{
-			await StopMovingTorchAsync();
+			await StopMovingTorchAsync(); 
 		}
 
 		public async Task StopMovingTorchAsync()
@@ -188,7 +191,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 				tokenSource.Cancel();
 
 			//Dispose token source instead of finally block
-			tokenSource?.Dispose();
+			//tokenSource?.Dispose();
 
 			Console.WriteLine("\nTask cancellation requested.");
 
@@ -206,27 +209,35 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 				ct.ThrowIfCancellationRequested();
 			}
 
+			switch (commandType)
+			{
+				case "MoveTorchUp":
+					taskSendHeartBeat = SendHeartBeatMoveTorchUpAsync();
+					break;
+				case "MoveTorchDown":
+					taskSendHeartBeat = SendHeartBeatMoveTorchDownAsync();
+					break;
+				default: return;
+			}
+
 			while (true)
 			{
-                switch (commandType)
-                {
-                    case "MoveTorchUp":
-						taskSendHeartBeat = SendHeartBeatMoveTorchUpAsync();
-                        break;
-                    case "MoveTorchDown":
-						taskSendHeartBeat = SendHeartBeatMoveTorchDownAsync();
-                        break;
-                }
 
-				if(taskSendHeartBeat != null) await taskSendHeartBeat;
+				await taskSendHeartBeat;
 
 				//In the production Delay must be < 0.750 sec
-				await Task.Delay(TimeSpan.FromSeconds(0.250));
+				int time_ms = 250;
 
-				if (ct.IsCancellationRequested)
-				{
-					Console.WriteLine($"\nTask {commandType} cancelled. Device {CurrentDeviceNumber}");
-					ct.ThrowIfCancellationRequested();
+				while (time_ms > 0)
+                {
+					await Task.Delay(10);
+					time_ms -= 10;
+					if (ct.IsCancellationRequested)
+					{
+						Console.WriteLine($"\nTask {commandType} cancelled. Device {CurrentDeviceNumber}");
+						ct.ThrowIfCancellationRequested();
+						break;
+					}
 				}
 			}
 		}
