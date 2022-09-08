@@ -317,6 +317,7 @@ namespace SharedComponents.APCHardwareManagers
 
         private async Task<(ushort Address, ushort Value)[]> GetParamsSubGroupValuesFromMockDB(byte deviceNum, ushort startStoreValue, ushort numberStoreValue)
         {
+            //TODO: change to "await _ihtModbusCommunic.ReadAsync(apcSlaveId, (ushort)paramAddress, ihtModbusResult);"
             var paramsStartAddr = (await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(deviceNum, startStoreValue, 1)).FirstOrDefault();
 
             var paramsNumber = (await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(deviceNum, numberStoreValue, 1)).FirstOrDefault();
@@ -326,9 +327,9 @@ namespace SharedComponents.APCHardwareManagers
             return paramsValues;
         }
 
-        public async Task<UInt16?> ReadOneHoldingRegisterAsync(byte slaveAddress, ushort startAddress)
+        public async Task<UInt16?> ReadOneHoldingRegisterAsync(byte slaveId, ushort startAddress)
         {
-            var deviceId = slaveAddress > 10 ? slaveAddress - 10 : slaveAddress;
+            var deviceId = slaveId > 10 ? slaveId - 10 : slaveId;
 
             var simulationData = (await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync((byte)deviceId, startAddress, 1)).FirstOrDefault();
 

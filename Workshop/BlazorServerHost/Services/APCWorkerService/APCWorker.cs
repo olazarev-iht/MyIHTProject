@@ -1,4 +1,6 @@
-﻿using SharedComponents.Models;
+﻿using SharedComponents.IhtModbus;
+using SharedComponents.IhtModbusTable;
+using SharedComponents.Models;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services;
 using SharedComponents.Services.APCHardwareManagers;
@@ -8,8 +10,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 	public class APCWorker : IAPCWorker
 	{
 		private readonly ILogger<APCWorkerService> _logger;
-
 		private readonly IParameterDataInfoManager _parameterDataInfoManager;
+		private readonly IhtModbusCommunic _ihtModbusCommunic;
 
 		public SingletonDataModel CurrentState { get; set; } = new();
 
@@ -18,12 +20,14 @@ namespace BlazorServerHost.Services.APCWorkerService
 		public event EventHandler? DynamicDataChanged;
 		public APCWorker(
 			IParameterDataInfoManager parameterDataInfoManager,
-			ILogger<APCWorkerService> logger)
+			ILogger<APCWorkerService> logger,
+			IhtModbusCommunic ihtModbusCommunic)
 		{
 			_parameterDataInfoManager = parameterDataInfoManager ?? throw new ArgumentNullException(nameof(parameterDataInfoManager));
 
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
+			_ihtModbusCommunic = ihtModbusCommunic ?? throw new ArgumentNullException(nameof(ihtModbusCommunic));
 
 			InitializeAsync().Wait();
 
@@ -54,16 +58,18 @@ namespace BlazorServerHost.Services.APCWorkerService
 
 		}
 
-		public async Task RefreshDynamicDataAsync(int apcDeviceNum, int paramAddress)
+		public async Task RefreshDynamicDataAsync(int apcSlaveId, int paramAddress)
 		{
 			try
 			{
 				// Get Dynamic Parameter from Mock DB (APC Device) after client had updated the APC Device
-				var parameterValue = await _parameterDataInfoManager.ReadOneHoldingRegisterAsync((byte)apcDeviceNum, (ushort)paramAddress);
+				IhtModbusResult ihtModbusResult = new();
+				var parameterValue = await _ihtModbusCommunic.ReadAsync(apcSlaveId, (ushort)paramAddress, ihtModbusResult);
 
-				if (parameterValue != null) {
+				if (ihtModbusResult.Result)
+				{
 					// Update Dynamic Parameter in the Dynamic Params DB
-					await _parameterDataInfoManager.UpdateDynParamValueByDeviceNumAndAddressAsync(apcDeviceNum, paramAddress, (int)parameterValue, 
+					await _parameterDataInfoManager.UpdateDynParamValueByDeviceNumAndAddressAsync(apcSlaveId, paramAddress, (int)parameterValue,
 						CancellationToken.None);
 				}
 

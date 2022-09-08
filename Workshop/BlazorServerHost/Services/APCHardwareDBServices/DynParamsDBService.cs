@@ -125,6 +125,8 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
+			deviceNumber = deviceNumber > 10 ? deviceNumber - 10 : deviceNumber;
+
 			var entry = await dbContext.ParameterDatas
 				.Include(p => p.APCDevice)
 				.Include(p => p.DynParams)

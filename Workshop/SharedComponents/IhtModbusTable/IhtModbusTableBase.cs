@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SharedComponents.IhtModbusTable
 {
-    internal class IhtModbusTableBase
+    public class IhtModbusTableBase
     {
         private SemaphoreSlim mutexTable = new SemaphoreSlim(1);
 

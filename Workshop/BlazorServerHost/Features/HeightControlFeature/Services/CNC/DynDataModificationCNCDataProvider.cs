@@ -2,6 +2,7 @@
 using BlazorServerHost.Services.APCWorkerService;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
+using SharedComponents.IhtModbusTable;
 using SharedComponents.Models;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services;
@@ -34,9 +35,18 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			
 		}
 
+		public bool IsSimulation
+        {
+            get
+            {
+				return IhtModbusTableBase.IsSimulation;
+			}
+        }
+
 		private readonly IAPCWorker _apcWorker;
 		private readonly IParameterDataInfoManager _parameterDataInfoManager;
 		private readonly IhtDevices _ihtDevices;
+		private readonly IhtModbusCommunic _ihtModbusCommunic;
 
 		public ParameterDataModel _paramHeatO2 = new ParameterDataModel();
 		public ParameterDataModel _paramFuelGas = new ParameterDataModel();
@@ -57,7 +67,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			IAPCWorker apcWorker, 
 			IParameterDataInfoManager parameterDataInfoManager,
 			ILogger<DynDataModificationCNCDataProvider> logger,
-			IhtDevices ihtDevices)
+			IhtDevices ihtDevices,
+			IhtModbusCommunic ihtModbusCommunic)
 		{
 			_apcWorker = apcWorker ?? throw new ArgumentNullException(nameof(apcWorker));
 
@@ -66,6 +77,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
 			_ihtDevices = ihtDevices ?? throw new ArgumentNullException(nameof(ihtDevices));
+
+			_ihtModbusCommunic = ihtModbusCommunic ?? throw new ArgumentNullException(nameof(ihtModbusCommunic));
 
 			_apcWorker.DynamicDataChanged += _apcWorkerService_DymanicDataChanged;
 
@@ -78,12 +91,12 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			if (parameter == null || parameter.DynParams == null) return;
 
 			// Update prameter value in the APC Device (Mock DB)
-			await UpdateDynParamInAPCDeviceMockDBAsync(CurrentDeviceNumber, parameter.DynParams.Address, parameter.DynParams.Value);
+			await UpdateDynParamInAPCDeviceOrMockDBAsync(CurrentDeviceNumber, parameter.DynParams.Address, parameter.DynParams.Value);
 
 			// Only to show the flow
 			//await Task.Delay(TimeSpan.FromSeconds(5));
 
-			await _apcWorker.RefreshDynamicDataAsync(CurrentDeviceNumber, parameter.DynParams.Address);
+			await _apcWorker.RefreshDynamicDataAsync(CurrentSlaveId, parameter.DynParams.Address);
 		}
 
 		private bool IsAnOtherUserWorkingWithDeviceNow()
@@ -226,12 +239,14 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 				await taskSendHeartBeat;
 
 				//In the production Delay must be < 0.750 sec
-				int time_ms = 250;
+				int msTotalDelayTime = 250;
 
-				while (time_ms > 0)
+				var msIntervalToCheck = 10;
+
+				while (msTotalDelayTime > 0)
                 {
-					await Task.Delay(10);
-					time_ms -= 10;
+					await Task.Delay(msIntervalToCheck);
+					msTotalDelayTime -= msIntervalToCheck;
 					if (ct.IsCancellationRequested)
 					{
 						Console.WriteLine($"\nTask {commandType} cancelled. Device {CurrentDeviceNumber}");
@@ -243,10 +258,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		}
 
 		private async Task StopMoveTorchCommandAsync()
-		{
-			// TODO: call APC device API function to Move Torch Up instead.
-			//await Task.Run(() => { _logger.LogDebug("\nSent Command - StopTorch"); });
-			
+		{			
 			await _ihtDevices.StopManUpAsync(CurrentSlaveId);
 			await _ihtDevices.StopManDownAsync(CurrentSlaveId);
 
@@ -255,8 +267,6 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		private async Task SendHeartBeatMoveTorchUpAsync()
 		{
-			// TODO: call APC device API function to Move Torch Up instead.
-			//await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchUp"); });
 			await _ihtDevices.MoveManUpAsync(CurrentSlaveId);
 
 			_logger.LogDebug($"\nSent Command - Move Torch Up. Device {CurrentDeviceNumber}. User: {_userId}");
@@ -264,16 +274,21 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		private async Task SendHeartBeatMoveTorchDownAsync()
 		{
-			// TODO: call APC device API function to Move Torch Down instead.
-			//await Task.Run(() => { _logger.LogDebug("\nSent Command - MoveTorchDown"); });
 			await _ihtDevices.MoveManDownAsync(CurrentSlaveId);
 
 			_logger.LogDebug($"\nSent Command - Move Torch Down. Device {CurrentDeviceNumber}. User: {_userId}");
 		}
 
-		private async Task UpdateDynParamInAPCDeviceMockDBAsync(int deviceNum, int paramAddress, int paramValue, IhtModbusResult? ihtModbusResult = null)
+		private async Task UpdateDynParamInAPCDeviceOrMockDBAsync(int deviceNum, int paramAddress, int paramValue, IhtModbusResult? ihtModbusResult = null)
         {
-			await _parameterDataInfoManager.WriteHoldingRegistersAsync(deviceNum, paramAddress, paramValue, ihtModbusResult);
+			if (IsSimulation)
+			{
+				await _parameterDataInfoManager.WriteHoldingRegistersAsync(deviceNum, paramAddress, paramValue, ihtModbusResult);
+			}
+            else
+            {
+				await _ihtModbusCommunic.WriteAsync(CurrentSlaveId, (ushort)paramAddress, (ushort)paramValue).ConfigureAwait(false);
+			}
 		}
 
 		private async void _apcWorkerService_DymanicDataChanged(object? sender, EventArgs e)

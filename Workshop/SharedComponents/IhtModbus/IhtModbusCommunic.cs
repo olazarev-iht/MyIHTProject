@@ -1497,7 +1497,7 @@ namespace SharedComponents.IhtModbus
         {
             return await ReadAsync((byte)slaveId, u16StartAddr, u16NumOfRegister, ihtModbusResult).ConfigureAwait(false);
         }
-        internal async Task<UInt16> ReadAsync(int slaveId, ushort u16StartAddr, IhtModbusResult ihtModbusResult)
+        public async Task<UInt16> ReadAsync(int slaveId, ushort u16StartAddr, IhtModbusResult ihtModbusResult)
         {
             UInt16[] u16Datas = await ReadAsync(slaveId, u16StartAddr, 1, ihtModbusResult).ConfigureAwait(false);
             return (u16Datas != null) ? u16Datas[0] : (UInt16)0xFFFF;
@@ -1532,7 +1532,7 @@ namespace SharedComponents.IhtModbus
         {
             return await WriteMultipleRegistersAsync((byte)slaveId, u16StartAddr, u16Datas).ConfigureAwait(false);
         }
-        internal async Task<bool> WriteAsync(int slaveId, ushort u16StartAddr, ushort u16Data)
+        public async Task<bool> WriteAsync(int slaveId, ushort u16StartAddr, ushort u16Data)
         {
             ushort[] u16Datas = { u16Data };
             return await WriteMultipleRegistersAsync((byte)slaveId, u16StartAddr, u16Datas).ConfigureAwait(false);
