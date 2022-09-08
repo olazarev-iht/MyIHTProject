@@ -110,7 +110,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		}
 
 
-		SemaphoreSlim mutexModbusMaster = new SemaphoreSlim(1,1);
+		//SemaphoreSlim mutexModbusMaster = new SemaphoreSlim(1,1);
 
 		public async void dynamicParamsDysplay_APCTorchPositionChanged(object? sender, EventArgs e)
 		{
@@ -132,11 +132,9 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			}
 
 			//Action<CancellationToken> doHeartBeatWork = null;
-			//var tokenSource = new CancellationTokenSource();
 
-			try { if (tokenSource != null) { tokenSource.Cancel(); tokenSource.Dispose(); } } catch { }
-
-			await mutexModbusMaster.WaitAsync().ConfigureAwait(false);
+			// Since when quickly pressing doesn't help
+			//await mutexModbusMaster.WaitAsync().ConfigureAwait(false);
 
 			tokenSource = new CancellationTokenSource();
 			var token = tokenSource.Token;
@@ -168,19 +166,15 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			}
 			finally
 			{
-				tokenSource?.Dispose();
-				mutexModbusMaster?.Release();
+				//tokenSource?.Dispose();
+				//mutexModbusMaster?.Release();
 			}
 
 		}
 
 		public async void dynamicParamsDysplay_APCTorchPositionStoped(object? sender, EventArgs e)
 		{
-			try
-			{
-				await StopMovingTorchAsync();
-			}
-			catch { };
+			await StopMovingTorchAsync();
 		}
 
 		public async Task StopMovingTorchAsync()
@@ -194,7 +188,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 				tokenSource.Cancel();
 
 			//Dispose token source instead of finally block
-			//tokenSource?.Dispose();
+			tokenSource?.Dispose();
 
 			Console.WriteLine("\nTask cancellation requested.");
 
