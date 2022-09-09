@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharedComponents.Services.APCCommunicServices;
+using SharedComponents.Services.APCHardwareManagers;
 using SharedComponents.IhtModbus;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtMsg;
@@ -16,6 +17,7 @@ namespace SharedComponents.APCCommunic
         IhtDevices _ihtDevices;
         IhtModbusCommunic _ihtModbusCommunic;
         IhtModbusCommunicData _ihtModbusCommunicData;
+        IParameterDataInfoManager _parameterDataInfoManager;
 
         private int _isRobot = 0;
         //TODO: implement with command line
@@ -36,7 +38,8 @@ namespace SharedComponents.APCCommunic
         public APCCommunicManager(
             IhtDevices ihtDevices,
             IhtModbusCommunic ihtModbusCommunic, 
-            IhtModbusCommunicData ihtModbusCommunicData)
+            IhtModbusCommunicData ihtModbusCommunicData,
+            IParameterDataInfoManager parameterDataInfoManager)
         {
             _ihtDevices = ihtDevices ??
                throw new ArgumentNullException($"{nameof(ihtDevices)}");
@@ -46,6 +49,10 @@ namespace SharedComponents.APCCommunic
 
             _ihtModbusCommunicData = ihtModbusCommunicData ??
                throw new ArgumentNullException($"{nameof(ihtModbusCommunicData)}");
+
+            _parameterDataInfoManager = parameterDataInfoManager ??
+               throw new ArgumentNullException($"{nameof(parameterDataInfoManager)}");
+
         }
 
         //TODO: Temp Init() func - delete when config settings will be implemented
@@ -128,6 +135,10 @@ namespace SharedComponents.APCCommunic
                         _ihtDevices.SetConnected(slaveId);
                     }
                 }
+
+                // Fill Dyn Params DB
+                var connectedDevicesAmount = _ihtDevices.GetConnectedDevices().Count;
+                await _parameterDataInfoManager.UpdateAPCHardwareDataAsync(CancellationToken.None, connectedDevicesAmount);
             }
             // Info setzen, ob mindestens ein Gerät verbunden ist
             //commonDataControl.IsConnecteds = _ihtDevices.IsConneteds();

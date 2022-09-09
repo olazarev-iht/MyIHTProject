@@ -52,6 +52,14 @@ table#controlPanel td  {
     background-color:aliceblue;
 }
 
+.FlameIsOff {
+    background-color:#3D6FB4;
+}
+
+.FlameIsOn {
+    background-color:#FF584F;
+}
+
 .SelectedDeviceNum {
     background-color:mistyrose;
 }
@@ -642,7 +650,18 @@ input#password-input:focus {
             @onclick="@(()=>SetParamsType("Cut"))">Cutting</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Heat")"
             @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
-            <td style="width:90px">&nbsp;</td>   
+            <td width="100%">
+                <div class="button_container">
+                    <div id="FlameOnButton" class="FlameIsOff flame_btn" style="display: @(!_isFlameOn ? "flex" : "none"); height:48px"
+                        @onclick="@(async (e) => await TurnFlameOnAsync())">On
+                    </div>
+                </div>
+                <div class="button_container">
+                    <div id="FlameOffButton" class="FlameIsOn flame_btn" style="display: @(_isFlameOn ? "flex" : "none"); height:48px"
+                        @onclick="@(async (e) => await TurnFlameOffAsync())">Off
+                   </div>
+                </div>
+            </td>   
                         </tr>
                     </table>
                 </div>
@@ -977,7 +996,7 @@ input#password-input:focus {
     private int APCDevicesCount {
         get
         {
-            return ihtDevices.GetDevices().Where(d => d.IsVisible).Count();
+            return ihtDevices.GetDevices().Where(d => d.IsVisible && (_isSimulation || d.IsConnected)).Count();
         }
     }
 

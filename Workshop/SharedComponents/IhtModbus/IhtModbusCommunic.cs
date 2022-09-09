@@ -134,7 +134,6 @@ namespace SharedComponents.IhtModbus
         static private IhtModbusCommunic _ihtModbusCommunic_ = null;
 
         public readonly IAPCSimulationDataMockDBService _apcSimulationDataMockDBService;
-        public readonly IParameterDataInfoManager _parameterDataInfoManager;
 
         // instead of ---> in file IhtDevices
         // { get { return IhtModbusCommunic.GetIhtModbusCommunic(); } }
@@ -156,14 +155,10 @@ namespace SharedComponents.IhtModbus
         }
 
         public IhtModbusCommunic(
-            IAPCSimulationDataMockDBService apcSimulationDataMockDBService,
-            IParameterDataInfoManager parameterDataInfoManager)
+            IAPCSimulationDataMockDBService apcSimulationDataMockDBService)
         {
             _apcSimulationDataMockDBService = apcSimulationDataMockDBService ??
                throw new ArgumentNullException($"{nameof(apcSimulationDataMockDBService)}");
-
-            _parameterDataInfoManager = parameterDataInfoManager ??
-               throw new ArgumentNullException($"{nameof(parameterDataInfoManager)}");
         }
 
         /// <summary>
@@ -1233,10 +1228,6 @@ namespace SharedComponents.IhtModbus
                         }
                     }
                 }
-
-                // Update Dyn Params in DB
-                var devicesAmount = ihtDevices.GetVisibleDevices().Count;
-                await _parameterDataInfoManager.UpdateAPCHardwareDataAsync(CancellationToken.None, devicesAmount);
 
                 #endregion // foreach
                 mainWndHlp.SetStatusMsg(IhtMsgLog.Info.None, "");

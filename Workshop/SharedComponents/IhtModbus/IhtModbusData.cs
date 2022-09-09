@@ -1026,14 +1026,20 @@ namespace SharedComponents.IhtModbus
         /// <returns></returns>
         public string GetTorchTypedIdxInfo(int iTorchTypeIdx, DescriptionData descData = DescriptionData.All)
         {
-            string torchType = CultureResources.GetString("_CultureUnknown");
+            //TODO: implement CultureResources
+            //string torchType = CultureResources.GetString("_CultureUnknown");
+            string torchType = "_CultureUnknown";
             switch (iTorchTypeIdx)
             {
-                case (int)IhtDevices.TorchType.Propane: torchType = CultureResources.GetString("_CulturePropane"); break;
-                case (int)IhtDevices.TorchType.Acetylane: torchType = CultureResources.GetString("_CultureAcetylane"); break;
-                case (int)IhtDevices.TorchType.Invalid: torchType = CultureResources.GetString("_CultureInvalid"); break;
+                case (int)IhtDevices.TorchType.Propane: torchType = "_CulturePropane"; break;
+                case (int)IhtDevices.TorchType.Acetylane: torchType = "_CultureAcetylane"; break;
+                case (int)IhtDevices.TorchType.Invalid: torchType = "_CultureInvalid"; break;
+                    //case (int)IhtDevices.TorchType.Propane: torchType = CultureResources.GetString("_CulturePropane"); break;
+                    //case (int)IhtDevices.TorchType.Acetylane: torchType = CultureResources.GetString("_CultureAcetylane"); break;
+                    //case (int)IhtDevices.TorchType.Invalid: torchType = CultureResources.GetString("_CultureInvalid"); break;
             }
-            string desc = CultureResources.GetString("_CultureTorchType");
+            //string desc = CultureResources.GetString("_CultureTorchType");
+            string desc = "_CultureTorchType";
             string val = torchType;
             string data = descData == DescriptionData.All ? String.Format("FIT+3 {0}: {1}", desc, val)
                                                         : descData == DescriptionData.OnlyDescritpion ? desc : val;
@@ -1046,7 +1052,8 @@ namespace SharedComponents.IhtModbus
         /// <returns></returns>
         internal string GetTorchControllerNotConnected()
         {
-            string desc = CultureResources.GetString("_CultureFit3TorchControllerNotConnected");
+            string desc = "_CultureFit3TorchControllerNotConnected";
+            //string desc = CultureResources.GetString("_CultureFit3TorchControllerNotConnected");
             string data = String.Format("FIT+3: {0}", desc);
             return data;
         }
@@ -1057,7 +1064,8 @@ namespace SharedComponents.IhtModbus
         /// <returns></returns>
         internal string GetTorchTypeUndefined()
         {
-            string desc = CultureResources.GetString("_CultureFit3TorchTypeUndefined");
+            string desc = "_CultureFit3TorchTypeUndefined";
+            //string desc = CultureResources.GetString("_CultureFit3TorchTypeUndefined");
             string data = String.Format("FIT+3: {0}", desc);
             return data;
         }
@@ -1068,7 +1076,8 @@ namespace SharedComponents.IhtModbus
         /// <returns></returns>
         internal string GetTorchTypeCodeFault()
         {
-            string desc = CultureResources.GetString("_CultureFit3TorchTypeCodeFault");
+            string desc = "_CultureFit3TorchTypeCodeFault";
+            //string desc = CultureResources.GetString("_CultureFit3TorchTypeCodeFault");
             string data = String.Format("FIT+3: {0}", desc);
             return data;
         }

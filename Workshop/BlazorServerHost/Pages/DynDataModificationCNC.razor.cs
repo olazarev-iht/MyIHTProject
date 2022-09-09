@@ -12,6 +12,9 @@ namespace BlazorServerHost.Pages
         private bool _isTorchUpActive = false;
         private bool _isTorchDownActive = false;
 
+        private bool _isFlameOn = false;
+        //private bool _isFlameOff = true;
+
         [JSInvokable]
         public async Task Deactivate(string eventName)
         {
@@ -106,6 +109,32 @@ namespace BlazorServerHost.Pages
             }
             Console.WriteLine($"Deactivate {eventName} Button");
             await InvokeAsync(StateHasChanged);
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        private async Task TurnFlameOnAsync()
+        {
+            if (!_isFlameOn)
+            {
+                _isFlameOn = true;
+            }
+
+            await InvokeAsync(StateHasChanged);
+
+            await ihtDevices.SetupCtrl_SetStartAsync(dynDataModificationCNCDataProvider.CurrentSlaveId);
+        }
+
+        private async Task TurnFlameOffAsync()
+        {
+            if (_isFlameOn)
+            {
+                _isFlameOn = false;
+            }
+
+            await InvokeAsync(StateHasChanged);
+
+            await ihtDevices.SetupCtrl_SetOffAsync(dynDataModificationCNCDataProvider.CurrentSlaveId);
         }
     }
 }

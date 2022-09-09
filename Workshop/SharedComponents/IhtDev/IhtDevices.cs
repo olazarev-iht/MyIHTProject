@@ -554,6 +554,21 @@ namespace SharedComponents.IhtDev
             return _ihtDevices;
         }
 
+        public ArrayList GetConnectedDevices()
+        {
+            ArrayList _ihtDevices = new ArrayList();
+            foreach (KeyValuePair<int, IhtDevice> kvp in ihtDevices)
+            {
+                IhtDevice _ihtDevice = kvp.Value;
+                if (!_ihtDevice.IsConnected)
+                {
+                    continue;
+                }
+                _ihtDevices.Add(_ihtDevice);
+            }
+            return _ihtDevices;
+        }
+
         /// <summary>
         /// Alle sichtbaren Geräte die eingeschaltet sind abfragen
         /// </summary>
@@ -1979,14 +1994,14 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Off setzen
         /// </summary>
-        internal async Task SetupCtrl_SetOffAsync(int _slaveId)
+        public async Task SetupCtrl_SetOffAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetOffAsync(_slaveId).ConfigureAwait(false);
         }
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Off setzen, Gemeinsam
         /// </summary>
-        internal async Task SetupCtrl_SetOffCommonAsync()
+        public async Task SetupCtrl_SetOffCommonAsync()
         {
             // Alle gemeinsam ausschalten
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetOffAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
@@ -2001,7 +2016,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Start setzen
         /// </summary>
-        internal async Task SetupCtrl_SetStartAsync(int _slaveId)
+        public async Task SetupCtrl_SetStartAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetStartAsync(_slaveId).ConfigureAwait(false);
         }

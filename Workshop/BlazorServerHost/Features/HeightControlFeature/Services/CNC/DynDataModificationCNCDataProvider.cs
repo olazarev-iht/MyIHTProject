@@ -222,19 +222,18 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 				ct.ThrowIfCancellationRequested();
 			}
 
-			switch (commandType)
-			{
-				case "MoveTorchUp":
-					taskSendHeartBeat = SendHeartBeatMoveTorchUpAsync();
-					break;
-				case "MoveTorchDown":
-					taskSendHeartBeat = SendHeartBeatMoveTorchDownAsync();
-					break;
-				default: return;
-			}
-
 			while (true)
 			{
+				switch (commandType)
+				{
+					case "MoveTorchUp":
+						taskSendHeartBeat = SendHeartBeatMoveTorchUpAsync();
+						break;
+					case "MoveTorchDown":
+						taskSendHeartBeat = SendHeartBeatMoveTorchDownAsync();
+						break;
+					default: return;
+				}
 
 				await taskSendHeartBeat;
 

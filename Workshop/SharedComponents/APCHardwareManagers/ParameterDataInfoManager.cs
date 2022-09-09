@@ -26,6 +26,7 @@ namespace SharedComponents.APCHardwareManagers
         protected readonly IParameterDataMockDBService _parameterDataMockDBService;
         protected readonly IAPCSimulationDataMockDBService _apcSimulationDataMockDBService;
         protected readonly IAPCDefaultDataMockDBService _apcDefaultDataMockDBService;
+        private readonly IhtModbusCommunic _ihtModbusCommunic;
 
         public ParameterDataInfoManager(
             IAPCDeviceDBService apcDeviceDBService,
@@ -38,7 +39,8 @@ namespace SharedComponents.APCHardwareManagers
             IDynParamsMockDBService dynParamsMockDBService,
             IParameterDataMockDBService parameterDataMockDBService,
             IAPCSimulationDataMockDBService apcSimulationDataMockDBService,
-            IAPCDefaultDataMockDBService apcDefaultDataMockDBService)
+            IAPCDefaultDataMockDBService apcDefaultDataMockDBService,
+            IhtModbusCommunic ihtModbusCommunic)
         {
             _apcDeviceDBService = apcDeviceDBService ??
                throw new ArgumentNullException($"{nameof(apcDeviceDBService)}");
@@ -72,6 +74,9 @@ namespace SharedComponents.APCHardwareManagers
 
             _apcDefaultDataMockDBService = apcDefaultDataMockDBService ??
                throw new ArgumentNullException($"{nameof(apcDefaultDataMockDBService)}");
+
+            _ihtModbusCommunic = ihtModbusCommunic ??
+               throw new ArgumentNullException($"{nameof(ihtModbusCommunic)}");
         }
 
         private List<ConstParamsModel> constParamsModels = new();
@@ -211,7 +216,7 @@ namespace SharedComponents.APCHardwareManagers
                 // Getting the initial set up array with simulation data with start address of prams group and number of parameters
                 //var areasAddrDataSimulation = IhtModbusData.GetAreasDataSimulationData();
 
-                // Not BD Model devices
+                // Not DB Model devices
                 foreach (var apcDevice in ihtDevices)
                 {
                     // DB Model - remove in the future (we need only for APCDeviceId = deviceDBModel.Id)
@@ -315,16 +320,22 @@ namespace SharedComponents.APCHardwareManagers
             }
         }
 
-        private async Task<(ushort Address, ushort Value)[]> GetParamsSubGroupValuesFromMockDB(byte deviceNum, ushort startStoreValue, ushort numberStoreValue)
+        private async Task<(ushort Address, ushort Value)[]> GetParamsSubGroupValuesFromMockDB(byte apcDeviceId, ushort startStoreValue, ushort numberStoreValue)
         {
+            var apcSlaveId = apcDeviceId + (int)IhtModbusCommunic.SlaveId.Id_Default;
+
             //TODO: change to "await _ihtModbusCommunic.ReadAsync(apcSlaveId, (ushort)paramAddress, ihtModbusResult);"
-            var paramsStartAddr = (await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(deviceNum, startStoreValue, 1)).FirstOrDefault();
+            var ihtModbusResult = new IhtModbusResult();
+            var paramsStartAddr = await _ihtModbusCommunic.ReadAsync(apcSlaveId, startStoreValue, ihtModbusResult);
 
-            var paramsNumber = (await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(deviceNum, numberStoreValue, 1)).FirstOrDefault();
+            var paramsNumber = await _ihtModbusCommunic.ReadAsync(apcSlaveId, numberStoreValue, ihtModbusResult);
 
-            var paramsValues = await _apcSimulationDataMockDBService.GetHoldingRegistersWithAddressAsync(deviceNum, paramsStartAddr, paramsNumber);
+            var paramsValues = await _ihtModbusCommunic.ReadAsync(apcSlaveId, paramsStartAddr, paramsNumber, ihtModbusResult);
+            //var paramsValues = await _apcSimulationDataMockDBService.GetHoldingRegistersWithAddressAsync(deviceNum, paramsStartAddr, paramsNumber);
 
-            return paramsValues;
+            var paramsAddressAndValues = paramsValues.Select(x => (paramsStartAddr++, x)).ToArray();
+
+            return paramsAddressAndValues;
         }
 
         public async Task<UInt16?> ReadOneHoldingRegisterAsync(byte slaveId, ushort startAddress)
