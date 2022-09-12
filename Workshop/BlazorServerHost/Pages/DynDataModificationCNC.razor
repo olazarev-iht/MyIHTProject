@@ -651,6 +651,8 @@ input#password-input:focus {
             <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Heat")"
             @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
             <td width="100%">
+                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
                 <div class="button_container">
                     <div id="FlameOnButton" class="FlameIsOff flame_btn" style="display: @(!_isFlameOn ? "flex" : "none"); height:48px"
                         @onclick="@(async (e) => await TurnFlameOnAsync())">On
@@ -661,6 +663,7 @@ input#password-input:focus {
                         @onclick="@(async (e) => await TurnFlameOffAsync())">Off
                    </div>
                 </div>
+                </MudPaper>
             </td>   
                         </tr>
                     </table>
@@ -781,9 +784,8 @@ input#password-input:focus {
 
     private bool IsSPButtonsDisabled()
     {
-        return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy;
+        return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected;
     }
-
 
     private void OpenSetupParamsDialog()
     {
@@ -818,7 +820,7 @@ input#password-input:focus {
     {
         _torchInstalledDialogVisible = false;
     } 
-	
+
 
 
     private void SetNewPasswordLevel()
@@ -1003,8 +1005,15 @@ input#password-input:focus {
     private string drawerDisplay {
         get
         {
-            //return DISPLAY_CLASS;
             return _torchInstalledDialogIsBlocked ? DISPLAY_CLASS : NONE_DISPLAY_CLASS;
+        }
+    }
+
+    private IhtDevice CurrentDevice
+    {
+        get
+        {
+            return ihtDevices.GetDevice(dynDataModificationCNCDataProvider.CurrentSlaveId);
         }
     }
 

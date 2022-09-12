@@ -1921,11 +1921,17 @@ namespace SharedComponents.IhtDev
         /// </summary>
         public async Task MoveManUpAsync(int _slaveId)
         {
-            await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.MoveManUpAsync(_slaveId).ConfigureAwait(false);
+            if (ihtModbusCommunic.ihtModbusCmdExecInputEmulation != null)
+            {
+                await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.MoveManUpAsync(_slaveId).ConfigureAwait(false);
+            }
         }
         public async Task StopManUpAsync(int _slaveId)
         {
-            await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopManUpAsync(_slaveId).ConfigureAwait(false);
+            if (ihtModbusCommunic.ihtModbusCmdExecInputEmulation != null)
+            {
+                await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopManUpAsync(_slaveId).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -1933,11 +1939,17 @@ namespace SharedComponents.IhtDev
         /// </summary>
         public async Task MoveManDownAsync(int _slaveId)
         {
-            await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.MoveManDownAsync(_slaveId).ConfigureAwait(false);
+            if (ihtModbusCommunic.ihtModbusCmdExecInputEmulation != null)
+            {
+                await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.MoveManDownAsync(_slaveId).ConfigureAwait(false);
+            }
         }
         public async Task StopManDownAsync(int _slaveId)
         {
-            await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopManDownAsync(_slaveId).ConfigureAwait(false);
+            if (ihtModbusCommunic.ihtModbusCmdExecInputEmulation != null)
+            {
+                await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopManDownAsync(_slaveId).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -1996,7 +2008,14 @@ namespace SharedComponents.IhtDev
         /// </summary>
         public async Task SetupCtrl_SetOffAsync(int _slaveId)
         {
-            await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetOffAsync(_slaveId).ConfigureAwait(false);
+            if (ihtModbusCommunic.ihtModbusCmdSetupCtrl != null)
+            {
+                await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetOffAsync(_slaveId).ConfigureAwait(false);
+            }
+            else
+            {
+                throw new Exception("Device is not connected");
+            }
         }
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Off setzen, Gemeinsam
@@ -2018,7 +2037,14 @@ namespace SharedComponents.IhtDev
         /// </summary>
         public async Task SetupCtrl_SetStartAsync(int _slaveId)
         {
-            await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetStartAsync(_slaveId).ConfigureAwait(false);
+            if (ihtModbusCommunic.ihtModbusCmdSetupCtrl != null)
+            {
+                await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetStartAsync(_slaveId).ConfigureAwait(false);
+            }
+            else
+            {
+                throw new Exception("Device is not connected");
+            }
         }
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Start setzen, Gemeinsam
