@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Sockets;
 using Microsoft.Win32;
 using SharedComponents.Properties;
+using SharedComponents.Models;
 
 
 namespace SharedComponents.IhtModbus
@@ -51,20 +52,20 @@ namespace SharedComponents.IhtModbus
             _isExecReset = false;
         }
 
-        //internal void UpdateSettings(Settings settings)
-        //{
-        //    settings.Mode = (IsTcp == true) ? 0 : 1;
-        //    settings.TcpPort = IpPort.ToString();
-        //    settings.IpAddr = IpAddress;
-        //    settings.ComPort = ComPort;
-        //    settings.ComPortLast = ComPortLast;
-        //    settings.Baudrate = Baudrate.ToString();
-        //    settings.DataBits = DataBits.ToString();
-        //    settings.Parity = Parity.ToString();
-        //    settings.StopBits = StopBits.ToString();
-        //    settings.Identifier = SlaveId.ToString();
-        //    settings.ExecReset = IsExecReset;
-        //}
+        internal void UpdateSettings(Settings settings)
+        {
+            settings.Mode = (IsTcp == true) ? 0 : 1;
+            settings.TcpPort = IpPort.ToString();
+            settings.IpAddr = IpAddress;
+            settings.ComPort = ComPort;
+            settings.ComPortLast = ComPortLast;
+            settings.Baudrate = Baudrate.ToString();
+            settings.DataBits = DataBits.ToString();
+            settings.Parity = Parity.ToString();
+            settings.StopBits = StopBits.ToString();
+            settings.Identifier = SlaveId.ToString();
+            settings.ExecReset = IsExecReset;
+        }
 
         public bool IsTcp
         {

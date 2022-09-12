@@ -18,6 +18,7 @@ using SharedComponents.APCCommunic;
 using SharedComponents.APCHardwareManagers;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
+using SharedComponents.Models;
 using SharedComponents.Services;
 using SharedComponents.Services.APCHardwareDBServices;
 using SharedComponents.Services.APCHardwareManagers;
@@ -26,6 +27,27 @@ using SharedComponents.Services.CuttingDataDBServices;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseWindowsService();
+
+//builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+//{
+//    config.Sources.Clear();
+
+//    var env = hostingContext.HostingEnvironment;
+
+//    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+//          .AddJsonFile($"appsettings.{env.EnvironmentName}.json",
+//                         optional: true, reloadOnChange: true);
+
+//    config.AddEnvironmentVariables();
+
+//    if (args != null)
+//    {
+//        config.AddCommandLine(args);
+//    }
+//});
+
+builder.Services.AddOptions();
+builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<UnitService>();
