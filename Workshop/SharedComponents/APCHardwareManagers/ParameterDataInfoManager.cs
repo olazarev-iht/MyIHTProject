@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharedComponents.IhtDev;
+using Microsoft.Extensions.Options;
 using SharedComponents.IhtModbus;
+using SharedComponents.Models;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareManagers;
 using SharedComponents.Services.APCHardwareDBServices;
@@ -27,6 +29,7 @@ namespace SharedComponents.APCHardwareManagers
         protected readonly IAPCSimulationDataMockDBService _apcSimulationDataMockDBService;
         protected readonly IAPCDefaultDataMockDBService _apcDefaultDataMockDBService;
         private readonly IhtModbusCommunic _ihtModbusCommunic;
+        private readonly Settings _settings;
 
         public ParameterDataInfoManager(
             IAPCDeviceDBService apcDeviceDBService,
@@ -40,7 +43,9 @@ namespace SharedComponents.APCHardwareManagers
             IParameterDataMockDBService parameterDataMockDBService,
             IAPCSimulationDataMockDBService apcSimulationDataMockDBService,
             IAPCDefaultDataMockDBService apcDefaultDataMockDBService,
-            IhtModbusCommunic ihtModbusCommunic)
+            IhtModbusCommunic ihtModbusCommunic,
+            IOptions<Settings> settings
+            )
         {
             _apcDeviceDBService = apcDeviceDBService ??
                throw new ArgumentNullException($"{nameof(apcDeviceDBService)}");
@@ -77,6 +82,9 @@ namespace SharedComponents.APCHardwareManagers
 
             _ihtModbusCommunic = ihtModbusCommunic ??
                throw new ArgumentNullException($"{nameof(ihtModbusCommunic)}");
+
+            _settings = settings != null ? settings.Value : 
+                throw new ArgumentNullException($"{nameof(settings)}");
         }
 
         private List<ConstParamsModel> constParamsModels = new();
@@ -156,6 +164,8 @@ namespace SharedComponents.APCHardwareManagers
 
         public async Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken)
         {
+            var settings = _settings;
+
             // Example for deleting data for devices
             // await DeleteAllAPCHardwareDataAsync(CancellationToken.None, 10);
 

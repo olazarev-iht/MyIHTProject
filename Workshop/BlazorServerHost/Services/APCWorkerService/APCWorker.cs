@@ -1,4 +1,5 @@
-﻿using SharedComponents.IhtModbus;
+﻿using Microsoft.Extensions.Options;
+using SharedComponents.IhtModbus;
 using SharedComponents.IhtModbusTable;
 using SharedComponents.Models;
 using SharedComponents.Models.APCHardware;
@@ -12,6 +13,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 		private readonly ILogger<APCWorkerService> _logger;
 		private readonly IParameterDataInfoManager _parameterDataInfoManager;
 		private readonly IhtModbusCommunic _ihtModbusCommunic;
+		private readonly Settings _settings;
 
 		public SingletonDataModel CurrentState { get; set; } = new();
 
@@ -21,13 +23,17 @@ namespace BlazorServerHost.Services.APCWorkerService
 		public APCWorker(
 			IParameterDataInfoManager parameterDataInfoManager,
 			ILogger<APCWorkerService> logger,
-			IhtModbusCommunic ihtModbusCommunic)
+			IhtModbusCommunic ihtModbusCommunic,
+			IOptions<Settings> settings
+			)
 		{
 			_parameterDataInfoManager = parameterDataInfoManager ?? throw new ArgumentNullException(nameof(parameterDataInfoManager));
 
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
 			_ihtModbusCommunic = ihtModbusCommunic ?? throw new ArgumentNullException(nameof(ihtModbusCommunic));
+
+			_settings = settings != null ? settings.Value : throw new ArgumentNullException($"{nameof(settings)}");
 
 			InitializeAsync().Wait();
 

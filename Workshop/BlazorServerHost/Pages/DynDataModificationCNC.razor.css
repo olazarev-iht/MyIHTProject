@@ -3,7 +3,7 @@
     /* horizontal scrollbar for tables if mobile screen */
     .tablemobile {
         overflow-x: auto;
-        display: block;
+        display: table;
         width: 100%
     }
 
