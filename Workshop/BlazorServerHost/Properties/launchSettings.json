@@ -10,6 +10,7 @@
   "profiles": {
     "BlazorServerHost": {
       "commandName": "Project",
+      "commandLineArgs": "--env=Production",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -20,6 +21,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "dynDataModificationCNC",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
