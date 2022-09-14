@@ -593,14 +593,26 @@ input#password-input:focus {
                     <table class="internal_div_table">
                         <tr>
                             <td class="device_tabcell">
-                                @*<MudSlider @onchange="OnTorchStateChanged" @bind-Value="@spValueCurrent" Style="height:50%"
-                                Disabled="@dynDataModificationCNCDataProvider.IsCurrentDeviceBusy" 
-                                Vertical="true"
-                                Min="49" 
-                                Max="51"
-                                Step="1" 
-                                Color="Color.Info">Stop</MudSlider>
-                                Down *@
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
+                                <div class="button_container">
+                                    <div id="HCMoveTorchUp" class="@(_isTorchUpActive ? "btn active" : "btn")"
+                                        @onpointerdown="@(async (e) => await MoveTorchUpAsync("HCMoveTorchUp"))"
+                                        @onpointerup="@((_) => DeactiveButton("HCMoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchUp"))"
+                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchUp"))">Up
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="button_container">
+                                    <div id="HCMoveTorchDown" class="@(_isTorchDownActive ? "btn active" : "btn")"
+                                        @onpointerdown="@(async (e) => await MoveTorchDownAsync("HCMoveTorchDown"))"
+                                        @onpointerup="@((_) => DeactiveButton("HCMoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchDown"))"
+                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchDown"))">Down
+                                    </div>
+                               </div>
+                              </MudPaper>
+                            </td>
+                            <td class="device_tabcell">
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
@@ -620,22 +632,20 @@ input#password-input:focus {
                                </div>
                               </MudPaper>
                             </td>
-                            <td colspan="2">
-                                <table width="100%" height="100%">
-                                    <tr>
-                                        <td width="50%" height="50%">Calib1</td>
-                                        <td width="50%" height="50%">Calib2</td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="2">Empty</td>
-                                        <td>
-                                            <table width="100%" height="100%">
-                                                <tr><td>img1</td></tr>
-                                                <tr><td>img2</td></tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
+                            <td class="device_tabcell" height="100%">
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
+                                <div class="button_container">
+                                    <div id="FlameOnButton" class="FlameIsOff flame_btn" style="display: @(!_isFlameOn ? "flex" : "none"); height:191px"
+                                        @onclick="@(async (e) => await TurnFlameOnAsync())">On
+                                    </div>
+                                </div>
+                                <div class="button_container">
+                                    <div id="FlameOffButton" class="FlameIsOn flame_btn" style="display: @(_isFlameOn ? "flex" : "none"); height:191px"
+                                        @onclick="@(async (e) => await TurnFlameOffAsync())">Off
+                                </div>
+                                </div>
+                                </MudPaper>
                             </td>
                         </tr>
                     </table>
@@ -663,21 +673,7 @@ input#password-input:focus {
             @onclick="@(()=>SetParamsType("Cut"))">Cutting</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Heat")"
             @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
-            <td width="100%">
-                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
-                <div class="button_container">
-                    <div id="FlameOnButton" class="FlameIsOff flame_btn" style="display: @(!_isFlameOn ? "flex" : "none"); height:48px"
-                        @onclick="@(async (e) => await TurnFlameOnAsync())">On
-                    </div>
-                </div>
-                <div class="button_container">
-                    <div id="FlameOffButton" class="FlameIsOn flame_btn" style="display: @(_isFlameOn ? "flex" : "none"); height:48px"
-                        @onclick="@(async (e) => await TurnFlameOffAsync())">Off
-                   </div>
-                </div>
-                </MudPaper>
-            </td>   
+            <td style="width:90px" class="UnselectedParamsType tabcell">Status</td>   
                         </tr>
                     </table>
                 </div>

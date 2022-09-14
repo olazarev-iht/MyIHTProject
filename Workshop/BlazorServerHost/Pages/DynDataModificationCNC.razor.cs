@@ -99,6 +99,16 @@ namespace BlazorServerHost.Pages
                 _isTorchDownActive = false;
                 await StopTorchMovingAndRefreshAsync(eventName);
             }
+            else if (eventName == "HCMoveTorchUp" && _isTorchUpActive)
+            {
+                _isTorchUpActive = false;
+                await StopTorchMovingAndRefreshAsync(eventName);
+            }
+            else if (eventName == "HCMoveTorchDown" && _isTorchDownActive)
+            {
+                _isTorchDownActive = false;
+                await StopTorchMovingAndRefreshAsync(eventName);
+            }
         }
 
         private async Task StopTorchMovingAndRefreshAsync(string eventName)

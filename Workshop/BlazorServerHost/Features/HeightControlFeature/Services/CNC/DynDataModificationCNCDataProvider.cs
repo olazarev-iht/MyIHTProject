@@ -232,6 +232,12 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 					case "MoveTorchDown":
 						taskSendHeartBeat = SendHeartBeatMoveTorchDownAsync();
 						break;
+					case "HCMoveTorchUp":
+						taskSendHeartBeat = SendHCCommandMoveTorchUpAsync();
+						break;
+					case "HCMoveTorchDown":
+						taskSendHeartBeat = SendHCCommandMoveTorchDownAsync();
+						break;
 					default: return;
 				}
 
@@ -261,6 +267,9 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			await _ihtDevices.StopManUpAsync(CurrentSlaveId);
 			await _ihtDevices.StopManDownAsync(CurrentSlaveId);
 
+			await _ihtDevices.StopHeightCtrlUpAsync(CurrentSlaveId);
+			await _ihtDevices.StopHeightCtrlDownAsync(CurrentSlaveId);
+
 			_logger.LogDebug($"\n\n\n\nSent Command - Stop Torch. Device: {CurrentDeviceNumber}. User: {_userId}\n\n\n\n");
 		}
 
@@ -276,6 +285,20 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			await _ihtDevices.MoveManDownAsync(CurrentSlaveId);
 
 			_logger.LogDebug($"\nSent Command - Move Torch Down. Device {CurrentDeviceNumber}. User: {_userId}");
+		}
+
+		private async Task SendHCCommandMoveTorchUpAsync()
+		{
+			await _ihtDevices.HeightCtrlUpAsync(CurrentSlaveId);
+
+			_logger.LogDebug($"\nSent HC Command - Move Torch Up. Device {CurrentDeviceNumber}. User: {_userId}");
+		}
+
+		private async Task SendHCCommandMoveTorchDownAsync()
+		{
+			await _ihtDevices.HeightCtrlDownAsync(CurrentSlaveId);
+
+			_logger.LogDebug($"\nSent HC Command - Move Torch Down. Device {CurrentDeviceNumber}. User: {_userId}");
 		}
 
 		private async Task UpdateDynParamInAPCDeviceOrMockDBAsync(int deviceNum, int paramAddress, int paramValue, IhtModbusResult? ihtModbusResult = null)
