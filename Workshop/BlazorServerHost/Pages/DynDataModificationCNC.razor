@@ -1,4 +1,4 @@
-﻿@page "/dynDataModificationCNC"
+﻿@page "/dynDataModificationCNC/{ComponentMode}"
 
 @using BlazorServerHost.Features.HeightControlFeature.Services.CNC
 @using SharedComponents.IhtDev
@@ -61,15 +61,23 @@ table#controlPanel td  {
 }
 
 .SelectedDeviceNum {
-    background-color:mistyrose;
+    background-color:#3D6FB4;
+    color: #ffff;
 }
 
 .UnselectedDeviceNum {
-    background-color:aliceblue;
+    background-color:violet;
+    color: #ffff;
+}
+
+.NotConnectedDevice {
+    background-color:red;
+    color: #ffff;
 }
 
 .NotInUseDeviceNum {
     background-color:lightgrey;
+    color: #ffff;
 }
 
 .flex-container {
@@ -387,7 +395,13 @@ input#password-input:focus {
 
 
 <MudDialog @bind-IsVisible="_menuExpanded">
-    <TitleContent><MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText></TitleContent>
+    <TitleContent>
+        <MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText> 
+        <br/>
+        <MudLink Style="color:#6d7781 !important" Href="/apcMainControl">Cutting Data</MudLink>
+        <br/>
+        <MudLink Style="color:#6d7781 !important" Href="@HrefToOtherComponentMode">@OtherComponentMode Mode</MudLink>
+    </TitleContent>
     <DialogContent>     
         <MudList Clickable="true" Style="Height:200px;" >
             <MudListItem Icon="@Icons.Filled.Settings" Text="Settings" InitiallyExpanded="false">
@@ -462,7 +476,7 @@ input#password-input:focus {
                         </MudCheckBox>																										
                         <MudCheckBox @bind-Checked="@_isSimulation" Dense="false" Color="Color.Primary">
                             <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Simulation (Demo-Mode)</MudText>
-                        </MudCheckBox>									  
+                        </MudCheckBox>								  
 
                     </td>
                 </tr>
@@ -673,7 +687,7 @@ input#password-input:focus {
             @onclick="@(()=>SetParamsType("Cut"))">Cutting</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Heat")"
             @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
-            <td style="width:90px" class="UnselectedParamsType tabcell">Status</td>   
+            <td style="width:90px" class="UnselectedParamsType tabcell">@ComponentMode</td>   
                         </tr>
                     </table>
                 </div>
@@ -684,6 +698,27 @@ input#password-input:focus {
 
 }
 @code {
+    [Parameter]
+    public string ComponentMode { get; set; } = PROCESS_MODE;
+
+    private const string PROCESS_MODE = "Process";
+    private const string MANUAL_MODE = "Manual";
+
+    private string OtherComponentMode
+    {
+        get
+        {
+            return ComponentMode == PROCESS_MODE ? MANUAL_MODE : PROCESS_MODE;
+        }
+    }
+
+    private string HrefToOtherComponentMode
+    {
+        get
+        {
+            return $"/dynDataModificationCNC/{@OtherComponentMode}";
+        }
+    }
 
     private bool _isSimulation = false;
     private string _nameComPort = string.Empty;
@@ -1011,6 +1046,13 @@ input#password-input:focus {
         }
     }
 
+    private int APCDevicesErrorCount {
+        get
+        {
+            return ihtDevices.GetDevices().Where(d => d.IsVisible && !_isSimulation && !d.IsConnected && APCDevicesCount > 0).Count();
+        }
+    }
+
     private string drawerDisplay {
         get
         {
@@ -1098,6 +1140,10 @@ input#password-input:focus {
         else if(selectedNum <= APCDevicesCount)
         {
             cssClass = "UnselectedDeviceNum device_tabcell";
+        }
+        else if(selectedNum <= APCDevicesErrorCount + APCDevicesCount)
+        {
+            cssClass = "NotConnectedDevice device_tabcell";
         }
 
         return cssClass;

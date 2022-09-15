@@ -12,7 +12,7 @@
       "commandName": "Project",
       "commandLineArgs": "--env=Production",
       "launchBrowser": true,
-      "launchUrl": "dynDataModificationCNC",
+      "launchUrl": "dynDataModificationCNC/Process",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -22,7 +22,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "dynDataModificationCNC",
+      "launchUrl": "dynDataModificationCNC/Process",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
