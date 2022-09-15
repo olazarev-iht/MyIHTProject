@@ -40,6 +40,12 @@
     text-align: center;
 }
 
+.divcell {
+    width: 87px;
+    height: 63px;
+    text-align: center;
+}
+
 table#controlPanel td  {
     border: 1px solid #e0e0e0;
 }
@@ -396,7 +402,7 @@ input#password-input:focus {
 
 <MudDialog @bind-IsVisible="_menuExpanded">
     <TitleContent>
-        <MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText> 
+        <MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText>
         <br/>
         <MudLink Style="color:#6d7781 !important" Href="/apcMainControl">Cutting Data</MudLink>
         <br/>
@@ -423,7 +429,7 @@ input#password-input:focus {
     <TitleContent>
         <MudText Typo="Typo.h6">Torch Installed</MudText>
     </TitleContent>
-    <DialogContent> 
+    <DialogContent>
         <MudForm>
             <table width="100%">
                 <tr>
@@ -610,15 +616,19 @@ input#password-input:focus {
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
-                                    <div id="HCMoveTorchUp" class="@(_isHCTorchUpActive ? "btn active" : "btn")"
+                                    <div id="HCMoveTorchUp" class="@(_isHCTorchUpActive ? "up_btn active" : "up_btn")"
                                         @onpointerdown="@(async (e) => await HCMoveTorchUpAsync("HCMoveTorchUp"))"
                                         @onpointerup="@((_) => DeactiveButton("HCMoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchUp"))"
                                         @onmouseout="@((_) => DeactiveButton("HCMoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchUp"))">HCUp
                                     </div>
                                 </div>
-                                <br/>
                                 <div class="button_container">
-                                    <div id="HCMoveTorchDown" class="@(_isHCTorchDownActive ? "btn active" : "btn")"
+                                    <div id="OnOff" class="@(_isHCTorchUpActive ? "central_btn active" : "central_btn")">
+                                        On/<br />Off
+                                    </div>
+                                </div>
+                                <div class="button_container">
+                                    <div id="HCMoveTorchDown" class="@(_isHCTorchDownActive ? "down_btn active" : "down_btn")"
                                         @onpointerdown="@(async (e) => await HCMoveTorchDownAsync("HCMoveTorchDown"))"
                                         @onpointerup="@((_) => DeactiveButton("HCMoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchDown"))"
                                         @onmouseout="@((_) => DeactiveButton("HCMoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchDown"))">HCDown
@@ -626,19 +636,23 @@ input#password-input:focus {
                                </div>
                               </MudPaper>
                             </td>
+                            @if (ComponentMode == MANUAL_MODE)
+                            {
                             <td class="device_tabcell">
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
-                                    <div id="MoveTorchUp" class="@(_isTorchUpActive ? "btn active" : "btn")"
+                                    <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")"
                                         @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
                                         @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
                                         @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">Up
                                     </div>
                                 </div>
-                                <br/>
                                 <div class="button_container">
-                                    <div id="MoveTorchDown" class="@(_isTorchDownActive ? "btn active" : "btn")"
+                                    <div class="central_btn" style="background-color:#ffff"></div>
+                                </div>
+                                <div class="button_container">
+                                    <div id="MoveTorchDown" class="@(_isTorchDownActive ? "down_btn active" : "down_btn")"
                                         @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
                                         @onpointerup="@((_) => DeactiveButton("MoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("MoveTorchDown"))"
                                         @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">Down
@@ -661,6 +675,47 @@ input#password-input:focus {
                                 </div>
                                 </MudPaper>
                             </td>
+                            }
+                            else
+                            {
+                            <td class="device_tabcell">
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
+                                <div class="button_container">
+                                    <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")"
+                                        @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
+                                        @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
+                                        @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">CaUp
+                                    </div>
+                                </div>
+                                <div class="button_container">
+                                    <div id="CalibrateBtn" class="@(_isTorchUpActive ? "central_btn active" : "central_btn")">
+                                        Cali-<br />brate
+                                    </div>
+                                </div>
+                                <div class="button_container">
+                                    <div id="MoveTorchDown" class="@(_isTorchDownActive ? "down_btn active" : "down_btn")"
+                                        @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
+                                        @onpointerup="@((_) => DeactiveButton("MoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("MoveTorchDown"))"
+                                        @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">CaDown
+                                    </div>
+                               </div>
+                              </MudPaper>
+                            </td>
+                            <td class="device_tabcell">
+                                <table style="border-spacing: 1px !important;"> 
+                                    <tr>
+                                        <td class="divcell">Flame<br />on End</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="divcell"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="divcell">Start<br /> piercing</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            }
                         </tr>
                     </table>
                 </div>
@@ -669,28 +724,43 @@ input#password-input:focus {
         <tr>
             <td>
                 <div class="flex-item-left">
-                    <table>
+                    <table style="border-spacing: @(ComponentMode == MANUAL_MODE ? "1" : "0")px !important;">
                         <tr>
-            <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Ignition")"
-            @onclick="@(()=>SetParamsType("Ignition"))">Ignition</MudTd>
-            <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("PreHeat")"
-            @onclick="@(()=>SetParamsType("PreHeat"))">Preheat</MudTd>
-            <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Pierce")"
-            @onclick="@(()=>SetParamsType("Pierce"))">Piercing</MudTd>
-                        </tr>
-                    </table>
-                 </div>
-                 <div class="flex-item-right">
-                    <table>
-                        <tr>
-            <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Cut")"
-            @onclick="@(()=>SetParamsType("Cut"))">Cutting</MudTd>
-            <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Heat")"
-            @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
-            <td style="width:90px" class="UnselectedParamsType tabcell">@ComponentMode</td>   
+                            @if (ComponentMode == MANUAL_MODE)
+                            {
+                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Ignition")"
+                                    @onclick="@(()=>SetParamsType("Ignition"))">Ignition</MudTd>
+                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("PreHeat")"
+                                    @onclick="@(()=>SetParamsType("PreHeat"))">Preheat</MudTd>
+                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Pierce")"
+                                    @onclick="@(()=>SetParamsType("Pierce"))">Piercing</MudTd>
+                            }
+                            else
+                            {
+                                <td style="width:268px;border-width: 0px !important;" class="UnselectedParamsType tabcell">Status 1 @ComponentMode</td>
+                            }
                         </tr>
                     </table>
                 </div>
+                <div class="flex-item-right">
+                    <table style="border-spacing: @(ComponentMode == MANUAL_MODE ? "1" : "0")px !important;">
+                        <tr>
+                            @if (ComponentMode == MANUAL_MODE)
+                            {
+                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Cut")"
+                                    @onclick="@(()=>SetParamsType("Cut"))">Cutting</MudTd>
+                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Heat")"
+                                    @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
+                                <td style="width:90px" class="UnselectedParamsType">@ComponentMode</td>
+                            }
+                            else
+                            {
+                                <td style="width:268px;border-width: 0px !important;" class="UnselectedParamsType tabcell">Status 2 @ComponentMode</td>
+                            }
+                                </tr>
+                            </table>                   
+                        </div>
+                    
             </td>
         </tr>
     </table>
