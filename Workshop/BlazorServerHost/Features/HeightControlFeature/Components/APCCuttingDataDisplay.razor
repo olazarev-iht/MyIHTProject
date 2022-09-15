@@ -118,7 +118,6 @@
     </DialogActions>
 </MudDialog>
 
-
 <MudDialog @bind-IsVisible="_editParamsDialogVisible">
     <TitleContent>
         <MudText Typo="Typo.h6"></MudText>
@@ -252,10 +251,32 @@
     </DialogActions>
 </MudDialog>
 
+<MudDialog @bind-IsVisible="_paramPopUpDialogVisible">
+    <TitleContent>
+        <MudText Typo="Typo.h6"></MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@cuttingDataModel" @ref="_deleteForm">
+            <MudTextField ReadOnly Value="@cuttingDataModel.Material.Name" Label="Material" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
+            <MudTextField ReadOnly Value="@cuttingDataModel.Thickness" Label="Thickness" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
+            <MudTextField ReadOnly Value="@cuttingDataModel.Remark" Label="Remark" Variant="Variant.Text" Margin="Margin.Normal"
+                Lines="2" For=@(() => cuttingDataModel.Remark)></MudTextField>                  
+        </MudForm>      
+    </DialogContent>
+    <DialogActions>
+        <MudFab @onclick="@(()=>Duplicate(@cuttingDataModel.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Title="Duplicate" Size="Size.Small" IconSize="Size.Small" />
+        <MudFab @onclick="@(()=>Edit(@cuttingDataModel.Id))" Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Title="Edit" Size="Size.Small" IconSize="Size.Small" />
+        <MudFab @onclick="@(()=>Delete(@cuttingDataModel.Id))" Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />
+
+        @*<MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Duplicate</MudButton>
+        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Edit</MudButton>*@
+    </DialogActions>
+</MudDialog>
+
 <br />
 <MudTable Elevation="25" RowsPerPage="8" Items="@cuttingDataModelList" Filter="new Func<CuttingDataModel, bool>(Search)" Hover="true" 
-    @bind-cuttingDataModel="cuttingDataModel">
-    <ToolBarContent>
+    @bind-cuttingDataModel="cuttingDataModel" OnRowClick="RowClickEvent" T="CuttingDataModel" Style="max-width: 550px;">
+    @*<ToolBarContent>
         <MudText Typo="Typo.h6">Parameters</MudText>
         <MudSpacer />
 
@@ -282,28 +303,27 @@
                 <MudSelectItem T="string" Value="@nozzleModel.Id.ToString()">@nozzleModel.Name</MudSelectItem>
             }
         </MudSelect>
-    </ToolBarContent>
+    </ToolBarContent>*@
     <HeaderContent>
+        <MudTh>ID</MudTh>
         <MudTh>Material</MudTh>
         <MudTh>Remark</MudTh>
         <MudTh>Thickness</MudTh>
         <MudTh>Nozzle</MudTh>
         <MudTh>Cutting speed</MudTh>
-        <MudTh>Origin</MudTh>
-        <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="Material">@context.Material?.Name</MudTd>
         <MudTd DataLabel="Remark">@context.Remark</MudTd>
         <MudTd DataLabel="Thickness">@context.Thickness</MudTd>
         <MudTd DataLabel="Nozzle">@context.Nozzle?.Name</MudTd>
         <MudTd DataLabel="Cutting speed">@context.CuttingSpeed</MudTd>
-        <MudTd DataLabel="Origin">@(string.IsNullOrWhiteSpace(@context.idCutDataParent.ToString()) ? "*" : "")</MudTd>
-        <MudTd DataLabel="">
+        @*<MudTd DataLabel="">
             <MudFab @onclick="@(()=>Duplicate(@context.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Title="Duplicate" Size="Size.Small" IconSize="Size.Small" />
             <MudFab @onclick="@(()=>Edit(@context.Id))" Disabled="@IsDisabled(@context.idCutDataParent.ToString())" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Title="Edit" Size="Size.Small" IconSize="Size.Small" />
             <MudFab @onclick="@(()=>Delete(@context.Id))" Disabled="@IsDisabled(@context.idCutDataParent.ToString())" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />
-        </MudTd>
+        </MudTd>*@
     </RowTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="new int[] { 8, 10, 12 }" />
@@ -316,6 +336,7 @@
     private bool _editParamsDialogVisible;
     private bool _deleteParamsDialogVisible;
     private bool _editOneParamDialogVisible;
+    private bool _paramPopUpDialogVisible;
 
     private MudForm _createForm;
     private MudForm _editForm;
@@ -376,6 +397,18 @@
             return true;
         }
         return false;
+    }
+
+    private void RowClickEvent(TableRowClickEventArgs<CuttingDataModel> tableRowClickEventArgs)
+    {
+        var id = tableRowClickEventArgs.Item.Id;
+        SetUpCuttingDataModel(id);
+        OpenParamPopUpDialog();
+    }
+
+    private void OpenParamPopUpDialog()
+    {
+        _paramPopUpDialogVisible = true;
     }
 
     private async Task UpdateParamsAsync()
@@ -453,33 +486,38 @@
             {
                 prop.SetValue(cuttingDataModel, _sliderVarValue, null);
             }
-            
+
         }
 
         _editOneParamDialogVisible = false;
     }
 
-    private void Edit(int id)
+    private void SetUpCuttingDataModel(int id)
     {
         cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
+    }
+
+    private void Edit(int id)
+    {
+        SetUpCuttingDataModel(id);
         _editParamsDialogVisible = true;
     }
 
     private void Duplicate(int id)
     {
-        cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
+        SetUpCuttingDataModel(id);
         _createParamsDialogVisible = true;
     }
 
     private void Delete(int id)
     {
-        cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
+        SetUpCuttingDataModel(id);
         _deleteParamsDialogVisible = true;
     }
 
     private void EditOneParam(string paramName, float paramValue, float paramMin, float paramMax, float paramDelta, int id)
     {
-        cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
+        SetUpCuttingDataModel(id);
         _sliderVarName = paramName;
         _sliderVarValue = paramValue;
         _sliderMinValue = paramMin;
