@@ -11,6 +11,8 @@ namespace BlazorServerHost.Pages
         private DotNetObjectReference<DynDataModificationCNC>? _selfReference;
         private bool _isTorchUpActive = false;
         private bool _isTorchDownActive = false;
+        private bool _isHCTorchUpActive = false;
+        private bool _isHCTorchDownActive = false;
 
         private bool _isFlameOn = false;
         //private bool _isFlameOff = true;
@@ -48,6 +50,26 @@ namespace BlazorServerHost.Pages
             if (!_isTorchUpActive && !_isTorchDownActive)
             {
                 _isTorchUpActive = true;
+
+                await ActivatateAsync(newEventName);
+            }
+        }
+
+        private async Task HCMoveTorchUpAsync(string newEventName)
+        {
+            if (!_isHCTorchUpActive && !_isHCTorchDownActive)
+            {
+                _isHCTorchUpActive = true;
+
+                await ActivatateAsync(newEventName);
+            }
+        }
+
+        private async Task HCMoveTorchDownAsync(string newEventName)
+        {
+            if (!_isHCTorchUpActive && !_isHCTorchDownActive)
+            {
+                _isHCTorchDownActive = true;
 
                 await ActivatateAsync(newEventName);
             }
@@ -99,14 +121,14 @@ namespace BlazorServerHost.Pages
                 _isTorchDownActive = false;
                 await StopTorchMovingAndRefreshAsync(eventName);
             }
-            else if (eventName == "HCMoveTorchUp" && _isTorchUpActive)
+            else if (eventName == "HCMoveTorchUp" && _isHCTorchUpActive)
             {
-                _isTorchUpActive = false;
+                _isHCTorchUpActive = false;
                 await StopTorchMovingAndRefreshAsync(eventName);
             }
-            else if (eventName == "HCMoveTorchDown" && _isTorchDownActive)
+            else if (eventName == "HCMoveTorchDown" && _isHCTorchDownActive)
             {
-                _isTorchDownActive = false;
+                _isHCTorchDownActive = false;
                 await StopTorchMovingAndRefreshAsync(eventName);
             }
         }

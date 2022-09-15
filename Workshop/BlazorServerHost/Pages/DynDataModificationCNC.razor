@@ -596,18 +596,18 @@ input#password-input:focus {
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
-                                    <div id="HCMoveTorchUp" class="@(_isTorchUpActive ? "btn active" : "btn")"
-                                        @onpointerdown="@(async (e) => await MoveTorchUpAsync("HCMoveTorchUp"))"
+                                    <div id="HCMoveTorchUp" class="@(_isHCTorchUpActive ? "btn active" : "btn")"
+                                        @onpointerdown="@(async (e) => await HCMoveTorchUpAsync("HCMoveTorchUp"))"
                                         @onpointerup="@((_) => DeactiveButton("HCMoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchUp"))"
-                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchUp"))">Up
+                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchUp"))">HCUp
                                     </div>
                                 </div>
                                 <br/>
                                 <div class="button_container">
-                                    <div id="HCMoveTorchDown" class="@(_isTorchDownActive ? "btn active" : "btn")"
-                                        @onpointerdown="@(async (e) => await MoveTorchDownAsync("HCMoveTorchDown"))"
+                                    <div id="HCMoveTorchDown" class="@(_isHCTorchDownActive ? "btn active" : "btn")"
+                                        @onpointerdown="@(async (e) => await HCMoveTorchDownAsync("HCMoveTorchDown"))"
                                         @onpointerup="@((_) => DeactiveButton("HCMoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchDown"))"
-                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchDown"))">Down
+                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchDown"))">HCDown
                                     </div>
                                </div>
                               </MudPaper>

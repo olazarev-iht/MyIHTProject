@@ -12,6 +12,7 @@
       "commandName": "Project",
       "commandLineArgs": "--env=Production",
       "launchBrowser": true,
+      "launchUrl": "dynDataModificationCNC",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -24,7 +25,8 @@
       "launchUrl": "dynDataModificationCNC",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": true
     },
     "Docker": {
       "commandName": "Docker",

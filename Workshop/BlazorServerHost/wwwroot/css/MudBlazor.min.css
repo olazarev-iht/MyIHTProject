@@ -9487,9 +9487,11 @@ tr.mud-table-row-group-indented-5 td:first-child {
         margin-inline-start:auto;}
 }
 
+/* 14.09.2022 changed by olazarev */
+/*@media(max-width: 960px)*/ 
 @media(max-width: 550px) {
-    .mud-sm-table .mud-table-root .mud-table-head,.mud-sm-table .mud-table-root .mud-table-foot {
-        display:none;
+    .mud-sm-table .mud-table-root .mud-table-head, .mud-sm-table .mud-table-root .mud-table-foot {
+        display: none;
     }
 
     .mud-sm-table .mud-table-smalldevices-sortselect {
@@ -9505,9 +9507,9 @@ tr.mud-table-row-group-indented-5 td:first-child {
         display: initial;
     }
 
-    .mud-sm-table .mud-table-row .mud-table-cell:last-child {
-        border-bottom: 1px solid var(--mud-palette-table-lines);
-    }
+        .mud-sm-table .mud-table-row .mud-table-cell:last-child {
+            border-bottom: 1px solid var(--mud-palette-table-lines);
+        }
 
     .mud-sm-table .mud-table-cell {
         display: flex;
@@ -9526,7 +9528,9 @@ tr.mud-table-row-group-indented-5 td:first-child {
         content: attr(data-label);
         font-weight: 500;
         padding-right: 16px;
-        padding-inline-end:16px;padding-inline-start:unset;}
+        padding-inline-end: 16px;
+        padding-inline-start: unset;
+    }
 
     .mud-sm-table.mud-table-small-alignright .mud-table-cell:before {
         margin-right: auto;
@@ -9551,9 +9555,10 @@ tr.mud-table-row-group-indented-5 td:first-child {
         display: none;
     }
 
-    .mud-sm-table .mud-table-pagination .mud-select~.mud-table-pagination-caption {
+    .mud-sm-table .mud-table-pagination .mud-select ~ .mud-table-pagination-caption {
         margin-left: auto;
-        margin-inline-start:auto;}
+        margin-inline-start: auto;
+    }
 }
 
 @media(max-width: 1280px) {

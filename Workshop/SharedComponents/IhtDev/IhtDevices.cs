@@ -1957,11 +1957,17 @@ namespace SharedComponents.IhtDev
         /// </summary>
         public async Task HeightCtrlUpAsync(int _slaveId)
         {
-            await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.HeightCtrlUpAsync(_slaveId).ConfigureAwait(false);
+            if (ihtModbusCommunic.ihtModbusCmdExecInputEmulation != null)
+            {
+                await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.HeightCtrlUpAsync(_slaveId).ConfigureAwait(false);
+            }
         }
         public async Task StopHeightCtrlUpAsync(int _slaveId)
         {
-            await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopHeightCtrlUpAsync(_slaveId).ConfigureAwait(false);
+            if (ihtModbusCommunic.ihtModbusCmdExecInputEmulation != null)
+            {
+                await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopHeightCtrlUpAsync(_slaveId).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -1969,11 +1975,17 @@ namespace SharedComponents.IhtDev
         /// </summary>
         public async Task HeightCtrlDownAsync(int _slaveId)
         {
-            await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.HeightCtrlDownAsync(_slaveId).ConfigureAwait(false);
+            if (ihtModbusCommunic.ihtModbusCmdExecInputEmulation != null)
+            {
+                await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.HeightCtrlDownAsync(_slaveId).ConfigureAwait(false);
+            }
         }
         public async Task StopHeightCtrlDownAsync(int _slaveId)
         {
-            await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopHeightCtrlDownAsync(_slaveId).ConfigureAwait(false);
+            if (ihtModbusCommunic.ihtModbusCmdExecInputEmulation != null)
+            {
+                await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopHeightCtrlDownAsync(_slaveId).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
