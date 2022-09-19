@@ -62,6 +62,10 @@
     justify-content: center;
     align-items: center;
 }
+    .up_btn.active {
+        box-shadow: 0px 0px 0px #0065c8;
+        background-color: #FF584F;
+    }
 
 .central_btn {
     margin-bottom: 5px;
@@ -85,6 +89,10 @@
     justify-content: center;
     align-items: center;
 }
+    .central_btn.active {
+        box-shadow: 0px 0px 0px #0065c8;
+        background-color: #FF584F;
+    }
 
 .down_btn {
     border: 0;
@@ -106,6 +114,10 @@
     justify-content: center;
     align-items: center;
 }
+    .down_btn.active {
+        box-shadow: 0px 0px 0px #0065c8;
+        background-color: #FF584F;
+    }
 
 .btn {
     border: 0;

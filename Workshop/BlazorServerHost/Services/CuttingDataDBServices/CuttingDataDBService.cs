@@ -26,7 +26,7 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
 			var entries = await dbContext.CuttingData
-				.OrderByDescending(p => p.idCutDataParent)
+				.OrderBy(p => p.Id)
 					.ThenBy(p => p.Thickness)
 				.Include(p => p.Gas)
 				.Include(p => p.Nozzle)

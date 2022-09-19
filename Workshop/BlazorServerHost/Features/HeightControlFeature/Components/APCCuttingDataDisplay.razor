@@ -19,14 +19,15 @@
         padding: 7px 0px 5px;
     }
     .mud-table-cell{
-        padding: 5px 5px 5px 5px;
+        padding: 7px 7px 7px 7px;
+        border: 1px solid #e0e0e0;
         
     }
     table>tr:not(:first-child)>th.mud-table-cell:first-child {
-        border: 1px solid #e0e0e0;
+        /*border: 1px solid #e0e0e0;*/
     }
     table>tr:first-child>th.mud-table-cell:not(:first-child) {
-        border: 1px solid #e0e0e0;
+        /*border: 1px solid #e0e0e0;*/
     }
     .mud-input-control{
 	    margin-top: 0px;
@@ -43,6 +44,37 @@
 	.mud-input.mud-input-outlined {
 		width: 80px;
 	}
+    .centered {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        /* bring your own prefixes */
+        transform: translate(-50%, -50%);
+    }
+
+    .mud-table-pagination {
+        /*display: none;*/
+    }
+    .tab_row{
+        /*border: 2px solid #e0e0e0;*/
+    }
+    .tab_head{
+        background-color: darkgrey;
+    }
+
+.mud-dialog.MyMudDialog .mud-dialog-actions {
+    flex: 0 0 auto;
+    display: flex;
+    padding: 8px;
+    align-items: center;
+    justify-content: center;
+    border-bottom-left-radius: var(--mud-default-borderradius);
+    border-bottom-right-radius: var(--mud-default-borderradius);
+}
+.SelectedRow {
+    background-color: darkgrey;
+}
+    /*--mud-palette-table-striped: #bdbdbd;*/
 </style>
 
 <PageTitle>Cutting Data</PageTitle>
@@ -251,31 +283,67 @@
     </DialogActions>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_paramPopUpDialogVisible">
+<MudDialog @bind-IsVisible="_paramPopUpDialogVisible" Class="MyMudDialog">
     <TitleContent>
         <MudText Typo="Typo.h6"></MudText>
     </TitleContent>
     <DialogContent>
         <MudForm Model="@cuttingDataModel" @ref="_deleteForm">
-            <MudTextField ReadOnly Value="@cuttingDataModel.Material.Name" Label="Material" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
-            <MudTextField ReadOnly Value="@cuttingDataModel.Thickness" Label="Thickness" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
-            <MudTextField ReadOnly Value="@cuttingDataModel.Remark" Label="Remark" Variant="Variant.Text" Margin="Margin.Normal"
-                Lines="2" For=@(() => cuttingDataModel.Remark)></MudTextField>                  
+            <table>
+                @*<thead style="background-color:gray">
+                <MudTh Style="text-align: center;">ID</MudTh>
+                <MudTh Style="text-align: center;">Materi-<br/>al</MudTh>
+                <MudTh Style="text-align: center;">Remark</MudTh>
+                <MudTh Style="text-align: center;">Thick<br/>[mm]</MudTh>
+                <MudTh Style="width:80px;text-align: center;">Nozzle</MudTh>
+                <MudTh Style="text-align: center;">Speed<br/>[mm/<br/>min]</MudTh>
+                </thead>*@
+                <tr>
+                    <MudTd DataLabel="Id" Style="text-align: center;">@cuttingDataModel.Id</MudTd>
+                    <MudTd DataLabel="Material" Style="text-align: center;">@cuttingDataModel.Material?.Name</MudTd>
+                    <MudTd DataLabel="Remark" Style="text-align: center;">@cuttingDataModel.Remark</MudTd>
+                    <MudTd DataLabel="Thickness" Style="text-align: center;">@cuttingDataModel.Thickness</MudTd>
+                    <MudTd DataLabel="Nozzle" Style="text-align: center;">@cuttingDataModel.Nozzle?.Name1<br/>@cuttingDataModel.Nozzle?.Name2</MudTd>
+                    <MudTd DataLabel="Cutting speed" Style="text-align: center;">@cuttingDataModel.CuttingSpeed</MudTd>
+                </tr>
+            </table>
         </MudForm>      
     </DialogContent>
     <DialogActions>
-        <MudFab @onclick="@(()=>Duplicate(@cuttingDataModel.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Title="Duplicate" Size="Size.Small" IconSize="Size.Small" />
+        <table>
+            <tr>
+                <td>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Duplicate(@cuttingDataModel.Id))">Duplicate</MudButton>
+                </td>
+                <td>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Edit(@cuttingDataModel.Id))"
+                        Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())">Edit</MudButton>
+                </td>
+                <td>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Delete(@cuttingDataModel.Id))"
+                        Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())">Delete</MudButton>
+                </td>
+                <td>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Delete(@cuttingDataModel.Id))">Save</MudButton>
+                </td>
+                <td>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Delete(@cuttingDataModel.Id))">Load</MudButton>
+                </td>
+            </tr>
+        </table>
+        @*<MudFab @onclick="@(()=>Duplicate(@cuttingDataModel.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Title="Duplicate" Size="Size.Small" IconSize="Size.Small" />
         <MudFab @onclick="@(()=>Edit(@cuttingDataModel.Id))" Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Title="Edit" Size="Size.Small" IconSize="Size.Small" />
-        <MudFab @onclick="@(()=>Delete(@cuttingDataModel.Id))" Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />
-
-        @*<MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Duplicate</MudButton>
+        <MudFab @onclick="@(()=>Delete(@cuttingDataModel.Id))" Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />*@
+        
+            @*<MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Duplicate</MudButton>
         <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Edit</MudButton>*@
     </DialogActions>
 </MudDialog>
 
 <br />
-<MudTable Elevation="25" RowsPerPage="8" Items="@cuttingDataModelList" Filter="new Func<CuttingDataModel, bool>(Search)" Hover="true" 
-    @bind-cuttingDataModel="cuttingDataModel" OnRowClick="RowClickEvent" T="CuttingDataModel" Style="max-width: 550px;">
+<MudTable Elevation="25" RowsPerPage="6" Items="@cuttingDataModelList" Filter="new Func<CuttingDataModel, bool>(Search)" Hover="true" Striped="true"
+    @bind-cuttingDataModel="cuttingDataModel" OnRowClick="RowClickEvent" T="CuttingDataModel" Class="centered" Style="width: 550px; cursor: default;" 
+    Dense="false" HeaderClass="tab_head" RowClass="tab_row" SelectedItem="selectedDataModel">
     @*<ToolBarContent>
         <MudText Typo="Typo.h6">Parameters</MudText>
         <MudSpacer />
@@ -305,20 +373,20 @@
         </MudSelect>
     </ToolBarContent>*@
     <HeaderContent>
-        <MudTh>ID</MudTh>
-        <MudTh>Material</MudTh>
-        <MudTh>Remark</MudTh>
-        <MudTh>Thickness</MudTh>
-        <MudTh>Nozzle</MudTh>
-        <MudTh>Cutting speed</MudTh>
+        <MudTh Style="text-align: center; color: #ffff">ID</MudTh>
+        <MudTh Style="text-align: center; color: #ffff">Materi-<br/>al</MudTh>
+        <MudTh Style="text-align: center; color: #ffff">Remark</MudTh>
+        <MudTh Style="text-align: center; color: #ffff">Thick<br/>[mm]</MudTh>
+        <MudTh Style="width:80px;text-align: center; color: #ffff">Nozzle</MudTh>
+        <MudTh Style="text-align: center; color: #ffff">Speed<br/>[mm/<br/>min]</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Id">@context.Id</MudTd>
-        <MudTd DataLabel="Material">@context.Material?.Name</MudTd>
-        <MudTd DataLabel="Remark">@context.Remark</MudTd>
-        <MudTd DataLabel="Thickness">@context.Thickness</MudTd>
-        <MudTd DataLabel="Nozzle">@context.Nozzle?.Name</MudTd>
-        <MudTd DataLabel="Cutting speed">@context.CuttingSpeed</MudTd>
+        <MudTd DataLabel="Id" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.Id</MudTd>
+        <MudTd DataLabel="Material" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.Material?.Name</MudTd>
+        <MudTd DataLabel="Remark" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.Remark</MudTd>
+        <MudTd DataLabel="Thickness" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.Thickness</MudTd>
+        <MudTd DataLabel="Nozzle" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.Nozzle?.Name1<br/>@context.Nozzle?.Name2</MudTd>
+        <MudTd DataLabel="Cutting speed" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.CuttingSpeed</MudTd>
         @*<MudTd DataLabel="">
             <MudFab @onclick="@(()=>Duplicate(@context.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Title="Duplicate" Size="Size.Small" IconSize="Size.Small" />
             <MudFab @onclick="@(()=>Edit(@context.Id))" Disabled="@IsDisabled(@context.idCutDataParent.ToString())" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Title="Edit" Size="Size.Small" IconSize="Size.Small" />
@@ -326,7 +394,7 @@
         </MudTd>*@
     </RowTemplate>
     <PagerContent>
-        <MudTablePager PageSizeOptions="new int[] { 8, 10, 12 }" />
+        <MudTablePager PageSizeOptions="new int[] { 6 }" />
     </PagerContent>
 </MudTable>
 
@@ -355,6 +423,7 @@
 
     private float[] arrThicknesses = { 3, 4, 5, 6, 7, 8, 10, 12, 15, 20, 25, 30, 40, 50, 70, 80, 90, 100, 120, 130, 150, 200, 230, 250, 300 };
     private CuttingDataModel cuttingDataModel = new CuttingDataModel();
+    private CuttingDataModel selectedDataModel = new CuttingDataModel();
     //private NozzleModel nozzle = new NozzleModel();
     private static List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
     private IEnumerable<NozzleModel> nozzleModelList = new List<NozzleModel>();
@@ -430,7 +499,7 @@
             await cuttingDataDBService.AddEntryAsync(cuttingDataModel, CancellationToken.None);
             cuttingDataModel = new CuttingDataModel();
             _createParamsDialogVisible = false;
-            snackBar.Add("Parameter Saved.", Severity.Success);
+            //snackBar.Add("Parameter Saved.", Severity.Success);
             await GetEntriesAsync();
 
             OnStaticParamChanged();
@@ -442,7 +511,7 @@
         await cuttingDataDBService.DeleteEntryAsync(cuttingDataModel.Id, CancellationToken.None);
         cuttingDataModel = new CuttingDataModel();
         _deleteParamsDialogVisible = false;
-        snackBar.Add("Parameter Deleted.", Severity.Success);
+        //snackBar.Add("Parameter Deleted.", Severity.Success);
         await GetEntriesAsync();
 
         OnStaticParamChanged();
@@ -495,6 +564,8 @@
     private void SetUpCuttingDataModel(int id)
     {
         cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
+        cuttingDataModelList.ForEach(row => row.SelectedRow = false);
+        cuttingDataModel.SelectedRow = true;
     }
 
     private void Edit(int id)
@@ -555,6 +626,8 @@
 
     private void OnStaticParamChanged()
     {
+        _paramPopUpDialogVisible = false;
+
         APCCuttingDataDisplay.StaticParamsClientChanged?.Invoke(this, EventArgs.Empty);
     }
 

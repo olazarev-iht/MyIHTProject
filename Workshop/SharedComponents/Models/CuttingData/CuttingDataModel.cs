@@ -44,5 +44,6 @@ namespace SharedComponents.Models.CuttingData
         public string? Remark { get; set; }
         public int? idCutDataParent { get; set; }
         public int Controlbits { get; set; } = 0;
+        public bool SelectedRow { get; set; } = false;
     }
 }

@@ -1231,39 +1231,6 @@ input#password-input:focus {
         }
     }
 
-    //private void OnTorchStateChanged()
-    //{
-    //    var newEventName = string.Empty;
-
-    //    //if (isTorchStartedMoving) return;
-
-    //    if (spValueOriginal < spValueCurrent)
-    //    {
-    //        newEventName = "MoveTorchUp";
-    //    }
-    //    else if (spValueOriginal > spValueCurrent)
-    //    {
-    //        newEventName = "MoveTorchDown";
-    //    }
-    //    else
-    //    {
-    //        StopTorchMoving();
-    //    }
-
-    //    if (!string.IsNullOrWhiteSpace(newEventName))
-    //    {
-    //        // We change torch moving direction witout switching to stop position
-    //        if (isTorchStartedMoving)
-    //        {
-    //            StopTorchMoving();
-    //        }
-
-    //        currentTorchEventName = newEventName;
-
-    //        StartMovingTorch(currentTorchEventName);
-    //    }
-    //}
-
     private void StartMovingTorch(string eventName)
     {
         if (!isTorchStartedMoving)

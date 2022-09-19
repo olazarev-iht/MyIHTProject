@@ -149,6 +149,24 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 			//Action<CancellationToken> doHeartBeatWork = null;
 
+			await ProcessHeartBeatSending(commandType);
+
+			//switch (commandType)
+			//{
+			//	case "HCMoveTorchUp":
+			//		await SendHCCommandMoveTorchUpAsync();
+			//		break;
+			//	case "HCMoveTorchDown":
+			//		await SendHCCommandMoveTorchDownAsync();
+			//		break;
+			//	default:
+			//		await ProcessHeartBeatSending(commandType);
+			//		return;
+			//}
+		}
+
+		private async Task ProcessHeartBeatSending(string commandType)
+        {
 			await mutexModbusMaster.WaitAsync();
 
 			tokenSource = new CancellationTokenSource();
@@ -158,24 +176,24 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			{
 				await Task.Run(async () => await StartSendingHeartBeatForTorchAsync(commandType, token), token);
 			}
-            catch (AggregateException ex1)
-            {
-                // catch whatever was thrown
-                foreach (Exception eex in ex1.InnerExceptions)
-                    Console.WriteLine(eex.Message);
-            }
-            catch (OperationCanceledException ex)
+			catch (AggregateException ex1)
 			{
-                Console.WriteLine($"\n{nameof(OperationCanceledException)} thrown\n");
+				// catch whatever was thrown
+				foreach (Exception eex in ex1.InnerExceptions)
+					Console.WriteLine(eex.Message);
+			}
+			catch (OperationCanceledException ex)
+			{
+				Console.WriteLine($"\n{nameof(OperationCanceledException)} thrown\n");
 
-                if (ex.InnerException != null)
-                {
-                    var innerExMessage = ex.InnerException.Message;
-                }
+				if (ex.InnerException != null)
+				{
+					var innerExMessage = ex.InnerException.Message;
+				}
 
-                var exMessage = ex.Message;
-            }
-            catch (Exception ex2)
+				var exMessage = ex.Message;
+			}
+			catch (Exception ex2)
 			{
 				//Console.WriteLine(ex2.Message);
 			}
@@ -185,12 +203,11 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 				//tokenSource = null;
 				mutexModbusMaster?.Release();
 			}
-
 		}
 
 		public async void dynamicParamsDysplay_APCTorchPositionStoped(object? sender, EventArgs e)
 		{
-			await StopMovingTorchAsync(); 
+			try { await StopMovingTorchAsync(); } catch { };
 		}
 
 		public async Task StopMovingTorchAsync()
@@ -232,13 +249,13 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 					case "MoveTorchDown":
 						taskSendHeartBeat = SendHeartBeatMoveTorchDownAsync();
 						break;
-					case "HCMoveTorchUp":
-						taskSendHeartBeat = SendHCCommandMoveTorchUpAsync();
-						break;
-					case "HCMoveTorchDown":
-						taskSendHeartBeat = SendHCCommandMoveTorchDownAsync();
-						break;
-					default: return;
+                    case "HCMoveTorchUp":
+                        taskSendHeartBeat = SendHCCommandMoveTorchUpAsync();
+                        break;
+                    case "HCMoveTorchDown":
+                        taskSendHeartBeat = SendHCCommandMoveTorchDownAsync();
+                        break;
+                    default: return;
 				}
 
 				await taskSendHeartBeat;

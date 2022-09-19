@@ -6706,9 +6706,17 @@ ul {
     background-color: var(--mud-palette-table-striped);
 }
 
+/*.mud-simple-table.mud-table-striped .mud-table-container table tbody tr:nth-of-type(even) {
+    background-color: #CBCBCB;
+}*/
+
 .mud-table-hover.mud-table-striped .mud-table-container table tbody tr:nth-of-type(odd):nth-of-type(odd):hover {
     background-color: var(--mud-palette-table-hover);
 }
+
+/*.mud-table-hover.mud-table-striped .mud-table-container table tbody tr:nth-of-type(even):nth-of-type(even):hover {
+    background-color: #CBCBCB;
+}*/
 
 .mud-simple-table.mud-table-sticky-header .mud-table-container {
     overflow-x: auto;
@@ -9226,9 +9234,18 @@ ul {
     background-color: var(--mud-palette-table-striped);
 }
 
+/*changed by olazarev 19/09/2022*/
+/*.mud-table-striped .mud-table-container .mud-table-root .mud-table-body .mud-table-row:nth-of-type(even) {
+    background-color: #CBCBCB;
+}*/
+
 .mud-table-hover.mud-table-striped .mud-table-container .mud-table-root .mud-table-body .mud-table-row:nth-of-type(odd):hover {
     background-color: var(--mud-palette-table-hover);
 }
+
+/*.mud-table-hover.mud-table-striped .mud-table-container .mud-table-root .mud-table-body .mud-table-row:nth-of-type(even):hover {
+    background-color: #CBCBCB;
+}*/
 
 .mud-table-cell>.mud-input-control>div.mud-input.mud-input-text {
     color: var(--mud-theme-on-surface);
