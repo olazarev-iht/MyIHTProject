@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
+using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
 using SharedComponents.IhtModbusTable;
 using SharedComponents.Models;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services;
 using SharedComponents.Services.APCHardwareManagers;
+using System.Diagnostics;
 
 namespace BlazorServerHost.Services.APCWorkerService
 {
@@ -14,6 +16,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 		private readonly IParameterDataInfoManager _parameterDataInfoManager;
 		private readonly IhtModbusCommunic _ihtModbusCommunic;
 		private readonly Settings _settings;
+		private readonly IhtDevices _ihtDevices;
 
 		public SingletonDataModel CurrentState { get; set; } = new();
 
@@ -24,7 +27,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 			IParameterDataInfoManager parameterDataInfoManager,
 			ILogger<APCWorkerService> logger,
 			IhtModbusCommunic ihtModbusCommunic,
-			IOptions<Settings> settings
+			IOptions<Settings> settings,
+			IhtDevices ihtDevices
 			)
 		{
 			_parameterDataInfoManager = parameterDataInfoManager ?? throw new ArgumentNullException(nameof(parameterDataInfoManager));
@@ -34,6 +38,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 			_ihtModbusCommunic = ihtModbusCommunic ?? throw new ArgumentNullException(nameof(ihtModbusCommunic));
 
 			_settings = settings != null ? settings.Value : throw new ArgumentNullException($"{nameof(settings)}");
+
+			_ihtDevices = ihtDevices ?? throw new ArgumentNullException(nameof(ihtDevices));
 
 			InitializeAsync().Wait();
 
@@ -50,6 +56,37 @@ namespace BlazorServerHost.Services.APCWorkerService
 				{
 					// TODO currently we read the whole APC model, but we may will read only Live data
 					//CurrentState = await _hardwareAPCServise.GetSingletonDataModelAsync(CancellationToken.None);
+					//var parameterValue = await _ihtModbusCommunic.ReadAsync(apcSlaveId, (ushort)paramStartAddress, registerCount, ihtModbusResult);
+					Stopwatch stopwatch = new Stopwatch();
+					var modbusDatas = _ihtModbusCommunic.GetConnectedModbusDatas();
+
+					stopwatch.Start();
+					foreach (IhtModbusData modbusData in modbusDatas)
+                    {
+						IhtModbusResult ihtModbusResult = new();
+
+						byte apcSlaveId = (byte)modbusData.SlaveId;
+						ushort paramStartAddress = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.ProcessInfo).u16StartAddr;
+						ushort registerCount     = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.ProcessInfo).u16AddrNumber;
+						UInt16[] parameterValue = await _ihtModbusCommunic.ReadAsync(apcSlaveId, (ushort)paramStartAddress, registerCount, ihtModbusResult);
+
+						// Update old data with the new and get an event in device.dataProcessInfo
+						ihtModbusResult.Result = await _ihtDevices.Read_ProcessInfoAsync(modbusData, true);
+
+						var device = _ihtDevices.GetDevice(apcSlaveId);
+						//device.dataProcessInfo;
+
+						//Compare old and new data
+
+					}
+					long interval_ms = 500 - stopwatch.ElapsedMilliseconds;
+
+					if (interval_ms > 0)
+					{
+						await Task.Delay((int)interval_ms, cancellationToken);
+					}
+					// Für alle nicht verbundenen Geräte die Process-Info Daten löschen
+					_ihtDevices.ClrProcessInfoDatas();
 
 					WorkerStatusChanged?.Invoke(this, EventArgs.Empty);
 				}
@@ -59,7 +96,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 				}
 
 				// Must be 0.2 msec
-				await Task.Delay(TimeSpan.FromSeconds(20));
+				//await Task.Delay(TimeSpan.FromSeconds(20));
 			}
 
 		}

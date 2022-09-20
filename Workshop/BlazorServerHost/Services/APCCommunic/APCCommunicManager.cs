@@ -6,11 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using SharedComponents.Services.APCCommunicServices;
 using SharedComponents.Services.APCHardwareManagers;
+using BlazorServerHost.Services.APCWorkerService;
 using SharedComponents.IhtModbus;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtMsg;
 
-namespace SharedComponents.APCCommunic
+namespace BlazorServerHost.Services.APCCommunic
 {
     public class APCCommunicManager : ICommunicService
     {
@@ -18,6 +19,7 @@ namespace SharedComponents.APCCommunic
         IhtModbusCommunic _ihtModbusCommunic;
         IhtModbusCommunicData _ihtModbusCommunicData;
         IParameterDataInfoManager _parameterDataInfoManager;
+        APCWorkerBackgroundService _apcWorkerBackgroundService;
 
         private int _isRobot = 0;
         //TODO: implement with command line
@@ -39,7 +41,8 @@ namespace SharedComponents.APCCommunic
             IhtDevices ihtDevices,
             IhtModbusCommunic ihtModbusCommunic, 
             IhtModbusCommunicData ihtModbusCommunicData,
-            IParameterDataInfoManager parameterDataInfoManager)
+            IParameterDataInfoManager parameterDataInfoManager,
+            APCWorkerBackgroundService apcWorkerBackgroundService)
         {
             _ihtDevices = ihtDevices ??
                throw new ArgumentNullException($"{nameof(ihtDevices)}");
@@ -52,6 +55,9 @@ namespace SharedComponents.APCCommunic
 
             _parameterDataInfoManager = parameterDataInfoManager ??
                throw new ArgumentNullException($"{nameof(parameterDataInfoManager)}");
+
+            _apcWorkerBackgroundService = apcWorkerBackgroundService ??
+               throw new ArgumentNullException($"{nameof(apcWorkerBackgroundService)}");
 
         }
 
@@ -87,6 +93,7 @@ namespace SharedComponents.APCCommunic
 
             //TODO: implement ?
             //StopBackgroundWorker();
+            await _apcWorkerBackgroundService.StopAsync(APCWorkerBackgroundService._stoppingCts.Token);
 
             // Eingeschaltete Geräte merken
             UInt16 u16OnSlaveIdBits = (UInt16)IhtModbusCommunic.CurrOnSlaveBits;
@@ -154,16 +161,14 @@ namespace SharedComponents.APCCommunic
             //eventDisplay.VisibilityLoadAnimation = Visibility.Collapsed;
             //blEnable = blEnable && ButStatusMsgError != IhtMsgLog.Info.Error && ButStatusMsgWarning != IhtMsgLog.Info.Warning;
             //eventDisplay.VisibilityCloseButton = (blEnable) ? Visibility.Collapsed : Visibility.Visible;
-            //if (blEnable)
-            //{
-            //    eventDisplay.Visibility = Visibility.Hidden;
-            //    CommandManager.InvalidateRequerySuggested();
-            //    ---->  StartBackgroundWorker();
-            //    commonDataControl.MainAereaIsEnabled = blEnable;
-            //}
-
-            //TODO: implement ?
-            //StartBackgroundWorker();
+            if (blEnable)
+            {
+                //eventDisplay.Visibility = Visibility.Hidden;
+                //CommandManager.InvalidateRequerySuggested();
+                //----> StartBackgroundWorker();
+                await _apcWorkerBackgroundService.StartAsync(new CancellationToken());
+                //commonDataControl.MainAereaIsEnabled = blEnable;
+            }
         }
     }
 }

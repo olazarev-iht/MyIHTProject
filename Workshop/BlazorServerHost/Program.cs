@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Services;
-using SharedComponents.APCCommunic;
+using BlazorServerHost.Services.APCCommunic;
 using SharedComponents.APCHardwareManagers;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
@@ -64,6 +64,7 @@ builder.Services.AddScoped<IStringLocalizer<App>, StringLocalizer<App>>();
 
 builder.Services.AddHostedService<BackgroundHardwareMonitor>();
 builder.Services.AddHostedService<APCWorkerBackgroundService>();
+builder.Services.AddSingleton<APCWorkerBackgroundService>();
 builder.Services.AddSingleton<IHardwareStatusService, FakeHardwareStatusService>();
 builder.Services.AddSingleton<IAPCWorkerService, APCWorkerService>();
 

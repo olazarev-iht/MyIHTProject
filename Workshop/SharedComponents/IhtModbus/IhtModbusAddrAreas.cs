@@ -9,7 +9,7 @@ namespace SharedComponents.IhtModbus
     /// <summary>
     /// Address-Bereich
     /// </summary>
-    class IhtModbusAddrAreas
+    public class IhtModbusAddrAreas
     {
         /// <summary>
         /// 

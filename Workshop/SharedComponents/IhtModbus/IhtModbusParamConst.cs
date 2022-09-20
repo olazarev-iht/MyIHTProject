@@ -7,7 +7,7 @@ using SharedComponents.IhtDev;
 
 namespace SharedComponents.IhtModbus
 {
-    class IhtModbusParamConst
+    public class IhtModbusParamConst
     {
         /// <summary>
         /// We temporary write params into DynParams DB, 

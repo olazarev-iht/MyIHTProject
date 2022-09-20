@@ -3,7 +3,7 @@
 @using BlazorServerHost.Features.HeightControlFeature.Services.CNC
 @using SharedComponents.IhtDev
 @using SharedComponents.IhtModbus
-@using SharedComponents.APCCommunic
+@using BlazorServerHost.Services.APCCommunic
 @using SharedComponents.Models.APCHardware
 @using SharedComponents.Services.APCHardwareManagers
 @using SharedComponents.Services.APCHardwareMockDBServices
@@ -55,7 +55,7 @@ table#controlPanel td  {
 }
 
 .UnselectedParamsType {
-    background-color:aliceblue;
+    background-color:#e1f0fd;
 }
 
 .FlameIsOff {
@@ -67,17 +67,17 @@ table#controlPanel td  {
 }
 
 .SelectedDeviceNum {
-    background-color:#3D6FB4;
+    background-color:#6188bf;
     color: #ffff;
 }
 
 .UnselectedDeviceNum {
-    background-color:violet;
+    background-color:#e1f0fd;
     color: #ffff;
 }
 
 .NotConnectedDevice {
-    background-color:red;
+    background-color:#d56565;
     color: #ffff;
 }
 
@@ -884,6 +884,7 @@ input#password-input:focus {
         //TODO: Change: use dependency injection instead of the "new IhtModbusCommunicInfo(...)"
         //var ihtModbusCommunicInfo = new IhtModbusCommunicInfo(ihtDevices, apcSimulationDataMockDBService, parameterDataInfoManager);
 
+        // stop Live params task - worker
         await apcCommunicManager.Init(_nameComPort, _isSimulation, _performResetDevices);
 
         ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded?.Invoke(this, EventArgs.Empty);

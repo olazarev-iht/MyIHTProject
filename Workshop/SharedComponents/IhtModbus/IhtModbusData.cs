@@ -115,8 +115,8 @@ namespace SharedComponents.IhtModbus
         private UInt16 u16AreasNumber = 0;
         private IhtModbusAddrAreas addrAreas;
 
-        internal IhtModbusAddrAreas GetAddrAreas() { return addrAreas; }
-        internal UInt16 GetAreasNumber() { return u16AreasNumber; }
+        public IhtModbusAddrAreas GetAddrAreas() { return addrAreas; }
+        public UInt16 GetAreasNumber() { return u16AreasNumber; }
 
         private UInt16[] au16DeviceInfo;
         private UInt16[] au16TechnologyConst;
@@ -134,13 +134,13 @@ namespace SharedComponents.IhtModbus
         private UInt16[] au16Data;
         private UInt16[] au16TableData;
 
-        internal UInt16[] GetDeviceInfo() { return au16DeviceInfo; }
-        internal UInt16[] GetTechnologyConst() { return au16TechnologyConst; }
-        internal UInt16[] GetProcessConst() { return au16ProcessConst; }
-        internal UInt16[] GetConfigConst() { return au16ConfigConst; }
-        internal UInt16[] GetServiceConst() { return au16ServiceConst; }
+        public UInt16[] GetDeviceInfo() { return au16DeviceInfo; }
+        public UInt16[] GetTechnologyConst() { return au16TechnologyConst; }
+        public UInt16[] GetProcessConst() { return au16ProcessConst; }
+        public UInt16[] GetConfigConst() { return au16ConfigConst; }
+        public UInt16[] GetServiceConst() { return au16ServiceConst; }
 
-        internal UInt16 GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo eIdxDeviceInfo)
+        public UInt16 GetValueDeviceInfo(IhtModbusParamConst.eIdxDeviceInfo eIdxDeviceInfo)
         {
             int idx = (int)eIdxDeviceInfo;
             if (idx < au16DeviceInfo.Length)
@@ -150,7 +150,7 @@ namespace SharedComponents.IhtModbus
             return 0;
         }
 
-        internal UInt16 GetTechnologyConst(IhtModbusParamConst.eIdxTechnology eIdxTechnology)
+        public UInt16 GetTechnologyConst(IhtModbusParamConst.eIdxTechnology eIdxTechnology)
         {
             int idx = (int)eIdxTechnology;
             if (idx < au16TechnologyConst.Length)
@@ -159,7 +159,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetProcessConst(IhtModbusParamConst.eIdxProcess eIdxProcess)
+        public UInt16 GetProcessConst(IhtModbusParamConst.eIdxProcess eIdxProcess)
         {
             int idx = (int)eIdxProcess;
             if (idx < au16ProcessConst.Length)
@@ -168,7 +168,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetConfigConst(IhtModbusParamConst.eIdxConfig eIdxConfig)
+        public UInt16 GetConfigConst(IhtModbusParamConst.eIdxConfig eIdxConfig)
         {
             int idx = (int)eIdxConfig;
             if (idx < au16ConfigConst.Length)
@@ -177,7 +177,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetServiceConst(IhtModbusParamConst.eIdxService eIdxService)
+        public UInt16 GetServiceConst(IhtModbusParamConst.eIdxService eIdxService)
         {
             int idx = (int)eIdxService;
             if (idx < au16ServiceConst.Length)
@@ -187,17 +187,17 @@ namespace SharedComponents.IhtModbus
             return 0;
         }
 
-        internal UInt16[] GetDataTechnologyDyn() { return au16TechnologyDyn; }
-        internal UInt16[] GetDataProcessDyn() { return au16ProcessDyn; }
-        internal UInt16[] GetDataConfigDyn() { return au16ConfigDyn; }
-        internal UInt16[] GetDataServiceDyn() { return au16ServiceDyn; }
-        internal UInt16[] GetDataProcessInfo() { return au16ProcInfo; }
-        internal UInt16[] GetDataCmdExec() { return au16CmdExec; }
-        internal UInt16[] GetDataSetupExec() { return au16SetupExec; }
-        internal UInt16[] GetDataData() { return au16Data; }
-        internal UInt16[] GetDataTableData() { return au16TableData; }
+        public UInt16[] GetDataTechnologyDyn() { return au16TechnologyDyn; }
+        public UInt16[] GetDataProcessDyn() { return au16ProcessDyn; }
+        public UInt16[] GetDataConfigDyn() { return au16ConfigDyn; }
+        public UInt16[] GetDataServiceDyn() { return au16ServiceDyn; }
+        public UInt16[] GetDataProcessInfo() { return au16ProcInfo; }
+        public UInt16[] GetDataCmdExec() { return au16CmdExec; }
+        public UInt16[] GetDataSetupExec() { return au16SetupExec; }
+        public UInt16[] GetDataData() { return au16Data; }
+        public UInt16[] GetDataTableData() { return au16TableData; }
 
-        internal UInt16 GetValue(IhtModbusParamDyn.eIdxTechnology eIdxTechnology)
+        public UInt16 GetValue(IhtModbusParamDyn.eIdxTechnology eIdxTechnology)
         {
             int idx = (int)eIdxTechnology;
             if (idx < au16TechnologyDyn.Length)
@@ -206,7 +206,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetValue(IhtModbusParamDyn.eIdxProcess eIdxProcess)
+        public UInt16 GetValue(IhtModbusParamDyn.eIdxProcess eIdxProcess)
         {
             int idx = (int)eIdxProcess;
             if (idx < au16ProcessDyn.Length)
@@ -215,7 +215,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetValue(IhtModbusParamDyn.eIdxConfig eIdxConfig)
+        public UInt16 GetValue(IhtModbusParamDyn.eIdxConfig eIdxConfig)
         {
             int idx = (int)eIdxConfig;
             if (idx < au16ConfigDyn.Length)
@@ -224,7 +224,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetValue(IhtModbusParamDyn.eIdxService eIdxService)
+        public UInt16 GetValue(IhtModbusParamDyn.eIdxService eIdxService)
         {
             int idx = (int)eIdxService;
             if (idx < au16ServiceDyn.Length)
@@ -233,7 +233,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetValue(IhtModbusParamDyn.eIdxProcessInfo eIdxProcessInfo)
+        public UInt16 GetValue(IhtModbusParamDyn.eIdxProcessInfo eIdxProcessInfo)
         {
             int idx = (int)eIdxProcessInfo;
             if (idx < au16ProcInfo.Length)
@@ -242,7 +242,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetValue(IhtModbusParamDyn.eIdxCmdExec eIdxCmdExec)
+        public UInt16 GetValue(IhtModbusParamDyn.eIdxCmdExec eIdxCmdExec)
         {
             int idx = (int)eIdxCmdExec;
             if (idx < au16CmdExec.Length)
@@ -251,7 +251,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetValue(IhtModbusParamDyn.eIdxSetupExec eIdxSetupExec)
+        public UInt16 GetValue(IhtModbusParamDyn.eIdxSetupExec eIdxSetupExec)
         {
             int idx = (int)eIdxSetupExec;
             if (idx < au16SetupExec.Length)
@@ -260,7 +260,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetValue(IhtModbusParamDyn.eIdxData eIdxData)
+        public UInt16 GetValue(IhtModbusParamDyn.eIdxData eIdxData)
         {
             int idx = (int)eIdxData;
             if (idx < au16Data.Length)
@@ -269,7 +269,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetValue(IhtModbusParamDyn.eIdxTable eIdxTableData)
+        public UInt16 GetValue(IhtModbusParamDyn.eIdxTable eIdxTableData)
         {
             int idx = (int)eIdxTableData;
             if (idx < au16TableData.Length)
@@ -279,7 +279,7 @@ namespace SharedComponents.IhtModbus
             return 0;
         }
 
-        internal UInt16 GetValue(IhtModbusParamConst.eIdxTechnology eIdxTechnology)
+        public UInt16 GetValue(IhtModbusParamConst.eIdxTechnology eIdxTechnology)
         {
             int idx = (int)eIdxTechnology;
             if (idx < au16TechnologyConst.Length)
@@ -288,7 +288,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetValue(IhtModbusParamConst.eIdxProcess eIdxProcess)
+        public UInt16 GetValue(IhtModbusParamConst.eIdxProcess eIdxProcess)
         {
             int idx = (int)eIdxProcess;
             if (idx < au16ProcessConst.Length)
@@ -297,7 +297,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetValue(IhtModbusParamConst.eIdxConfig eIdxConfig)
+        public UInt16 GetValue(IhtModbusParamConst.eIdxConfig eIdxConfig)
         {
             int idx = (int)eIdxConfig;
             if (idx < au16ConfigConst.Length)
@@ -306,7 +306,7 @@ namespace SharedComponents.IhtModbus
             }
             return 0;
         }
-        internal UInt16 GetValue(IhtModbusParamConst.eIdxService eIdxService)
+        public UInt16 GetValue(IhtModbusParamConst.eIdxService eIdxService)
         {
             int idx = (int)eIdxService;
             if (idx < au16ServiceConst.Length)
@@ -316,56 +316,56 @@ namespace SharedComponents.IhtModbus
             return 0;
         }
 
-        internal void SetValue(IhtModbusParamDyn.eIdxTechnology eIdxTechnology, UInt16 u16Data)
+        public void SetValue(IhtModbusParamDyn.eIdxTechnology eIdxTechnology, UInt16 u16Data)
         {
             int idx = (int)eIdxTechnology;
             if (idx < au16TechnologyDyn.Length)
                 au16TechnologyDyn[idx] = u16Data;
         }
-        internal void SetValue(IhtModbusParamDyn.eIdxProcess eIdxProcess, UInt16 u16Data)
+        public void SetValue(IhtModbusParamDyn.eIdxProcess eIdxProcess, UInt16 u16Data)
         {
             int idx = (int)eIdxProcess;
             if (idx < au16ProcessDyn.Length)
                 au16ProcessDyn[idx] = u16Data;
         }
-        internal void SetValue(IhtModbusParamDyn.eIdxConfig eIdxConfig, UInt16 u16Data)
+        public void SetValue(IhtModbusParamDyn.eIdxConfig eIdxConfig, UInt16 u16Data)
         {
             int idx = (int)eIdxConfig;
             if (idx < au16ConfigDyn.Length)
                 au16ConfigDyn[idx] = u16Data;
         }
-        internal void SetValue(IhtModbusParamDyn.eIdxService eIdxService, UInt16 u16Data)
+        public void SetValue(IhtModbusParamDyn.eIdxService eIdxService, UInt16 u16Data)
         {
             int idx = (int)eIdxService;
             if (idx < au16ServiceDyn.Length)
                 au16ServiceDyn[idx] = u16Data;
         }
-        internal void SetValue(IhtModbusParamDyn.eIdxProcessInfo eIdxProcessInfo, UInt16 u16Data)
+        public void SetValue(IhtModbusParamDyn.eIdxProcessInfo eIdxProcessInfo, UInt16 u16Data)
         {
             int idx = (int)eIdxProcessInfo;
             if (idx < au16ProcInfo.Length)
                 au16ProcInfo[idx] = u16Data;
         }
-        internal void SetValue(IhtModbusParamDyn.eIdxCmdExec eIdxCmdExec, UInt16 u16Data)
+        public void SetValue(IhtModbusParamDyn.eIdxCmdExec eIdxCmdExec, UInt16 u16Data)
         {
             int idx = (int)eIdxCmdExec;
             if (idx < au16CmdExec.Length)
                 au16CmdExec[idx] = u16Data;
         }
-        internal void SetValue(IhtModbusParamDyn.eIdxSetupExec eIdxSetupExec, UInt16 u16Data)
+        public void SetValue(IhtModbusParamDyn.eIdxSetupExec eIdxSetupExec, UInt16 u16Data)
         {
             int idx = (int)eIdxSetupExec;
             if (idx < au16SetupExec.Length)
                 au16SetupExec[idx] = u16Data;
         }
         /*
-            internal void SetValue(IhtModbusParamDyn.eIdxData eIdxDataData, UInt16 u16Data)
+            public void SetValue(IhtModbusParamDyn.eIdxData eIdxDataData, UInt16 u16Data)
             {
               int idx = (int)eIdxDataData;
               if (idx < au16DataData.Length)
                 au16DataData[idx] = u16Data;
             }
-            internal void SetValue(IhtModbusParamDyn.eIdxTableData eIdxTableData, UInt16 u16Data)
+            public void SetValue(IhtModbusParamDyn.eIdxTableData eIdxTableData, UInt16 u16Data)
             {
               int idx = (int)eIdxTableData;
               if (idx < au16TableData.Length)
@@ -377,24 +377,24 @@ namespace SharedComponents.IhtModbus
             GetAddrAreas().u16Password = _data;
         }
 
-        internal IhtModbusAddrInfo[] GetAddrInfos() { return addrAreas.addrInfos; }
+        public IhtModbusAddrInfo[] GetAddrInfos() { return addrAreas.addrInfos; }
 
-        internal IhtModbusAddrInfo GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo eIdxAddrInfo) { return addrAreas.addrInfos[(int)eIdxAddrInfo]; }
+        public IhtModbusAddrInfo GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo eIdxAddrInfo) { return addrAreas.addrInfos[(int)eIdxAddrInfo]; }
 
-        internal IhtModbusAddrInfo GetAddrInfo_DeviceInfo() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.DeviceInfo]; }
-        internal IhtModbusAddrInfo GetAddrInfo_TechnologyConst() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.TechnologyConst]; }
-        internal IhtModbusAddrInfo GetAddrInfo_TechnologyDyn() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.TechnologyDyn]; }
-        internal IhtModbusAddrInfo GetAddrInfo_ProcessConst() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ProcessConst]; }
-        internal IhtModbusAddrInfo GetAddrInfo_ProcessDyn() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ProcessDyn]; }
-        internal IhtModbusAddrInfo GetAddrInfo_ConfigConst() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ConfigConst]; }
-        internal IhtModbusAddrInfo GetAddrInfo_ConfigDyn() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ConfigDyn]; }
-        internal IhtModbusAddrInfo GetAddrInfo_ServiceConst() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ServiceConst]; }
-        internal IhtModbusAddrInfo GetAddrInfo_ServiceDyn() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ServiceDyn]; }
-        internal IhtModbusAddrInfo GetAddrInfo_ProcessInfo() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ProcessInfo]; }
-        internal IhtModbusAddrInfo GetAddrInfo_CmdExec() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.CmdExec]; }
-        internal IhtModbusAddrInfo GetAddrInfo_SetupExec() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.SetupExec]; }
-        internal IhtModbusAddrInfo GetAddrInfo_Data() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.Data]; }
-        internal IhtModbusAddrInfo GetAddrInfo_TableData() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.TableData]; }
+        public IhtModbusAddrInfo GetAddrInfo_DeviceInfo() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.DeviceInfo]; }
+        public IhtModbusAddrInfo GetAddrInfo_TechnologyConst() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.TechnologyConst]; }
+        public IhtModbusAddrInfo GetAddrInfo_TechnologyDyn() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.TechnologyDyn]; }
+        public IhtModbusAddrInfo GetAddrInfo_ProcessConst() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ProcessConst]; }
+        public IhtModbusAddrInfo GetAddrInfo_ProcessDyn() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ProcessDyn]; }
+        public IhtModbusAddrInfo GetAddrInfo_ConfigConst() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ConfigConst]; }
+        public IhtModbusAddrInfo GetAddrInfo_ConfigDyn() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ConfigDyn]; }
+        public IhtModbusAddrInfo GetAddrInfo_ServiceConst() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ServiceConst]; }
+        public IhtModbusAddrInfo GetAddrInfo_ServiceDyn() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ServiceDyn]; }
+        public IhtModbusAddrInfo GetAddrInfo_ProcessInfo() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.ProcessInfo]; }
+        public IhtModbusAddrInfo GetAddrInfo_CmdExec() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.CmdExec]; }
+        public IhtModbusAddrInfo GetAddrInfo_SetupExec() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.SetupExec]; }
+        public IhtModbusAddrInfo GetAddrInfo_Data() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.Data]; }
+        public IhtModbusAddrInfo GetAddrInfo_TableData() { return addrAreas.addrInfos[(int)IhtModbusAddrAreas.eIdxAddrInfo.TableData]; }
 
         public IhtModbusData(int _slaveId, ushort[] data, bool _IsSimulation)
         {
@@ -544,7 +544,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void ReadSimulationData(ushort startAddress, ushort numRegisters, ushort[] au16Data)
+        public void ReadSimulationData(ushort startAddress, ushort numRegisters, ushort[] au16Data)
         {
             IhtModbusAddrInfo _ihtModbusAddrInfo;
 
@@ -737,7 +737,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetTechnologyConstData(ushort[] data)
+        public void SetTechnologyConstData(ushort[] data)
         {
             Array.Resize(ref au16TechnologyConst, data.Length);
             UInt16 idx = 0;
@@ -750,7 +750,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetProcessConstData(ushort[] data)
+        public void SetProcessConstData(ushort[] data)
         {
             Array.Resize(ref au16ProcessConst, data.Length);
             UInt16 idx = 0;
@@ -768,7 +768,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetConfigConstData(ushort[] data)
+        public void SetConfigConstData(ushort[] data)
         {
             Array.Resize(ref au16ConfigConst, data.Length);
             UInt16 idx = 0;
@@ -781,7 +781,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetServiceConstData(ushort[] data)
+        public void SetServiceConstData(ushort[] data)
         {
             Array.Resize(ref au16ServiceConst, data.Length);
             UInt16 idx = 0;
@@ -794,7 +794,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetTechnologyDynData(ushort[] data)
+        public void SetTechnologyDynData(ushort[] data)
         {
             Array.Resize(ref au16TechnologyDyn, data.Length);
             UInt16 idx = 0;
@@ -813,7 +813,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetProcessDynData(ushort[] data)
+        public void SetProcessDynData(ushort[] data)
         {
             Array.Resize(ref au16ProcessDyn, data.Length);
             UInt16 idx = 0;
@@ -826,7 +826,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetConfigDynData(ushort[] data)
+        public void SetConfigDynData(ushort[] data)
         {
             Array.Resize(ref au16ConfigDyn, data.Length);
             UInt16 idx = 0;
@@ -839,7 +839,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetServiceDynData(ushort[] data)
+        public void SetServiceDynData(ushort[] data)
         {
             Array.Resize(ref au16ServiceDyn, data.Length);
             UInt16 idx = 0;
@@ -852,7 +852,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetProcInfoData(ushort[] data)
+        public void SetProcInfoData(ushort[] data)
         {
             Array.Resize(ref au16ProcInfo, data.Length);
             UInt16 idx = 0;
@@ -865,7 +865,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetCmdExecData(ushort[] data)
+        public void SetCmdExecData(ushort[] data)
         {
             Array.Resize(ref au16CmdExec, data.Length);
             UInt16 idx = 0;
@@ -878,7 +878,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetSetupExecData(ushort[] data)
+        public void SetSetupExecData(ushort[] data)
         {
             Array.Resize(ref au16SetupExec, data.Length);
             UInt16 idx = 0;
@@ -891,7 +891,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetData(ushort[] data)
+        public void SetData(ushort[] data)
         {
             Array.Resize(ref au16Data, data.Length);
             UInt16 idx = 0;
@@ -904,7 +904,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal void SetTableData(ushort[] data)
+        public void SetTableData(ushort[] data)
         {
             Array.Resize(ref au16TableData, data.Length);
             UInt16 idx = 0;
@@ -938,7 +938,7 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
-        internal string GetDeviceInfoValue(DataDeviceInfoValue dataDeviceInfoValue, DescriptionData descData = DescriptionData.All)
+        public string GetDeviceInfoValue(DataDeviceInfoValue dataDeviceInfoValue, DescriptionData descData = DescriptionData.All)
         {
             UInt32 u32Data = 0;
             string data = " ";
@@ -1050,7 +1050,7 @@ namespace SharedComponents.IhtModbus
         /// 
         /// </summary>
         /// <returns></returns>
-        internal string GetTorchControllerNotConnected()
+        public string GetTorchControllerNotConnected()
         {
             string desc = "_CultureFit3TorchControllerNotConnected";
             //string desc = CultureResources.GetString("_CultureFit3TorchControllerNotConnected");
@@ -1062,7 +1062,7 @@ namespace SharedComponents.IhtModbus
         /// 
         /// </summary>
         /// <returns></returns>
-        internal string GetTorchTypeUndefined()
+        public string GetTorchTypeUndefined()
         {
             string desc = "_CultureFit3TorchTypeUndefined";
             //string desc = CultureResources.GetString("_CultureFit3TorchTypeUndefined");
@@ -1074,7 +1074,7 @@ namespace SharedComponents.IhtModbus
         /// 
         /// </summary>
         /// <returns></returns>
-        internal string GetTorchTypeCodeFault()
+        public string GetTorchTypeCodeFault()
         {
             string desc = "_CultureFit3TorchTypeCodeFault";
             //string desc = CultureResources.GetString("_CultureFit3TorchTypeCodeFault");

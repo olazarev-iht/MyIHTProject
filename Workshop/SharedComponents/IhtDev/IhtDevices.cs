@@ -654,7 +654,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Slave-Id vom aktuellen MainControl bei dem der TorchButton Checked ist, abfragen
         /// </summary>
-        internal int GetSlaveIdFromCheckedTorch()
+        public int GetSlaveIdFromCheckedTorch()
         {
             // Slave-Id's der sichtbaren MainCtontrols abfragen
             ArrayList SlaveIds = GetVisibleSlaveIds();
@@ -694,7 +694,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Für alle sichtbaren Geräten die ProcessInfo-Daten holen
         /// </summary>
-        internal ArrayList GetDatasProcInfosIsVisibleDevices()
+        public ArrayList GetDatasProcInfosIsVisibleDevices()
         {
             ArrayList datasProcInfos = new ArrayList();
             // Alle sichtbaren Geräte abfragen
@@ -709,7 +709,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Für alle über OnOff eingeschalteten Geräten die ProcessInfo-Daten holen
         /// </summary>
-        internal ArrayList GetDatasProcInfosCheckedOnOffDevices()
+        public ArrayList GetDatasProcInfosCheckedOnOffDevices()
         {
             ArrayList datasProcInfos = new ArrayList();
             // Alle sichtbaren Geräte abfragen
@@ -728,7 +728,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Alle Geräte in den Default-Zustand versetzen
         /// </summary>
-        internal void SetDefaults()
+        public void SetDefaults()
         {
             // Den Error-Zustand der Process-Info zurücksetzen
             ArrayList _ihtDevices = GetVisibleDevices();
@@ -754,7 +754,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Alle Geräte disablen
         /// </summary>
-        internal void Disables()
+        public void Disables()
         {
             // Alle sichtbaren Geräte abfragen
             ArrayList _ihtDevices = GetVisibleDevices();
@@ -768,7 +768,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Alle Geräte die verbunden sind enablen
         /// </summary>
-        internal void EnableConnecteds(ushort u16OnSlaveIdBits)
+        public void EnableConnecteds(ushort u16OnSlaveIdBits)
         {
             // Alle sichtbaren Geräte abfragen
             ArrayList _ihtDevices = GetVisibleDevices();
@@ -795,7 +795,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Für alle Geräte die Verbindung als ungültig setzen
         /// </summary>
-        internal void SetUnconnecteds()
+        public void SetUnconnecteds()
         {
             // Alle sichtbaren Geräte abfragen
             ArrayList _ihtDevices = GetVisibleDevices();
@@ -808,7 +808,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Für das Gerät mit der entsprechenden Slave-ID die Verbindung als gültig setzen
         /// </summary>
-        internal void SetConnected(int slaveId)
+        public void SetConnected(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -820,7 +820,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Abfragen, ob mindestens ein Gerät verbunden ist
         /// </summary>
-        internal bool IsConneteds()
+        public bool IsConneteds()
         {
             // Alle sichtbaren Geräte abfragen
             ArrayList _ihtDevices = GetVisibleDevices();
@@ -836,7 +836,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Status-Hintergrund für Fehler setzen
         /// </summary>
-        internal void SetStatusErrorBackground(int slaveId)
+        public void SetStatusErrorBackground(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -848,7 +848,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Status-Hintergrund für Fehler löschen
         /// </summary>
-        internal void ClrStatusErrorBackground(int slaveId)
+        public void ClrStatusErrorBackground(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -860,7 +860,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Status-Hintergrund für Warnung setzen
         /// </summary>
-        internal void SetStatusWarningBackground(int slaveId)
+        public void SetStatusWarningBackground(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -872,7 +872,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Status-Hintergrund für Verbunden setzen
         /// </summary>
-        internal void SetStatusOkBackground(int slaveId)
+        public void SetStatusOkBackground(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -884,7 +884,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Status-Hintergrund Default setzen
         /// </summary>
-        internal void ClrStatusBackground(int slaveId)
+        public void ClrStatusBackground(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -896,7 +896,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Status-Hintergrund für alle sichtbaren Geräte löschen
         /// </summary>
-        internal void ClrStatusBackgrounds()
+        public void ClrStatusBackgrounds()
         {
             ArrayList _ihtDevices = GetVisibleDevices();
             foreach (IhtDevice _ihtDevice in _ihtDevices)
@@ -908,7 +908,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Info für falschen TorchType setzen/löschen
         /// </summary>
-        internal void SetWrongTorchType(int slaveId)
+        public void SetWrongTorchType(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -916,7 +916,7 @@ namespace SharedComponents.IhtDev
                 _ihtDevice.IsWrongTorchType = true;
             }
         }
-        internal void ClrWrongTorchType(int slaveId)
+        public void ClrWrongTorchType(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -928,7 +928,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Info für FW-Update setzen/löschen
         /// </summary>
-        internal void SetFwUpdate(int slaveId)
+        public void SetFwUpdate(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -936,7 +936,7 @@ namespace SharedComponents.IhtDev
                 _ihtDevice.IsFwUpdate = true;
             }
         }
-        internal void ClrFwUpdate(int slaveId)
+        public void ClrFwUpdate(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -948,7 +948,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Info für FW-Special setzen/löschen
         /// </summary>
-        internal void SetFwSpecial(int slaveId)
+        public void SetFwSpecial(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -956,7 +956,7 @@ namespace SharedComponents.IhtDev
                 _ihtDevice.IsFwSpecial = true;
             }
         }
-        internal void ClrFwSpecial(int slaveId)
+        public void ClrFwSpecial(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -968,7 +968,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Für alle Geräte den On-Button auf Aus stellen
         /// </summary>
-        internal void SetOffs()
+        public void SetOffs()
         {
             // Alle sichtbaren Geräte abfragen
             ArrayList _ihtDevices = GetVisibleDevices();
@@ -981,7 +981,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Kommunikations-Fehler setzen/löschen
         /// </summary>
-        internal void SetCommunicError(int slaveId)
+        public void SetCommunicError(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -997,7 +997,7 @@ namespace SharedComponents.IhtDev
                 _ihtDevice.dataProcessInfo.CurrPasswordLevel = 0;
             }
         }
-        internal void ClrCommunicError(int slaveId)
+        public void ClrCommunicError(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             if (_ihtDevice != null)
@@ -1010,7 +1010,7 @@ namespace SharedComponents.IhtDev
         /// Der Befehl Connect darf nur dann ausgeführt werden, wenn bei allen sichtbaren Geräten
         /// der OnOff disabled ist
         /// </summary>
-        internal bool CmdConnectCanExecute()
+        public bool CmdConnectCanExecute()
         {
             // Alle sichtbaren Geräte abfragen
             ArrayList _ihtDevices = GetVisibleDevices();
@@ -1027,7 +1027,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Abfragen, ob alle sichtbaren Geräte auf der obere Endlage stehen
         /// </summary>
-        internal bool UpperPositionIsVisibleDevice()
+        public bool UpperPositionIsVisibleDevice()
         {
             // Für alle sichtbaren Geräten die ProcessInfo-Daten holen
             ArrayList datasProcInfos = GetDatasProcInfosIsVisibleDevices();
@@ -1046,7 +1046,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Abfragen, ob alle über On eingeschalteten Geräte auf der obere Endlage stehen
         /// </summary>
-        internal bool UpperPositionIsCheckedOns()
+        public bool UpperPositionIsCheckedOns()
         {
             // Für alle über OnOff eingeschalteten Geräten die ProcessInfo-Daten holen
             ArrayList datasProcInfos = GetDatasProcInfosCheckedOnOffDevices();
@@ -1065,7 +1065,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Alle über On eingeschalteten Geräte auf die obere Endlage fahren
         /// </summary>
-        internal async Task<bool> MoveToUpperPositionIsCheckedOnAsync(ArrayList datasProcInfos, long TimeOut_ms = 10000)
+        public async Task<bool> MoveToUpperPositionIsCheckedOnAsync(ArrayList datasProcInfos, long TimeOut_ms = 10000)
         {
             bool IsUpperPosition = true;
 
@@ -1098,7 +1098,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Technologie-Parameter Const. aktualisieren
         /// </summary>
-        internal void UpdateParamConstTechnology(int slaveId)
+        public void UpdateParamConstTechnology(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             IhtModbusData _ihtModbusData = GetModbusData(slaveId);
@@ -1110,7 +1110,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Technologie-Parameter Const. aktualisieren
         /// </summary>
-        internal void UpdateParamConstTechnology(IhtModbusData _ihtModbusData)
+        public void UpdateParamConstTechnology(IhtModbusData _ihtModbusData)
         {
             IhtDevice _ihtDevice = GetDevice(_ihtModbusData.SlaveId);
             if (_ihtDevice != null)
@@ -1122,7 +1122,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Technologie-Parameter Dyn. aktualisieren
         /// </summary>
-        internal void UpdateParamDynTechnology(int slaveId)
+        public void UpdateParamDynTechnology(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             IhtModbusData _ihtModbusData = GetModbusData(slaveId);
@@ -1134,7 +1134,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Technologie-Parameter Dyn. aktualisieren
         /// </summary>
-        internal void UpdateParamDynTechnology(IhtModbusData _ihtModbusData)
+        public void UpdateParamDynTechnology(IhtModbusData _ihtModbusData)
         {
             IhtDevice _ihtDevice = GetDevice(_ihtModbusData.SlaveId);
             if (_ihtDevice != null)
@@ -1146,7 +1146,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Technologie-Parameter Dyn. aller Geräte aktualisieren
         /// </summary>
-        internal void UpdateParamDynTechnologys()
+        public void UpdateParamDynTechnologys()
         {
             ArrayList modbusDatas = GetModbusDatas();
             foreach (IhtModbusData _modbusData in modbusDatas)
@@ -1162,7 +1162,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// CmdExec aktualisieren
         /// </summary>
-        internal void UpdateCmdExec(int slaveId)
+        public void UpdateCmdExec(int slaveId)
         {
             IhtDevice _ihtDevice = GetDevice(slaveId);
             IhtModbusData _ihtModbusData = GetModbusData(slaveId);
@@ -1174,7 +1174,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// CmdExec aktualisieren
         /// </summary>
-        internal void UpdateCmdExec(IhtModbusData _ihtModbusData)
+        public void UpdateCmdExec(IhtModbusData _ihtModbusData)
         {
             IhtDevice _ihtDevice = GetDevice(_ihtModbusData.SlaveId);
             if (_ihtDevice != null)
@@ -1187,7 +1187,7 @@ namespace SharedComponents.IhtDev
             /// <summary>
             /// Geräte-Daten bzw. Parameter aktualisieren
             /// </summary>
-            internal void UpdateDatas()
+            public void UpdateDatas()
             {
               ArrayList modbusDatas = GetModbusDatas();
               foreach (IhtModbusData _modbusData in modbusDatas)
@@ -1203,7 +1203,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Modbus-Daten der verbundenen Geräte abfragen
         /// </summary>
-        internal ArrayList GetModbusDatas()
+        public ArrayList GetModbusDatas()
         {
             return ihtModbusCommunic.GetConnectedModbusDatas();
         }
@@ -1211,7 +1211,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Modbus-Daten entsprechend der Slave-Id abfragen
         /// </summary>
-        internal IhtModbusData GetModbusData(int _slaveId)
+        public IhtModbusData GetModbusData(int _slaveId)
         {
             IhtModbusData _modbusData = ihtModbusCommunic.GetConnectedModbusData(_slaveId);
             return _modbusData;
@@ -1221,7 +1221,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Für alle nict verbundenen Geräte die Process-Info Daten löschen
         /// </summary>
-        internal void ClrProcessInfoDatas()
+        public void ClrProcessInfoDatas()
         {
 
             // Für alle verbunden SlaveIds
@@ -1281,7 +1281,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Parameter ProcesDyn schreiben
         /// </summary>
-        internal async Task<bool> Write_ProcessDynAsync(IhtModbusData _ihtModbusData, bool updateDataParam)
+        public async Task<bool> Write_ProcessDynAsync(IhtModbusData _ihtModbusData, bool updateDataParam)
         {
             bool result = await ihtModbusCommunic.Write_ProcessDynAsync(_ihtModbusData).ConfigureAwait(false);
             if (result && updateDataParam)
@@ -1294,7 +1294,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Parameter ConfigDyn schreiben
         /// </summary>
-        internal async Task<bool> Write_ConfigDynAsync(IhtModbusData _ihtModbusData, bool updateDataParam)
+        public async Task<bool> Write_ConfigDynAsync(IhtModbusData _ihtModbusData, bool updateDataParam)
         {
             bool result = await ihtModbusCommunic.Write_ConfigDynAsync(_ihtModbusData);
             if (result && updateDataParam)
@@ -1307,7 +1307,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Parameter ServiceDyn schreiben
         /// </summary>
-        internal async Task<bool> Write_ServiceDynAsync(IhtModbusData _ihtModbusData, bool updateDataParam)
+        public async Task<bool> Write_ServiceDynAsync(IhtModbusData _ihtModbusData, bool updateDataParam)
         {
             bool result = await ihtModbusCommunic.Write_ServiceDynAsync(_ihtModbusData).ConfigureAwait(false);
             if (result && updateDataParam)
@@ -1320,7 +1320,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Parameter CmdExec schreiben
         /// </summary>
-        internal async Task<bool> Write_CmdExecAsync(IhtModbusData _ihtModbusData, bool updateDataParam)
+        public async Task<bool> Write_CmdExecAsync(IhtModbusData _ihtModbusData, bool updateDataParam)
         {
             bool result = await ihtModbusCommunic.Write_CmdExecAsync(_ihtModbusData).ConfigureAwait(false);
             if (result && updateDataParam)
@@ -1333,7 +1333,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Parameter SetupExec schreiben
         /// </summary>
-        internal async Task<bool> Write_SetupExecAsync(IhtModbusData _ihtModbusData, bool updateDataParam)
+        public async Task<bool> Write_SetupExecAsync(IhtModbusData _ihtModbusData, bool updateDataParam)
         {
             bool result = await ihtModbusCommunic.Write_SetupExecAsync(_ihtModbusData).ConfigureAwait(false);
             if (result && updateDataParam)
@@ -1349,7 +1349,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Adress-Bereiche auslesen
         /// </summary>
-        internal async Task<bool> Read_AddrAreasAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_AddrAreasAsync(IhtModbusData ihtModbusData)
         {
             return await ihtModbusCommunic.Read_AddrAreasAsync(ihtModbusData).ConfigureAwait(false);
         }
@@ -1357,7 +1357,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Geraete-Info auslesen 
         /// </summary>
-        internal async Task<bool> Read_DeviceInfoAsync(IhtModbusData ihtModbusData, bool updateData)
+        public async Task<bool> Read_DeviceInfoAsync(IhtModbusData ihtModbusData, bool updateData)
         {
             bool blResult = await ihtModbusCommunic.Read_DeviceInfoAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateData)
@@ -1374,7 +1374,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Technologie-Parameter Const. auslesen 
         /// </summary>
-        internal async Task<bool> Read_TechnologyConstAsync(IhtModbusData ihtModbusData, bool updateDataParam)
+        public async Task<bool> Read_TechnologyConstAsync(IhtModbusData ihtModbusData, bool updateDataParam)
         {
             bool blResult = await ihtModbusCommunic.Read_TechnologyConstAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateDataParam)
@@ -1391,7 +1391,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Process-Parameter Const. auslesen 
         /// </summary>
-        internal async Task<bool> Read_ProcessConstAsync(IhtModbusData ihtModbusData, bool updateDataParam)
+        public async Task<bool> Read_ProcessConstAsync(IhtModbusData ihtModbusData, bool updateDataParam)
         {
             bool blResult = await ihtModbusCommunic.Read_ProcessConstAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateDataParam)
@@ -1408,7 +1408,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Config-Parameter Const. auslesen 
         /// </summary>
-        internal async Task<bool> Read_ConfigConstAsync(IhtModbusData ihtModbusData, bool updateDataParam)
+        public async Task<bool> Read_ConfigConstAsync(IhtModbusData ihtModbusData, bool updateDataParam)
         {
             bool blResult = await ihtModbusCommunic.Read_ConfigConstAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateDataParam)
@@ -1425,7 +1425,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Sevice-Parameter Const. auslesen
         /// </summary>
-        internal async Task<bool> Read_ServiceConstAsync(IhtModbusData ihtModbusData, bool updateDataParam)
+        public async Task<bool> Read_ServiceConstAsync(IhtModbusData ihtModbusData, bool updateDataParam)
         {
             bool blResult = await ihtModbusCommunic.Read_ServiceConstAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateDataParam)
@@ -1442,7 +1442,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Technologie-Parameter Dyn. auslesen
         /// </summary>
-        internal async Task<bool> Read_TechnologyDynAsync(IhtModbusData ihtModbusData, bool updateDataParam)
+        public async Task<bool> Read_TechnologyDynAsync(IhtModbusData ihtModbusData, bool updateDataParam)
         {
             bool blResult = await ihtModbusCommunic.Read_TechnologyDynAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateDataParam)
@@ -1455,7 +1455,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Process-Parameter Dyn. auslesen
         /// </summary>
-        internal async Task<bool> Read_ProcessDynAsync(IhtModbusData ihtModbusData, bool updateDataParam)
+        public async Task<bool> Read_ProcessDynAsync(IhtModbusData ihtModbusData, bool updateDataParam)
         {
             bool blResult = await ihtModbusCommunic.Read_ProcessDynAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateDataParam)
@@ -1472,7 +1472,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Config-Parameter Dyn. auslesen 
         /// </summary>
-        internal async Task<bool> Read_ConfigDynAsync(IhtModbusData ihtModbusData, bool updateDataParam)
+        public async Task<bool> Read_ConfigDynAsync(IhtModbusData ihtModbusData, bool updateDataParam)
         {
             bool blResult = await ihtModbusCommunic.Read_ConfigDynAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateDataParam)
@@ -1489,7 +1489,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Sevice-Parameter Dyn. auslesen
         /// </summary>
-        internal async Task<bool> Read_ServiceDynAsync(IhtModbusData ihtModbusData, bool updateDataParam)
+        public async Task<bool> Read_ServiceDynAsync(IhtModbusData ihtModbusData, bool updateDataParam)
         {
             bool blResult = await ihtModbusCommunic.Read_ServiceDynAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateDataParam)
@@ -1506,7 +1506,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Process-Info auslesen
         /// </summary>
-        internal async Task<bool> Read_ProcessInfoAsync(IhtModbusData ihtModbusData, bool updateDataProcessInfo)
+        public async Task<bool> Read_ProcessInfoAsync(IhtModbusData ihtModbusData, bool updateDataProcessInfo)
         {
             bool blResult = await ihtModbusCommunic.Read_ProcessInfoAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateDataProcessInfo)
@@ -1523,7 +1523,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Cmd-Exec. auslesen
         /// </summary>
-        internal async Task<bool> Read_CmdExecAsync(IhtModbusData ihtModbusData, bool updateCmdExec)
+        public async Task<bool> Read_CmdExecAsync(IhtModbusData ihtModbusData, bool updateCmdExec)
         {
             bool blResult = await ihtModbusCommunic.Read_CmdExecAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateCmdExec)
@@ -1540,7 +1540,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Setup-Exec. auslesen
         /// </summary>
-        internal async Task<bool> Read_SetupExecAsync(IhtModbusData ihtModbusData, bool updateDataSetupExec)
+        public async Task<bool> Read_SetupExecAsync(IhtModbusData ihtModbusData, bool updateDataSetupExec)
         {
             bool blResult = await ihtModbusCommunic.Read_SetupExecAsync(ihtModbusData).ConfigureAwait(false);
             if (blResult && updateDataSetupExec)
@@ -1557,7 +1557,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Data auslesen
         /// </summary>
-        internal async Task<bool> Read_DataAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_DataAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_DataAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
@@ -1566,7 +1566,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// TableData auslesen
         /// </summary>
-        internal async Task<bool> Read_TableDataAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_TableDataAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableDataAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
@@ -1575,7 +1575,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// ErrorCode-Labels auslesen
         /// </summary>
-        internal async Task<bool> Read_ErrorCodeLabelsAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_ErrorCodeLabelsAsync(IhtModbusData ihtModbusData)
         {
             string fwVersion = ihtModbusData.GetDeviceInfoValue(IhtModbusData.DataDeviceInfoValue.FwVersion, IhtModbusData.DescriptionData.OnlyValue);
             ErrorCodeLables _errorCodeLables = errorCodeLablesDevices.GetErrorCodeLabels(fwVersion);
@@ -1618,12 +1618,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// ErrorCode-Counts auslesen
         /// </summary>
-        internal async Task<bool> Read_ErrorAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_ErrorAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableErrorAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetErrorList()
+        public List<string> GetErrorList()
         {
             return ihtModbusCommunic.ihtModbusTableErrorTbl.GetListText();
         }
@@ -1631,24 +1631,24 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// OxyProc CutCycleHistory Current  auslesen
         /// </summary>
-        internal async Task<bool> Read_OxyProcCutCycleHistoryCurrentAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_OxyProcCutCycleHistoryCurrentAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableOxyProcCutCycleHistoryCurrentAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetOxyProcCutCycleHistoryCurrentList()
+        public List<string> GetOxyProcCutCycleHistoryCurrentList()
         {
             return ihtModbusCommunic.ihtModbusTableOxyProcCutCycleStateCurrTbl.GetListText();
         }
         /// <summary>
         /// OxyProc CutCycleHistory Previous  auslesen
         /// </summary>
-        internal async Task<bool> Read_OxyProcCutCycleHistoryPreviousAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_OxyProcCutCycleHistoryPreviousAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableOxyProcCutCycleHistoryPreviousAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetOxyProcCutCycleHistoryPreviousList()
+        public List<string> GetOxyProcCutCycleHistoryPreviousList()
         {
             return ihtModbusCommunic.ihtModbusTableOxyProcCutCycleStatePrevTbl.GetListText();
         }
@@ -1656,12 +1656,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Temperatur Histogramm fuer µC auslesen
         /// </summary>
-        internal async Task<bool> Read_TempHistogramuCAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_TempHistogramuCAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableTempHistogramuCTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetTempHistogramuCList()
+        public List<string> GetTempHistogramuCList()
         {
             return ihtModbusCommunic.ihtModbusTableTempHistogramuCTbl.GetListText();
         }
@@ -1669,12 +1669,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Histogramm  Common auslesen
         /// </summary>
-        internal async Task<bool> Read_HistogramCommonAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_HistogramCommonAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableHistogramCommonTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetHistogramCommonList()
+        public List<string> GetHistogramCommonList()
         {
             return ihtModbusCommunic.ihtModbusTableHistogramCommonTbl.GetListText();
         }
@@ -1682,12 +1682,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Histogramm Common fuer Kunde auslesen
         /// </summary>
-        internal async Task<bool> Read_HistogramCommonCustomAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_HistogramCommonCustomAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableHistogramCommonCustomTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetHistogramCommonCustomList()
+        public List<string> GetHistogramCommonCustomList()
         {
             return ihtModbusCommunic.ihtModbusTableHistogramCommonCustomTbl.GetListText();
         }
@@ -1695,12 +1695,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Fehler Histogramm fuer Kunde auslesen
         /// </summary>
-        internal async Task<bool> Read_ErrorCustomAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_ErrorCustomAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableErrorCustomTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetErrorCustomList()
+        public List<string> GetErrorCustomList()
         {
             return ihtModbusCommunic.ihtModbusTableErrorCustomTbl.GetListText();
         }
@@ -1708,12 +1708,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// FIT+3 Fehler Histogramm fuer µC auslesen
         /// </summary>
-        internal async Task<bool> Read_FitPlus3HistoErrorAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_FitPlus3HistoErrorAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableFitPlus3HistoErrorTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetFitPlus3HistoErrorList()
+        public List<string> GetFitPlus3HistoErrorList()
         {
             return ihtModbusCommunic.ihtModbusTableFitPlus3HistoErrorTbl.GetListText();
         }
@@ -1721,12 +1721,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// FIT+3 Temperatur Histogramm fuer µC auslesen
         /// </summary>
-        internal async Task<bool> Read_FitPlus3HistoErrorCustomAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_FitPlus3HistoErrorCustomAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableFitPlus3HistoErrorCustomTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetFitPlus3HistoErrorCustomList()
+        public List<string> GetFitPlus3HistoErrorCustomList()
         {
             return ihtModbusCommunic.ihtModbusTableFitPlus3HistoErrorCustomTbl.GetListText();
         }
@@ -1734,12 +1734,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// FIT+3 Temperatur Histogramm fuer µC auslesen
         /// </summary>
-        internal async Task<bool> Read_FitPlus3HistoTempuCAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_FitPlus3HistoTempuCAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableFitPlus3HistoTempuCTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetFitPlus3HistoTempuCList()
+        public List<string> GetFitPlus3HistoTempuCList()
         {
             return ihtModbusCommunic.ihtModbusTableFitPlus3HistoTempuCTbl.GetListText();
         }
@@ -1747,12 +1747,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// FIT+3 Temperatur-Oben Histogramm auslesen
         /// </summary>
-        internal async Task<bool> Read_FitPlus3HistoTempTopAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_FitPlus3HistoTempTopAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableFitPlus3HistoTempTopTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetFitPlus3HistoTempTopList()
+        public List<string> GetFitPlus3HistoTempTopList()
         {
             return ihtModbusCommunic.ihtModbusTableFitPlus3HistoTempTopTbl.GetListText();
         }
@@ -1760,12 +1760,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// FIT+3 Temperatur-Unen Histogramm auslesen
         /// </summary>
-        internal async Task<bool> Read_FitPlus3HistoTempBottomAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Read_FitPlus3HistoTempBottomAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Read_TableFitPlus3HistoTempBottomTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
         }
-        internal List<string> GetFitPlus3HistoTempBottomList()
+        public List<string> GetFitPlus3HistoTempBottomList()
         {
             return ihtModbusCommunic.ihtModbusTableFitPlus3HistoTempBottomTbl.GetListText();
         }
@@ -1773,12 +1773,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Status-Info auslesen
         /// </summary>
-        internal async Task<bool> Read_StatusInfoAsync(IhtModbusData ihtModbusData, int dataOffsetAddr = 0, int dataCounts = (int)IhtModbusParamDyn.eIdxData.DataMaxLength)
+        public async Task<bool> Read_StatusInfoAsync(IhtModbusData ihtModbusData, int dataOffsetAddr = 0, int dataCounts = (int)IhtModbusParamDyn.eIdxData.DataMaxLength)
         {
             bool blResult = await ihtModbusCommunic.Read_TableStatusInfoTblAsync(ihtModbusData, dataOffsetAddr, dataCounts).ConfigureAwait(false);
             return blResult;
         }
-        internal List<UInt16> GetStatusInfoList()
+        public List<UInt16> GetStatusInfoList()
         {
             return ihtModbusCommunic.ihtModbusTableStatusInfoTbl.GetListValue();
         }
@@ -1786,12 +1786,12 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Status-Info Specific auslesen
         /// </summary>
-        internal async Task<bool> Read_StatusInfoSpecificAsync(IhtModbusData ihtModbusData, int dataOffsetAddr = 0, int dataCounts = (int)IhtModbusParamDyn.eIdxData.DataMaxLength)
+        public async Task<bool> Read_StatusInfoSpecificAsync(IhtModbusData ihtModbusData, int dataOffsetAddr = 0, int dataCounts = (int)IhtModbusParamDyn.eIdxData.DataMaxLength)
         {
             bool blResult = await ihtModbusCommunic.Read_TableStatusInfoSpecificTblAsync(ihtModbusData, dataOffsetAddr, dataCounts).ConfigureAwait(false);
             return blResult;
         }
-        internal List<UInt16> GetStatusInfoSpecificList()
+        public List<UInt16> GetStatusInfoSpecificList()
         {
             return ihtModbusCommunic.ihtModbusTableStatusInfoSpecificTbl.GetListValue();
         }
@@ -1800,7 +1800,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Dynamische Daten auslesen
         /// </summary>
-        internal async Task<bool> Read_AllDataDynAsync(IhtModbusData ihtModbusData, bool updateData)
+        public async Task<bool> Read_AllDataDynAsync(IhtModbusData ihtModbusData, bool updateData)
         {
             bool blResult = true;
             // Technologie-Parameter Dyn. auslesen
@@ -1819,7 +1819,7 @@ namespace SharedComponents.IhtDev
             blResult = blResult && (blResult = await Read_SetupExecAsync(ihtModbusData, updateData).ConfigureAwait(false));
             return blResult;
         }
-        internal async Task<bool> Read_AllDataDynAsync(int _slaveId, bool updateData)
+        public async Task<bool> Read_AllDataDynAsync(int _slaveId, bool updateData)
         {
             IhtModbusData ihtModbusData = GetModbusData(_slaveId);
             if (ihtModbusData != null)
@@ -1835,7 +1835,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Fehler Histogramm fuer löschen
         /// </summary>
-        internal async Task<bool> Write_EraseTableErrorTblAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Write_EraseTableErrorTblAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Write_EraseTableErrorTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
@@ -1844,7 +1844,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Temperatur Histogramm fuer µC löschen
         /// </summary>
-        internal async Task<bool> Write_EraseTableTempHistogramuCTblcAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Write_EraseTableTempHistogramuCTblcAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Write_EraseTableTempHistogramuCTblcAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
@@ -1853,7 +1853,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Histogramm  Common löschen
         /// </summary>
-        internal async Task<bool> Write_EraseTableHistogramCommonTblAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Write_EraseTableHistogramCommonTblAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Write_EraseTableHistogramCommonTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
@@ -1862,7 +1862,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Histogramm Common fuer Kunde löschen
         /// </summary>
-        internal async Task<bool> Write_EraseTableHistogramCommonCustomTblAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Write_EraseTableHistogramCommonCustomTblAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Write_EraseTableHistogramCommonCustomTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
@@ -1871,7 +1871,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Fehler Histogramm fuer Kunde löschen
         /// </summary>
-        internal async Task<bool> Write_EraseTableErrorCustomTblAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Write_EraseTableErrorCustomTblAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Write_EraseTableErrorCustomTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
@@ -1880,7 +1880,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// FIT+3 Fehler Histogramm löschen
         /// </summary>
-        internal async Task<bool> Write_EraseTableFitPlus3HistoErrorTblAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Write_EraseTableFitPlus3HistoErrorTblAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Write_EraseTableFitPlus3HistoErrorTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
@@ -1889,7 +1889,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// FIT+3 Fehler Histogramm für Kunde löschen
         /// </summary>
-        internal async Task<bool> Write_EraseTableFitPlus3HistoErrorCustomTblAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Write_EraseTableFitPlus3HistoErrorCustomTblAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Write_EraseTableFitPlus3HistoErrorCustomTblAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
@@ -1898,7 +1898,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// FIT+3 Alle Fehler Histogramme löschen
         /// </summary>
-        internal async Task<bool> Write_EraseTableFitPlus3HistoErrorAllAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Write_EraseTableFitPlus3HistoErrorAllAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Write_EraseTableFitPlus3HistoErrorAllAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
@@ -1907,7 +1907,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// FIT+3 Alle Temperatur Histogramm löschen
         /// </summary>
-        internal async Task<bool> Write_EraseTableFitPlus3HistoTempuAllAsync(IhtModbusData ihtModbusData)
+        public async Task<bool> Write_EraseTableFitPlus3HistoTempuAllAsync(IhtModbusData ihtModbusData)
         {
             bool blResult = await ihtModbusCommunic.Write_EraseTableFitPlus3HistoTempuAllAsync(ihtModbusData).ConfigureAwait(false);
             return blResult;
@@ -2061,7 +2061,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Start setzen, Gemeinsam
         /// </summary>
-        internal async Task SetupCtrl_SetStartCommonAsync()
+        public async Task SetupCtrl_SetStartCommonAsync()
         {
             // Alle gemeinsam einschalten
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetStartAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
@@ -2080,14 +2080,14 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Ignition setzen
         /// </summary>
-        internal async Task SetupCtrl_SetIgnitionAsync(int _slaveId)
+        public async Task SetupCtrl_SetIgnitionAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetIgnitionAsync(_slaveId).ConfigureAwait(false);
         }
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Ignition setzen, Gemeinsam
         /// </summary>
-        internal async Task SetupCtrl_SetIgnitionCommonAsync()
+        public async Task SetupCtrl_SetIgnitionCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetIgnitionAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
@@ -2095,14 +2095,14 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand PreHeating setzen
         /// </summary>
-        internal async Task SetupCtrl_SetPreHeatingAsync(int _slaveId)
+        public async Task SetupCtrl_SetPreHeatingAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetPreHeatingAsync(_slaveId).ConfigureAwait(false);
         }
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand PreHeating setzen, Gemeinsam
         /// </summary>
-        internal async Task SetupCtrl_SetPreHeatingCommonAsync()
+        public async Task SetupCtrl_SetPreHeatingCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetPreHeatingAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
@@ -2110,14 +2110,14 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Piercing setzen
         /// </summary>
-        internal async Task SetupCtrl_SetPiercingAsync(int _slaveId)
+        public async Task SetupCtrl_SetPiercingAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetPiercingAsync(_slaveId).ConfigureAwait(false);
         }
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Piercing setzen, Gemeinsam
         /// </summary>
-        internal async Task SetupCtrl_SetPiercingCommonAsync()
+        public async Task SetupCtrl_SetPiercingCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetPiercingAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
@@ -2125,14 +2125,14 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Cutting setzen
         /// </summary>
-        internal async Task SetupCtrl_SetCuttingAsync(int _slaveId)
+        public async Task SetupCtrl_SetCuttingAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetCuttingAsync(_slaveId).ConfigureAwait(false);
         }
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Cutting setzen, Gemeinsam
         /// </summary>
-        internal async Task SetupCtrl_SetCuttingCommonAsync()
+        public async Task SetupCtrl_SetCuttingCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetCuttingAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
@@ -2140,14 +2140,14 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Heating setzen
         /// </summary>
-        internal async Task SetupCtrl_SetHeatingAsync(int _slaveId)
+        public async Task SetupCtrl_SetHeatingAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetHeatingAsync(_slaveId).ConfigureAwait(false);
         }
         /// <summary>
         /// Manuelle Gas-Steuerung in den Zustand Heating setzen, Gemeinsam
         /// </summary>
-        internal async Task SetupCtrl_SetHeatingCommonAsync()
+        public async Task SetupCtrl_SetHeatingCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdSetupCtrl.SetHeatingAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
@@ -2158,14 +2158,14 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Prozess starten, Gemeinsam
         /// </summary>
-        internal async Task StartProcessOnCommonAsync()
+        public async Task StartProcessOnCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation_2.StartProcessOnAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
         /// <summary>
         /// Prozess stoppen, Gemeinsam
         /// </summary>
-        internal async Task StopProcessOnCommonAsync()
+        public async Task StopProcessOnCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation_2.StopProcessOnAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
@@ -2175,14 +2175,14 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Starten der Heizzeit verzoegern, bis alle aktiven Brenner den Abstand erreicht haben, aktivieren. Gemeinsam
         /// </summary>
-        internal async Task DelayStartPreHeatTime_ActiveAsync()
+        public async Task DelayStartPreHeatTime_ActiveAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation_2.DelayStartPreHeatTime_ActiveAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
         /// <summary>
         /// Starten der Heizzeit verzoegern, bis alle aktiven Benner den Abstand erreicht haben, deaktivieren. Gemeinsam
         /// </summary>
-        internal async Task DelayStartPreHeatTime_InActiveAsync()
+        public async Task DelayStartPreHeatTime_InActiveAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation_2.DelayStartPreHeatTime_InActiveAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
@@ -2190,23 +2190,23 @@ namespace SharedComponents.IhtDev
 
 
         #region ClrErrorCode
-        internal async Task ClrErrorCodeCommonAsync()
+        public async Task ClrErrorCodeCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecTactile.ClrErrorCode((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
-        internal async Task ClrErrorCodeAsync(int _slaveId)
+        public async Task ClrErrorCodeAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecTactile.ClrErrorCode(_slaveId).ConfigureAwait(false);
         }
         #endregion // ClrErrorCode
 
         #region PreHeatTime Reload/Stop
-        internal async Task ReloadPreHeatTimeCommonAsync()
+        public async Task ReloadPreHeatTimeCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecTactile.ReloadPreHeatTimeAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
 
-        internal async Task StopPreHeatTimeCommonAsync()
+        public async Task StopPreHeatTimeCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecTactile.StopPreHeatTimeAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
@@ -2214,84 +2214,84 @@ namespace SharedComponents.IhtDev
 
 
         #region ClearenceCtrlOff Set/Clr
-        internal async Task SetClearenceCtrlOffCommonAsync()
+        public async Task SetClearenceCtrlOffCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.SetClearanceControlOffAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast, GetOnDevicesSlaveIds()).ConfigureAwait(false);
         }
-        internal async Task ClrClearenceCtrlOffCommonAsync()
+        public async Task ClrClearenceCtrlOffCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.ClrClearanceControlOffAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast, GetOnDevicesSlaveIds()).ConfigureAwait(false);
         }
-        internal async Task SetClearenceCtrlOffAsync(int _slaveId)
+        public async Task SetClearenceCtrlOffAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.SetClearanceControlOffAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task ClrClearenceCtrlOffAsync(int _slaveId)
+        public async Task ClrClearenceCtrlOffAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.ClrClearanceControlOffAsync(_slaveId).ConfigureAwait(false);
         }
         #endregion // ClearenceCtrlOff Set/Clr
 
         #region FlameOnAtProcessEnd Set/Clr
-        internal async Task SetFlameOnAtProcessEndCommonAsync()
+        public async Task SetFlameOnAtProcessEndCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.SetFlameOnAtProcessEndAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast, GetOnDevicesSlaveIds()).ConfigureAwait(false);
         }
-        internal async Task ClrFlameOnAtProcessEndCommonAsync()
+        public async Task ClrFlameOnAtProcessEndCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.ClrFlameOnAtProcessEndAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast, GetOnDevicesSlaveIds()).ConfigureAwait(false);
         }
-        internal async Task SetFlameOnAtProcessEndAsync(int _slaveId)
+        public async Task SetFlameOnAtProcessEndAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.SetFlameOnAtProcessEndAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task ClrFlameOnAtProcessEndAsync(int _slaveId)
+        public async Task ClrFlameOnAtProcessEndAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.ClrFlameOnAtProcessEndAsync(_slaveId).ConfigureAwait(false);
         }
         #endregion // FlameOnAtProcessEnd Set/Clr
 
         #region ClearenceCtrlManual Set/Clr
-        internal async Task SetClearenceCtrlManualCommonAsync()
+        public async Task SetClearenceCtrlManualCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.SetClearenceCtrlManualAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast, GetOnDevicesSlaveIds()).ConfigureAwait(false);
         }
-        internal async Task ClrClearenceCtrlManualCommonAsync()
+        public async Task ClrClearenceCtrlManualCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.ClrClearenceCtrlManualAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast, GetOnDevicesSlaveIds()).ConfigureAwait(false);
         }
-        internal async Task SetClearenceCtrlManualAsync(int _slaveId)
+        public async Task SetClearenceCtrlManualAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.SetClearenceCtrlManualAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task ClrClearenceCtrlManualAsync(int _slaveId)
+        public async Task ClrClearenceCtrlManualAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.ClrClearenceCtrlManualAsync(_slaveId).ConfigureAwait(false);
         }
         #endregion // ClearenceCtrlManual Set/Clr
 
         #region SetClearenceCtrlManualHeightCommon
-        internal async Task SetClearenceCtrlManualHeightCommonAsync()
+        public async Task SetClearenceCtrlManualHeightCommonAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdExecTactile.SetClearenceCtrlManualHeightAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
         #endregion // SetClearenceCtrlManualHeightCommon
 
         #region ExecuteClearanceSignalAdjust
-        internal async Task ExecuteClearanceSignalAdjustAsync(int _slaveId)
+        public async Task ExecuteClearanceSignalAdjustAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecTactile.ExecuteClearanceSignalAdjust(_slaveId).ConfigureAwait(false);
         }
         #endregion // ExecuteClearanceSignalAdjust
 
         #region TorchOff Set/Clr
-        internal async Task SetTorchOffAsync(int _slaveId)
+        public async Task SetTorchOffAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.SetTorchOffAsync(_slaveId).ConfigureAwait(false);
             // Falls ClrClearenceCtrlOff zuvor aktiv war, löschen
             await ClrClearenceCtrlOffAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task ClrTorchOffAsync(int _slaveId)
+        public async Task ClrTorchOffAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecSwitch.ClrTorchOffAsync(_slaveId).ConfigureAwait(false);
             // FlameOnAtProcessEnd entsprechend setzen
@@ -2305,7 +2305,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// FlameOnAtProcessEnd entsprechend setzen
         /// </summary>
-        internal async Task UpdateFlameOnAtProcessEndAsync(int _slaveId)
+        public async Task UpdateFlameOnAtProcessEndAsync(int _slaveId)
         {
             if (IsFlameOnAtProcessEndCommon)
             {
@@ -2322,7 +2322,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// ClearenceCtrlManual entsprechend setzen
         /// </summary>
-        internal async Task UpdateClearenceCtrlManualAsync(int _slaveId)
+        public async Task UpdateClearenceCtrlManualAsync(int _slaveId)
         {
             if (IsClearenceCtrlManualCommon)
             {
@@ -2337,11 +2337,11 @@ namespace SharedComponents.IhtDev
 
 
         #region Abstands-Kalibrierung
-        internal async Task StartCalibrationAsync(int _slaveId)
+        public async Task StartCalibrationAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StartCalibrationAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task StopCalibrationAsync(int _slaveId)
+        public async Task StopCalibrationAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdExecInputEmulation.StopCalibrationAsync(_slaveId).ConfigureAwait(false);
         }
@@ -2349,23 +2349,23 @@ namespace SharedComponents.IhtDev
 
 
         #region Abstands-Regelung
-        internal async Task HeightControlOffsaAsync()
+        public async Task HeightControlOffsaAsync()
         {
             await ihtModbusCommunic.ihtModbusCmdHeightCtrl.OffAsync((int)IhtModbusCommunic.SlaveId.Id_Broadcast).ConfigureAwait(false);
         }
-        internal async Task HeightControlOffAsync(int _slaveId)
+        public async Task HeightControlOffAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdHeightCtrl.OffAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task HeightControlPreHeatingAsync(int _slaveId)
+        public async Task HeightControlPreHeatingAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdHeightCtrl.PreHeatingAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task HeightControlPiercingAsync(int _slaveId)
+        public async Task HeightControlPiercingAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdHeightCtrl.PiercingAsync(_slaveId).ConfigureAwait(false);
         }
-        internal async Task HeightControlCuttingAsync(int _slaveId)
+        public async Task HeightControlCuttingAsync(int _slaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdHeightCtrl.CuttingAsync(_slaveId).ConfigureAwait(false);
         }
@@ -2373,29 +2373,29 @@ namespace SharedComponents.IhtDev
 
 
         #region Test Pressure Out
-        internal async Task SetTestPressureHeatO2Async(int SlaveId)
+        public async Task SetTestPressureHeatO2Async(int SlaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdTestPressureOut.SetPressureOutHeatO2Async(SlaveId).ConfigureAwait(false);
         }
-        internal async Task ClrTestPressureHeatO2Async(int SlaveId)
+        public async Task ClrTestPressureHeatO2Async(int SlaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdTestPressureOut.ClrPressureOutHeatO2Async(SlaveId).ConfigureAwait(false);
         }
 
-        internal async Task SetTestPressureCutO2Async(int SlaveId)
+        public async Task SetTestPressureCutO2Async(int SlaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdTestPressureOut.SetPressureOutCutO2Async(SlaveId).ConfigureAwait(false);
         }
-        internal async Task ClrTestPressureCutO2Async(int SlaveId)
+        public async Task ClrTestPressureCutO2Async(int SlaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdTestPressureOut.ClrPressureOutCutO2Async(SlaveId).ConfigureAwait(false);
         }
 
-        internal async Task SetTestPressureFuelGasAsync(int SlaveId)
+        public async Task SetTestPressureFuelGasAsync(int SlaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdTestPressureOut.SetPressureOutFuelGasAsync(SlaveId).ConfigureAwait(false);
         }
-        internal async Task ClrTestPressureFuelGasAsync(int SlaveId)
+        public async Task ClrTestPressureFuelGasAsync(int SlaveId)
         {
             await ihtModbusCommunic.ihtModbusCmdTestPressureOut.ClrPressureOutFuelGasAsync(SlaveId).ConfigureAwait(false);
         }
@@ -2403,13 +2403,13 @@ namespace SharedComponents.IhtDev
 
 
         #region PasswordLevelSoftware
-        internal void ClrPasswordLevelSoftware()
+        public void ClrPasswordLevelSoftware()
         {
             PasswordLevel_Software = (int)PasswordLevel_SW.Level_0;
             IsCutDataSetEditable = false;
         }
 
-        internal void SetPasswordLevelSoftware(int passwordLevel)
+        public void SetPasswordLevelSoftware(int passwordLevel)
         {
             switch (passwordLevel)
             {
@@ -2440,7 +2440,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Error-Code Label abfragen
         /// </summary>
-        internal string GetErrorCodeLabel(int _slaveId, int errorCode)
+        public string GetErrorCodeLabel(int _slaveId, int errorCode)
         {
             IhtDevice _ihtDevice = GetDevice(_slaveId);
             if (_ihtDevice != null)

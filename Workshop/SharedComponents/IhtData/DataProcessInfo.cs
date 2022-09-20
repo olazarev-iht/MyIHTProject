@@ -207,6 +207,21 @@ namespace SharedComponents.IhtData
         }
         #endregion
 
+        public DataProcessInfo()
+        {
+            PropertyChanged += IsProcessInfoChangedHandler;
+        }
+
+        public void IsProcessInfoChangedHandler(object? sender, PropertyChangedEventArgs eventArgs)
+        {
+            //if (eventArgs.PropertyName == "IsVisible")
+            //{
+
+            //}
+
+
+
+        }
 
         #region Status-Register
         private bool _isReady { get; set; }
@@ -657,6 +672,11 @@ namespace SharedComponents.IhtData
         }
         #endregion // StatusLeds
 
+
+        public DataProcessInfo()
+        {
+            PropertyChanged += IsEnabledChangedHandler;
+        }
 
         // Helper-Methode, um nicht in jedem Set-Accessor zu prüfen, ob PropertyRaisePropertyChanged!=null
         private void RaisePropertyChanged(string propertyName)

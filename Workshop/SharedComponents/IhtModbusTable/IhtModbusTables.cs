@@ -7,32 +7,32 @@ using System.Threading.Tasks;
 
 namespace SharedComponents.IhtModbusTable
 {
-    internal class IhtModbusTables
+    public class IhtModbusTables
     {
 
-        internal IhtModbusTableCutCycleStateLabels ihtModbusTableCutCycleStateLabels;
-        internal IhtModbusTableCutCycleStateCurrTbl ihtModbusTableCutCycleStateCurrTbl;
-        internal IhtModbusTableCutCycleStatePrevTbl ihtModbusTableCutCycleStatePrevTbl;
-        internal IhtModbusTableErrorLabels ihtModbusTableErrorLabels;
-        internal IhtModbusTableErrorTbl ihtModbusTableErrorTbl;
-        internal IhtModbusTableMenuParamTbl ihtModbusTableMenuParamTbl;
-        internal IhtModbusTableOxyProcCutCycleStateLabels ihtModbusTableOxyProcCutCycleStateLabels;
-        internal IhtModbusTableOxyProcCutCycleStateCurrTbl ihtModbusTableOxyProcCutCycleStateCurrTbl;
-        internal IhtModbusTableOxyProcCutCycleStatePrevTbl ihtModbusTableOxyProcCutCycleStatePrevTbl;
-        internal IhtModbusTableTempHistogramuCTbl ihtModbusTableTempHistogramuCTbl;
-        internal IhtModbusTableHistogramCommonTbl ihtModbusTableHistogramCommonTbl;
-        internal IhtModbusTableHistogramCommonCustomTbl ihtModbusTableHistogramCommonCustomTbl;
-        internal IhtModbusTableErrorCustomTbl ihtModbusTableErrorCustomTbl;
-        internal IhtModbusTableFitPlus3HistoErrorTbl ihtModbusTableFitPlus3HistoErrorTbl;
-        internal IhtModbusTableFitPlus3HistoErrorCustomTbl ihtModbusTableFitPlus3HistoErrorCustomTbl;
-        internal IhtModbusTableFitPlus3HistoTempuCTbl ihtModbusTableFitPlus3HistoTempuCTbl;
-        internal IhtModbusTableFitPlus3HistoTempTopTbl ihtModbusTableFitPlus3HistoTempTopTbl;
-        internal IhtModbusTableFitPlus3HistoTempBottomTbl ihtModbusTableFitPlus3HistoTempBottomTbl;
-        internal IhtModbusTableStatusInfoTbl ihtModbusTableStatusInfoTbl;
-        internal IhtModbusTableStatusInfoSpecificTbl ihtModbusTableStatusInfoSpecificTbl;
+        public IhtModbusTableCutCycleStateLabels ihtModbusTableCutCycleStateLabels;
+        public IhtModbusTableCutCycleStateCurrTbl ihtModbusTableCutCycleStateCurrTbl;
+        public IhtModbusTableCutCycleStatePrevTbl ihtModbusTableCutCycleStatePrevTbl;
+        public IhtModbusTableErrorLabels ihtModbusTableErrorLabels;
+        public IhtModbusTableErrorTbl ihtModbusTableErrorTbl;
+        public IhtModbusTableMenuParamTbl ihtModbusTableMenuParamTbl;
+        public IhtModbusTableOxyProcCutCycleStateLabels ihtModbusTableOxyProcCutCycleStateLabels;
+        public IhtModbusTableOxyProcCutCycleStateCurrTbl ihtModbusTableOxyProcCutCycleStateCurrTbl;
+        public IhtModbusTableOxyProcCutCycleStatePrevTbl ihtModbusTableOxyProcCutCycleStatePrevTbl;
+        public IhtModbusTableTempHistogramuCTbl ihtModbusTableTempHistogramuCTbl;
+        public IhtModbusTableHistogramCommonTbl ihtModbusTableHistogramCommonTbl;
+        public IhtModbusTableHistogramCommonCustomTbl ihtModbusTableHistogramCommonCustomTbl;
+        public IhtModbusTableErrorCustomTbl ihtModbusTableErrorCustomTbl;
+        public IhtModbusTableFitPlus3HistoErrorTbl ihtModbusTableFitPlus3HistoErrorTbl;
+        public IhtModbusTableFitPlus3HistoErrorCustomTbl ihtModbusTableFitPlus3HistoErrorCustomTbl;
+        public IhtModbusTableFitPlus3HistoTempuCTbl ihtModbusTableFitPlus3HistoTempuCTbl;
+        public IhtModbusTableFitPlus3HistoTempTopTbl ihtModbusTableFitPlus3HistoTempTopTbl;
+        public IhtModbusTableFitPlus3HistoTempBottomTbl ihtModbusTableFitPlus3HistoTempBottomTbl;
+        public IhtModbusTableStatusInfoTbl ihtModbusTableStatusInfoTbl;
+        public IhtModbusTableStatusInfoSpecificTbl ihtModbusTableStatusInfoSpecificTbl;
 
 
-        internal IhtModbusTables(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTables(IhtModbusCommunic _ihtModbusCommunic)
         {
             ihtModbusTableCutCycleStateLabels = new IhtModbusTableCutCycleStateLabels(_ihtModbusCommunic);
             ihtModbusTableCutCycleStateCurrTbl = new IhtModbusTableCutCycleStateCurrTbl(_ihtModbusCommunic);
@@ -61,9 +61,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    internal class IhtModbusTableCutCycleStateLabels : IhtModbusTableBase
+    public class IhtModbusTableCutCycleStateLabels : IhtModbusTableBase
     {
-        internal IhtModbusTableCutCycleStateLabels(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableCutCycleStateLabels(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.CutCycleStateLabelTbl)
         {
         }
@@ -72,9 +72,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableCutCycleStateCurrTbl : IhtModbusTableBase
+    public class IhtModbusTableCutCycleStateCurrTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableCutCycleStateCurrTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableCutCycleStateCurrTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.CutCycleStateCurrTbl)
         {
         }
@@ -84,9 +84,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableCutCycleStatePrevTbl : IhtModbusTableBase
+    public class IhtModbusTableCutCycleStatePrevTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableCutCycleStatePrevTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableCutCycleStatePrevTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.CutCycleStatePrevTbl)
         {
         }
@@ -95,9 +95,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableErrorLabels : IhtModbusTableBase
+    public class IhtModbusTableErrorLabels : IhtModbusTableBase
     {
-        internal IhtModbusTableErrorLabels(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableErrorLabels(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.ErrorLabelTbl)
         {
         }
@@ -106,9 +106,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableErrorTbl : IhtModbusTableBase
+    public class IhtModbusTableErrorTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableErrorTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableErrorTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.ErrorEepromTbl)
         {
         }
@@ -117,9 +117,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableMenuParamTbl : IhtModbusTableBase
+    public class IhtModbusTableMenuParamTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableMenuParamTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableMenuParamTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.MenuParamTbl)
         {
         }
@@ -128,9 +128,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableOxyProcCutCycleStateLabels : IhtModbusTableBase
+    public class IhtModbusTableOxyProcCutCycleStateLabels : IhtModbusTableBase
     {
-        internal IhtModbusTableOxyProcCutCycleStateLabels(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableOxyProcCutCycleStateLabels(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.OxyProcCutCycleStateLabelTbl)
         {
         }
@@ -139,9 +139,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableOxyProcCutCycleStateCurrTbl : IhtModbusTableBase
+    public class IhtModbusTableOxyProcCutCycleStateCurrTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableOxyProcCutCycleStateCurrTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableOxyProcCutCycleStateCurrTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.OxyProcCutCycleStateCurrTbl)
         {
         }
@@ -150,9 +150,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableOxyProcCutCycleStatePrevTbl : IhtModbusTableBase
+    public class IhtModbusTableOxyProcCutCycleStatePrevTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableOxyProcCutCycleStatePrevTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableOxyProcCutCycleStatePrevTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.OxyProcCutCycleStatePrevTbl)
         {
         }
@@ -161,9 +161,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableTempHistogramuCTbl : IhtModbusTableBase
+    public class IhtModbusTableTempHistogramuCTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableTempHistogramuCTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableTempHistogramuCTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.TempHistogramuCTbl)
         {
         }
@@ -172,9 +172,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableHistogramCommonTbl : IhtModbusTableBase
+    public class IhtModbusTableHistogramCommonTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableHistogramCommonTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableHistogramCommonTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.HistogramCommonTbl)
         {
         }
@@ -183,9 +183,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableHistogramCommonCustomTbl : IhtModbusTableBase
+    public class IhtModbusTableHistogramCommonCustomTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableHistogramCommonCustomTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableHistogramCommonCustomTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.HistogramCommonCustomTbl)
         {
         }
@@ -194,9 +194,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableErrorCustomTbl : IhtModbusTableBase
+    public class IhtModbusTableErrorCustomTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableErrorCustomTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableErrorCustomTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.ErrorCustomTbl)
         {
         }
@@ -205,9 +205,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableFitPlus3HistoErrorTbl : IhtModbusTableBase
+    public class IhtModbusTableFitPlus3HistoErrorTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableFitPlus3HistoErrorTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableFitPlus3HistoErrorTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.FitPlus3HistoErrorTbl)
         {
         }
@@ -216,9 +216,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableFitPlus3HistoErrorCustomTbl : IhtModbusTableBase
+    public class IhtModbusTableFitPlus3HistoErrorCustomTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableFitPlus3HistoErrorCustomTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableFitPlus3HistoErrorCustomTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.FitPlus3HistoErrorCustomTbl)
         {
         }
@@ -227,9 +227,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableFitPlus3HistoTempuCTbl : IhtModbusTableBase
+    public class IhtModbusTableFitPlus3HistoTempuCTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableFitPlus3HistoTempuCTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableFitPlus3HistoTempuCTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.FitPlus3HistoTempuCTbl)
         {
         }
@@ -238,9 +238,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableFitPlus3HistoTempTopTbl : IhtModbusTableBase
+    public class IhtModbusTableFitPlus3HistoTempTopTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableFitPlus3HistoTempTopTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableFitPlus3HistoTempTopTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.FitPlus3HistoTempTopTbl)
         {
         }
@@ -249,9 +249,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableFitPlus3HistoTempBottomTbl : IhtModbusTableBase
+    public class IhtModbusTableFitPlus3HistoTempBottomTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableFitPlus3HistoTempBottomTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableFitPlus3HistoTempBottomTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.FitPlus3HistoTempBottomTbl)
         {
         }
@@ -260,9 +260,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableStatusInfoTbl : IhtModbusTableBase
+    public class IhtModbusTableStatusInfoTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableStatusInfoTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableStatusInfoTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.StatusInfoTbl)
         {
         }
@@ -271,9 +271,9 @@ namespace SharedComponents.IhtModbusTable
     /// <summary>
     /// 
     /// </summary>
-    class IhtModbusTableStatusInfoSpecificTbl : IhtModbusTableBase
+    public class IhtModbusTableStatusInfoSpecificTbl : IhtModbusTableBase
     {
-        internal IhtModbusTableStatusInfoSpecificTbl(IhtModbusCommunic _ihtModbusCommunic)
+        public IhtModbusTableStatusInfoSpecificTbl(IhtModbusCommunic _ihtModbusCommunic)
           : base(_ihtModbusCommunic, IhtModbusParamDyn.eIdxTable.StatusInfoSpecificTbl)
         {
         }
