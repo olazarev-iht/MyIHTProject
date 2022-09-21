@@ -6,6 +6,7 @@ using SharedComponents.Models;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services;
 using SharedComponents.Services.APCHardwareManagers;
+using SharedComponents.Services.APCWorkerService;
 using System.Diagnostics;
 
 namespace BlazorServerHost.Services.APCWorkerService
@@ -20,7 +21,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 
 		public SingletonDataModel CurrentState { get; set; } = new();
 
-		public event EventHandler? WorkerStatusChanged;
+		public event EventHandler? LiveDataChanged;
 
 		public event EventHandler? DynamicDataChanged;
 		public APCWorker(
@@ -88,7 +89,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 					// Für alle nicht verbundenen Geräte die Process-Info Daten löschen
 					_ihtDevices.ClrProcessInfoDatas();
 
-					WorkerStatusChanged?.Invoke(this, EventArgs.Empty);
+					//LiveDataChanged?.Invoke(this, EventArgs.Empty);
 				}
 				catch (Exception ex)
 				{
@@ -129,6 +130,11 @@ namespace BlazorServerHost.Services.APCWorkerService
 		{
 			await _parameterDataInfoManager.InitializeParameterDataInfoAsync(CancellationToken.None);
 
+		}
+
+		public void _apcWorkerService_LiveDataChanged(object? sender, EventArgs e)
+		{
+			LiveDataChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

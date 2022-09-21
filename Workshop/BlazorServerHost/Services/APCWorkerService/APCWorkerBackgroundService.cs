@@ -1,4 +1,6 @@
-﻿namespace BlazorServerHost.Services.APCWorkerService
+﻿using SharedComponents.Services.APCWorkerService;
+
+namespace BlazorServerHost.Services.APCWorkerService
 {
     public class APCWorkerBackgroundService : BackgroundService
     {
@@ -58,6 +60,12 @@
         public override async Task StopAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Consume Scoped Service Hosted Service is stopping.");
+
+            // Stop called without start
+            //if (_executeTask == null)
+            //{
+            //    return;
+            //}
 
             _stoppingCts?.Cancel();
 

@@ -16,6 +16,7 @@ using Microsoft.Extensions.Localization;
 using MudBlazor.Services;
 using BlazorServerHost.Services.APCCommunic;
 using SharedComponents.APCHardwareManagers;
+using SharedComponents.IhtData;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
 using SharedComponents.Models;
@@ -24,6 +25,7 @@ using SharedComponents.Services.APCHardwareDBServices;
 using SharedComponents.Services.APCHardwareManagers;
 using SharedComponents.Services.APCHardwareMockDBServices;
 using SharedComponents.Services.CuttingDataDBServices;
+using SharedComponents.Services.APCWorkerService;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseWindowsService();
@@ -124,6 +126,9 @@ builder.Services.AddSingleton<IParameterDataInfoManager, ParameterDataInfoManage
 
 builder.Services.AddSingleton<IHardwareAPCServise, HardwareAPCServise>();
 builder.Services.AddSingleton<IhtDevices>();
+builder.Services.AddTransient<IhtDevice>(); 
+builder.Services.AddTransient<DataProcessInfo>();
+
 builder.Services.AddSingleton<IhtModbusCommunic>();
 builder.Services.AddSingleton<IhtModbusCommunicData>(); 
 builder.Services.AddSingleton<APCCommunicManager>();

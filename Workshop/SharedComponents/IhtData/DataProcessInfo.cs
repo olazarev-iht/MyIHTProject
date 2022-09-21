@@ -1,12 +1,16 @@
 ﻿using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
+using SharedComponents.Services.APCWorkerService;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SharedComponents.IhtData
 {
@@ -62,6 +66,18 @@ namespace SharedComponents.IhtData
         private int _clearanceOut_digit { get; set; }
         private int _clearanceOut_mV { get; set; }
 
+
+        IAPCWorker? _IAPCWorker
+        {
+            get
+            {
+                return _provider?.GetService<IAPCWorker>();
+            }
+        }
+
+        private bool IsPropertyChanged;
+        // private bool IsUpdateFinished;
+
         public int ErrorCode
         {
             get { return _errorCode; }
@@ -71,7 +87,14 @@ namespace SharedComponents.IhtData
         public int Status
         {
             get { return _status; }
-            set { _status = value; RaisePropertyChanged("Status"); }
+            set { 
+                if(value != _status)
+                {
+                    _status = value;
+                    RaisePropertyChanged();
+                }
+                
+            }
         }
 
         public int Status2
@@ -207,19 +230,30 @@ namespace SharedComponents.IhtData
         }
         #endregion
 
-        public DataProcessInfo()
+        //public DataProcessInfo()
+        //{
+        //}
+
+        static IServiceProvider _provider;
+
+        public DataProcessInfo(IServiceProvider provider)
         {
+            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+
             PropertyChanged += IsProcessInfoChangedHandler;
         }
 
         public void IsProcessInfoChangedHandler(object? sender, PropertyChangedEventArgs eventArgs)
         {
-            //if (eventArgs.PropertyName == "IsVisible")
+            //eventArgs.PropertyName
+
+            IsPropertyChanged = true;
+
+            //if(IsUpdateFinished)
+            //if (_IAPCWorker != null)
             //{
-
+            //    _IAPCWorker._apcWorkerService_LiveDataChanged(sender, eventArgs);
             //}
-
-
 
         }
 
@@ -672,19 +706,18 @@ namespace SharedComponents.IhtData
         }
         #endregion // StatusLeds
 
-
-        public DataProcessInfo()
-        {
-            PropertyChanged += IsEnabledChangedHandler;
-        }
-
         // Helper-Methode, um nicht in jedem Set-Accessor zu prüfen, ob PropertyRaisePropertyChanged!=null
-        private void RaisePropertyChanged(string propertyName)
+        //private void RaisePropertyChanged(string propertyName)
+        //{
+        //    var handler = PropertyChanged;
+        //    if (handler != null)
+        //        handler(this, new PropertyChangedEventArgs(propertyName));
+        //}
+        private void RaisePropertyChanged([CallerMemberName] String propertyName = "")
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
 
@@ -694,6 +727,9 @@ namespace SharedComponents.IhtData
         internal void UpdateDatas(IhtModbusData ihtModbusData)
         {
             #region ProcessInfo-Daten
+
+            IsPropertyChanged = false;
+
             if (IsCommunicError)
             {
                 ErrorCode = IhtDevice.ErrorCodeCommunic;
@@ -823,6 +859,12 @@ namespace SharedComponents.IhtData
 
             IsEnabledHeightControlOff = ((IsLedPreHeating || IsLedPiercing || IsLedCutting) && !IsInpClearanceCtrlOff) || IsClearanceControlOff;
             #endregion Ohters
+
+            // Call event LiveDataChanged
+            if (_IAPCWorker != null && IsPropertyChanged)
+            {
+                _IAPCWorker._apcWorkerService_LiveDataChanged(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>

@@ -307,7 +307,7 @@ namespace SharedComponents.IhtDev
         private static void CreateIhtDevices()
         {
             _ihtDevicesDictionary_ = new Dictionary<int, IhtDevice>();
-            IhtDevice _ihtDevice = new();
+            var _ihtDevice = _provider?.GetService<IhtDevice>();
             //MainWindow _mainWindow = MainWindow.GetMainWindow();
             // Device 1
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_01; //_mainWindow.FindResource("ihtDevice_1") as IhtDevice;
@@ -332,7 +332,7 @@ namespace SharedComponents.IhtDev
             _ihtDevice.IsEnabled = false;
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 2
-            _ihtDevice = new();
+            _ihtDevice = _provider?.GetService<IhtDevice>();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_02;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_12, 
                                IhtDevices.DeviceNumber.Device_02
@@ -353,7 +353,7 @@ namespace SharedComponents.IhtDev
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             _ihtDevice.IsEnabled = true;
             // Device 3
-            _ihtDevice = new();
+            _ihtDevice = _provider?.GetService<IhtDevice>();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_03;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_13,
                                IhtDevices.DeviceNumber.Device_03
@@ -373,7 +373,7 @@ namespace SharedComponents.IhtDev
                               );
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 4
-            _ihtDevice = new();
+            _ihtDevice = _provider?.GetService<IhtDevice>();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_04;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_14,
                                IhtDevices.DeviceNumber.Device_04
@@ -393,7 +393,7 @@ namespace SharedComponents.IhtDev
                               );
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 5
-            _ihtDevice = new();
+            _ihtDevice = _provider?.GetService<IhtDevice>();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_05;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_15,
                                IhtDevices.DeviceNumber.Device_05
@@ -413,7 +413,7 @@ namespace SharedComponents.IhtDev
                               );
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 6
-            _ihtDevice = new();
+            _ihtDevice = _provider?.GetService<IhtDevice>();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_06;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_16,
                                IhtDevices.DeviceNumber.Device_06
@@ -433,7 +433,7 @@ namespace SharedComponents.IhtDev
                               );
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 7
-            _ihtDevice = new();
+            _ihtDevice = _provider?.GetService<IhtDevice>();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_07;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_17,
                                IhtDevices.DeviceNumber.Device_07
@@ -453,7 +453,7 @@ namespace SharedComponents.IhtDev
                               );
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 8
-            _ihtDevice = new();
+            _ihtDevice = _provider?.GetService<IhtDevice>();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_08;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_18,
                                IhtDevices.DeviceNumber.Device_08
@@ -473,7 +473,7 @@ namespace SharedComponents.IhtDev
                               );
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 9
-            _ihtDevice = new();
+            _ihtDevice = _provider?.GetService<IhtDevice>();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_09;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_19,
                                IhtDevices.DeviceNumber.Device_09
@@ -493,7 +493,7 @@ namespace SharedComponents.IhtDev
                               );
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 10
-            _ihtDevice = new();
+            _ihtDevice = _provider?.GetService<IhtDevice>();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_10;
             _ihtDevice.SetData(IhtModbusCommunic.SlaveId.Id_20,
                                IhtDevices.DeviceNumber.Device_10

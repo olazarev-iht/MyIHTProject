@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 //using System.Windows.Controls;
 using SharedComponents.IhtModbus;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SharedComponents.IhtDev
 {
@@ -243,7 +244,17 @@ namespace SharedComponents.IhtDev
         }
 
 
-        public DataProcessInfo dataProcessInfo { get; private set; } = new DataProcessInfo();
+        private DataProcessInfo? _dataProcessInfo = null;
+        public DataProcessInfo? dataProcessInfo {
+
+            get {
+                if (_dataProcessInfo == null)
+                    _dataProcessInfo = _provider?.GetService<DataProcessInfo>();
+                return _dataProcessInfo;
+            }
+
+            private set => _dataProcessInfo = value;
+        }
         public DataDeviceInfo dataDeviceInfo { get; private set; } = new DataDeviceInfo();
         public DataParamConstTechnology dataParamConstTechnology { get; private set; } = new DataParamConstTechnology();
         public DataParamDynTechnology dataParamDynTechnology { get; private set; } = new DataParamDynTechnology();
@@ -261,8 +272,13 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public IhtDevice()
+
+        static IServiceProvider _provider;
+        public IhtDevice(IServiceProvider provider)
         {
+            _provider = provider ??
+               throw new ArgumentNullException($"{nameof(provider)}");
+
             PropertyChanged += IsEnabledChangedHandler;
         }
 

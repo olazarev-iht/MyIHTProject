@@ -1,5 +1,5 @@
 ﻿//using BlazorServerHost.Features.Models.CNC;
-using BlazorServerHost.Services.APCWorkerService;
+using SharedComponents.Services.APCWorkerService;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
 using SharedComponents.IhtModbusTable;
@@ -81,6 +81,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			_ihtModbusCommunic = ihtModbusCommunic ?? throw new ArgumentNullException(nameof(ihtModbusCommunic));
 
 			_apcWorker.DynamicDataChanged += _apcWorkerService_DymanicDataChanged;
+
+			_apcWorker.LiveDataChanged += _apcWorkerService_LiveDataChanged;
 
 			CheckIfDynamicDataChangedAndCreateEventForDisplay().Wait();
 		}
@@ -334,7 +336,12 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		{
 			await CheckIfDynamicDataChangedAndCreateEventForDisplay();
 		}
-	
+
+		private void _apcWorkerService_LiveDataChanged(object? sender, EventArgs e)
+        {
+			OnDynamicAPCParamsDataChanged();
+		}
+
 		private async Task CheckIfDynamicDataChangedAndCreateEventForDisplay()
 		{
 			_paramChangedFlag = false;
@@ -433,6 +440,7 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		public void Dispose()
 		{
 			_apcWorker.DynamicDataChanged -= _apcWorkerService_DymanicDataChanged;
+			_apcWorker.LiveDataChanged -= _apcWorkerService_LiveDataChanged;
 		}
 
 		protected virtual void OnDynamicAPCParamsDataChanged()
