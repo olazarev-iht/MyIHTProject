@@ -4,6 +4,7 @@
 @using SharedComponents.IhtDev
 @using SharedComponents.IhtModbus
 @using BlazorServerHost.Services.APCCommunic
+@using BlazorServerHost.Services.APCWorkerService;
 @using SharedComponents.Models.APCHardware
 @using SharedComponents.Services.APCHardwareManagers
 @using SharedComponents.Services.APCHardwareMockDBServices
@@ -18,6 +19,7 @@
 @inject IParameterDataInfoManager parameterDataInfoManager
 @inject IAPCSimulationDataMockDBService apcSimulationDataMockDBService
 @inject APCCommunicManager apcCommunicManager
+@inject APCWorkerBackgroundService _apcWorkerBackgroundService
 @inherits ComponentBase
 @implements IDisposable
 
@@ -871,13 +873,13 @@ input#password-input:focus {
 
         await Task.Delay(TimeSpan.FromSeconds(0.05));
 
-        //TODO: Change: use dependency injection instead of the "new IhtModbusCommunicInfo(...)"
-        //var ihtModbusCommunicInfo = new IhtModbusCommunicInfo(ihtDevices, apcSimulationDataMockDBService, parameterDataInfoManager);
-
-        // stop Live params task - worker
+        // Connection to the APC devices
         await apcCommunicManager.Init(_nameComPort, _isSimulation, _performResetDevices);
 
         ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
+
+        // We do not need to stop worker
+        //await _apcWorkerBackgroundService.StopAsync(APCWorkerBackgroundService._stoppingCts.Token);
 
         navigationManager.NavigateTo(navigationManager.Uri, true);
     }

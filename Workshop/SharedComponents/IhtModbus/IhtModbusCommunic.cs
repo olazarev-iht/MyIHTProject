@@ -915,7 +915,7 @@ namespace SharedComponents.IhtModbus
                     {
                         ihtModbusDatas.Add(ihtModbusData);
                         // IhtModbusParamDyn.eIdxCmdExec.Switch aktualisieren
-                        ihtModbusCmdExecSwitch.UpdateRegister(ihtModbusData.SlaveId, ihtModbusData.GetValue(IhtModbusParamDyn.eIdxCmdExec.Switch));
+                        //ihtModbusCmdExecSwitch.UpdateRegister(ihtModbusData.SlaveId, ihtModbusData.GetValue(IhtModbusParamDyn.eIdxCmdExec.Switch));
                         // Wenn es keine Simulation ist
                         if (!IsSimulation)
                         {
@@ -944,21 +944,22 @@ namespace SharedComponents.IhtModbus
                         if ((u16OnSlaveIdBits & _ihtDevice.GetSlaveIdBit()) != 0)
                         {
                             // Brenner ist eingeschaltet
-                            await ihtDevices.ClrTorchOffAsync(currSlaveId).ConfigureAwait(false);
+                            //await ihtDevices.ClrTorchOffAsync(currSlaveId).ConfigureAwait(false);
                         }
                         else
                         {
                             // Brenner ist ausgeschaltet
-                            await ihtDevices.SetTorchOffAsync(currSlaveId).ConfigureAwait(false);
+                            //await ihtDevices.SetTorchOffAsync(currSlaveId).ConfigureAwait(false);
                         }
 
                         // Falls ClrClearenceCtrlOff zuvor aktiv war, löschen
-                        await ihtDevices.ClrClearenceCtrlOffAsync(currSlaveId).ConfigureAwait(false);
+                        //await ihtDevices.ClrClearenceCtrlOffAsync(currSlaveId).ConfigureAwait(false);
                         // FlameOnAtProcessEnd entsprechend setzen
-                        await ihtDevices.UpdateFlameOnAtProcessEndAsync(currSlaveId).ConfigureAwait(false);
+                        //await ihtDevices.UpdateFlameOnAtProcessEndAsync(currSlaveId).ConfigureAwait(false);
                         // ClearenceCtrlManual entsprechend setzen
-                        await ihtDevices.UpdateClearenceCtrlManualAsync(currSlaveId).ConfigureAwait(false);
+                        //await ihtDevices.UpdateClearenceCtrlManualAsync(currSlaveId).ConfigureAwait(false);
 
+#if true
                         bool blFwUpdate = false;
                         bool blFwSpecialCU = false;
 
@@ -1221,7 +1222,7 @@ namespace SharedComponents.IhtModbus
                         //        ihtDevices.SetStatusWarningBackground(currSlaveId);
                         //    }
                         //}));
-
+                        #endif
                         if (IsSimulation)
                         {
                             await Task.Delay(1000).ConfigureAwait(false);
@@ -1229,7 +1230,7 @@ namespace SharedComponents.IhtModbus
                     }
                 }
 
-                #endregion // foreach
+#endregion // foreach
                 mainWndHlp.SetStatusMsg(IhtMsgLog.Info.None, "");
                 // Wenn es eine Roboteranwendung ist
                 if (isRobot)
@@ -1393,7 +1394,7 @@ namespace SharedComponents.IhtModbus
             return errorInfo.Result;
         }
 
-        #region Rd_Data
+#region Rd_Data
         /// <summary>
         /// Ab StartAdresse 10 Eintraege lesen
         /// </summary>
@@ -1460,7 +1461,7 @@ namespace SharedComponents.IhtModbus
             }
             return ihtModbusResult.Result;
         }
-        #endregion // Rd_Data  
+#endregion // Rd_Data  
 
         /// <summary>
         /// 
@@ -1548,7 +1549,7 @@ namespace SharedComponents.IhtModbus
     }
 #endif
 
-        #region Read_...
+#region Read_...
         /// <summary>
         /// Adress-Bereiche auslesen
         /// </summary>
@@ -1652,10 +1653,10 @@ namespace SharedComponents.IhtModbus
         {
             return await Rd_DataAsync(ihtModbusData, ihtModbusData.GetAddrInfo_SetupExec, ihtModbusData.SetSetupExecData).ConfigureAwait(false);
         }
-        #endregion // Read_...
+#endregion // Read_...
 
 
-        #region Read_Tables Text...
+#region Read_Tables Text...
         /// <summary>
         /// Data auslesen
         /// </summary>
@@ -1775,10 +1776,10 @@ namespace SharedComponents.IhtModbus
         {
             return await ihtModbusTables.ihtModbusTableFitPlus3HistoTempBottomTbl.Read_TableTextAsync(ihtModbusData).ConfigureAwait(false);
         }
-        #endregion // Read_Tables Text...
+#endregion // Read_Tables Text...
 
 
-        #region Read_Tables Value...
+#region Read_Tables Value...
         /// <summary>
         /// Status-Info auslesen
         /// </summary>
@@ -1794,10 +1795,10 @@ namespace SharedComponents.IhtModbus
         {
             return await ihtModbusTables.ihtModbusTableStatusInfoSpecificTbl.Read_TableValueAsync(ihtModbusData, dataOffsetAddr, dataCounts).ConfigureAwait(false);
         }
-        #endregion // Read_Tables Value...
+#endregion // Read_Tables Value...
 
 
-        #region Write_EraseTables...
+#region Write_EraseTables...
         private UInt16 GetTableDataAddr(IhtModbusData ihtModbusData, IhtModbusParamDyn.eIdxTable eIdxTable)
         {
             IhtModbusAddrInfo addrInfo = ihtModbusData.GetAddrInfo_TableData();
@@ -1876,10 +1877,10 @@ namespace SharedComponents.IhtModbus
         {
             return await WriteAsync(ihtModbusData.SlaveId, GetTableDataAddr(ihtModbusData, IhtModbusParamDyn.eIdxTable.FitPlus3HistoTempAllErase), 0).ConfigureAwait(false);
         }
-        #endregion // Write_EraseTables...
+#endregion // Write_EraseTables...
 
 
-        #region Write...
+#region Write...
         /// <summary>
         /// Technologie-Parameter Dyn. schreiben
         /// </summary>
@@ -1926,7 +1927,7 @@ namespace SharedComponents.IhtModbus
         {
             return await WriteAsync(ihtModbusData.SlaveId, ihtModbusData.GetAddrInfo_SetupExec().u16StartAddr, ihtModbusData.GetDataSetupExec()).ConfigureAwait(false);
         }
-        #endregion // Write_...
+#endregion // Write_...
 
     }
 

@@ -66,15 +66,15 @@ namespace BlazorServerHost.Services.APCWorkerService
                     {
 						IhtModbusResult ihtModbusResult = new();
 
-						byte apcSlaveId = (byte)modbusData.SlaveId;
-						ushort paramStartAddress = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.ProcessInfo).u16StartAddr;
-						ushort registerCount     = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.ProcessInfo).u16AddrNumber;
-						UInt16[] parameterValue = await _ihtModbusCommunic.ReadAsync(apcSlaveId, (ushort)paramStartAddress, registerCount, ihtModbusResult);
+						//byte apcSlaveId = (byte)modbusData.SlaveId;
+						//ushort paramStartAddress = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.ProcessInfo).u16StartAddr;
+						//ushort registerCount     = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.ProcessInfo).u16AddrNumber;
+						//UInt16[] parameterValue = await _ihtModbusCommunic.ReadAsync(apcSlaveId, (ushort)paramStartAddress, registerCount, ihtModbusResult);
 
 						// Update old data with the new and get an event in device.dataProcessInfo
 						ihtModbusResult.Result = await _ihtDevices.Read_ProcessInfoAsync(modbusData, true);
 
-						var device = _ihtDevices.GetDevice(apcSlaveId);
+						//var device = _ihtDevices.GetDevice(apcSlaveId);
 						//device.dataProcessInfo;
 
 						//Compare old and new data
