@@ -17,54 +17,54 @@ namespace SharedComponents.IhtData
     public class DataProcessInfo : INotifyPropertyChanged
     {
         // Zur Identifizierung zum welchen Gerät die Date gehören
-        private int _slaveId { get; set; }
+        private int _slaveId;
         public int SlaveId
         {
             get { return _slaveId; }
-            set { _slaveId = value; RaisePropertyChanged("SlaveId"); }
+            set { RaisePropertyChanged(ref _slaveId, value); }
         }
+
         // IsCommunicError
-        private bool _isCommunicError { get; set; }
+        private bool _isCommunicError;
         public bool IsCommunicError
         {
             get { return _isCommunicError; }
             set
             {
-                _isCommunicError = value;
                 if (value)
                 {
                     ErrorCode = IhtDevice.ErrorCodeCommunic;
                     IsError = true;
                 }
-                RaisePropertyChanged("IsCommunicError");
+                RaisePropertyChanged(ref _isCommunicError, value);
             }
         }
 
         #region ProcessInfo-Daten
-        private int _errorCode { get; set; }
-        private int _status { get; set; }
-        private int _status2 { get; set; }
-        private int _statusLeds { get; set; }
-        private int _statusInputs { get; set; }
-        private int _statusOutputs { get; set; }
-        private int _statusHeightControl { get; set; }
-        private int _currOutHeatO2 { get; set; }
-        private int _currOutCutO2 { get; set; }
-        private int _currOutFuelGas { get; set; }
-        private int _currHeatTime { get; set; }
-        private int _currOxyfuelProcState { get; set; }
-        private int _currCutCycleState { get; set; }
-        private int _currUB24V { get; set; }
-        private int _uB24VMin { get; set; }
-        private int _uB24VMax { get; set; }
-        private int _linearDrivePosition { get; set; }
-        private int _ignitionFlameAdjustParamDisabled { get; set; }
-        private int _currCutO2BlowoutTime { get; set; }
-        private int _currSetupExecSetup { get; set; }
-        private int _currSetupExecTestPressureOut { get; set; }
-        private int _currPasswordLevel { get; set; }
-        private int _clearanceOut_digit { get; set; }
-        private int _clearanceOut_mV { get; set; }
+        private int _errorCode;
+        private int _status;
+        private int _status2;
+        private int _statusLeds;
+        private int _statusInputs;
+        private int _statusOutputs;
+        private int _statusHeightControl;
+        private int _currOutHeatO2;
+        private int _currOutCutO2;
+        private int _currOutFuelGas;
+        private int _currHeatTime;
+        private int _currOxyfuelProcState;
+        private int _currCutCycleState;
+        private int _currUB24V;
+        private int _uB24VMin;
+        private int _uB24VMax;
+        private int _linearDrivePosition;
+        private int _ignitionFlameAdjustParamDisabled;
+        private int _currCutO2BlowoutTime;
+        private int _currSetupExecSetup;
+        private int _currSetupExecTestPressureOut;
+        private int _currPasswordLevel;
+        private int _clearanceOut_digit;
+        private int _clearanceOut_mV;
 
 
         IAPCWorker? _IAPCWorker
@@ -76,165 +76,157 @@ namespace SharedComponents.IhtData
         }
 
         private bool IsPropertyChanged;
-        // private bool IsUpdateFinished;
+        private string? ChangedPropertyName;
+        public bool IsProcessInfoUpdating;
 
         public int ErrorCode
         {
             get { return _errorCode; }
-            set { _errorCode = value; RaisePropertyChanged("ErrorCode"); }
+            set { RaisePropertyChanged(ref _errorCode, value); }
         }
 
         public int Status
         {
             get { return _status; }
-            set { 
-                if(value != _status)
-                {
-                    _status = value;
-                    RaisePropertyChanged();
-                }
-                
-            }
+            set { RaisePropertyChanged(ref _status, value); }
         }
 
         public int Status2
         {
             get { return _status2; }
-            set { _status2 = value; RaisePropertyChanged("Status2"); }
+            set { RaisePropertyChanged(ref _status2, value); }
         }
 
         public int StatusLeds
         {
             get { return _statusLeds; }
-            set { _statusLeds = value; RaisePropertyChanged("StatusLeds"); }
+            set { RaisePropertyChanged(ref _statusLeds, value); }
         }
 
         public int StatusInputs
         {
             get { return _statusInputs; }
-            set { _statusInputs = value; RaisePropertyChanged("StatusInputs"); }
+            set { RaisePropertyChanged(ref _statusInputs, value); }
         }
 
         public int StatusOutputs
         {
             get { return _statusOutputs; }
-            set { _statusOutputs = value; RaisePropertyChanged("StatusOutputs"); }
+            set { RaisePropertyChanged(ref _statusOutputs, value); }
         }
 
         public int StatusHeightControl
         {
             get { return _statusHeightControl; }
-            set { _statusHeightControl = value; RaisePropertyChanged("StatusHeightControl"); }
+            set { RaisePropertyChanged(ref _statusHeightControl, value); }
         }
 
         public int CurrOutHeatO2
         {
             get { return _currOutHeatO2; }
-            set { _currOutHeatO2 = value; RaisePropertyChanged("CurrOutHeatO2"); }
+            set { RaisePropertyChanged(ref _currOutHeatO2, value); }
         }
 
         public int CurrOutCutO2
         {
             get { return _currOutCutO2; }
-            set { _currOutCutO2 = value; RaisePropertyChanged("CurrOutCutO2"); }
+            set { RaisePropertyChanged(ref _currOutCutO2, value); }
         }
 
         public int CurrOutFuelGas
         {
             get { return _currOutFuelGas; }
-            set { _currOutFuelGas = value; RaisePropertyChanged("CurrOutFuelGas"); }
+            set { RaisePropertyChanged(ref _currOutFuelGas, value); }
         }
 
         public int CurrHeatTime
         {
             get { return _currHeatTime; }
-            set { _currHeatTime = value; RaisePropertyChanged("CurrHeatTime"); }
+            set { RaisePropertyChanged(ref _currHeatTime, value); }
         }
 
         public int CurrOxyfuelProcState
         {
             get { return _currOxyfuelProcState; }
-            set { _currOxyfuelProcState = value; RaisePropertyChanged("CurrOxyfuelProcState"); }
+            set { RaisePropertyChanged(ref _currOxyfuelProcState, value); }
         }
 
         public int CurrCutCycleState
         {
             get { return _currCutCycleState; }
-            set { _currCutCycleState = value; RaisePropertyChanged("CurrCutCycleState"); }
+            set { RaisePropertyChanged(ref _currCutCycleState, value); }
         }
 
         public int CurrUB24V
         {
             get { return _currUB24V; }
-            set { _currUB24V = value; RaisePropertyChanged("CurrUB24V"); }
+            set { RaisePropertyChanged(ref _currUB24V, value); }
         }
 
         public int UB24VMin
         {
             get { return _uB24VMin; }
-            set { _uB24VMin = value; RaisePropertyChanged("UB24VMin"); }
+            set { RaisePropertyChanged(ref _uB24VMin, value); }
         }
 
         public int UB24VMax
         {
             get { return _uB24VMax; }
-            set { _uB24VMax = value; RaisePropertyChanged("UB24VMax"); }
+            set { RaisePropertyChanged(ref _uB24VMax, value); }
         }
 
         public int LinearDrivePosition
         {
             get { return _linearDrivePosition; }
-            set { _linearDrivePosition = value; RaisePropertyChanged("LinearDrivePosition"); }
+            set { RaisePropertyChanged(ref _linearDrivePosition, value); }
         }
 
         public int IgnitionFlameAdjustParamDisabled
         {
             get { return _ignitionFlameAdjustParamDisabled; }
-            set { _ignitionFlameAdjustParamDisabled = value; RaisePropertyChanged("IgnitionFlameAdjustParamDisabled"); }
+            set { RaisePropertyChanged(ref _ignitionFlameAdjustParamDisabled, value); }
         }
 
         public int CurrCutO2BlowoutTime
         {
             get { return _currCutO2BlowoutTime; }
-            set { _currCutO2BlowoutTime = value; RaisePropertyChanged("CurrCutO2BlowoutTime"); }
+            set { RaisePropertyChanged(ref _currCutO2BlowoutTime, value); }
         }
 
         public int CurrSetupExecSetup
         {
             get { return _currSetupExecSetup; }
-            set { _currSetupExecSetup = value; RaisePropertyChanged("CurrSetupExecSetup"); }
+            set { RaisePropertyChanged(ref _currSetupExecSetup, value); }
         }
 
         public int CurrSetupExecTestPressureOut
         {
             get { return _currSetupExecTestPressureOut; }
-            set { _currSetupExecTestPressureOut = value; RaisePropertyChanged("CurrSetupExecTestPressureOut"); }
+            set { RaisePropertyChanged(ref _currSetupExecTestPressureOut, value); }
         }
 
         public int CurrPasswordLevel
         {
             get { return _currPasswordLevel; }
-            set { _currPasswordLevel = value; RaisePropertyChanged("CurrPasswordLevel"); }
+            set { RaisePropertyChanged(ref _currPasswordLevel, value); }
         }
 
         public int ClearanceOut_digit
         {
             get { return _clearanceOut_digit; }
-            set { _clearanceOut_digit = value; RaisePropertyChanged("ClearanceOut_digit"); }
+            set { RaisePropertyChanged(ref _clearanceOut_digit, value); }
         }
 
         public int ClearanceOut_mV
         {
             get { return _clearanceOut_mV; }
-            set { _clearanceOut_mV = value; RaisePropertyChanged("ClearanceOut_mV"); }
+            set { RaisePropertyChanged(ref _clearanceOut_mV, value); }
         }
         #endregion
 
-        //public DataProcessInfo()
-        //{
-        //}
+        static IServiceProvider? _provider;
 
-        static IServiceProvider _provider;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public DataProcessInfo(IServiceProvider provider)
         {
@@ -245,480 +237,489 @@ namespace SharedComponents.IhtData
 
         public void IsProcessInfoChangedHandler(object? sender, PropertyChangedEventArgs eventArgs)
         {
-            //eventArgs.PropertyName
-
             IsPropertyChanged = true;
 
-            //if(IsUpdateFinished)
-            //if (_IAPCWorker != null)
-            //{
-            //    _IAPCWorker._apcWorkerService_LiveDataChanged(sender, eventArgs);
-            //}
+            if (!IsProcessInfoUpdating)
+            {
+                if (_IAPCWorker != null)
+                {
+                    _IAPCWorker._apcWorkerService_LiveDataChanged(eventArgs.PropertyName);
+                }
+            }
 
         }
 
+        private void RaisePropertyChanged<T>(ref T oldValue, T newValue, [CallerMemberName] string propertyName = "")
+        {
+            if (oldValue != null && !oldValue.Equals(newValue))
+            {
+                oldValue = newValue;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        //private void RaisePropertyChanged(ref int oldValue, int newValue, [CallerMemberName] string propertyName = "")
+        //{
+        //    if (oldValue != newValue)
+        //    {
+        //        oldValue = newValue;
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //    }
+        //}
+
         #region Status-Register
-        private bool _isReady { get; set; }
-        private bool _isProcessActive { get; set; }
-        private bool _isEmergencyMode { get; set; }
-        private bool _isUpperPosition { get; set; }
-        private bool _isControlActive { get; set; }
-        private bool _isInPosition { get; set; }
-        private bool _isCalibrationValid { get; set; }
-        private bool _isCalibrationActive { get; set; }
-        private bool _isTactileInitPosFindEnabled { get; set; }
-        private bool _isLockPressureOutputActive { get; set; }
-        private bool _isFlameOnAtProcessEndEnabled { get; set; }
-        private bool _isRetractPosAtProcessEndEnabled { get; set; }
-        private bool _isCapSetpointFlameOffsEnabled { get; set; }
-        private bool _isCutO2BlowoutActive { get; set; }
-        private bool _isTemperProcessActive { get; set; }
-        private bool _isAckErrorActive { get; set; }
+        private bool _isReady;
+        private bool _isProcessActive;
+        private bool _isEmergencyMode;
+        private bool _isUpperPosition;
+        private bool _isControlActive;
+        private bool _isInPosition;
+        private bool _isCalibrationValid;
+        private bool _isCalibrationActive;
+        private bool _isTactileInitPosFindEnabled;
+        private bool _isLockPressureOutputActive;
+        private bool _isFlameOnAtProcessEndEnabled;
+        private bool _isRetractPosAtProcessEndEnabled;
+        private bool _isCapSetpointFlameOffsEnabled;
+        private bool _isCutO2BlowoutActive;
+        private bool _isTemperProcessActive;
+        private bool _isAckErrorActive;
 
         public bool IsReady
         {
             get { return _isReady; }
-            set { _isReady = value; RaisePropertyChanged("IsReady"); }
+            set { RaisePropertyChanged(ref _isReady, value); }
         }
         public bool IsProcessActive
         {
             get { return _isProcessActive; }
-            set { _isProcessActive = value; RaisePropertyChanged("IsProcessActive"); }
+            set { RaisePropertyChanged(ref _isProcessActive, value); }
         }
         public bool IsEmergencyMode
         {
             get { return _isEmergencyMode; }
-            set { _isEmergencyMode = value; RaisePropertyChanged("IsEmergencyMode"); }
+            set { RaisePropertyChanged(ref _isEmergencyMode, value); }
         }
         public bool IsUpperPosition
         {
             get { return _isUpperPosition; }
-            set { _isUpperPosition = value; RaisePropertyChanged("IsUpperPosition"); }
+            set { RaisePropertyChanged(ref _isUpperPosition, value); }
         }
         public bool IsControlActive
         {
             get { return _isControlActive; }
-            set { _isControlActive = value; RaisePropertyChanged("IsControlActive"); }
+            set { RaisePropertyChanged(ref _isControlActive, value); }
         }
         public bool IsInPosition
         {
             get { return _isInPosition; }
-            set { _isInPosition = value; RaisePropertyChanged("IsInPosition"); }
+            set { RaisePropertyChanged(ref _isInPosition, value); }
         }
         public bool IsCalibrationValid
         {
             get { return _isCalibrationValid; }
-            set { _isCalibrationValid = value; RaisePropertyChanged("IsCalibrationValid"); }
+            set { RaisePropertyChanged(ref _isCalibrationValid, value); }
         }
         public bool IsCalibrationActive
         {
             get { return _isCalibrationActive; }
-            set { _isCalibrationActive = value; RaisePropertyChanged("IsCalibrationActive"); }
+            set { RaisePropertyChanged(ref _isCalibrationActive, value); }
         }
         public bool IsTactileInitPosFindEnabled
         {
             get { return _isTactileInitPosFindEnabled; }
-            set { _isTactileInitPosFindEnabled = value; RaisePropertyChanged("IsTactileInitPosFindEnabled"); }
+            set { RaisePropertyChanged(ref _isTactileInitPosFindEnabled, value); }
         }
         public bool IsLockPressureOutputActive
         {
             get { return _isLockPressureOutputActive; }
-            set { _isLockPressureOutputActive = value; RaisePropertyChanged("IsLockPressureOutputActive"); }
+            set { RaisePropertyChanged(ref _isLockPressureOutputActive, value); }
         }
         public bool IsFlameOnAtProcessEndEnabled
         {
             get { return _isFlameOnAtProcessEndEnabled; }
-            set { _isFlameOnAtProcessEndEnabled = value; RaisePropertyChanged("IsFlameOnAtProcessEndEnabled"); }
+            set { RaisePropertyChanged(ref _isFlameOnAtProcessEndEnabled, value); }
         }
         public bool IsRetractPosAtProcessEndEnabled
         {
             get { return _isRetractPosAtProcessEndEnabled; }
-            set { _isRetractPosAtProcessEndEnabled = value; RaisePropertyChanged("IsRetractPosAtProcessEndEnabled"); }
+            set { RaisePropertyChanged(ref _isRetractPosAtProcessEndEnabled, value); }
         }
         public bool IsCapSetpointFlameOffsEnabled
         {
             get { return _isCapSetpointFlameOffsEnabled; }
-            set { _isCapSetpointFlameOffsEnabled = value; RaisePropertyChanged("IsCapSetpointFlameOffsEnabled"); }
+            set { RaisePropertyChanged(ref _isCapSetpointFlameOffsEnabled, value); }
         }
         public bool IsCutO2BlowoutActive
         {
             get { return _isCutO2BlowoutActive; }
-            set { _isCutO2BlowoutActive = value; RaisePropertyChanged("IsCutO2BlowoutActive"); }
+            set { RaisePropertyChanged(ref _isCutO2BlowoutActive, value); }
         }
         public bool IsTemperProcessActive
         {
             get { return _isTemperProcessActive; }
-            set { _isTemperProcessActive = value; RaisePropertyChanged("IsTemperProcessActive"); }
+            set { RaisePropertyChanged(ref _isTemperProcessActive, value); }
         }
         public bool IsAckErrorActive
         {
             get { return _isAckErrorActive; }
-            set { _isAckErrorActive = value; RaisePropertyChanged("IsAckErrorActive"); }
+            set { RaisePropertyChanged(ref _isAckErrorActive, value); }
         }
         #endregion // Status-Register 1
 
 
         #region HeightControl-Status
-        private bool _isHeightControlActive { get; set; }
+        private bool _isHeightControlActive;
         public bool IsHeightControlActive
         {
             get { return _isHeightControlActive; }
-            set { _isHeightControlActive = value; RaisePropertyChanged("IsHeightControlActive"); }
+            set { RaisePropertyChanged(ref _isHeightControlActive, value); }
         }
         #endregion // Status-Register
 
 
         #region Status-Register 2
-        private bool _isFlameOn { get; set; }
+        private bool _isFlameOn;
         public bool IsFlameOn
         {
             get { return _isFlameOn; }
-            set { _isFlameOn = value; RaisePropertyChanged("IsFlameOn"); }
+            set { RaisePropertyChanged(ref _isFlameOn, value); }
         }
-        private bool _isClearanceControlOff { get; set; }
+
+        private bool _isClearanceControlOff;
         public bool IsClearanceControlOff
         {
             get { return _isClearanceControlOff; }
-            set { _isClearanceControlOff = value; RaisePropertyChanged("IsClearanceControlOff"); }
+            set { RaisePropertyChanged(ref _isClearanceControlOff, value); }
         }
-        private bool _isClearanceControlManual { get; set; }
+
+        private bool _isClearanceControlManual;
         public bool IsClearanceControlManual
         {
             get { return _isClearanceControlManual; }
-            set { _isClearanceControlManual = value; RaisePropertyChanged("IsClearanceControlManual"); }
+            set { RaisePropertyChanged(ref _isClearanceControlManual, value); }
         }
-        private bool _isTorchOff { get; set; }
+
+        private bool _isTorchOff;
         public bool IsTorchOff
         {
             get { return _isTorchOff; }
-            set { _isTorchOff = value; RaisePropertyChanged("IsTorchOff"); }
+            set { RaisePropertyChanged(ref _isTorchOff, value); }
         }
-        private bool _isIgnitionDetectionEnabled { get; set; }
+
+        private bool _isIgnitionDetectionEnabled;
         public bool IsIgnitionDetectionEnabled
         {
             get { return _isIgnitionDetectionEnabled; }
-            set { _isIgnitionDetectionEnabled = value; RaisePropertyChanged("IsIgnitionDetectionEnabled"); }
+            set { RaisePropertyChanged(ref _isIgnitionDetectionEnabled, value); }
         }
-        private bool _isPiercingSensorMode { get; set; }
+
+        private bool _isPiercingSensorMode;
         public bool IsPiercingSensorMode
         {
             get { return _isPiercingSensorMode; }
-            set { _isPiercingSensorMode = value; RaisePropertyChanged("IsPiercingSensorMode"); }
+            set { RaisePropertyChanged(ref _isPiercingSensorMode, value); }
         }
         #endregion // Status-Register 2
 
 
         #region Ohters
-        private bool _isError { get; set; }
+        private bool _isError;
         public bool IsError
         {
             get { return _isError; }
-            set { _isError = value; RaisePropertyChanged("IsError"); }
+            set { RaisePropertyChanged(ref _isError, value); }
         }
 
-        private bool _isCalibrationInValid { get; set; }
+        private bool _isCalibrationInValid;
         public bool IsCalibrationInValid
         {
             get { return _isCalibrationInValid; }
-            set { _isCalibrationInValid = value; RaisePropertyChanged("IsCalibrationInValid"); }
+            set { RaisePropertyChanged(ref _isCalibrationInValid, value); }
         }
 
-        private bool _isWarning { get; set; }
+        private bool _isWarning;
         public bool IsWarning
         {
             get { return _isWarning; }
-            set { _isWarning = value; RaisePropertyChanged("IsWarning"); }
+            set { RaisePropertyChanged(ref _isWarning, value); }
         }
 
-        private bool _isProcessInActive { get; set; }
+        private bool _isProcessInActive;
         public bool IsProcessInActive
         {
             get { return _isProcessInActive; }
-            set { _isProcessInActive = value; RaisePropertyChanged("IsProcessInActive"); }
+            set { RaisePropertyChanged(ref _isProcessInActive, value); }
         }
 
-        private bool _isEnabledTestPressureOut { get; set; }
+        private bool _isEnabledTestPressureOut;
         public bool IsEnabledTestPressureOut
         {
             get { return _isEnabledTestPressureOut; }
-            set { _isEnabledTestPressureOut = value; RaisePropertyChanged("IsEnabledTestPressureOut"); }
+            set { RaisePropertyChanged(ref _isEnabledTestPressureOut, value); }
         }
 
-        private bool _isEnabledManDown { get; set; }
+        private bool _isEnabledManDown;
         public bool IsEnabledManDown
         {
             get { return _isEnabledManDown; }
-            set { _isEnabledManDown = value; RaisePropertyChanged("IsEnabledManDown"); }
+            set { RaisePropertyChanged(ref _isEnabledManDown, value); }
         }
 
-        private bool _isEnabledHeightControlOff { get; set; }
+        private bool _isEnabledHeightControlOff;
         public bool IsEnabledHeightControlOff
         {
             get { return _isEnabledHeightControlOff; }
-            set { _isEnabledHeightControlOff = value; RaisePropertyChanged("IsEnabledHeightControlOff"); }
+            set { RaisePropertyChanged(ref _isEnabledHeightControlOff, value); }
         }
         #endregion // Ohters
 
 
         #region Status-Inputs
-        private bool _isInpManUp { get; set; }
+        private bool _isInpManUp;
         public bool IsInpManUp
         {
             get { return _isInpManUp; }
-            set { _isInpManUp = value; RaisePropertyChanged("IsInpManUp"); }
+            set { RaisePropertyChanged(ref _isInpManUp, value); }
         }
 
-        private bool _isInpManDown { get; set; }
+        private bool _isInpManDown;
         public bool IsInpManDown
         {
             get { return _isInpManDown; }
-            set { _isInpManDown = value; RaisePropertyChanged("IsInpManDown"); }
+            set { RaisePropertyChanged(ref _isInpManDown, value); }
         }
 
-        private bool _isInpAutomatic { get; set; }
+        private bool _isInpAutomatic;
         public bool IsInpAutomatic
         {
             get { return _isInpAutomatic; }
-            set { _isInpAutomatic = value; RaisePropertyChanged("IsInpAutomatic"); }
+            set { RaisePropertyChanged(ref _isInpAutomatic, value); }
         }
 
-        private bool _isInpStartProcess { get; set; }
+        private bool _isInpStartProcess;
         public bool IsInpStartProcess
         {
             get { return _isInpStartProcess; }
-            set { _isInpStartProcess = value; RaisePropertyChanged("IsInpStartProcess"); }
+            set { RaisePropertyChanged(ref _isInpStartProcess, value); }
         }
 
-        private bool _isInpIgnite { get; set; }
+        private bool _isInpIgnite;
         public bool IsInpIgnite
         {
             get { return _isInpIgnite; }
-            set { _isInpIgnite = value; RaisePropertyChanged("IsInpIgnite"); }
+            set { RaisePropertyChanged(ref _isInpIgnite, value); }
         }
 
-        private bool _isInpTorchDisabled { get; set; }
+        private bool _isInpTorchDisabled;
         public bool IsInpTorchDisabled
         {
             get { return _isInpTorchDisabled; }
-            set { _isInpTorchDisabled = value; RaisePropertyChanged("IsInpTorchDisabled"); }
+            set { RaisePropertyChanged(ref _isInpTorchDisabled, value); }
         }
 
-        private bool _isInpClearanceCtrlOff { get; set; }
+        private bool _isInpClearanceCtrlOff;
         public bool IsInpClearanceCtrlOff
         {
             get { return _isInpClearanceCtrlOff; }
-            set { _isInpClearanceCtrlOff = value; RaisePropertyChanged("IsInpClearanceCtrlOff"); }
+            set { RaisePropertyChanged(ref _isInpClearanceCtrlOff, value); }
         }
 
-        private bool _isInpStopHeating { get; set; }
+        private bool _isInpStopHeating;
         public bool IsInpStopHeating
         {
             get { return _isInpStopHeating; }
-            set { _isInpStopHeating = value; RaisePropertyChanged("IsStopHeating"); }
+            set { RaisePropertyChanged(ref _isInpStopHeating, value); }
         }
 
-        private bool _isInputCuSync { get; set; }
+        private bool _isInputCuSync;
         public bool IsInputCuSync
         {
             get { return _isInputCuSync; }
-            set { _isInputCuSync = value; RaisePropertyChanged("IsInputCuSync"); }
+            set { RaisePropertyChanged(ref _isInputCuSync, value); }
         }
 
-        private bool _isInputClearanceSignalAdjust { get; set; }
+        private bool _isInputClearanceSignalAdjust;
         public bool IsInputClearanceSignalAdjust
         {
             get { return _isInputClearanceSignalAdjust; }
-            set { _isInputClearanceSignalAdjust = value; RaisePropertyChanged("IsInputClearanceSignalAdjust"); }
+            set { RaisePropertyChanged(ref _isInputClearanceSignalAdjust, value); }
         }
         #endregion // Status-Inputs
 
 
         #region Status-Outputs
-        private bool _isOutputFault { get; set; }
+        private bool _isOutputFault;
         public bool IsOutputFault
         {
             get { return _isOutputFault; }
-            set { _isOutputFault = value; RaisePropertyChanged("IsOutputFault"); }
+            set { RaisePropertyChanged(ref _isOutputFault, value); }
         }
 
-        private bool _isOutputInPosition { get; set; }
+        private bool _isOutputInPosition;
         public bool IsOutputInPosition
         {
             get { return _isOutputInPosition; }
-            set { _isOutputInPosition = value; RaisePropertyChanged("IsOutputInPosition"); }
+            set { RaisePropertyChanged(ref _isOutputInPosition, value); }
         }
 
-        private bool _isOutputUpperPosition { get; set; }
+        private bool _isOutputUpperPosition;
         public bool IsOutputUpperPosition
         {
             get { return _isOutputUpperPosition; }
-            set { _isOutputUpperPosition = value; RaisePropertyChanged("IsOutputUpperPosition"); }
+            set { RaisePropertyChanged(ref _isOutputUpperPosition, value); }
         }
 
-        private bool _isOutputOk2Move { get; set; }
+        private bool _isOutputOk2Move;
         public bool IsOutputOk2Move
         {
             get { return _isOutputOk2Move; }
-            set { _isOutputOk2Move = value; RaisePropertyChanged("IsOutputOk2Move"); }
+            set { RaisePropertyChanged(ref _isOutputOk2Move, value); }
         }
 
-        private bool _isOutputSlowSpeed { get; set; }
+        private bool _isOutputSlowSpeed;
         public bool IsOutputSlowSpeed
         {
             get { return _isOutputSlowSpeed; }
-            set { _isOutputSlowSpeed = value; RaisePropertyChanged("IsOutputSlowSpeed"); }
+            set { RaisePropertyChanged(ref _isOutputSlowSpeed, value); }
         }
 
-        private bool _isOutputFit3_InputIgnition { get; set; }
+        private bool _isOutputFit3_InputIgnition;
         public bool IsOutputFit3_InputIgnition
         {
             get { return _isOutputFit3_InputIgnition; }
-            set { _isOutputFit3_InputIgnition = value; RaisePropertyChanged("IsOutputFit3_InputIgnition"); }
+            set { RaisePropertyChanged(ref _isOutputFit3_InputIgnition, value); }
         }
 
-        private bool _isOutputFit3_SolenoidValve { get; set; }
+        private bool _isOutputFit3_SolenoidValve;
         public bool IsOutputFit3_SolenoidValve
         {
             get { return _isOutputFit3_SolenoidValve; }
-            set { _isOutputFit3_SolenoidValve = value; RaisePropertyChanged("IsOutputFit3_SolenoidValve"); }
+            set { RaisePropertyChanged(ref _isOutputFit3_SolenoidValve, value); }
         }
 
-        private bool _isOutputFit3_GlowPlug { get; set; }
+        private bool _isOutputFit3_GlowPlug;
         public bool IsOutputFit3_GlowPlug
         {
             get { return _isOutputFit3_GlowPlug; }
-            set { _isOutputFit3_GlowPlug = value; RaisePropertyChanged("IsOutputFit3_GlowPlug"); }
+            set { RaisePropertyChanged(ref _isOutputFit3_GlowPlug, value); }
         }
 
-        private bool _isOutputFit3_FlameFlashback { get; set; }
+        private bool _isOutputFit3_FlameFlashback;
         public bool IsOutputFit3_FlameFlashback
         {
             get { return _isOutputFit3_FlameFlashback; }
-            set { _isOutputFit3_FlameFlashback = value; RaisePropertyChanged("IsOutputFit3_FlameFlashback"); }
+            set { RaisePropertyChanged(ref _isOutputFit3_FlameFlashback, value); }
         }
 
-        private bool _isOutputFit3_Error { get; set; }
+        private bool _isOutputFit3_Error;
         public bool IsOutputFit3_Error
         {
             get { return _isOutputFit3_Error; }
-            set { _isOutputFit3_Error = value; RaisePropertyChanged("IsOutputFit3_Error"); }
+            set { RaisePropertyChanged(ref _isOutputFit3_Error, value); }
         }
 
-        private bool _isOutputFit3_ErrUB24V { get; set; }
+        private bool _isOutputFit3_ErrUB24V;
         public bool IsOutputFit3_ErrUB24V
         {
             get { return _isOutputFit3_ErrUB24V; }
-            set { _isOutputFit3_ErrUB24V = value; RaisePropertyChanged("IsOutputFit3_ErrUB24V"); }
+            set { RaisePropertyChanged(ref _isOutputFit3_ErrUB24V, value); }
         }
 
-        private bool _isOutputFit3_ErrucTemperature { get; set; }
+        private bool _isOutputFit3_ErrucTemperature;
         public bool IsOutputFit3_ErrucTemperature
         {
             get { return _isOutputFit3_ErrucTemperature; }
-            set { _isOutputFit3_ErrucTemperature = value; RaisePropertyChanged("IsOutputFit3_ErrucTemperature"); }
+            set { RaisePropertyChanged(ref _isOutputFit3_ErrucTemperature, value); }
         }
 
-        private bool _isOutputFit3_ErrSolenoidValve { get; set; }
+        private bool _isOutputFit3_ErrSolenoidValve;
         public bool IsOutputFit3_ErrSolenoidValve
         {
             get { return _isOutputFit3_ErrSolenoidValve; }
-            set { _isOutputFit3_ErrSolenoidValve = value; RaisePropertyChanged("IsOutputFit3_ErrSolenoidValve"); }
+            set { RaisePropertyChanged(ref _isOutputFit3_ErrSolenoidValve, value); }
         }
 
-        private bool _isOutputFit3_ErrGlowPlug { get; set; }
+        private bool _isOutputFit3_ErrGlowPlug;
         public bool IsOutputFit3_ErrGlowPlug
         {
             get { return _isOutputFit3_ErrGlowPlug; }
-            set { _isOutputFit3_ErrGlowPlug = value; RaisePropertyChanged("IsOutputFit3_ErrGlowPlug"); }
+            set { RaisePropertyChanged(ref _isOutputFit3_ErrGlowPlug, value); }
         }
 
-        private bool _isOutputFit3_ErrCommunic { get; set; }
+        private bool _isOutputFit3_ErrCommunic;
         public bool IsOutputFit3_ErrCommunic
         {
             get { return _isOutputFit3_ErrCommunic; }
-            set { _isOutputFit3_ErrCommunic = value; RaisePropertyChanged("IsOutputFit3_ErrCommunic"); }
+            set { RaisePropertyChanged(ref _isOutputFit3_ErrCommunic, value); }
         }
         #endregion // StatusOutputs
 
 
         #region StatusLeds
-        private bool _isLedIgnition { get; set; }
+        private bool _isLedIgnition;
         public bool IsLedIgnition
         {
             get { return _isLedIgnition; }
-            set { _isLedIgnition = value; RaisePropertyChanged("IsLedIgnition"); }
+            set { RaisePropertyChanged(ref _isLedIgnition, value); }
         }
 
-        private bool _isLedPreHeating { get; set; }
+        private bool _isLedPreHeating;
         public bool IsLedPreHeating
         {
             get { return _isLedPreHeating; }
-            set { _isLedPreHeating = value; RaisePropertyChanged("IsLedPreHeating"); }
+            set { RaisePropertyChanged(ref _isLedPreHeating, value); }
         }
 
-        private bool _isLedPiercing { get; set; }
+        private bool _isLedPiercing;
         public bool IsLedPiercing
         {
             get { return _isLedPiercing; }
-            set { _isLedPiercing = value; RaisePropertyChanged("IsLedPiercing"); }
+            set { RaisePropertyChanged(ref _isLedPiercing, value); }
         }
 
-        private bool _isLedCutting { get; set; }
+        private bool _isLedCutting;
         public bool IsLedCutting
         {
             get { return _isLedCutting; }
-            set { _isLedCutting = value; RaisePropertyChanged("IsLedCutting"); }
+            set { RaisePropertyChanged(ref _isLedCutting, value); }
         }
 
-        private bool _isLedTemper { get; set; }
+        private bool _isLedTemper;
         public bool IsLedTemper
         {
             get { return _isLedTemper; }
-            set { _isLedTemper = value; RaisePropertyChanged("IsLedTemper"); }
+            set { RaisePropertyChanged(ref _isLedTemper, value); }
         }
 
-        private bool _isLedCutO2Blowout { get; set; }
+        private bool _isLedCutO2Blowout;
         public bool IsLedCutO2Blowout
         {
             get { return _isLedCutO2Blowout; }
-            set { _isLedCutO2Blowout = value; RaisePropertyChanged("IsLedCutO2Blowout"); }
+            set { RaisePropertyChanged(ref _isLedCutO2Blowout, value); }
         }
 
-        private bool _isLedRetractPosition { get; set; }
+        private bool _isLedRetractPosition;
         public bool IsLedRetractPosition
         {
             get { return _isLedRetractPosition; }
-            set { _isLedRetractPosition = value; RaisePropertyChanged("IsLedRetractPosition"); }
+            set { RaisePropertyChanged(ref _isLedRetractPosition, value); }
         }
 
-        private bool _isLedUpperPosition { get; set; }
+        private bool _isLedUpperPosition;
         public bool IsLedUpperPosition
         {
             get { return _isLedUpperPosition; }
-            set { _isLedUpperPosition = value; RaisePropertyChanged("IsLedUpperPosition"); }
+            set { RaisePropertyChanged(ref _isLedUpperPosition, value); }
         }
 
-        private bool _isLedError { get; set; }
+        private bool _isLedError;
         public bool IsLedError
         {
             get { return _isLedError; }
-            set { _isLedError = value; RaisePropertyChanged("IsLedError"); }
+            set { RaisePropertyChanged(ref _isLedError, value); }
         }
         #endregion // StatusLeds
-
-        // Helper-Methode, um nicht in jedem Set-Accessor zu prüfen, ob PropertyRaisePropertyChanged!=null
-        //private void RaisePropertyChanged(string propertyName)
-        //{
-        //    var handler = PropertyChanged;
-        //    if (handler != null)
-        //        handler(this, new PropertyChangedEventArgs(propertyName));
-        //}
-        private void RaisePropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
 
         /// <summary>
@@ -729,6 +730,7 @@ namespace SharedComponents.IhtData
             #region ProcessInfo-Daten
 
             IsPropertyChanged = false;
+            IsProcessInfoUpdating = true;
 
             if (IsCommunicError)
             {
@@ -863,8 +865,10 @@ namespace SharedComponents.IhtData
             // Call event LiveDataChanged
             if (_IAPCWorker != null && IsPropertyChanged)
             {
-                _IAPCWorker._apcWorkerService_LiveDataChanged(this, EventArgs.Empty);
+                _IAPCWorker._apcWorkerService_LiveDataChanged(ChangedPropertyName);
             }
+
+            IsProcessInfoUpdating = false;
         }
 
         /// <summary>

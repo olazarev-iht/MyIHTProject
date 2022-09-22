@@ -614,7 +614,7 @@ input#password-input:focus {
                         <tr>
                             <td class="device_tabcell">
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
+                                <MudOverlay Visible="IsHCButtonsDisabled()" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
                                     <div id="HCMoveTorchUp" class="@(_isHCTorchUpActive ? "up_btn active" : "up_btn")"
                                         @onpointerdown="@(async (e) => await HCMoveTorchUpAsync("HCMoveTorchUp"))"
@@ -626,7 +626,7 @@ input#password-input:focus {
                                     <div id="OnOff" class="@(_isHCTorchUpActive ? "central_btn active" : "central_btn")">
                                         On/<br />Off
                                     </div>
-                                </div>
+                                </div>                              
                                 <div class="button_container">
                                     <div id="HCMoveTorchDown" class="@(_isHCTorchDownActive ? "down_btn active" : "down_btn")"
                                         @onpointerdown="@(async (e) => await HCMoveTorchDownAsync("HCMoveTorchDown"))"
@@ -636,11 +636,10 @@ input#password-input:focus {
                                </div>
                               </MudPaper>
                             </td>
-                            @if (ComponentMode == MANUAL_MODE)
-                            {
+                            
                             <td class="device_tabcell">
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
+                                <MudOverlay Visible="IsMovementButtonsDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
                                     <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")"
                                         @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
@@ -648,9 +647,21 @@ input#password-input:focus {
                                         @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">Up
                                     </div>
                                 </div>
-                                <div class="button_container">
-                                    <div class="central_btn" style="background-color:#ffff"></div>
-                                </div>
+                                @if (ComponentMode == MANUAL_MODE)
+                                {
+                                    <div class="button_container">
+                                        <div class="central_btn" style="background-color:#ffff"></div>
+                                    </div>
+                                }
+                                else{
+                                    <div class="button_container">
+                                        <div id="CalibrateBtn" class="@(_isTorchUpActive ? "central_btn active" : "central_btn")">Cali-<br />brate
+                                        </div>
+                                    </div>
+                                }
+                                </MudPaper>
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="IsMovementButtonsDisabled() || IsMoveDownButtonDisabled()" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
                                     <div id="MoveTorchDown" class="@(_isTorchDownActive ? "down_btn active" : "down_btn")"
                                         @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
@@ -658,11 +669,14 @@ input#password-input:focus {
                                         @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">Down
                                     </div>
                                </div>
-                              </MudPaper>
+                               </MudPaper>                             
                             </td>
+
+                            @if (ComponentMode == MANUAL_MODE)
+                            {
                             <td class="device_tabcell" height="100%">
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
+                                <MudOverlay Visible="IsIgnitionButtonDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
                                     <div id="FlameOnButton" class="FlameIsOff flame_btn" style="display: @(!_isFlameOn ? "flex" : "none"); height:191px"
                                         @onclick="@(async (e) => await TurnFlameOnAsync())">On
@@ -675,33 +689,9 @@ input#password-input:focus {
                                 </div>
                                 </MudPaper>
                             </td>
-                            }
-                            else
-                            {
-                            <td class="device_tabcell">
-                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsSPButtonsDisabled()" LightBackground="true" Absolute="true"/>
-                                <div class="button_container">
-                                    <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")"
-                                        @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
-                                        @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
-                                        @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">CaUp
-                                    </div>
-                                </div>
-                                <div class="button_container">
-                                    <div id="CalibrateBtn" class="@(_isTorchUpActive ? "central_btn active" : "central_btn")">
-                                        Cali-<br />brate
-                                    </div>
-                                </div>
-                                <div class="button_container">
-                                    <div id="MoveTorchDown" class="@(_isTorchDownActive ? "down_btn active" : "down_btn")"
-                                        @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
-                                        @onpointerup="@((_) => DeactiveButton("MoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("MoveTorchDown"))"
-                                        @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">CaDown
-                                    </div>
-                               </div>
-                              </MudPaper>
-                            </td>
+                           }
+                           else 
+                           {                            
                             <td class="device_tabcell">
                                 <table style="border-spacing: 1px !important;"> 
                                     <tr>
@@ -897,9 +887,34 @@ input#password-input:focus {
         return !IsEnableds;
     }
 
-    private bool IsSPButtonsDisabled()
+    private bool IsMovementButtonsDisabled()
     {
         return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected;
+    }
+
+    private bool IsMoveDownButtonDisabled()
+    {
+        if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
+        {
+            return !CurrentDevice.dataProcessInfo.IsEnabledManDown;
+        }
+
+        return true;
+    }
+
+    private bool IsIgnitionButtonDisabled()
+    {
+        return IsMovementButtonsDisabled();
+    }
+
+    private bool IsHCButtonsDisabled()
+    {
+        if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
+        {
+            return !CurrentDevice.dataProcessInfo.IsHeightControlActive;
+        }
+
+        return true;
     }
 
     private void OpenSetupParamsDialog()
