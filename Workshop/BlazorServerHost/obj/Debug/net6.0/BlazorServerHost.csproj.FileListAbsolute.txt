@@ -242,7 +242,6 @@ C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\it-IT\SharedComponents.re
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\nl-NL\SharedComponents.resources.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\sl-SI\SharedComponents.resources.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\zH-Hans\SharedComponents.resources.dll
-C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.MvcApplicationPartsAssemblyInfo.cs
 C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\ar\BlazorServerHost.resources.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\de\BlazorServerHost.resources.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\en\BlazorServerHost.resources.dll
@@ -264,3 +263,4 @@ C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\ref\BlazorServerHost.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\NModbus.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\NModbus.Serial.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\appsettings.Production.json
+C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.MvcApplicationPartsAssemblyInfo.cs

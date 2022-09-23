@@ -404,11 +404,24 @@ input#password-input:focus {
 
 <MudDialog @bind-IsVisible="_menuExpanded">
     <TitleContent>
-        <MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText>
-        <br/>
-        <MudLink Style="color:#6d7781 !important" Href="/apcMainControl">Cutting Data</MudLink>
-        <br/>
-        <MudLink Style="color:#6d7781 !important" Href="@HrefToOtherComponentMode">@OtherComponentMode Mode</MudLink>
+        <table>
+            <tr>
+                <td>
+                    <MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">Cutting Data</MudButton>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@OtherComponentMode Mode</MudButton>
+                    @*<MudLink Style="color:#6d7781 !important" Href="@HrefToOtherComponentMode">@OtherComponentMode Mode</MudLink>*@
+                </td>
+            </tr>
+        </table>
     </TitleContent>
     <DialogContent>     
         <MudList Clickable="true" Style="Height:200px;" >
@@ -778,7 +791,7 @@ input#password-input:focus {
     {
         get
         {
-            return $"/dynDataModificationCNC/{@OtherComponentMode}";
+            return $"/dynDataModificationCNC/{OtherComponentMode}";
         }
     }
 
@@ -805,6 +818,8 @@ input#password-input:focus {
 
     private string NONE_DISPLAY_CLASS = "d-none";
     private string DISPLAY_CLASS = "d-block";
+
+    private const string CUTTING_DB_URL = "/apcMainControl";
 
     //private int spValueOriginal = 50;
     private int spValueCurrent = 50;
@@ -882,6 +897,11 @@ input#password-input:focus {
         //await _apcWorkerBackgroundService.StopAsync(APCWorkerBackgroundService._stoppingCts.Token);
 
         navigationManager.NavigateTo(navigationManager.Uri, true);
+    }
+
+    private void GoToPage(string pageUrl)
+    {
+        navigationManager.NavigateTo(pageUrl, true);
     }
 
     private bool IsDeviceDisabled(bool IsEnableds)
@@ -1159,7 +1179,6 @@ input#password-input:focus {
     private void ToggleMenu()
     {
         _menuExpanded = !_menuExpanded;
-
     }
 
     protected override void OnInitialized()

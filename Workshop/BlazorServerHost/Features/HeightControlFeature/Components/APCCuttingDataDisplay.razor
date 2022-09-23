@@ -3,6 +3,8 @@
 @using SharedComponents.Models
 @using SharedComponents.Services.CuttingDataDBServices
 @using SharedComponents.Models.CuttingData
+
+@inject NavigationManager navigationManager
 @inject ICuttingDataDBService cuttingDataDBService
 @inject INozzleDBService nozzleDBService
 @inject IMaterialDBService materialDBService
@@ -73,6 +75,20 @@
 }
 .SelectedRow {
     background-color: #b3b3b3;
+}
+
+.HiddenField {
+    display: none;
+}
+
+VisibleField {
+    display: inline;
+}
+
+.device_lastcell {
+    /*width: 88px;
+    height:50px;*/
+    text-align: center;
 }
     /*--mud-palette-table-striped: #bdbdbd;*/
 </style>
@@ -283,6 +299,25 @@
     </DialogActions>
 </MudDialog>
 
+<MudDialog @bind-IsVisible="_menuExpanded">
+    @*<TitleContent>
+        <br/>
+        <MudButton Style="color:#6d7781 !important" OnClick="@(() => GoOperatorScreen(PROCESS_MODE))">@PROCESS_MODE Mode</MudButton>
+        <br/>
+        <MudButton Style="color:#6d7781 !important" OnClick="@(() => GoOperatorScreen(MANUAL_MODE))">@MANUAL_MODE Mode</MudButton>
+    </TitleContent>*@
+    <DialogContent>     
+        <MudList Clickable="true" Style="Height:200px;" >
+            <MudListItem OnClick="@(() => GoOperatorScreen(PROCESS_MODE))">@PROCESS_MODE Mode</MudListItem>
+            <MudListItem OnClick="@(() => GoOperatorScreen(MANUAL_MODE))">@MANUAL_MODE Mode</MudListItem>
+        </MudList>       
+    </DialogContent>
+    <DialogActions>
+        @*<MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
+    </DialogActions>
+</MudDialog>
+
 <MudDialog @bind-IsVisible="_paramPopUpDialogVisible" Class="MyMudDialog">
     <TitleContent>
         <MudText Typo="Typo.h6"></MudText>
@@ -378,7 +413,9 @@
         <MudTh Style="text-align: center; color: #ffff">Remark</MudTh>
         <MudTh Style="text-align: center; color: #ffff">Thick<br/>[mm]</MudTh>
         <MudTh Style="width:80px;text-align: center; color: #ffff">Nozzle</MudTh>
-        <MudTh Style="text-align: center; color: #ffff">Speed<br/>[mm/<br/>min]</MudTh>
+        <MudTh Style="text-align: center; color: #ffff">
+            <MudIconButton Style="padding: 0px;" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())"/>
+            <br />Speed<br/>[mm/min]</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.Id</MudTd>
@@ -421,6 +458,13 @@
     private float _sliderDeltaValue = 0;
     private string[] _sliderArrValues = null;
 
+    private const string PROCESS_MODE = "Process";
+    private const string MANUAL_MODE = "Manual";
+
+    private bool _menuExpanded = false;
+
+    //private bool _forMenuFieldDisplay = false;
+
     private float[] arrThicknesses = { 3, 4, 5, 6, 7, 8, 10, 12, 15, 20, 25, 30, 40, 50, 70, 80, 90, 100, 120, 130, 150, 200, 230, 250, 300 };
     private CuttingDataModel cuttingDataModel = new CuttingDataModel();
     private CuttingDataModel selectedDataModel = new CuttingDataModel();
@@ -439,6 +483,26 @@
 
         APCCuttingDataDisplay.StaticParamsClientChanged += StaticAPCParamsOnStaticAPCParamsDataChanged;
     }
+
+    private void GoOperatorScreen(string screenMode)
+    {
+        navigationManager.NavigateTo($"/dynDataModificationCNC/{screenMode}", true);
+    }
+
+    private void ToggleMenu()
+    {
+        _menuExpanded = !_menuExpanded;
+    }
+
+    //private void ForMenuMouseOver()
+    //{
+    //    _forMenuFieldDisplay = true;
+    //}
+
+    //private void ForMenuMouseOut()
+    //{
+    //    _forMenuFieldDisplay = false;
+    //}
 
     private async Task<List<CuttingDataModel>> GetEntriesAsync()
     {

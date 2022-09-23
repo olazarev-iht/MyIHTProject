@@ -101,3 +101,11 @@ C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\IhtCommunicService.resour
 C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\MQTTnet.dll
 C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\NModbus.dll
 C:\IHT_Proj\Workshop\SharedComponents\bin\Debug\net6.0\NModbus.Serial.dll
+C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\de-DE\SharedComponents.resources.cs
+C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\en-US\SharedComponents.resources.cs
+C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\fr-FR\SharedComponents.resources.cs
+C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\hu-HU\SharedComponents.resources.cs
+C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\it-IT\SharedComponents.resources.cs
+C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\nl-NL\SharedComponents.resources.cs
+C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\sl-SI\SharedComponents.resources.cs
+C:\IHT_Proj\Workshop\SharedComponents\obj\Debug\net6.0\zH-Hans\SharedComponents.resources.cs
