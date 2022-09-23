@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Diagnostics;
 
 namespace BlazorServerHost.Pages
 {
@@ -13,9 +14,12 @@ namespace BlazorServerHost.Pages
         private bool _isTorchDownActive = false;
         private bool _isHCTorchUpActive = false;
         private bool _isHCTorchDownActive = false;
+        private bool _isCalibrationActive = false;
 
         private bool _isFlameOn = false;
         //private bool _isFlameOff = true;
+
+        private Stopwatch stopwatch = new Stopwatch();
 
         [JSInvokable]
         public async Task Deactivate(string eventName)
@@ -167,6 +171,54 @@ namespace BlazorServerHost.Pages
             await InvokeAsync(StateHasChanged);
 
             await ihtDevices.SetupCtrl_SetOffAsync(dynDataModificationCNCDataProvider.CurrentSlaveId);
+        }
+        int SlaveId => dynDataModificationCNCDataProvider.CurrentSlaveId;
+
+        private async Task CalibrationProcessAsync()
+        {
+            if (!_isCalibrationActive)
+            {
+                await Calibration_StartCalibration();
+            }
+            else
+            {
+                await Calibration_StopCalibration();
+            }
+        }
+
+        private string GetCalibrationClass()
+        {
+            var CurrentDevice_IsCalibrationActive = false;
+
+            if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
+            {
+                CurrentDevice_IsCalibrationActive = CurrentDevice.dataProcessInfo.IsCalibrationActive;
+            }
+
+            if (!CurrentDevice_IsCalibrationActive)
+            {
+                if (_isCalibrationActive && stopwatch.ElapsedMilliseconds > 2000)
+                {
+                    _isCalibrationActive = false;
+                }
+            }
+
+            return _isCalibrationActive ? "central_btn active" : "central_btn";
+        }
+
+        private async Task Calibration_StartCalibration()
+        {
+            stopwatch.Restart();
+
+            _isCalibrationActive = true;
+            await ihtDevices.StartCalibrationAsync(SlaveId);
+
+        }
+        private async Task Calibration_StopCalibration()
+        {
+            _isCalibrationActive = false;
+            await ihtDevices.StopCalibrationAsync(SlaveId);
+
         }
     }
 }

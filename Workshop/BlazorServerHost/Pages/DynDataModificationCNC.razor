@@ -73,6 +73,11 @@ table#controlPanel td  {
     color: #ffff;
 }
 
+.DisabledDeviceNum {
+    background-color:#a1a1a1;
+    color: #ffff;
+}
+
 .UnselectedDeviceNum {
     background-color:#e1f0fd;
     color: #ffff;
@@ -405,25 +410,16 @@ input#password-input:focus {
 <MudDialog @bind-IsVisible="_menuExpanded">
     <TitleContent>
         <table>
-            <tr>
-                <td>
-                    <MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">Cutting Data</MudButton>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@OtherComponentMode Mode</MudButton>
-                    @*<MudLink Style="color:#6d7781 !important" Href="@HrefToOtherComponentMode">@OtherComponentMode Mode</MudLink>*@
-                </td>
-            </tr>
-        </table>
+            <tr><td><MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText></td></tr>
+            <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">Cutting Data</MudButton></td></tr>
+            <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@OtherComponentMode Mode</MudButton></td></tr>
+            @*<tr><td>&nbsp;</td></tr>
+            <tr><MudTd><MudSwitch Style="top:0px" @bind-Checked="@CurrentDevice.IsTorchDisabled" Color="Color.Primary">@(CurrentDevice.IsTorchDisabled ? "Off" : "On")</MudSwitch></MudTd></tr>
+*@        </table>
     </TitleContent>
-    <DialogContent>     
+    <DialogContent>  
+        <MudTd>Torch @CurrentDevice.DeviceNumber is:
+        <MudSwitch @bind-Checked="@IsTorchEnabled" Color="Color.Primary">@(CurrentDevice.IsTorchDisabled ? "Disabled" : "Enabled")</MudSwitch></MudTd>
         <MudList Clickable="true" Style="Height:200px;" >
             <MudListItem Icon="@Icons.Filled.Settings" Text="Settings" InitiallyExpanded="false">
                 <NestedList>
@@ -670,7 +666,7 @@ input#password-input:focus {
                                 }
                                 else{
                                     <div class="button_container">
-                                        <div id="CalibrateBtn" class="@(_isTorchUpActive ? "central_btn active" : "central_btn")">Cali-<br />brate
+                                        <div id="CalibrateBtn" class="@GetCalibrationClass()" @onclick="@(async (_) => await CalibrationProcessAsync())">Cali-<br />brate
                                         </div>
                                     </div>
                                 }
@@ -1130,6 +1126,13 @@ input#password-input:focus {
         set { _preflowStarted = value; PreflowStartSwitch_ChangedValue(value);  }
     }
 
+    //private bool _isTorchDisabled;
+    bool IsTorchEnabled
+    {
+        get { return !CurrentDevice.IsTorchDisabled; }
+        set { CurrentDevice.IsTorchDisabled = !value; }
+    }
+
     private void PreflowStartSwitch_ChangedValue(bool isChecked)
     {
         if (dynParamDataModel == null || dynParamDataModel.DynParams == null) return;
@@ -1242,7 +1245,10 @@ input#password-input:focus {
         var cssClass = "NotInUseDeviceNum device_tabcell";
 
         if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber){
-            cssClass = "SelectedDeviceNum device_tabcell";
+            if(CurrentDevice.IsTorchDisabled)
+                cssClass = "DisabledDeviceNum device_tabcell";
+            else
+                cssClass = "SelectedDeviceNum device_tabcell";
         }
         else if(selectedNum <= APCDevicesCount)
         {
