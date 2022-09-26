@@ -195,15 +195,10 @@ namespace SharedComponents.APCHardwareManagers
         {
             try
             {
+                // Since we use cascade delete (onDelete: ReferentialAction.Cascade) we can delete in the following way:
+                // since we don't copy APCDevice table every time any more we don't delete it
                 await _constParamsDBService.DeleteAllEntriesAsync(cancellationToken, devicesAmount);
-                await _parameterDataInfoDBService.DeleteAllEntriesAsync(cancellationToken, devicesAmount);
-
-                // Since we use cascade delete (onDelete: ReferentialAction.Cascade) we do not need the following commands
-                // await _dynParamsDBService.DeleteAllEntriesAsync(cancellationToken, devicesAmount);
-                // await _parameterDataDBService.DeleteAllEntriesAsync(cancellationToken, devicesAmount);
-
-                // since we don't copy this table every time any more we don't delete it
-                // await _apcDeviceDBService.DeleteAllEntriesAsync(cancellationToken);
+                await _parameterDataInfoDBService.DeleteAllEntriesAsync(cancellationToken, devicesAmount);                
             }
             catch (Exception ex)
             {
@@ -222,9 +217,6 @@ namespace SharedComponents.APCHardwareManagers
 
                 var ihtDevices = IhtDevices.ihtDevices.Select(kpv => kpv.Value)
                     .Where(kvp => devicesAmount == null || kvp.DeviceNumber <= devicesAmount).OrderBy(kvp => kvp.DeviceNumber).ToList();
-
-                // Getting the initial set up array with simulation data with start address of prams group and number of parameters
-                //var areasAddrDataSimulation = IhtModbusData.GetAreasDataSimulationData();
 
                 // Not DB Model devices
                 foreach (var apcDevice in ihtDevices)
@@ -251,7 +243,6 @@ namespace SharedComponents.APCHardwareManagers
                 var message = ex.Message;
                 return false;
             }
-
         }
 
         private async Task SaveParameterDatasForDeviceAndGroupAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup)

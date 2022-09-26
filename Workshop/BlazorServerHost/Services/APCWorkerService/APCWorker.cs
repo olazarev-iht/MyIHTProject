@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using BlazorServerHost.Services.APCCommunic;
+using Microsoft.Extensions.Options;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
 using SharedComponents.IhtModbusTable;
@@ -18,6 +19,9 @@ namespace BlazorServerHost.Services.APCWorkerService
 		private readonly IhtModbusCommunic _ihtModbusCommunic;
 		private readonly Settings _settings;
 		private readonly IhtDevices _ihtDevices;
+		private readonly APCCommunicManager _apcCommunicManager;
+
+		private const string DEFAULT_COM_PORT = "COM3";
 
 		public SingletonDataModel CurrentState { get; set; } = new();
 
@@ -29,7 +33,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 			ILogger<APCWorkerService> logger,
 			IhtModbusCommunic ihtModbusCommunic,
 			IOptions<Settings> settings,
-			IhtDevices ihtDevices
+			IhtDevices ihtDevices,
+			APCCommunicManager apcCommunicManager
 			)
 		{
 			_parameterDataInfoManager = parameterDataInfoManager ?? throw new ArgumentNullException(nameof(parameterDataInfoManager));
@@ -41,6 +46,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 			_settings = settings != null ? settings.Value : throw new ArgumentNullException($"{nameof(settings)}");
 
 			_ihtDevices = ihtDevices ?? throw new ArgumentNullException(nameof(ihtDevices));
+
+			_apcCommunicManager = apcCommunicManager ?? throw new ArgumentNullException(nameof(apcCommunicManager));
 
 			InitializeAsync().Wait();
 
@@ -55,9 +62,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 			{
 				try
 				{
-					// TODO currently we read the whole APC model, but we may will read only Live data
-					//CurrentState = await _hardwareAPCServise.GetSingletonDataModelAsync(CancellationToken.None);
-					//var parameterValue = await _ihtModbusCommunic.ReadAsync(apcSlaveId, (ushort)paramStartAddress, registerCount, ihtModbusResult);
+					// We read only Live data (ProcessInfo) and update existing model
 					Stopwatch stopwatch = new Stopwatch();
 					var modbusDatas = _ihtModbusCommunic.GetConnectedModbusDatas();
 
@@ -129,6 +134,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 		private async Task InitializeAsync()
 		{
 			await _parameterDataInfoManager.InitializeParameterDataInfoAsync(CancellationToken.None);
+
+			// await _apcCommunicManager.Init(nameComPort: DEFAULT_COM_PORT, isSimulation: false, performResetDevices: false);
 
 		}
 

@@ -200,16 +200,15 @@ namespace SharedComponents.IhtDev
 
         public void IsEnabledChangedHandler(object? sender, PropertyChangedEventArgs eventArgs)
         {
-            if(eventArgs.PropertyName == "IsVisible")
+            var ihtDevice = sender as IhtDevice;
+
+            if (ihtDevice != null)
             {
-                var ihtDevice = sender as IhtDevice;
+                var deviceNum = ihtDevice.DeviceNumber;
 
-
-                if (ihtDevice != null)
+                if (deviceNum > 0)
                 {
-                    var deviceNum = ihtDevice.DeviceNumber;
-
-                    if (deviceNum > 0)
+                    if (eventArgs.PropertyName == "IsVisible")
                     {
                         // IsVisible switched to true
                         if (ihtDevice.IsVisible)
@@ -238,8 +237,12 @@ namespace SharedComponents.IhtDev
                             });
                         }
                     }
+
+                    if (eventArgs.PropertyName == "IsCheckedTorch")
+                    {
+                        // if device is cheked == selected device, then implement IsCheckedTorch = true and others = false
+                    }
                 }
-                
             }
         }
 

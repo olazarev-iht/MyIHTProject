@@ -69,7 +69,17 @@ table#controlPanel td  {
 }
 
 .SelectedDeviceNum {
-    background-color:#6188bf;
+    background-color:#497abf;
+    color: #ffff;
+}
+
+.ConnectedDeviceNum {
+    background-color:#e1f0fd;
+    color: #999191;
+}
+
+.ErrorConnectionDevice {
+    background-color:#d56565;
     color: #ffff;
 }
 
@@ -78,14 +88,8 @@ table#controlPanel td  {
     color: #ffff;
 }
 
-.UnselectedDeviceNum {
-    background-color:#e1f0fd;
-    color: #ffff;
-}
-
-.NotConnectedDevice {
-    background-color:#d56565;
-    color: #ffff;
+.DisabledDeviceNum.Selected {
+    border: 3px solid #0057ab !important;
 }
 
 .NotInUseDeviceNum {
@@ -1150,17 +1154,17 @@ input#password-input:focus {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private int APCDevicesCount {
+    private int VisibleDevicesCount {
         get
         {
-            return ihtDevices.GetDevices().Where(d => d.IsVisible && (_isSimulation || d.IsConnected)).Count();
+            return ihtDevices.GetDevices().Where(d => d.IsVisible).Count();
         }
     }
 
-    private int APCDevicesErrorCount {
+    private int ConnectedDevicesCount {
         get
         {
-            return ihtDevices.GetDevices().Where(d => d.IsVisible && !_isSimulation && !d.IsConnected && APCDevicesCount > 0).Count();
+            return ihtDevices.GetDevices().Where(d => d.IsVisible && d.IsConnected).Count();
         }
     }
 
@@ -1177,6 +1181,11 @@ input#password-input:focus {
         {
             return ihtDevices.GetDevice(dynDataModificationCNCDataProvider.CurrentSlaveId);
         }
+    }
+
+    private bool IsDeviceErrorConnection(int slaveId)
+    {
+        return ihtDevices.GetDevices().Any(d => d.IsVisible && !d.IsConnected && ConnectedDevicesCount > 0 && d.SlaveId == slaveId);
     }
 
     private void ToggleMenu()
@@ -1217,7 +1226,7 @@ input#password-input:focus {
 
     private async void SetDeviceNum(int deviceNum)
     {
-        if (deviceNum <= APCDevicesCount)
+        if (deviceNum <= VisibleDevicesCount)
         {
             // Stop the SP moving
             StopTorchMoving();
@@ -1244,21 +1253,31 @@ input#password-input:focus {
     {
         var cssClass = "NotInUseDeviceNum device_tabcell";
 
-        if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber){
-            if(CurrentDevice.IsTorchDisabled)
-                cssClass = "DisabledDeviceNum device_tabcell";
-            else
+        var slaveId = selectedNum + (int)IhtModbusCommunic.SlaveId.Id_Default;
+        var device = ihtDevices.GetDevice(slaveId);
+
+        if(device.IsConnected)
+        {
+            cssClass = "ConnectedDeviceNum device_tabcell";
+
+            if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber){
                 cssClass = "SelectedDeviceNum device_tabcell";
+            }
         }
-        else if(selectedNum <= APCDevicesCount)
+        else if(IsDeviceErrorConnection(slaveId))
         {
-            cssClass = "UnselectedDeviceNum device_tabcell";
-        }
-        else if(selectedNum <= APCDevicesErrorCount + APCDevicesCount)
-        {
-            cssClass = "NotConnectedDevice device_tabcell";
+            cssClass = "ErrorConnectionDevice device_tabcell";
         }
 
+        if(device.IsTorchDisabled)
+            cssClass = "DisabledDeviceNum device_tabcell";
+
+        if(device.IsTorchDisabled && selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
+        {
+            cssClass = "DisabledDeviceNum Selected  device_tabcell";
+        }
+
+        // border: 3px solid #0057ab;
         return cssClass;
     }
 

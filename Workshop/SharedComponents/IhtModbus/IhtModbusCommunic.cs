@@ -301,15 +301,23 @@ namespace SharedComponents.IhtModbus
                     return false;
                 }
 
-                OpenPort(comPort);
+                // condition added by olazarev
+                if (!IsSimulation)
+                {
+                    OpenPort(comPort);
+                }
 
                 string msg = String.Format("Port: {0}; Baudrate: {1}", comPort, communicData.Baudrate.ToString());
                 mainWndHlp.SetStatusMsg(IhtMsgLog.Info.Info, msg);
 
-                // create modbus master
-                var factory = new ModbusFactory();
-                modbusMaster = factory.CreateRtuMaster(port);
-                //modbusMaster = ModbusSerialMaster.CreateRtu(port);
+                // condition added by olazarev
+                if (port != null)
+                {
+                    // create modbus master
+                    var factory = new ModbusFactory();
+                    modbusMaster = factory.CreateRtuMaster(port);
+                    //modbusMaster = ModbusSerialMaster.CreateRtu(port);
+                }
 
                 IsStarted = true;
                 await ConnectRdDataAsync(SlaveIds, u16OnSlaveIdBits, isRobot).ConfigureAwait(false);
@@ -685,10 +693,12 @@ namespace SharedComponents.IhtModbus
 
                 //TODO: implement ?
                 //mainWndHlp.mainWnd.StopBackgroundWorker();
-
-                modbusMaster.Transport.ReadTimeout = 500;
-                modbusMaster.Transport.WriteTimeout = 500;
-                modbusMaster.Transport.WaitToRetryMilliseconds = 250;
+                if (modbusMaster != null)
+                {
+                    modbusMaster.Transport.ReadTimeout = 500;
+                    modbusMaster.Transport.WriteTimeout = 500;
+                    modbusMaster.Transport.WaitToRetryMilliseconds = 250;
+                }
 
                 ihtModbusDatas.Clear();
 
