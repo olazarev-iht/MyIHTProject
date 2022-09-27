@@ -84,16 +84,17 @@ table#controlPanel td  {
 }
 
 .DisabledDeviceNum {
-    background-color:#a1a1a1;
+    /*background-color:#a1a1a1;*/
+    background-color:lightgrey;
     color: #ffff;
 }
 
 .DisabledDeviceNum.Selected {
-    border: 3px solid #0057ab !important;
+    border: 1px solid #0057ab !important;
 }
 
 .NotInUseDeviceNum {
-    background-color:lightgrey;
+    background-color:#ffff;
     color: #ffff;
 }
 
@@ -1183,11 +1184,6 @@ input#password-input:focus {
         }
     }
 
-    private bool IsDeviceErrorConnection(int slaveId)
-    {
-        return ihtDevices.GetDevices().Any(d => d.IsVisible && !d.IsConnected && ConnectedDevicesCount > 0 && d.SlaveId == slaveId);
-    }
-
     private void ToggleMenu()
     {
         _menuExpanded = !_menuExpanded;
@@ -1226,7 +1222,10 @@ input#password-input:focus {
 
     private async void SetDeviceNum(int deviceNum)
     {
-        if (deviceNum <= VisibleDevicesCount)
+        //TODO: implemet: not to go to error device!!!!
+        var device = GetDeviceByDeviceNumber(deviceNum);
+
+        if (deviceNum <= VisibleDevicesCount && !device.IsCommunicError)
         {
             // Stop the SP moving
             StopTorchMoving();
@@ -1249,12 +1248,18 @@ input#password-input:focus {
         return "UnselectedParamsType tabcell";
     }
 
+    private IhtDevice GetDeviceByDeviceNumber(int devNumber)
+    {
+        var slaveId = devNumber + (int)IhtModbusCommunic.SlaveId.Id_Default;
+        var device = ihtDevices.GetDevice(slaveId);
+        return device;
+    }
+
     private string GetDeviceNumClass(int selectedNum)
     {
         var cssClass = "NotInUseDeviceNum device_tabcell";
 
-        var slaveId = selectedNum + (int)IhtModbusCommunic.SlaveId.Id_Default;
-        var device = ihtDevices.GetDevice(slaveId);
+        var device = GetDeviceByDeviceNumber(selectedNum);
 
         if(device.IsConnected)
         {
@@ -1264,7 +1269,7 @@ input#password-input:focus {
                 cssClass = "SelectedDeviceNum device_tabcell";
             }
         }
-        else if(IsDeviceErrorConnection(slaveId))
+        else if(device.IsCommunicError)
         {
             cssClass = "ErrorConnectionDevice device_tabcell";
         }
