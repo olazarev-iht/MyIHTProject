@@ -49,11 +49,18 @@ namespace SharedComponents.IhtDev
             set { _isConnected = value; RaisePropertyChanged("IsConnected"); }
         }
         // IsEnabled
-        private bool _isEnabled { get; set; }
-        public bool IsEnabled
+        private bool _isEnabledChbx { get; set; }
+        public bool IsEnabledChbx
         {
-            get { return _isEnabled; }
-            set { _isEnabled = value; RaisePropertyChanged("IsEnabled"); }
+            get { return _isEnabledChbx; }
+            set { _isEnabledChbx = value; RaisePropertyChanged("IsEnabledChbx"); }
+        }
+        // IsEnabledMainControl
+        private bool _isEnabledMainControl { get; set; }
+        public bool IsEnabledMainControl
+        {
+            get { return _isEnabledMainControl; }
+            set { _isEnabledMainControl = value; RaisePropertyChanged("IsEnabledMainControl"); }
         }
         // IsVisible
         private bool _isVisible { get; set; }
@@ -217,11 +224,11 @@ namespace SharedComponents.IhtDev
                             {
                                 if (kvp.Value.DeviceNumber > deviceNum)
                                 {
-                                    kvp.Value.IsEnabled = false;
+                                    kvp.Value.IsEnabledChbx = false;
                                 }
                                 if (kvp.Value.DeviceNumber == deviceNum + 1)
                                 {
-                                    kvp.Value.IsEnabled = true;
+                                    kvp.Value.IsEnabledChbx = true;
                                 }
                             });
                         }
@@ -232,7 +239,7 @@ namespace SharedComponents.IhtDev
                                 if (kvp.Value.DeviceNumber > deviceNum)
                                 {
                                     kvp.Value.IsVisible = false;
-                                    kvp.Value.IsEnabled = false;
+                                    kvp.Value.IsEnabledChbx = false;
                                 }
                             });
                         }

@@ -329,7 +329,7 @@ namespace SharedComponents.IhtDev
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_1")
                               );
             _ihtDevice.IsVisible = true;
-            _ihtDevice.IsEnabled = false;
+            _ihtDevice.IsEnabledChbx = false;
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 2
             _ihtDevice = _provider?.GetService<IhtDevice>();
@@ -351,7 +351,7 @@ namespace SharedComponents.IhtDev
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_2")
                               );
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
-            _ihtDevice.IsEnabled = true;
+            _ihtDevice.IsEnabledChbx = true;
             // Device 3
             _ihtDevice = _provider?.GetService<IhtDevice>();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_03;
@@ -760,7 +760,7 @@ namespace SharedComponents.IhtDev
             ArrayList _ihtDevices = GetVisibleDevices();
             foreach (IhtDevice _ihtDevice in _ihtDevices)
             {
-                _ihtDevice.IsEnabled = false;
+                _ihtDevice.IsEnabledMainControl = false;
                 _ihtDevice.IsEnabledOn = false;
             }
         }
@@ -777,7 +777,7 @@ namespace SharedComponents.IhtDev
                 _ihtDevice.ClrStatusOkBackground();
                 if (_ihtDevice.IsConnected)
                 {
-                    _ihtDevice.IsEnabled = true;
+                    _ihtDevice.IsEnabledMainControl = true;
                     _ihtDevice.IsEnabledOn = true;
                     _ihtDevice.IsEnabledOnLast = true;
                     if ((u16OnSlaveIdBits & _ihtDevice.GetSlaveIdBit()) != 0)

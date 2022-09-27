@@ -71,22 +71,27 @@ table#controlPanel td  {
 .SelectedDeviceNum {
     background-color:#497abf;
     color: #ffff;
+    border: 0px !important;
 }
 
 .ConnectedDeviceNum {
     background-color:#e1f0fd;
     color: #999191;
+    border: 0px !important;
 }
 
 .ErrorConnectionDevice {
     background-color:#d56565;
-    color: #ffff;
+    box-shadow: inset 150px 150px 0px 0px #e5d7d7bf;
+    color: #eaeaeb !important;
+    border: 0px !important;
 }
 
 .DisabledDeviceNum {
     /*background-color:#a1a1a1;*/
     background-color:lightgrey;
     color: #ffff;
+    border: 0px !important;
 }
 
 .DisabledDeviceNum.Selected {
@@ -96,6 +101,7 @@ table#controlPanel td  {
 .NotInUseDeviceNum {
     background-color:#ffff;
     color: #ffff;
+    border: 0px !important;
 }
 
 .flex-container {
@@ -424,7 +430,7 @@ input#password-input:focus {
     </TitleContent>
     <DialogContent>  
         <MudTd>Torch @CurrentDevice.DeviceNumber is:
-        <MudSwitch @bind-Checked="@IsTorchEnabled" Color="Color.Primary">@(CurrentDevice.IsTorchDisabled ? "Disabled" : "Enabled")</MudSwitch></MudTd>
+        <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? "Enabled" : "Disabled")</MudSwitch></MudTd>
         <MudList Clickable="true" Style="Height:200px;" >
             <MudListItem Icon="@Icons.Filled.Settings" Text="Settings" InitiallyExpanded="false">
                 <NestedList>
@@ -467,7 +473,7 @@ input#password-input:focus {
         {
             <MudItem xs="6">
                     @*<input type="checkbox" @bind="@device.IsVisible" /> @:@device.DeviceNumber.ToString();*@
-                    <MudCheckBox @bind-Checked="@ihtDevice.IsVisible" Dense="false" Color="Color.Primary" Disabled="@IsDeviceDisabled(ihtDevice.IsEnabled)">
+                    <MudCheckBox @bind-Checked="@ihtDevice.IsVisible" Dense="false" Color="Color.Primary" Disabled="@IsDeviceDisabled(ihtDevice.IsEnabledChbx)">
                         <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Torch @ihtDevice.DeviceNumber</MudText>
                     </MudCheckBox>
             </MudItem>
@@ -990,15 +996,11 @@ input#password-input:focus {
     private void OpenTorchInstalledDialog()
     {
         TorchInstalledDialogVisible = true;
-
-        //SaveCurrentIsVisibleAndTorchType();
     }
 
     private void CloseTorchInstalledDialog()
     {
         TorchInstalledDialogVisible = false;
-
-        //RestoreIsVisibleAndTorchType();
     }
 
     private void RestoreIsVisibleAndTorchType()
@@ -1015,6 +1017,11 @@ input#password-input:focus {
         _currentVisibleTorchesNum = ihtDevices.GetDevices().Where(x => x.IsVisible).Max(x => x.DeviceNumber);
 
         _currentTorchTypeSetup = ihtDevices.TorchTypeSetup;
+    }
+
+    private bool IsEnabledOnDisabled()
+    {
+        return !CurrentDevice.IsEnabledOn;
     }
 
     private void SetNewPasswordLevel()
@@ -1173,10 +1180,10 @@ input#password-input:focus {
     }
 
     //private bool _isTorchDisabled;
-    bool IsTorchEnabled
+    bool IsEnabledMainControl
     {
-        get { return !CurrentDevice.IsTorchDisabled; }
-        set { CurrentDevice.IsTorchDisabled = !value; }
+        get { return CurrentDevice.IsEnabledMainControl; }
+        set { CurrentDevice.IsEnabledMainControl = value; }
     }
 
     private void PreflowStartSwitch_ChangedValue(bool isChecked)
@@ -1304,26 +1311,34 @@ input#password-input:focus {
 
         if(device.IsConnected)
         {
-            cssClass = "ConnectedDeviceNum device_tabcell";
-
-            if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber){
-                cssClass = "SelectedDeviceNum device_tabcell";
+            if (device.IsEnabledMainControl)
+            {
+                if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
+                {
+                    cssClass = "SelectedDeviceNum device_tabcell";
+                }
+                else
+                {
+                    cssClass = "ConnectedDeviceNum device_tabcell";
+                }
             }
+            else 
+            {
+                if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
+                {
+                    cssClass = "DisabledDeviceNum Selected  device_tabcell";
+                }
+                else
+                {
+                    cssClass = "DisabledDeviceNum device_tabcell";
+                }
+            }          
         }
         else if(device.IsCommunicError)
         {
             cssClass = "ErrorConnectionDevice device_tabcell";
         }
 
-        if(device.IsTorchDisabled)
-            cssClass = "DisabledDeviceNum device_tabcell";
-
-        if(device.IsTorchDisabled && selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
-        {
-            cssClass = "DisabledDeviceNum Selected  device_tabcell";
-        }
-
-        // border: 3px solid #0057ab;
         return cssClass;
     }
 

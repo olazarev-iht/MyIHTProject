@@ -161,7 +161,7 @@ namespace BlazorServerHost.Services.APCCommunic
             //eventDisplay.VisibilityLoadAnimation = Visibility.Collapsed;
             //blEnable = blEnable && ButStatusMsgError != IhtMsgLog.Info.Error && ButStatusMsgWarning != IhtMsgLog.Info.Warning;
             //eventDisplay.VisibilityCloseButton = (blEnable) ? Visibility.Collapsed : Visibility.Visible;
-            if (blEnable)
+            if (blResult)
             {
                 //eventDisplay.Visibility = Visibility.Hidden;
                 //CommandManager.InvalidateRequerySuggested();
