@@ -441,7 +441,7 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_torchInstalledDialogVisible" Style="width:500px">
+<MudDialog @bind-IsVisible="@TorchInstalledDialogVisible" Style="width:500px">
     <TitleContent>
         <MudText Typo="Typo.h6">Torch Installed</MudText>
     </TitleContent>
@@ -846,8 +846,31 @@ input#password-input:focus {
     private bool _setupPasswordDialogVisible = false;
 
     private bool _torchInstalledDialogVisible = false;
+    public bool TorchInstalledDialogVisible
+    {
+        get
+        {
+            return _torchInstalledDialogVisible;
+        }
+        set
+        {
+            _torchInstalledDialogVisible = value;
+
+            if (value)
+            {
+                SaveCurrentIsVisibleAndTorchType();
+            }
+            else
+            {
+                RestoreIsVisibleAndTorchType();
+            }
+        }
+    }
+
     private bool _performResetDevices = false;
     private bool _torchInstalledDialogIsBlocked = false;
+    private int _currentVisibleTorchesNum = 0;
+    private IhtDevices.TorchType _currentTorchTypeSetup;
 
     private TableGroupDefinition<ParameterDataModel> _groupDefinition = new()
     {
@@ -966,15 +989,33 @@ input#password-input:focus {
 
     private void OpenTorchInstalledDialog()
     {
-        _torchInstalledDialogVisible = true;
+        TorchInstalledDialogVisible = true;
+
+        //SaveCurrentIsVisibleAndTorchType();
     }
 
     private void CloseTorchInstalledDialog()
     {
-        _torchInstalledDialogVisible = false;
-    } 
+        TorchInstalledDialogVisible = false;
 
+        //RestoreIsVisibleAndTorchType();
+    }
 
+    private void RestoreIsVisibleAndTorchType()
+    {
+        ihtDevices.TorchTypeSetup = _currentTorchTypeSetup;
+
+        var device = GetDeviceByDeviceNumber(_currentVisibleTorchesNum);
+        device.IsVisible = false;
+        device.IsVisible = true;
+    }
+
+    private void SaveCurrentIsVisibleAndTorchType()
+    {
+        _currentVisibleTorchesNum = ihtDevices.GetDevices().Where(x => x.IsVisible).Max(x => x.DeviceNumber);
+
+        _currentTorchTypeSetup = ihtDevices.TorchTypeSetup;
+    }
 
     private void SetNewPasswordLevel()
     {
