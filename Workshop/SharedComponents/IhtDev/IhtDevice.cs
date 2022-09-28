@@ -60,7 +60,18 @@ namespace SharedComponents.IhtDev
         public bool IsEnabledMainControl
         {
             get { return _isEnabledMainControl; }
-            set { _isEnabledMainControl = value; RaisePropertyChanged("IsEnabledMainControl"); }
+            set {
+                if (IsTorchDisabled)
+                {
+                    _isEnabledMainControl = false;
+                }
+                else
+                {
+                    _isEnabledMainControl = value;
+                    _isOnLast = value;
+                }
+                RaisePropertyChanged("IsEnabledMainControl"); 
+            }
         }
         // IsVisible
         private bool _isVisible { get; set; }
@@ -73,7 +84,15 @@ namespace SharedComponents.IhtDev
         private bool _isTorchDisabled { get; set; }
         public bool IsTorchDisabled
         {
-            get { return _isTorchDisabled; }
+            get
+            {
+                if (dataProcessInfo != null)
+                {
+                    _isTorchDisabled = dataProcessInfo.IsInpTorchDisabled;
+                }
+
+                return _isTorchDisabled;
+            }
             set
             {
                 _isTorchDisabled = value;
@@ -82,11 +101,13 @@ namespace SharedComponents.IhtDev
                 {
                     IsOn = false;
                     IsEnabledOn = false;
+                    IsEnabledMainControl = false;
                 }
                 else
                 {
                     IsEnabledOn = IsEnabledOnLast;
                     IsOn = IsEnabledOn;
+                    // we do not change here IsEnabledMainControl !!!
                 }
             }
         }

@@ -424,9 +424,7 @@ input#password-input:focus {
             <tr><td><MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText></td></tr>
             <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">Cutting Data</MudButton></td></tr>
             <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@OtherComponentMode Mode</MudButton></td></tr>
-            @*<tr><td>&nbsp;</td></tr>
-            <tr><MudTd><MudSwitch Style="top:0px" @bind-Checked="@CurrentDevice.IsTorchDisabled" Color="Color.Primary">@(CurrentDevice.IsTorchDisabled ? "Off" : "On")</MudSwitch></MudTd></tr>
-*@        </table>
+        </table>
     </TitleContent>
     <DialogContent>  
         <MudTd>Torch @CurrentDevice.DeviceNumber is:
@@ -549,7 +547,7 @@ input#password-input:focus {
             @onclick="@(()=>SetDeviceNum(4))">4</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)"
             @onclick="@(()=>SetDeviceNum(5))">5</MudTd>
-            <MudTd Style="font-weight:bold; padding:0px;" Class="device_lastcell">
+            <MudTd Style="font-weight:bold; padding:0px; background: aliceblue;" Class="device_lastcell">
                 <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())" />           
             </MudTd>
                         </tr>
@@ -578,7 +576,7 @@ input#password-input:focus {
             @onclick="@(()=>SetDeviceNum(9))">9</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
             @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
-            <MudTd Style="font-weight:bold;" Class="device_lastcell">&nbsp;E&nbsp;</MudTd>
+            <MudTd Style="font-weight:bold;background: aliceblue;" Class="device_lastcell">&nbsp;E&nbsp;</MudTd>
                         </tr>
                     </table>
                 </div>
@@ -676,10 +674,13 @@ input#password-input:focus {
                                     </div>
                                 }
                                 else{
+                                    <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                    <MudOverlay Visible="IsCalibrationButtonDisabled()" LightBackground="true" Absolute="true" />
                                     <div class="button_container">
                                         <div id="CalibrateBtn" class="@GetCalibrationClass()" @onclick="@(async (_) => await CalibrationProcessAsync())">Cali-<br />brate
                                         </div>
                                     </div>
+                                    </MudPaper>
                                 }
                                 </MudPaper>
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
@@ -952,6 +953,21 @@ input#password-input:focus {
         }
 
         return true;
+    }
+
+    private bool IsCalibrationButtonDisabled()
+    {
+        return IsIsProcessActivated();
+    }
+
+    private bool IsIsProcessActivated()
+    {
+        if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
+        {
+            return CurrentDevice.dataProcessInfo.IsProcessActive;
+        }
+
+        return false;
     }
 
     private bool IsIgnitionButtonDisabled()
@@ -1309,34 +1325,40 @@ input#password-input:focus {
 
         var device = GetDeviceByDeviceNumber(selectedNum);
 
-        if(device.IsConnected)
+        if (device != null)
         {
-            if (device.IsEnabledMainControl)
+            if(device.dataProcessInfo != null)
+                device.IsTorchDisabled = device.dataProcessInfo.IsInpTorchDisabled;
+
+            if (device.IsConnected)
             {
-                if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
+                if (device.IsEnabledMainControl)
                 {
-                    cssClass = "SelectedDeviceNum device_tabcell";
+                    if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
+                    {
+                        cssClass = "SelectedDeviceNum device_tabcell";
+                    }
+                    else
+                    {
+                        cssClass = "ConnectedDeviceNum device_tabcell";
+                    }
                 }
                 else
                 {
-                    cssClass = "ConnectedDeviceNum device_tabcell";
+                    if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
+                    {
+                        cssClass = "DisabledDeviceNum Selected  device_tabcell";
+                    }
+                    else
+                    {
+                        cssClass = "DisabledDeviceNum device_tabcell";
+                    }
                 }
             }
-            else 
+            else if (device.IsCommunicError)
             {
-                if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
-                {
-                    cssClass = "DisabledDeviceNum Selected  device_tabcell";
-                }
-                else
-                {
-                    cssClass = "DisabledDeviceNum device_tabcell";
-                }
-            }          
-        }
-        else if(device.IsCommunicError)
-        {
-            cssClass = "ErrorConnectionDevice device_tabcell";
+                cssClass = "ErrorConnectionDevice device_tabcell";
+            }
         }
 
         return cssClass;

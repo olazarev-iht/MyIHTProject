@@ -239,6 +239,8 @@ namespace SharedComponents.IhtData
         {
             IsPropertyChanged = true;
 
+            ChangedPropertyName = eventArgs.PropertyName;
+
             if (!IsProcessInfoUpdating)
             {
                 if (_IAPCWorker != null)
@@ -751,8 +753,12 @@ namespace SharedComponents.IhtData
             CurrOutFuelGas = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.CurrOutFuelGas);
             CurrHeatTime = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.CurrHeatTime);
             CurrOxyfuelProcState = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.CurrOxyfuelProcState);
-            CurrCutCycleState = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.CurrCutCycleState);
-            CurrUB24V = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.CurrUB24V);
+            CurrCutCycleState    = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.CurrCutCycleState);
+            
+            int value = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.CurrUB24V);
+            value /= 10;
+            CurrUB24V = value * 10;
+
             UB24VMin = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.UB24VMin);
             UB24VMax = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.UB24VMax);
             LinearDrivePosition = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition);
@@ -761,8 +767,14 @@ namespace SharedComponents.IhtData
             CurrSetupExecSetup = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.CurrSetupExecSetup);
             CurrSetupExecTestPressureOut = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.CurrSetupExecTestPressureOut);
             CurrPasswordLevel = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.CurrPasswordLevel);
-            ClearanceOut_digit = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.ClearanceOut_digit);
-            ClearanceOut_mV = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.ClearanceOut_mV);
+
+            value = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.ClearanceOut_digit);
+            value /= 10;
+            ClearanceOut_digit = value * 10;
+
+            value = (ihtModbusData == null) ? 0 : ihtModbusData.GetValue(IhtModbusParamDyn.eIdxProcessInfo.ClearanceOut_mV);
+            value /= 10;
+            ClearanceOut_mV = value * 10;
             #endregion // ProcessInfo-Daten
 
             #region Status-Register
