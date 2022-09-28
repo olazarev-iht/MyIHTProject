@@ -274,11 +274,19 @@ namespace SharedComponents.IhtDev
 
                     if (eventArgs.PropertyName == "IsEnabledMainControl")
                     {
-                        //if (ihtDevice.IsCheckedTorch && !ihtDevice.IsEnabledMainControl)
-                        //{
-                        //    var firstAvailableDevice = IhtDevices.ihtDevices.ToList().OrderBy(kvp => kvp.Value.DeviceNumber)
-                        //        .FirstOrDefault(kvp => kvp.Value.IsEnabledMainControl && kvp.Value.IsConnected).Value.IsCheckedTorch = true;
-                        //}
+                        if (ihtDevice.IsCheckedTorch && !ihtDevice.IsEnabledMainControl)
+                        {
+                            ihtDevice.IsCheckedTorch = false;
+                            var firstAvailableDevice = IhtDevices.ihtDevices.ToList().OrderBy(kvp => kvp.Value.DeviceNumber)
+                                .FirstOrDefault(kvp => kvp.Value.IsEnabledMainControl && kvp.Value.IsConnected);
+
+                            try
+                            {
+                                if(firstAvailableDevice.Value != null)
+                                    firstAvailableDevice.Value.IsCheckedTorch = true;
+                            }
+                            catch { };
+                        }
                     }
                 }
             }
