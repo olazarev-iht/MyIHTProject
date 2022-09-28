@@ -1,7 +1,6 @@
 ﻿using SharedComponents;
 using SharedComponents.IhtData;
 using SharedComponents.IhtModbus;
-//using IhtUserControls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,8 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-//using System.Windows.Controls;
-using SharedComponents.IhtModbus;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace SharedComponents.IhtDev
@@ -61,15 +58,16 @@ namespace SharedComponents.IhtDev
         {
             get { return _isEnabledMainControl; }
             set {
-                if (IsTorchDisabled)
-                {
-                    _isEnabledMainControl = false;
-                }
-                else
-                {
-                    _isEnabledMainControl = value;
-                    _isOnLast = value;
-                }
+                _isEnabledMainControl = value; 
+                //if (IsTorchDisabled)
+                //{
+                //    _isEnabledMainControl = false;
+                //}
+                //else
+                //{
+                //    _isEnabledMainControl = value;
+                //    _isOnLast = value;
+                //}
                 RaisePropertyChanged("IsEnabledMainControl"); 
             }
         }
@@ -86,17 +84,16 @@ namespace SharedComponents.IhtDev
         {
             get
             {
-                if (dataProcessInfo != null)
-                {
-                    _isTorchDisabled = dataProcessInfo.IsInpTorchDisabled;
-                }
+                //if (dataProcessInfo != null)
+                //{
+                //    _isTorchDisabled = dataProcessInfo.IsInpTorchDisabled;
+                //}
 
                 return _isTorchDisabled;
             }
             set
             {
-                _isTorchDisabled = value;
-                RaisePropertyChanged("IsTorchDisabled");
+                
                 if (value)
                 {
                     IsOn = false;
@@ -105,10 +102,19 @@ namespace SharedComponents.IhtDev
                 }
                 else
                 {
-                    IsEnabledOn = IsEnabledOnLast;
-                    IsOn = IsEnabledOn;
+                    //IsEnabledOn = IsEnabledOnLast;
+                    //IsOn = IsEnabledOn;
+
+                    IsEnabledOn = true;
+                    IsOn = true;
+
+                    if (_isTorchDisabled)
+                        IsEnabledMainControl = true;
                     // we do not change here IsEnabledMainControl !!!
                 }
+
+                _isTorchDisabled = value;
+                RaisePropertyChanged("IsTorchDisabled");
             }
         }
         // IsOn  
@@ -266,9 +272,13 @@ namespace SharedComponents.IhtDev
                         }
                     }
 
-                    if (eventArgs.PropertyName == "IsCheckedTorch")
+                    if (eventArgs.PropertyName == "IsEnabledMainControl")
                     {
-                        // if device is cheked == selected device, then implement IsCheckedTorch = true and others = false
+                        //if (ihtDevice.IsCheckedTorch && !ihtDevice.IsEnabledMainControl)
+                        //{
+                        //    var firstAvailableDevice = IhtDevices.ihtDevices.ToList().OrderBy(kvp => kvp.Value.DeviceNumber)
+                        //        .FirstOrDefault(kvp => kvp.Value.IsEnabledMainControl && kvp.Value.IsConnected).Value.IsCheckedTorch = true;
+                        //}
                     }
                 }
             }

@@ -16,7 +16,22 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		private readonly ILogger<DynDataModificationCNCDataProvider> _logger;
 
-		public int CurrentDeviceNumber { get; set; } = 1;
+		private List<IhtDevice> _devices => _ihtDevices.GetDevices();
+
+		public int CurrentDeviceNumber {
+            get
+            {
+				var currentDevice = _devices.Where(d => d.IsCheckedTorch);
+				var currentDeviceNumber = currentDevice.FirstOrDefault()?.DeviceNumber ?? 1;
+				return currentDeviceNumber;
+			}
+            set
+            {
+				_devices.ForEach(d => d.IsCheckedTorch = false);
+				var currentDevice = _devices.Single(d => d.DeviceNumber == value);
+				currentDevice.IsCheckedTorch = true;
+			}
+		}
 
 		public int CurrentSlaveId
         {
