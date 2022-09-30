@@ -330,6 +330,7 @@ namespace SharedComponents.IhtDev
                               );
             _ihtDevice.IsVisible = true;
             _ihtDevice.IsEnabledChbx = false;
+            _ihtDevice.IsCheckedTorch = true;
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
             // Device 2
             _ihtDevice = _provider?.GetService<IhtDevice>();

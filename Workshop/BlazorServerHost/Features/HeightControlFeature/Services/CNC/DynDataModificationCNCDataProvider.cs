@@ -21,8 +21,19 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		public int CurrentDeviceNumber {
             get
             {
-				var currentDevice = _devices.Where(d => d.IsCheckedTorch);
-				var currentDeviceNumber = currentDevice.FirstOrDefault()?.DeviceNumber ?? 1;
+				var currentDeviceNumber = 1;
+				var currentDevice = _devices.Where(d => d.IsCheckedTorch).FirstOrDefault();
+
+				if (currentDevice == null)
+                {										
+					var device = IhtDevices.GetIhtDevices().GetDevice(currentDeviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default);
+					device.IsCheckedTorch = true;
+				}
+                else
+                {
+					currentDeviceNumber = currentDevice.DeviceNumber;
+				}
+
 				return currentDeviceNumber;
 			}
             set
