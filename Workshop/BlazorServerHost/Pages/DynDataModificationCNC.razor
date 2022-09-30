@@ -28,12 +28,26 @@
     width: 88px;
     height:50px;
     text-align: center;
+    border: 1px solid #fff !important;
 }
 
 .device_lastcell {
+    width: 87px;
+    height:50px;
+    text-align: center;
+    font-weight:bold;
+    background: #d7e8f9;
+    /*border-bottom-width: 1px !important;
+    border-bottom-color: white !important;
+    border-left-width: 1px !important;
+    border-left-color: white !important;*/
+}
+
+.button_tabcell {
     width: 88px;
     height:50px;
     text-align: center;
+    /*border: 1px solid #fff !important;*/
 }
 
 .tabcell {
@@ -42,14 +56,28 @@
     text-align: center;
 }
 
+.tabcell_menu {
+    font-weight:bold;
+    background: #d7e8f9;
+/*    border: 2px solid #fff !important;*/
+    border-bottom-width: 2px !important;
+    border-bottom-color: white !important;
+    border-top-width: 2px !important;
+    border-top-color: white !important;
+}
+
+.tabcell_status {
+    background: #d7e8f9;
+}
+
 .divcell {
-    width: 87px;
+    width: 90px;
     height: 63px;
     text-align: center;
 }
 
 table#controlPanel td  {
-    border: 1px solid #e0e0e0;
+    border: 0px solid #e0e0e0;
 }
 
 .SelectedParamsType {
@@ -71,13 +99,13 @@ table#controlPanel td  {
 .SelectedDeviceNum {
     background-color:#497abf;
     color: #ffff;
-    border: 0px !important;
+    /*border: 0px !important;*/
 }
 
 .ConnectedDeviceNum {
     background-color:#e1f0fd;
     color: #999191;
-    border: 0px !important;
+    /*border: 0px !important;*/
 }
 
 .ErrorConnectionDevice {
@@ -91,11 +119,11 @@ table#controlPanel td  {
     /*background-color:#a1a1a1;*/
     background-color:lightgrey;
     color: #ffff;
-    border: 0px !important;
+    /*border: 0px !important;*/
 }
 
 .DisabledDeviceNum.Selected {
-    border: 1px solid #0057ab !important;
+    border: 3px solid #0057ab63 !important;
 }
 
 .NotInUseDeviceNum {
@@ -122,12 +150,12 @@ table#controlPanel td  {
 }
 
 .internal_div_table{
-    width:268px; 
-    height:197px;
+    width:270px; 
+    /*height:197px;*/
 }
 
 .flex-container table{
-    border-spacing: 1px;
+    border-spacing: 0px;
 }
 
 button .mud-nav-link-text {
@@ -206,6 +234,7 @@ input#password-input:focus {
     .mud-table-cell  {
         font-size: 1rem;
         padding: 11.5px;
+        border-bottom: 0px solid
     }
 </style>
 
@@ -522,14 +551,14 @@ input#password-input:focus {
 </MudDialog>
 
 <div class="flex-container" >
-    <table id="controlPanel" class="tablemobile centered" width="540px">
+    <table id="controlPanel" class="tablemobile centered" width="545px">
         <tr>
             <MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
         </tr>
         <tr>
-            <td>
+            <td style="border-bottom-width: 4px !important; border-bottom-color: white !important;">
                 <div class="flex-item-left">
-                    <table>
+                    <table class="internal_div_table">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(1)"
             @onclick="@(()=>SetDeviceNum(1))">1</MudTd>
@@ -541,13 +570,13 @@ input#password-input:focus {
                     </table>
                  </div>
                  <div class="flex-item-right">
-                    <table style="width:268px;">
+                    <table class="internal_div_table">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(4)"
             @onclick="@(()=>SetDeviceNum(4))">4</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)"
             @onclick="@(()=>SetDeviceNum(5))">5</MudTd>
-            <MudTd Style="font-weight:bold; padding:0px; background: aliceblue;" Class="device_lastcell">
+            <MudTd Style="padding:0px;" Class="device_lastcell">
                 <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())" />           
             </MudTd>
                         </tr>
@@ -556,9 +585,9 @@ input#password-input:focus {
             </td>
         </tr>
         <tr>
-            <td>
+            <td style="border-bottom-width: 2px !important; border-bottom-color: white !important;">
                 <div class="flex-item-left">
-                    <table>
+                    <table class="internal_div_table">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(6)"
             @onclick="@(()=>SetDeviceNum(6))">6</MudTd>
@@ -570,13 +599,13 @@ input#password-input:focus {
                     </table>
                 </div>
                 <div class="flex-item-right">
-                    <table style="width:268px;">
+                    <table class="internal_div_table">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(9)"
             @onclick="@(()=>SetDeviceNum(9))">9</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
             @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
-            <MudTd Style="font-weight:bold;background: aliceblue;" Class="device_lastcell">&nbsp;E&nbsp;</MudTd>
+            <MudTd Class="device_lastcell">&nbsp;E&nbsp;</MudTd>
                         </tr>
                     </table>
                 </div>
@@ -632,7 +661,7 @@ input#password-input:focus {
                 <div class="flex-item-right">
                     <table class="internal_div_table">
                         <tr>
-                            <td class="device_tabcell">
+                            <td class="button_tabcell">
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsHCButtonsDisabled()" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
@@ -657,7 +686,7 @@ input#password-input:focus {
                               </MudPaper>
                             </td>
                             
-                            <td class="device_tabcell">
+                            <td class="button_tabcell">
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsMovementButtonsDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
@@ -697,7 +726,7 @@ input#password-input:focus {
 
                             @if (ComponentMode == MANUAL_MODE)
                             {
-                            <td class="device_tabcell" height="100%">
+                            <td class="button_tabcell" height="100%">
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsIgnitionButtonDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
@@ -715,16 +744,16 @@ input#password-input:focus {
                            }
                            else 
                            {                            
-                            <td class="device_tabcell">
-                                <table style="border-spacing: 1px !important;"> 
+                            <td class="button_tabcell">
+                                <table style="border-spacing: 0px !important;"> 
                                     <tr>
-                                        <td class="divcell">Flame<br />on End</td>
+                                        <td class="divcell tabcell_menu">Flame<br />on End</td>
                                     </tr>
                                     <tr>
-                                        <td class="divcell"></td>
+                                        <td class="divcell tabcell_menu">Process</td>
                                     </tr>
                                     <tr>
-                                        <td class="divcell">Start<br /> piercing</td>
+                                        <td class="divcell tabcell_menu">Start<br /> piercing</td>
                                     </tr>
                                 </table>
                             </td>
@@ -735,7 +764,7 @@ input#password-input:focus {
             </td>                      
         </tr>
         <tr>
-            <td>
+            <td style="border: 2px solid #fff !important;">
                 <div class="flex-item-left">
                     <table style="border-spacing: @(ComponentMode == MANUAL_MODE ? "1" : "0")px !important;">
                         <tr>
@@ -750,7 +779,7 @@ input#password-input:focus {
                             }
                             else
                             {
-                                <td style="width:268px;border-width: 0px !important;" class="UnselectedParamsType tabcell">Status 1 @ComponentMode</td>
+                                <td style="border-width:0px; font-weight:normal !important;" class="tabcell tabcell_status internal_div_table">Status 1 @ComponentMode</td>
                             }
                         </tr>
                     </table>
@@ -768,7 +797,7 @@ input#password-input:focus {
                             }
                             else
                             {
-                                <td style="width:268px;border-width: 0px !important;" class="UnselectedParamsType tabcell">Status 2 @ComponentMode</td>
+                                <td style="border-width:0px; font-weight:normal !important;" class="tabcell tabcell_status internal_div_table">Status 2 @ComponentMode</td>
                             }
                                 </tr>
                             </table>                   
