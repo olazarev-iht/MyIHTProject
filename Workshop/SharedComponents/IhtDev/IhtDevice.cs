@@ -274,6 +274,7 @@ namespace SharedComponents.IhtDev
 
                     if (eventArgs.PropertyName == "IsEnabledMainControl")
                     {
+                        // Set up the first enabled torch as current
                         if (ihtDevice.IsCheckedTorch && !ihtDevice.IsEnabledMainControl)
                         {
                             ihtDevice.IsCheckedTorch = false;
@@ -282,16 +283,43 @@ namespace SharedComponents.IhtDev
 
                             try
                             {
-                                if(firstAvailableDevice.Value != null)
+                                if (firstAvailableDevice.Value != null)
                                     firstAvailableDevice.Value.IsCheckedTorch = true;
                             }
                             catch { };
                         }
+
+                        // Setup CurrOnSlaveBits
+                        var availableDevicesList = IhtDevices.ihtDevices.ToList().Select(kvp => kvp.Value).OrderBy(x => x.DeviceNumber)
+                            .Where(x => x.IsEnabledMainControl).ToList();
+
+                        UInt16 u16VisibleSlaveIdBits = 0;
+                        availableDevicesList.ForEach(dev =>
+                        {
+                            u16VisibleSlaveIdBits |= IhtModbusCommunic.GetSlaveIdBit(dev._slaveId);
+                        }
+                        );
+
+                        IhtModbusCommunic.CurrOnSlaveBits = u16VisibleSlaveIdBits;
+
                     }
                 }
             }
         }
 
+        //private IhtModbusCommunic? _ihtModbusCommunic = null;
+        //public IhtModbusCommunic? ihtModbusCommunic
+        //{
+
+        //    get
+        //    {
+        //        if (_ihtModbusCommunic == null)
+        //            _ihtModbusCommunic = _provider?.GetService<IhtModbusCommunic>();
+        //        return _ihtModbusCommunic;
+        //    }
+
+        //    private set => _ihtModbusCommunic = value;
+        //}
 
         private DataProcessInfo? _dataProcessInfo = null;
         public DataProcessInfo? dataProcessInfo {

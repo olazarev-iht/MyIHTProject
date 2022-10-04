@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Images\**" />
+    <Content Remove="Pages\Images\**" />
+    <EmbeddedResource Remove="Pages\Images\**" />
+    <None Remove="Pages\Images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Shared\CNCNavMenu.razor.css" />
   </ItemGroup>
 
@@ -37,6 +44,7 @@
     <Folder Include="Data\Migrations\ApplicationDb\" />
     <Folder Include="Data\Migrations\CuttingData\" />
     <Folder Include="Models\" />
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
   <ItemGroup>

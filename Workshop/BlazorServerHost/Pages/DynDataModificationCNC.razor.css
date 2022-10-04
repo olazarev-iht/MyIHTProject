@@ -157,3 +157,31 @@
     border-radius: 3px;
 }
 
+.process_btn {
+    margin-bottom: 0px;
+    margin-top: 0px;
+    border: 0;
+    outline: 0;
+    /*padding: 1.5rem 2rem;*/
+    font-size: 1.1rem;
+    font-family: monospace;
+    font-weight: 600;
+    box-shadow: 0px 0px 0px #0057ab;
+    /*cursor: pointer;*/
+    color: #ffff;
+    border-radius: 3px;
+    background-color: #3D6FB4;
+    width: 80%;
+    height: 50px;
+    /* text-align: center; */
+    /* to center text in the div - use 3 following rows: */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .process_btn.active {
+        box-shadow: 0px 0px 0px #0065c8;
+        background-color: #FF584F;
+    }
+

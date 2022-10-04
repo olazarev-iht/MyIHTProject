@@ -133,6 +133,7 @@ builder.Services.AddSingleton<IhtModbusCommunic>();
 builder.Services.AddSingleton<IhtModbusCommunicData>(); 
 builder.Services.AddSingleton<APCCommunicManager>();
 builder.Services.AddSingleton<CommunicationsService>();
+builder.Services.AddSingleton<DataCommon>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 	{

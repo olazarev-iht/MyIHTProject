@@ -15,6 +15,7 @@ namespace BlazorServerHost.Pages
         private bool _isHCTorchUpActive = false;
         private bool _isHCTorchDownActive = false;
         private bool _isCalibrationActive = false;
+        private bool _isStartPiercingActive = false;
 
         private bool _isFlameOn = false;
         //private bool _isFlameOff = true;
@@ -186,6 +187,18 @@ namespace BlazorServerHost.Pages
             }
         }
 
+        private async Task StartProcessAsync()
+        {
+            if (!_isProcessBtnActive)
+            {
+                await Exhibition_StartProcess();
+            }
+            else
+            {
+                await Exhibition_StopProcess();
+            }
+        }
+
         private string GetCalibrationClass()
         {
             var CurrentDevice_IsCalibrationActive = false;
@@ -219,6 +232,43 @@ namespace BlazorServerHost.Pages
             _isCalibrationActive = false;
             await ihtDevices.StopCalibrationAsync(SlaveId);
 
+        }
+
+        private async Task Exhibition_StartProcess()
+        {
+            _isProcessBtnActive = true;
+            await ihtDevices.StartProcessOnCommonAsync();
+
+        }
+        private async Task Exhibition_StopProcess()
+        {
+            _isProcessBtnActive = false;
+            await ihtDevices.StopProcessOnCommonAsync();
+
+        }
+
+        private async Task StartPiercing()
+        {
+            if (!_isStartPiercingActive)
+            {
+                _isStartPiercingActive = true;
+
+                await ihtDevices.StopPreHeatTimeCommonAsync();
+            }
+        }
+
+        private async Task ReloadPreHeatingTime()
+        {
+            await ihtDevices.ReloadPreHeatTimeCommonAsync();
+        }
+
+        private bool IsStartPiercingDisabled()
+        {
+            return !ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating;
+        }
+        private bool IsReloadPreHeatingTimeDisabled()
+        {
+            return !ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating;
         }
     }
 }

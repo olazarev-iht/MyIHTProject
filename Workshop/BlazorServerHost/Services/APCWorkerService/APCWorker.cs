@@ -1,5 +1,6 @@
 ﻿using BlazorServerHost.Services.APCCommunic;
 using Microsoft.Extensions.Options;
+using SharedComponents.IhtData;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
 using SharedComponents.IhtModbusTable;
@@ -20,6 +21,7 @@ namespace BlazorServerHost.Services.APCWorkerService
 		private readonly Settings _settings;
 		private readonly IhtDevices _ihtDevices;
 		private readonly APCCommunicManager _apcCommunicManager;
+		private readonly DataCommon _dataCommon;
 
 		private const string DEFAULT_COM_PORT = "COM3";
 
@@ -34,8 +36,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 			IhtModbusCommunic ihtModbusCommunic,
 			IOptions<Settings> settings,
 			IhtDevices ihtDevices,
-			APCCommunicManager apcCommunicManager
-			)
+			APCCommunicManager apcCommunicManager,
+			DataCommon dataCommon)
 		{
 			_parameterDataInfoManager = parameterDataInfoManager ?? throw new ArgumentNullException(nameof(parameterDataInfoManager));
 
@@ -48,6 +50,8 @@ namespace BlazorServerHost.Services.APCWorkerService
 			_ihtDevices = ihtDevices ?? throw new ArgumentNullException(nameof(ihtDevices));
 
 			_apcCommunicManager = apcCommunicManager ?? throw new ArgumentNullException(nameof(apcCommunicManager));
+
+			_dataCommon = dataCommon ?? throw new ArgumentNullException(nameof(dataCommon));
 
 			InitializeAsync().Wait();
 
@@ -83,6 +87,16 @@ namespace BlazorServerHost.Services.APCWorkerService
 						//device.dataProcessInfo;
 
 						//Compare old and new data
+
+						var selectedDevice = _ihtDevices.GetDevices().FirstOrDefault(d => d.IsCheckedTorch);
+
+						if (selectedDevice != null) {
+							if (modbusData.SlaveId == selectedDevice.SlaveId)
+							{
+								_dataCommon.UpdateDatas(modbusData);
+
+							}
+						}
 
 					}
 					long interval_ms = 500 - stopwatch.ElapsedMilliseconds;
