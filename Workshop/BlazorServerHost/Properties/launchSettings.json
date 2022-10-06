@@ -12,7 +12,7 @@
       "commandName": "Project",
       "commandLineArgs": "--env=Production",
       "launchBrowser": true,
-      "launchUrl": "dynDataModificationCNC/Process",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

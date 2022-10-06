@@ -251,13 +251,13 @@ namespace BlazorServerHost.Pages
 
         private async Task Exhibition_StartProcess()
         {
-            _isProcessBtnActive = true;
+            //_isProcessBtnActive = true;
             await ihtDevices.StartProcessOnCommonAsync();
 
         }
         private async Task Exhibition_StopProcess()
         {
-            _isProcessBtnActive = false;
+            //_isProcessBtnActive = false;
             await ihtDevices.StopProcessOnCommonAsync();
 
         }

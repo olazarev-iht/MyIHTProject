@@ -1,4 +1,4 @@
-﻿@page "/dynDataModificationCNC/{ComponentMode}"
+﻿@page "/{ComponentMode?}"
 
 @using BlazorServerHost.Features.HeightControlFeature.Services.CNC
 @using SharedComponents.IhtDev
@@ -48,7 +48,7 @@
 }
 
 .tabcell {
-    width: 87px;
+    width: 88.7px;
     height:50px;
     text-align: center;
 }
@@ -616,7 +616,7 @@ input#password-input:focus {
                 <div class="button_container">
                     <div id="ProcessBtn" class="@(_isProcessBtnActive ? "process_btn active" : "process_btn")"
                         @onclick="@(async (_) => await StartProcessAsync())">
-                        Start Process
+                        @(_isProcessBtnActive ? "Stop Process" : "Start Process")
                     </div>
                </div>
             </td>
@@ -769,14 +769,12 @@ input#password-input:focus {
                                         <td class="divcell tabcell_menu">Reload</td>
                                     </tr>
                                     <tr>
-                                        @*@onpointerdown="@(async (e) => await PiercingChangeColor("MoveTorchDown"))"*@
                                         <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                         <MudOverlay Visible="IsStartPiercingDisabled()" LightBackground="true" Absolute="true"/>
-                                        <td 
-                                            class="@(_isStartPiercingActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")"
+                                        <td class="@(_isStartPiercingActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")"
                                             @onpointerdown="@(async (e) => await StartPiercingActivateAsync("StartPiercing"))"
                                             @onmouseout="@((_) => DeactiveButton("StartPiercing"))"
-                                            @onclick="@(async (e) => await StartPiercingAsync())" >
+                                            @onpointerup="@(async (e) => await StartPiercingAsync())">
                                             <img draggable="false" src="Images/torch_plate_piercing3.png" style="mix-blend-mode: multiply; width: 80px; height: 55px;" />
                                         </td>
                                         </MudPaper>
@@ -837,7 +835,7 @@ input#password-input:focus {
 }
 @code {
     [Parameter]
-    public string ComponentMode { get; set; } = PROCESS_MODE;
+    public string? ComponentMode { get; set; } = PROCESS_MODE;
 
     private const string PROCESS_MODE = "Process";
     private const string MANUAL_MODE = "Manual";
@@ -846,7 +844,7 @@ input#password-input:focus {
     {
         get
         {
-            return ComponentMode == PROCESS_MODE ? MANUAL_MODE : PROCESS_MODE;
+            return (ComponentMode ?? PROCESS_MODE) == PROCESS_MODE ? MANUAL_MODE : PROCESS_MODE;
         }
     }
 
@@ -854,7 +852,7 @@ input#password-input:focus {
     {
         get
         {
-            return $"/dynDataModificationCNC/{OtherComponentMode}";
+            return $"/{OtherComponentMode}";
         }
     }
 
@@ -882,7 +880,7 @@ input#password-input:focus {
     private string NONE_DISPLAY_CLASS = "d-none";
     private string DISPLAY_CLASS = "d-block";
 
-    private const string CUTTING_DB_URL = "/apcMainControl";
+    private const string CUTTING_DB_URL = "/CuttingDB";
 
     //private int spValueOriginal = 50;
     private int spValueCurrent = 50;
@@ -934,7 +932,15 @@ input#password-input:focus {
     private int _currentVisibleTorchesNum = 0;
     private IhtDevices.TorchType _currentTorchTypeSetup;
     private bool _isControlPanelDisabled = false;
-    private bool _isProcessBtnActive = false;
+
+    private bool _isProcessBtnActive 
+    { 
+        get
+        {
+            return IsProcessActivated();
+        }
+        set {}
+    }
 
     private TableGroupDefinition<ParameterDataModel> _groupDefinition = new()
     {
@@ -1014,10 +1020,10 @@ input#password-input:focus {
 
     private bool IsCalibrationButtonDisabled()
     {
-        return IsIsProcessActivated();
+        return IsProcessActivated();
     }
 
-    private bool IsIsProcessActivated()
+    private bool IsProcessActivated()
     {
         if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
         {
