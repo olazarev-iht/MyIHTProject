@@ -90,6 +90,16 @@ namespace BlazorServerHost.Pages
             }
         }
 
+        private async Task StartPiercingActivateAsync(string newEventName)
+        {
+            if (!_isStartPiercingActive)
+            {
+                _isStartPiercingActive = true;
+
+                await ActivatateAsync(newEventName);
+            }
+        }
+
         private async Task ActivatateAsync(string newEventName)
         {
             if (_module != null)
@@ -97,7 +107,7 @@ namespace BlazorServerHost.Pages
                 await _module.InvokeVoidAsync("registerMoveEvents", newEventName, _selfReference);
             }
 
-            if (!string.IsNullOrWhiteSpace(newEventName))
+            if (!string.IsNullOrWhiteSpace(newEventName) && newEventName != "StartPiercing")
             {
                 // If we press second button when first is down
                 if (isTorchStartedMoving)
@@ -135,6 +145,11 @@ namespace BlazorServerHost.Pages
             {
                 _isHCTorchDownActive = false;
                 await StopTorchMovingAndRefreshAsync(eventName);
+            }
+            else if (eventName == "StartPiercing" && _isStartPiercingActive)
+            {
+                _isStartPiercingActive = false;
+                //await StopTorchMovingAndRefreshAsync(eventName);
             }
         }
 
@@ -247,13 +262,13 @@ namespace BlazorServerHost.Pages
 
         }
 
-        private async Task StartPiercing()
+        private async Task StartPiercingAsync()
         {
-            if (!_isStartPiercingActive)
+            if (_isStartPiercingActive)
             {
-                _isStartPiercingActive = true;
-
                 await ihtDevices.StopPreHeatTimeCommonAsync();
+
+                _isStartPiercingActive = false;
             }
         }
 

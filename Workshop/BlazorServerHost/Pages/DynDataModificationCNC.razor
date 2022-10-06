@@ -772,10 +772,12 @@ input#password-input:focus {
                                         @*@onpointerdown="@(async (e) => await PiercingChangeColor("MoveTorchDown"))"*@
                                         <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                         <MudOverlay Visible="IsStartPiercingDisabled()" LightBackground="true" Absolute="true"/>
-                                        <td style="background-image: url(Images/StartProcess.png); background-repeat: no-repeat; background-origin: content-box; background-position: center; background-size: 75px 50px;" 
+                                        <td 
                                             class="@(_isStartPiercingActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")"
-                                            
-                                            @onclick="@(async (e) => await StartPiercing())" >Start<br /> piercing                                           
+                                            @onpointerdown="@(async (e) => await StartPiercingActivateAsync("StartPiercing"))"
+                                            @onmouseout="@((_) => DeactiveButton("StartPiercing"))"
+                                            @onclick="@(async (e) => await StartPiercingAsync())" >
+                                            <img draggable="false" src="Images/torch_plate_piercing3.png" style="mix-blend-mode: multiply; width: 80px; height: 55px;" />
                                         </td>
                                         </MudPaper>
                                     </tr>
@@ -1465,7 +1467,7 @@ input#password-input:focus {
         dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
         this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
 
-        this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
+        this.APCTorchPositionChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
         this.APCTorchPositionStoped -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
 
         // Stop the SP moving and refresh component for all the users
