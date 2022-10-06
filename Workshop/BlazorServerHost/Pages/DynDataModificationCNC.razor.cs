@@ -16,9 +16,27 @@ namespace BlazorServerHost.Pages
         private bool _isHCTorchDownActive = false;
         private bool _isCalibrationActive = false;
         private bool _isStartPiercingActive = false;
+        private bool _isReloadPreHeatingTimeActive = false;
 
         private bool _isFlameOn = false;
         //private bool _isFlameOff = true;
+
+        private bool _isLedPreHeating = false;
+        public bool IsLedPreHeating
+        {
+            get {
+
+                if(!_isLedPreHeating && ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating)
+                {
+                    ReloadProgress(ihtDevices.GetDataProcessInfo(SlaveId).CurrHeatTime);
+                }
+
+                _isLedPreHeating = ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating;
+
+                return _isLedPreHeating; 
+            }
+            set {}
+        }
 
         private Stopwatch stopwatch = new Stopwatch();
 
@@ -100,6 +118,16 @@ namespace BlazorServerHost.Pages
             }
         }
 
+        private async Task ReloadPreHeatingTimeActivateAsync(string newEventName)
+        {
+            if (!_isReloadPreHeatingTimeActive)
+            {
+                _isReloadPreHeatingTimeActive = true;
+
+                await ActivatateAsync(newEventName);
+            }
+        }
+
         private async Task ActivatateAsync(string newEventName)
         {
             if (_module != null)
@@ -107,7 +135,7 @@ namespace BlazorServerHost.Pages
                 await _module.InvokeVoidAsync("registerMoveEvents", newEventName, _selfReference);
             }
 
-            if (!string.IsNullOrWhiteSpace(newEventName) && newEventName != "StartPiercing")
+            if (!string.IsNullOrWhiteSpace(newEventName) && newEventName != "StartPiercing" && newEventName != "ReloadPreHeatingTime")
             {
                 // If we press second button when first is down
                 if (isTorchStartedMoving)
@@ -129,7 +157,6 @@ namespace BlazorServerHost.Pages
             {
                 _isTorchUpActive = false;
                 await StopTorchMovingAndRefreshAsync(eventName);
-
             }
             else if (eventName == "MoveTorchDown" && _isTorchDownActive)
             {               
@@ -149,7 +176,10 @@ namespace BlazorServerHost.Pages
             else if (eventName == "StartPiercing" && _isStartPiercingActive)
             {
                 _isStartPiercingActive = false;
-                //await StopTorchMovingAndRefreshAsync(eventName);
+            }
+            else if (eventName == "ReloadPreHeatingTime" && _isReloadPreHeatingTimeActive)
+            {
+                _isReloadPreHeatingTimeActive = false;
             }
         }
 
@@ -272,18 +302,23 @@ namespace BlazorServerHost.Pages
             }
         }
 
-        private async Task ReloadPreHeatingTime()
+        private async Task ReloadPreHeatingTimeAsync()
         {
-            await ihtDevices.ReloadPreHeatTimeCommonAsync();
+            if (_isReloadPreHeatingTimeActive)
+            {
+                await ihtDevices.ReloadPreHeatTimeCommonAsync();
+
+                _isReloadPreHeatingTimeActive = false;
+            }
         }
 
         private bool IsStartPiercingDisabled()
         {
-            return !ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating;
+            return !IsLedPreHeating;
         }
         private bool IsReloadPreHeatingTimeDisabled()
         {
-            return !ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating;
+            return !IsLedPreHeating;
         }
     }
 }

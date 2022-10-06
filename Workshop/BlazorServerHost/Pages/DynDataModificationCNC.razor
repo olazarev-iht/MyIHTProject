@@ -604,22 +604,23 @@ input#password-input:focus {
                 <div class="flex-item-right">
                     <table class="internal_div_table">
                         <tr>
-            @if(false){
+            @if(ComponentMode != MANUAL_MODE && EXHIBITION_MODE){
+                <td colspan="2" style="width: 67%;">
+                    <div class="button_container">
+                        <div id="ProcessBtn" class="@(_isProcessBtnActive ? "process_btn active" : "process_btn")"
+                            @onclick="@(async (_) => await StartProcessAsync())">
+                            @(_isProcessBtnActive ? "Stop Process" : "Start Process")
+                        </div>
+                    </div>
+                </td>
+                
+            }
+            else{
                 <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(9)"
                 @onclick="@(()=>SetDeviceNum(9))">9</MudTd>
 
                 <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
                 @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
-            }
-            else{
-            <td colspan="2" style="width: 67%;">
-                <div class="button_container">
-                    <div id="ProcessBtn" class="@(_isProcessBtnActive ? "process_btn active" : "process_btn")"
-                        @onclick="@(async (_) => await StartProcessAsync())">
-                        @(_isProcessBtnActive ? "Stop Process" : "Start Process")
-                    </div>
-               </div>
-            </td>
             }
             <MudTd Class="device_lastcell">&nbsp;E&nbsp;</MudTd>
                         </tr>
@@ -766,7 +767,15 @@ input#password-input:focus {
                                         <td class="divcell tabcell_menu">Flame<br />on End</td>
                                     </tr>
                                     <tr>
-                                        <td class="divcell tabcell_menu">Reload</td>
+                                        <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                        <MudOverlay Visible="IsReloadPreHeatingTimeDisabled()" LightBackground="true" Absolute="true"/>
+                                        <td class="@(_isReloadPreHeatingTimeActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")"
+                                            @onpointerdown="@(async (e) => await ReloadPreHeatingTimeActivateAsync("ReloadPreHeatingTime"))"
+                                            @onmouseout="@((_) => DeactiveButton("ReloadPreHeatingTime"))"
+                                            @onpointerup="@(async (e) => await ReloadPreHeatingTimeAsync())">
+                                            <img draggable="false" src="Images/button_refresh2.png" style="mix-blend-mode: multiply; width: 80px; height: 55px;" />
+                                        </td>
+                                        </MudPaper>
                                     </tr>
                                     <tr>
                                         <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
@@ -821,7 +830,11 @@ input#password-input:focus {
                             }
                             else
                             {
-                                <td style="border-width:0px; font-weight:normal !important;" class="tabcell tabcell_status internal_div_table">Status 2 @ComponentMode</td>
+                                <td style="border-width:0px; font-weight:normal !important;" class="tabcell tabcell_status internal_div_table">
+                                    HeatTime: @_currHeatTime 
+                                    <MudProgressCircular Value="@reloadProgressValue" Style="height:70px;width:70px;" Color="Color.Primary" 
+                                        Class="@reloadProgressDisplay" >12</MudProgressCircular>
+                                </td>
                             }
                                 </tr>
                             </table>                   
@@ -839,6 +852,9 @@ input#password-input:focus {
 
     private const string PROCESS_MODE = "Process";
     private const string MANUAL_MODE = "Manual";
+
+    // TODO: read from settings
+    private const bool EXHIBITION_MODE = true;
 
     private string OtherComponentMode
     {
@@ -874,11 +890,11 @@ input#password-input:focus {
 
     private string _cutO2Visible;
     private string _flameAdjustVisible;
-    private string INVISIBLE_CLASS = "invisible";
-    private string VISIBLE_CLASS = "visible";
+    private const string INVISIBLE_CLASS = "invisible";
+    private const string VISIBLE_CLASS = "visible";
 
-    private string NONE_DISPLAY_CLASS = "d-none";
-    private string DISPLAY_CLASS = "d-block";
+    private const string NONE_DISPLAY_CLASS = "d-none";
+    private const string DISPLAY_CLASS = "d-block";
 
     private const string CUTTING_DB_URL = "/CuttingDB";
 
@@ -1223,7 +1239,7 @@ input#password-input:focus {
         _isOpenParamsListDialog = false;
     }
 
-    ///// ---- preFlowActive indicator ----
+    ///// ---- start preFlowActive indicator ----
 
     public int preflowActiveValue;
 
@@ -1234,11 +1250,6 @@ input#password-input:focus {
         preflowActiveValue = 5;
         do
         {
-            //if (_disposed)
-            //{
-            //	return;
-            //}
-
             await Task.Delay(TimeSpan.FromSeconds(1));
 
             preflowActiveValue = preflowActiveValue - 1;
@@ -1256,6 +1267,32 @@ input#password-input:focus {
     {
         get { return _preflowStarted; }
         set { _preflowStarted = value; PreflowStartSwitch_ChangedValue(value);  }
+    }
+
+    ///// ---- end preFlowActive indicator ----
+    private double reloadProgressValue;
+
+    private string reloadProgressDisplay = NONE_DISPLAY_CLASS;
+
+    private int _currHeatTime;
+
+    public async void ReloadProgress(int currHeatTime)
+    {
+        reloadProgressDisplay = DISPLAY_CLASS;
+        _currHeatTime = currHeatTime;
+        reloadProgressValue = 0;
+
+        do
+        {
+            reloadProgressValue += 1.66;
+            _currHeatTime -= 1;
+            StateHasChanged();
+            await Task.Delay(1000);
+
+        } while (reloadProgressValue < 100);
+
+        reloadProgressDisplay = NONE_DISPLAY_CLASS;
+        //PreflowStarted = false;
     }
 
     //private bool _isTorchDisabled;
