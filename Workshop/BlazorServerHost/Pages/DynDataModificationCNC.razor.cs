@@ -17,6 +17,7 @@ namespace BlazorServerHost.Pages
         private bool _isCalibrationActive = false;
         private bool _isStartPiercingActive = false;
         private bool _isReloadPreHeatingTimeActive = false;
+        private bool _isFlameOnEndActive = false;
 
         private bool _isFlameOn = false;
         //private bool _isFlameOff = true;
@@ -28,7 +29,7 @@ namespace BlazorServerHost.Pages
 
                 if(!_isLedPreHeating && ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating)
                 {
-                    ReloadProgress(ihtDevices.GetDataProcessInfo(SlaveId).CurrHeatTime);
+                    SetMaxHeatTimeProgressValue(ihtDevices.GetDataProcessInfo(SlaveId).CurrHeatTime);
                 }
 
                 _isLedPreHeating = ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating;
@@ -241,6 +242,20 @@ namespace BlazorServerHost.Pages
             else
             {
                 await Exhibition_StopProcess();
+            }
+        }
+
+        private async Task StartFlameOnEndAsync()
+        {
+            if (!_isFlameOnEndActive)
+            {
+                _isFlameOnEndActive = true;
+                await ihtDevices.SetFlameOnAtProcessEndCommonAsync();
+            }
+            else
+            {
+                _isFlameOnEndActive = false;
+                await ihtDevices.ClrFlameOnAtProcessEndCommonAsync();
             }
         }
 

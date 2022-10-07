@@ -8,12 +8,14 @@
 @using SharedComponents.Models.APCHardware
 @using SharedComponents.Services.APCHardwareManagers
 @using SharedComponents.Services.APCHardwareMockDBServices
+@using SharedComponents.IhtData
 @using MudBlazor.Examples.Data.Models
 @using System.IO.Ports					  
 
 @inject NavigationManager navigationManager
 @inject HttpClient httpClient
 @inject IhtDevices ihtDevices
+@inject DataCommon dataCommon
 
 @inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
 @inject IParameterDataInfoManager parameterDataInfoManager
@@ -64,7 +66,12 @@
 .active {
         box-shadow: 0px 0px 0px #0065c8;
         background-color: #FF584F;
-    }
+}
+
+.flame_active{
+    box-shadow: 0px 0px 0px #0065c8;
+    background-color: #8985E0;
+}
 
 .tabcell_status {
     background: #d7e8f9;
@@ -622,7 +629,7 @@ input#password-input:focus {
                 <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
                 @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
             }
-            <MudTd Class="device_lastcell">&nbsp;E&nbsp;</MudTd>
+            <MudTd Class="device_lastcell" Style='font-size:25px; padding:6px; font-family:none;'>&nbsp;&#8721;&nbsp;</MudTd>
                         </tr>
                     </table>
                 </div>
@@ -764,7 +771,21 @@ input#password-input:focus {
                             <td class="button_tabcell">
                                 <table style="border-spacing: 0px !important;"> 
                                     <tr>
-                                        <td class="divcell tabcell_menu">Flame<br />on End</td>
+                                        <td class="divcell tabcell_menu">
+                                            @*<div class="button_container">
+                                                <div id="ProcessBtn" class="@(_isProcessBtnActive ? "process_btn active" : "process_btn")"
+                                                        @onclick="@(async (_) => await StartProcessAsync())">
+                                                        @(_isProcessBtnActive ? "Stop Process" : "Start Process")
+                                                </div>
+                                            </div>*@
+
+                                            <td class="@(_isFlameOnEndActive ? "divcell tabcell_menu" : "divcell tabcell_menu")"
+                                            @onclick="@(async (_) => await StartFlameOnEndAsync())">
+                                            <img draggable="false" src="@(_isFlameOnEndActive ? "Images/torch_too_much_gas.png" : "Images/torch_ignition.png")" 
+                                                style="mix-blend-mode: multiply; width: 50px; height: 55px; vertical-align: middle;" />
+                                        </td>
+
+                                        </td>
                                     </tr>
                                     <tr>
                                         <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
@@ -773,7 +794,7 @@ input#password-input:focus {
                                             @onpointerdown="@(async (e) => await ReloadPreHeatingTimeActivateAsync("ReloadPreHeatingTime"))"
                                             @onmouseout="@((_) => DeactiveButton("ReloadPreHeatingTime"))"
                                             @onpointerup="@(async (e) => await ReloadPreHeatingTimeAsync())">
-                                            <img draggable="false" src="Images/button_refresh2.png" style="mix-blend-mode: multiply; width: 80px; height: 55px;" />
+                                            <img draggable="false" src="Images/button_refresh2.png" style="mix-blend-mode: multiply; width: 80px; height: 55px; vertical-align: middle;" />
                                         </td>
                                         </MudPaper>
                                     </tr>
@@ -812,7 +833,9 @@ input#password-input:focus {
                             }
                             else
                             {
-                                <td style="border-width:0px; font-weight:normal !important;" class="tabcell tabcell_status internal_div_table">Status 1 @ComponentMode</td>
+                                <td style="border-width:0px; font-weight:normal !important;" class="tabcell tabcell_status internal_div_table">
+                                    CurrOutHeatO2:@dataCommon.CurrOutHeatO2 CurrOutCutO2:@dataCommon.CurrOutCutO2 CurrOutFuelGas:@dataCommon.CurrOutFuelGas
+                                </td>
                             }
                         </tr>
                     </table>
@@ -830,10 +853,12 @@ input#password-input:focus {
                             }
                             else
                             {
-                                <td style="border-width:0px; font-weight:normal !important;" class="tabcell tabcell_status internal_div_table">
-                                    HeatTime: @_currHeatTime 
-                                    <MudProgressCircular Value="@reloadProgressValue" Style="height:70px;width:70px;" Color="Color.Primary" 
-                                        Class="@reloadProgressDisplay" >12</MudProgressCircular>
+                                <td style="border-width:0px; font-weight:normal !important; display:flex; flex-direction:row; justify-content:center; align-items:center;" 
+                                    class="tabcell tabcell_status internal_div_table">
+                                    <div>Heat Time:</div>
+                                    <MudProgressCircular Value="@reloadProgressValue" Style="height:40px;width:40px; position: absolute;left: 438px" Color="Color.Primary" 
+                                        Class="@reloadProgressDisplay" />
+                                    <div Style="position: absolute;left: 450px">@_currHeatTime</div>
                                 </td>
                             }
                                 </tr>
@@ -1270,32 +1295,35 @@ input#password-input:focus {
     }
 
     ///// ---- end preFlowActive indicator ----
-    private double reloadProgressValue;
-
-    private string reloadProgressDisplay = NONE_DISPLAY_CLASS;
-
-    private int _currHeatTime;
-
-    public async void ReloadProgress(int currHeatTime)
+    private double reloadProgressValue
     {
-        reloadProgressDisplay = DISPLAY_CLASS;
-        _currHeatTime = currHeatTime;
-        reloadProgressValue = 0;
-
-        do
+        get
         {
-            reloadProgressValue += 1.66;
-            _currHeatTime -= 1;
-            StateHasChanged();
-            await Task.Delay(1000);
+            _currHeatTime = ihtDevices.GetDataProcessInfo(SlaveId).CurrHeatTime;
 
-        } while (reloadProgressValue < 100);
+            //return 100.0 - ((_currHeatTime * 100.0)/_maxHeatTime);
 
-        reloadProgressDisplay = NONE_DISPLAY_CLASS;
-        //PreflowStarted = false;
+            return _currHeatTime * 100.0/_maxHeatTime;
+        }
     }
 
-    //private bool _isTorchDisabled;
+    private string reloadProgressDisplay
+    {
+        get
+        {
+            return IsLedPreHeating ? DISPLAY_CLASS : NONE_DISPLAY_CLASS;
+        }
+    }
+
+    private int _maxHeatTime;
+    private int _currHeatTime;
+
+    public void SetMaxHeatTimeProgressValue(int maxHeatTime)
+    {
+        _maxHeatTime = maxHeatTime;
+    }
+
+
     bool IsEnabledMainControl
     {
         get { return CurrentDevice.IsEnabledMainControl; }
