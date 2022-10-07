@@ -1491,6 +1491,8 @@ input#password-input:focus {
             {
                 cssClass = "ErrorConnectionDevice device_tabcell";
             }
+
+            Task.Run(() => GetDeviceCalibrationState(device));
         }
 
         return cssClass;

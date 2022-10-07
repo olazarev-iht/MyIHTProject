@@ -78,6 +78,13 @@ namespace SharedComponents.IhtData
 
         public bool IsTorchUpActive { get; set; }
         public bool IsTorchDownActive { get; set; }
+        public bool IsCalibrationActive { get; set; }
+        public bool IsStartPiercingActive { get; set; }
+        public bool IsReloadPreHeatingTimeActive { get; set; }
+        public bool IsHCTorchUpActive { get; set; }
+        public bool IsHCTorchDownActive { get; set; }
+        public bool IsFlameOnEndActive { get; set; }
+        public bool IsFlameOn { get; set; }
         #endregion // Switch
 
         // Helper-Methode, um nicht in jedem Set-Accessor zu prüfen, ob PropertyRaisePropertyChanged!=null

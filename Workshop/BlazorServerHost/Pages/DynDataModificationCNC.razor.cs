@@ -11,19 +11,71 @@ namespace BlazorServerHost.Pages
 
         private IJSObjectReference? _module;
         private DotNetObjectReference<DynDataModificationCNC>? _selfReference;
-        private bool _isTorchUpActive = false;
-        private bool _isTorchDownActive = false;
-        private bool _isHCTorchUpActive = false;
-        private bool _isHCTorchDownActive = false;
-        private bool _isCalibrationActive = false;
-        private bool _isStartPiercingActive = false;
-        private bool _isReloadPreHeatingTimeActive = false;
-        private bool _isFlameOnEndActive = false;
+        //private bool _isTorchUpActive = false;
+        //private bool _isTorchDownActive = false;
+        //private bool _isHCTorchUpActive = false;
+        //private bool _isHCTorchDownActive = false;
+        //private bool _isCalibrationActive = false;
+        //private bool _isStartPiercingActive = false;
+        //private bool _isReloadPreHeatingTimeActive = false;
+        //private bool _isFlameOnEndActive = false;
+        //private bool _isFlameOn = false;
+
         private bool _isSumTorchesActive = false;
 
+        private bool _isTorchUpActive
+        {
+            get => ihtDevices.GetDataCmdExecution(SlaveId).IsTorchUpActive;
+            set => ihtDevices.GetDataCmdExecution(SlaveId).IsTorchUpActive = value;
+        }
 
-        private bool _isFlameOn = false;
-        //private bool _isFlameOff = true;
+        private bool _isTorchDownActive
+        {
+            get => ihtDevices.GetDataCmdExecution(SlaveId).IsTorchDownActive;
+            set => ihtDevices.GetDataCmdExecution(SlaveId).IsTorchDownActive = value;
+        }
+
+        private bool _isHCTorchUpActive
+        {
+            get => ihtDevices.GetDataCmdExecution(SlaveId).IsHCTorchUpActive;
+            set => ihtDevices.GetDataCmdExecution(SlaveId).IsHCTorchUpActive = value;
+        }
+
+        private bool _isHCTorchDownActive
+        {
+            get => ihtDevices.GetDataCmdExecution(SlaveId).IsHCTorchDownActive;
+            set => ihtDevices.GetDataCmdExecution(SlaveId).IsHCTorchDownActive = value;
+        }
+
+        private bool _isCalibrationActive
+        {
+            get => ihtDevices.GetDataCmdExecution(SlaveId).IsCalibrationActive;
+            set => ihtDevices.GetDataCmdExecution(SlaveId).IsCalibrationActive = value;
+        }
+
+        private bool _isStartPiercingActive
+        {
+            get => ihtDevices.GetDataCmdExecution(SlaveId).IsStartPiercingActive;
+            set => ihtDevices.GetDataCmdExecution(SlaveId).IsStartPiercingActive = value;
+        }
+
+        private bool _isReloadPreHeatingTimeActive
+        {
+            get => ihtDevices.GetDataCmdExecution(SlaveId).IsReloadPreHeatingTimeActive;
+            set => ihtDevices.GetDataCmdExecution(SlaveId).IsReloadPreHeatingTimeActive = value;
+        }
+
+        private bool _isFlameOnEndActive
+        {
+            get => ihtDevices.GetDataCmdExecution(SlaveId).IsFlameOnEndActive;
+            set => ihtDevices.GetDataCmdExecution(SlaveId).IsFlameOnEndActive = value;
+        }
+
+        private bool _isFlameOn
+        {
+            get => ihtDevices.GetDataCmdExecution(SlaveId).IsFlameOn;
+            set => ihtDevices.GetDataCmdExecution(SlaveId).IsFlameOn = value;
+        }
 
         private bool _isLedPreHeating = false;
         public bool IsLedPreHeating
@@ -285,23 +337,60 @@ namespace BlazorServerHost.Pages
 
         private string GetCalibrationClass()
         {
-            var CurrentDevice_IsCalibrationActive = false;
-
-            if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
+            if (IsBroadCastMode)
             {
-                CurrentDevice_IsCalibrationActive = CurrentDevice.dataProcessInfo.IsCalibrationActive;
-            }
+                var devices = ihtDevices.GetOnDevices();
+                var dataClass = "central_btn";
 
-            if (!CurrentDevice_IsCalibrationActive)
-            {
-                if (_isCalibrationActive && stopwatch.ElapsedMilliseconds > 2000)
+                if (devices.Cast<IhtDevice>().Any(d => d.dataCmdExecution.IsCalibrationActive))
                 {
-                    _isCalibrationActive = false;
-                    _ = ihtDevices.StopCalibrationAsync(SlaveId);
+                    dataClass = "central_btn active";
+                }
+
+                return dataClass;
+            }
+            else
+            {
+                var CurrentDevice_IsCalibrationActive = false;
+
+                if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
+                {
+                    CurrentDevice_IsCalibrationActive = CurrentDevice.dataProcessInfo.IsCalibrationActive;
+                }
+
+                if (!CurrentDevice_IsCalibrationActive)
+                {
+                    if (_isCalibrationActive && stopwatch.ElapsedMilliseconds > 2000)
+                    {
+                        _isCalibrationActive = false;
+                        _ = ihtDevices.StopCalibrationAsync(SlaveId);
+                    }
+                }
+
+                return _isCalibrationActive ? "central_btn active" : "central_btn";
+            }
+        }
+
+        private void GetDeviceCalibrationState(IhtDevice ihtDevice)
+        {
+            var ProcessInfo_IsCalibrationActive = false;
+
+            if (ihtDevice != null && ihtDevice.dataProcessInfo != null)
+            {
+                ProcessInfo_IsCalibrationActive = ihtDevice.dataProcessInfo.IsCalibrationActive;
+
+                if (!ProcessInfo_IsCalibrationActive)
+                {
+                    if (ihtDevice.dataCmdExecution.IsCalibrationActive && stopwatch.ElapsedMilliseconds > 2000)
+                    //if (ihtDevice.dataCmdExecution.IsCalibrationActive)
+                    {
+                        ihtDevice.dataCmdExecution.IsCalibrationActive = false;
+                        _ = ihtDevices.StopCalibrationAsync(ihtDevice.SlaveId);
+                    }
                 }
             }
 
-            return _isCalibrationActive ? "central_btn active" : "central_btn";
+            //return _isCalibrationActive ? "central_btn active" : "central_btn";
         }
 
         private async Task Calibration_StartCalibration()
