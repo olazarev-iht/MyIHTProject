@@ -537,6 +537,13 @@ namespace SharedComponents.IhtDev
             return _ihtDevices;
         }
 
+        public List<IhtDevice> GetEnabledDevices()
+        {
+            var _ihtDevices = new List<IhtDevice>();
+            _ihtDevices = ihtDevices.Where(kpv => kpv.Value.IsEnabledMainControl).Select(kpv => kpv.Value).ToList();
+            return _ihtDevices;
+        }
+
         /// <summary>
         /// Alle sichtbaren Geräte abfragen
         /// </summary>

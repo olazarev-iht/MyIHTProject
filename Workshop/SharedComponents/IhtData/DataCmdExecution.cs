@@ -75,6 +75,9 @@ namespace SharedComponents.IhtData
             get { return _isTemper; }
             set { _isTemper = value; RaisePropertyChanged("IsTemper"); }
         }
+
+        public bool IsTorchUpActive { get; set; }
+        public bool IsTorchDownActive { get; set; }
         #endregion // Switch
 
         // Helper-Methode, um nicht in jedem Set-Accessor zu prüfen, ob PropertyRaisePropertyChanged!=null

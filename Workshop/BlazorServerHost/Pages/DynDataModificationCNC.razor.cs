@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using SharedComponents.IhtDev;
 using System.Diagnostics;
 
 namespace BlazorServerHost.Pages
@@ -18,6 +19,8 @@ namespace BlazorServerHost.Pages
         private bool _isStartPiercingActive = false;
         private bool _isReloadPreHeatingTimeActive = false;
         private bool _isFlameOnEndActive = false;
+        private bool _isSumTorchesActive = false;
+
 
         private bool _isFlameOn = false;
         //private bool _isFlameOff = true;
@@ -25,18 +28,19 @@ namespace BlazorServerHost.Pages
         private bool _isLedPreHeating = false;
         public bool IsLedPreHeating
         {
-            get {
+            get
+            {
 
-                if(!_isLedPreHeating && ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating)
+                if (!_isLedPreHeating && ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating)
                 {
                     SetMaxHeatTimeProgressValue(ihtDevices.GetDataProcessInfo(SlaveId).CurrHeatTime);
                 }
 
                 _isLedPreHeating = ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating;
 
-                return _isLedPreHeating; 
+                return _isLedPreHeating;
             }
-            set {}
+            set { }
         }
 
         private Stopwatch stopwatch = new Stopwatch();
@@ -160,7 +164,7 @@ namespace BlazorServerHost.Pages
                 await StopTorchMovingAndRefreshAsync(eventName);
             }
             else if (eventName == "MoveTorchDown" && _isTorchDownActive)
-            {               
+            {
                 _isTorchDownActive = false;
                 await StopTorchMovingAndRefreshAsync(eventName);
             }
@@ -195,7 +199,7 @@ namespace BlazorServerHost.Pages
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         private async Task TurnFlameOnAsync()
         {
             if (!_isFlameOn)
@@ -220,7 +224,9 @@ namespace BlazorServerHost.Pages
             await ihtDevices.SetupCtrl_SetOffAsync(dynDataModificationCNCDataProvider.CurrentSlaveId);
         }
         int SlaveId => dynDataModificationCNCDataProvider.CurrentSlaveId;
+        int BroadCastId => dynDataModificationCNCDataProvider.CurrentBroadCastId;
 
+        bool IsBroadCastMode => dynDataModificationCNCDataProvider.IsBroadCastMode;
         private async Task CalibrationProcessAsync()
         {
             if (!_isCalibrationActive)
@@ -259,6 +265,24 @@ namespace BlazorServerHost.Pages
             }
         }
 
+        private async Task StartSumTorchesAsync()
+        {
+            if (!_isSumTorchesActive)
+            {
+                _isSumTorchesActive = true;
+                dynDataModificationCNCDataProvider.IsBroadCastMode = true;
+
+                await ihtDevices.SetFlameOnAtProcessEndCommonAsync();
+            }
+            else
+            {
+                _isSumTorchesActive = false;
+                dynDataModificationCNCDataProvider.IsBroadCastMode = false;
+
+                await ihtDevices.ClrFlameOnAtProcessEndCommonAsync();
+            }
+        }
+
         private string GetCalibrationClass()
         {
             var CurrentDevice_IsCalibrationActive = false;
@@ -273,6 +297,7 @@ namespace BlazorServerHost.Pages
                 if (_isCalibrationActive && stopwatch.ElapsedMilliseconds > 2000)
                 {
                     _isCalibrationActive = false;
+                    _ = ihtDevices.StopCalibrationAsync(SlaveId);
                 }
             }
 
@@ -284,13 +309,35 @@ namespace BlazorServerHost.Pages
             stopwatch.Restart();
 
             _isCalibrationActive = true;
-            await ihtDevices.StartCalibrationAsync(SlaveId);
+            if (IsBroadCastMode)
+            {
+                var devices = ihtDevices.GetOnDevices();
+                foreach (IhtDevice device in devices)
+                {
+                    await ihtDevices.StartCalibrationAsync(device.SlaveId);
+                }
+            }
+            else
+            {
+                await ihtDevices.StartCalibrationAsync(SlaveId);
+            }
 
         }
         private async Task Calibration_StopCalibration()
         {
             _isCalibrationActive = false;
-            await ihtDevices.StopCalibrationAsync(SlaveId);
+            if (IsBroadCastMode)
+            {
+                var devices = ihtDevices.GetOnDevices();
+                foreach (IhtDevice device in devices)
+                {
+                    await ihtDevices.StopCalibrationAsync(device.SlaveId);
+                }
+            }
+            else
+            {
+                await ihtDevices.StopCalibrationAsync(SlaveId);
+            }
 
         }
 

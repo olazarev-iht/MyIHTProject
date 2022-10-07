@@ -629,7 +629,11 @@ input#password-input:focus {
                 <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
                 @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
             }
-            <MudTd Class="device_lastcell" Style='font-size:25px; padding:6px; font-family:none;'>&nbsp;&#8721;&nbsp;</MudTd>
+            <MudTd Class="@(_isSumTorchesActive ? "device_lastcell active" : "device_lastcell")" 
+                Style="font-size:25px; padding:6px; font-family:none;" @onclick="@(async (_) => await StartSumTorchesAsync())">&nbsp;&#8721;&nbsp;</MudTd>
+                @*<td class="@(_isFlameOnEndActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")"
+                                            @onclick="@(async (_) => await StartFlameOnEndAsync())"></td>*@
+            
                         </tr>
                     </table>
                 </div>
@@ -861,10 +865,9 @@ input#password-input:focus {
                                     <div Style="position: absolute;left: 450px">@_currHeatTime</div>
                                 </td>
                             }
-                                </tr>
-                            </table>                   
-                        </div>
-                    
+                        </tr>
+                    </table>                   
+                </div>                    
             </td>
         </tr>
     </table>

@@ -46,8 +46,22 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		public int CurrentSlaveId
         {
-			get { return CurrentDeviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default; }
+			get {
+				return CurrentDeviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default; 
+			}
         }
+
+		public int CurrentBroadCastId
+		{
+			get
+			{
+				if (IsBroadCastMode)
+					return (int)IhtModbusCommunic.SlaveId.Id_Broadcast;
+
+				return CurrentSlaveId;
+			}
+		}
+
 		public string CurrentParamsType { get; set; } = "Ignition";
 
 		public int APCDevicesCount 
@@ -68,6 +82,9 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 				return IhtModbusTableBase.IsSimulation;
 			}
         }
+
+		public bool IsBroadCastMode { get; set; } = false;
+
 
 		private readonly IAPCWorker _apcWorker;
 		private readonly IParameterDataInfoManager _parameterDataInfoManager;
@@ -309,39 +326,39 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		private async Task StopMoveTorchCommandAsync()
 		{			
-			await _ihtDevices.StopManUpAsync(CurrentSlaveId);
-			await _ihtDevices.StopManDownAsync(CurrentSlaveId);
+			await _ihtDevices.StopManUpAsync(CurrentBroadCastId);
+			await _ihtDevices.StopManDownAsync(CurrentBroadCastId);
 
-			await _ihtDevices.StopHeightCtrlUpAsync(CurrentSlaveId);
-			await _ihtDevices.StopHeightCtrlDownAsync(CurrentSlaveId);
+			await _ihtDevices.StopHeightCtrlUpAsync(CurrentBroadCastId);
+			await _ihtDevices.StopHeightCtrlDownAsync(CurrentBroadCastId);
 
-			_logger.LogDebug($"\n\n\n\nSent Command - Stop Torch. Device: {CurrentDeviceNumber}. User: {_userId}\n\n\n\n");
+			_logger.LogDebug($"\n\n\n\nSent Command - Stop Torch. Device: {CurrentBroadCastId}. User: {_userId}\n\n\n\n");
 		}
 
 		private async Task SendHeartBeatMoveTorchUpAsync()
 		{
-			await _ihtDevices.MoveManUpAsync(CurrentSlaveId);
+			await _ihtDevices.MoveManUpAsync(CurrentBroadCastId);
 
-			_logger.LogDebug($"\nSent Command - Move Torch Up. Device {CurrentDeviceNumber}. User: {_userId}");
+			_logger.LogDebug($"\nSent Command - Move Torch Up. Device {CurrentBroadCastId}. User: {_userId}");
 		}
 
 		private async Task SendHeartBeatMoveTorchDownAsync()
 		{
-			await _ihtDevices.MoveManDownAsync(CurrentSlaveId);
+			await _ihtDevices.MoveManDownAsync(CurrentBroadCastId);
 
-			_logger.LogDebug($"\nSent Command - Move Torch Down. Device {CurrentDeviceNumber}. User: {_userId}");
+			_logger.LogDebug($"\nSent Command - Move Torch Down. Device {CurrentBroadCastId}. User: {_userId}");
 		}
 
 		private async Task SendHCCommandMoveTorchUpAsync()
 		{
-			await _ihtDevices.HeightCtrlUpAsync(CurrentSlaveId);
+			await _ihtDevices.HeightCtrlUpAsync(CurrentBroadCastId);
 
-			_logger.LogDebug($"\nSent HC Command - Move Torch Up. Device {CurrentDeviceNumber}. User: {_userId}");
+			_logger.LogDebug($"\nSent HC Command - Move Torch Up. Device {CurrentBroadCastId}. User: {_userId}");
 		}
 
 		private async Task SendHCCommandMoveTorchDownAsync()
 		{
-			await _ihtDevices.HeightCtrlDownAsync(CurrentSlaveId);
+			await _ihtDevices.HeightCtrlDownAsync(CurrentBroadCastId);
 
 			_logger.LogDebug($"\nSent HC Command - Move Torch Down. Device {CurrentDeviceNumber}. User: {_userId}");
 		}
