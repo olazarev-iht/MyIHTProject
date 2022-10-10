@@ -25,56 +25,56 @@ namespace BlazorServerHost.Pages
 
         private bool _isTorchUpActive
         {
-            get => ihtDevices.GetDataCmdExecution(SlaveId).IsTorchUpActive;
-            set => ihtDevices.GetDataCmdExecution(SlaveId).IsTorchUpActive = value;
+            get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsTorchUpActive;
+            set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsTorchUpActive = value;
         }
 
         private bool _isTorchDownActive
         {
-            get => ihtDevices.GetDataCmdExecution(SlaveId).IsTorchDownActive;
-            set => ihtDevices.GetDataCmdExecution(SlaveId).IsTorchDownActive = value;
+            get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsTorchDownActive;
+            set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsTorchDownActive = value;
         }
 
         private bool _isHCTorchUpActive
         {
-            get => ihtDevices.GetDataCmdExecution(SlaveId).IsHCTorchUpActive;
-            set => ihtDevices.GetDataCmdExecution(SlaveId).IsHCTorchUpActive = value;
+            get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsHCTorchUpActive;
+            set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsHCTorchUpActive = value;
         }
 
         private bool _isHCTorchDownActive
         {
-            get => ihtDevices.GetDataCmdExecution(SlaveId).IsHCTorchDownActive;
-            set => ihtDevices.GetDataCmdExecution(SlaveId).IsHCTorchDownActive = value;
+            get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsHCTorchDownActive;
+            set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsHCTorchDownActive = value;
         }
 
         private bool _isCalibrationActive
         {
-            get => ihtDevices.GetDataCmdExecution(SlaveId).IsCalibrationActive;
-            set => ihtDevices.GetDataCmdExecution(SlaveId).IsCalibrationActive = value;
+            get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsCalibrationActive;
+            set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsCalibrationActive = value;
         }
 
         private bool _isStartPiercingActive
         {
-            get => ihtDevices.GetDataCmdExecution(SlaveId).IsStartPiercingActive;
-            set => ihtDevices.GetDataCmdExecution(SlaveId).IsStartPiercingActive = value;
+            get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsStartPiercingActive;
+            set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsStartPiercingActive = value;
         }
 
         private bool _isReloadPreHeatingTimeActive
         {
-            get => ihtDevices.GetDataCmdExecution(SlaveId).IsReloadPreHeatingTimeActive;
-            set => ihtDevices.GetDataCmdExecution(SlaveId).IsReloadPreHeatingTimeActive = value;
+            get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsReloadPreHeatingTimeActive;
+            set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsReloadPreHeatingTimeActive = value;
         }
 
         private bool _isFlameOnEndActive
         {
-            get => ihtDevices.GetDataCmdExecution(SlaveId).IsFlameOnEndActive;
-            set => ihtDevices.GetDataCmdExecution(SlaveId).IsFlameOnEndActive = value;
+            get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsFlameOnEndActive;
+            set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsFlameOnEndActive = value;
         }
 
         private bool _isFlameOn
         {
-            get => ihtDevices.GetDataCmdExecution(SlaveId).IsFlameOn;
-            set => ihtDevices.GetDataCmdExecution(SlaveId).IsFlameOn = value;
+            get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsFlameOn;
+            set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsFlameOn = value;
         }
 
         private bool _isLedPreHeating = false;
@@ -83,12 +83,12 @@ namespace BlazorServerHost.Pages
             get
             {
 
-                if (!_isLedPreHeating && ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating)
+                if (!_isLedPreHeating && ihtDevices.GetDataProcessInfo(CurrentSlaveId).IsLedPreHeating)
                 {
-                    SetMaxHeatTimeProgressValue(ihtDevices.GetDataProcessInfo(SlaveId).CurrHeatTime);
+                    SetMaxHeatTimeProgressValue(ihtDevices.GetDataProcessInfo(CurrentSlaveId).CurrHeatTime);
                 }
 
-                _isLedPreHeating = ihtDevices.GetDataProcessInfo(SlaveId).IsLedPreHeating;
+                _isLedPreHeating = ihtDevices.GetDataProcessInfo(CurrentSlaveId).IsLedPreHeating;
 
                 return _isLedPreHeating;
             }
@@ -275,7 +275,7 @@ namespace BlazorServerHost.Pages
 
             await ihtDevices.SetupCtrl_SetOffAsync(dynDataModificationCNCDataProvider.CurrentSlaveId);
         }
-        int SlaveId => dynDataModificationCNCDataProvider.CurrentSlaveId;
+        int CurrentSlaveId => dynDataModificationCNCDataProvider.CurrentSlaveId;
         int BroadCastId => dynDataModificationCNCDataProvider.CurrentBroadCastId;
 
         bool IsBroadCastMode => dynDataModificationCNCDataProvider.IsBroadCastMode;
@@ -363,7 +363,7 @@ namespace BlazorServerHost.Pages
                     if (_isCalibrationActive && stopwatch.ElapsedMilliseconds > 2000)
                     {
                         _isCalibrationActive = false;
-                        _ = ihtDevices.StopCalibrationAsync(SlaveId);
+                        _ = ihtDevices.StopCalibrationAsync(CurrentSlaveId);
                     }
                 }
 
@@ -397,35 +397,41 @@ namespace BlazorServerHost.Pages
         {
             stopwatch.Restart();
 
-            _isCalibrationActive = true;
             if (IsBroadCastMode)
             {
                 var devices = ihtDevices.GetOnDevices();
                 foreach (IhtDevice device in devices)
                 {
+                    device.dataCmdExecution.IsCalibrationActive = true;
+
                     await ihtDevices.StartCalibrationAsync(device.SlaveId);
                 }
             }
             else
             {
-                await ihtDevices.StartCalibrationAsync(SlaveId);
+                _isCalibrationActive = true;
+
+                await ihtDevices.StartCalibrationAsync(CurrentSlaveId);
             }
 
         }
         private async Task Calibration_StopCalibration()
         {
-            _isCalibrationActive = false;
             if (IsBroadCastMode)
             {
                 var devices = ihtDevices.GetOnDevices();
                 foreach (IhtDevice device in devices)
                 {
+                    device.dataCmdExecution.IsCalibrationActive = false;
+
                     await ihtDevices.StopCalibrationAsync(device.SlaveId);
                 }
             }
             else
             {
-                await ihtDevices.StopCalibrationAsync(SlaveId);
+                _isCalibrationActive = false;
+
+                await ihtDevices.StopCalibrationAsync(CurrentSlaveId);
             }
 
         }
