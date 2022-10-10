@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SharedComponents.Helpers;
 using SharedComponents.IhtModbus;
 using SharedComponents.Models.APCHardware;
+using SharedComponents.Models.CuttingData;
 
 namespace SharedComponents.CutDataRepository
 {
@@ -47,34 +48,34 @@ namespace SharedComponents.CutDataRepository
         /// <summary>
         /// 
         /// </summary>
-        //public void SetData(CCutData cutData, IhtModbusData ihtModbusData)
-        //{
-        //    SetValue(cutData.PreHeatHeight, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PreHeatHeight);
-        //    SetValue(cutData.PierceHeight, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PierceHeight);
-        //    SetValue(cutData.CutHeight, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.CutHeight);
-        //    SetValue(cutData.PI0, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.HeatO2Ignition);
-        //    SetValue(cutData.PreHeatHeatingOxygenPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.HeatO2PreHeat);
-        //    SetValue(cutData.PierceHeatingOxygenPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.HeatO2Pierce);
-        //    SetValue(cutData.CutHeatingOxygenPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.HeatO2Cut);
-        //    SetValue(cutData.PierceCuttingOxygenPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.CutO2Pierce);
-        //    SetValue(cutData.CutCuttingOxygenPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.CutO2Cut);
-        //    SetValue(cutData.PI1, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.FuelGasIgnition);
-        //    SetValue(cutData.PreHeatFuelGasPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.FuelGasPreHeat);
-        //    SetValue(cutData.PierceFuelGasPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.FuelGasPierce);
-        //    SetValue(cutData.CutFuelGasPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.FuelGasCut);
-        //    SetValue(cutData.PreHeatTime, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PreHeatTime);
-        //    SetValue(cutData.PP1, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PiercePreTime);
-        //    SetValue(cutData.PierceTime, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PierceTime);
-        //    SetValue(cutData.PP2, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PiercePostTime);
-        //    SetValue(cutData.PP3, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PierceHeightRampTime);
-        //    SetValue(cutData.PP4, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.CutHeightRampTime);
-        //    SetValue(cutData.PP0, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PierceMode);
-        //    SetValue(cutData.IgnitionFlameAdjustment, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.IgnitionFlameAdjust);
-        //    SetValue(cutData.IdGas, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.GasType);
-        //    SetValue(cutData.CuttingSpeed, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.CuttingSpeed);
-        //    SetValue(cutData.PierceCuttingSpeedChange, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PierceCuttingSpeedChange);
-        //    SetValue(cutData.ControlBits, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.ControlBits);
-        //}
+        public void SetData(CuttingDataModel cutData, IhtModbusData ihtModbusData)
+        {
+            SetValue(cutData.PreHeatHeight, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PreHeatHeight);
+            SetValue(cutData.PierceHeight, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PierceHeight);
+            SetValue(cutData.CutHeight, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.CutHeight);
+            SetValue(cutData.PI0, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.HeatO2Ignition);
+            SetValue(cutData.PreHeatHeatingOxygenPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.HeatO2PreHeat);
+            SetValue(cutData.PierceHeatingOxygenPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.HeatO2Pierce);
+            SetValue(cutData.CutHeatingOxygenPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.HeatO2Cut);
+            SetValue(cutData.PierceCuttingOxygenPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.CutO2Pierce);
+            SetValue(cutData.CutCuttingOxygenPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.CutO2Cut);
+            SetValue(cutData.PI1, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.FuelGasIgnition);
+            SetValue(cutData.PreHeatFuelGasPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.FuelGasPreHeat);
+            SetValue(cutData.PierceFuelGasPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.FuelGasPierce);
+            SetValue(cutData.CutFuelGasPressure, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.FuelGasCut);
+            SetValue(cutData.PreHeatTime, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PreHeatTime);
+            SetValue(cutData.PP1, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PiercePreTime);
+            SetValue(cutData.PierceTime, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PierceTime);
+            SetValue(cutData.PP2, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PiercePostTime);
+            SetValue(cutData.PP3, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PierceHeightRampTime);
+            SetValue(cutData.PP4, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.CutHeightRampTime);
+            SetValue(cutData.PP0, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PierceMode);
+            SetValue(cutData.IgnitionFlameAdjustment, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.IgnitionFlameAdjust);
+            SetValue(cutData.Gas.GasId, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.GasType);
+            SetValue(cutData.CuttingSpeed, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.CuttingSpeed);
+            SetValue(cutData.PierceCuttingSpeedChange, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.PierceCuttingSpeedChange);
+            SetValue(cutData.Controlbits, ihtModbusData, IhtModbusParamDyn.eIdxTechnology.ControlBits);
+        }
 
         /// <summary>
         /// 
@@ -92,27 +93,30 @@ namespace SharedComponents.CutDataRepository
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        //private void SetValue(double value, IhtModbusData ihtModbusdata, IhtModbusParamDyn.eIdxTechnology eIdxTechnology)
-        //{
-        //    UInt16 u16Value = 0;
-        //    IhtCutDataMap ihtCutDataMap = null;
-        //    if (addressMap.TryGetValue(eIdxTechnology, out ihtCutDataMap))
-        //    {
-        //        u16Value = Convert.ToUInt16(value * ihtCutDataMap.multiplier);
-        //        ihtModbusdata.SetValue(eIdxTechnology, u16Value);
-        //    }
+            /// <summary>
+            /// 
+            /// </summary>
+            private void SetValue(double value, IhtModbusData ihtModbusdata, IhtModbusParamDyn.eIdxTechnology eIdxTechnology)
+            {
+                UInt16 u16Value = 0;
+                IhtCutDataMap ihtCutDataMap = null;
 
-        //    SetParamDynValue(u16Value, eIdxTechnology);
-        //}
+                if (addressMap.TryGetValue(eIdxTechnology, out ihtCutDataMap))
+                {
+                    //u16Value = Convert.ToUInt16(value * ihtCutDataMap.multiplier);
+                    u16Value = Convert.ToUInt16(value);
+
+                    ihtModbusdata.SetValue(eIdxTechnology, u16Value);
+                }
+
+                SetParamDynValue(u16Value, eIdxTechnology);
+            }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        internal static void GetParamTextAndUnit(string paramText, out string paramTextNew, ref string unit, bool blPasswordValid)
+            /// <summary>
+            /// 
+            /// </summary>
+            internal static void GetParamTextAndUnit(string paramText, out string paramTextNew, ref string unit, bool blPasswordValid)
         {
             paramTextNew = paramText;
 

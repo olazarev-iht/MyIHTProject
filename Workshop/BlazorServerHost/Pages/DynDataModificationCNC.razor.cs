@@ -382,7 +382,6 @@ namespace BlazorServerHost.Pages
                 if (!ProcessInfo_IsCalibrationActive)
                 {
                     if (ihtDevice.dataCmdExecution.IsCalibrationActive && stopwatch.ElapsedMilliseconds > 2000)
-                    //if (ihtDevice.dataCmdExecution.IsCalibrationActive)
                     {
                         ihtDevice.dataCmdExecution.IsCalibrationActive = false;
                         _ = ihtDevices.StopCalibrationAsync(ihtDevice.SlaveId);
@@ -438,13 +437,11 @@ namespace BlazorServerHost.Pages
 
         private async Task Exhibition_StartProcess()
         {
-            //_isProcessBtnActive = true;
             await ihtDevices.StartProcessOnCommonAsync();
 
         }
         private async Task Exhibition_StopProcess()
         {
-            //_isProcessBtnActive = false;
             await ihtDevices.StopProcessOnCommonAsync();
 
         }

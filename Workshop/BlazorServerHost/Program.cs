@@ -16,6 +16,7 @@ using Microsoft.Extensions.Localization;
 using MudBlazor.Services;
 using BlazorServerHost.Services.APCCommunic;
 using SharedComponents.APCHardwareManagers;
+using SharedComponents.CutDataRepository;
 using SharedComponents.IhtData;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
@@ -134,6 +135,8 @@ builder.Services.AddSingleton<IhtModbusCommunicData>();
 builder.Services.AddSingleton<APCCommunicManager>();
 builder.Services.AddSingleton<CommunicationsService>();
 builder.Services.AddSingleton<DataCommon>();
+builder.Services.AddSingleton<IhtCutDataAddressMap>();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 	{

@@ -1,13 +1,23 @@
 ﻿@*@inherits IhtComponentBase*@
 @using System.Reflection;
+@using SharedComponents.CutDataRepository
+@using SharedComponents.IhtDev
+@using SharedComponents.IhtModbus
 @using SharedComponents.Models
+@using SharedComponents.Services.APCHardwareManagers
 @using SharedComponents.Services.CuttingDataDBServices
 @using SharedComponents.Models.CuttingData
+
 
 @inject NavigationManager navigationManager
 @inject ICuttingDataDBService cuttingDataDBService
 @inject INozzleDBService nozzleDBService
 @inject IMaterialDBService materialDBService
+
+@inject IhtDevices ihtDevices
+@inject IhtCutDataAddressMap ihtCutDataAddressMap
+@inject IParameterDataInfoManager parameterDataInfoManager
+
 @inject MudBlazor.ISnackbar snackBar
 @implements IDisposable
 
@@ -96,6 +106,24 @@ VisibleField {
 <PageTitle>Cutting Data</PageTitle>
 
 <MudText Typo="Typo.h3">Cutting Data</MudText>
+
+<MudDialog @bind-IsVisible="_loadParamsDialogVisible">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Load Confirmation</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@cuttingDataModel" @ref="_deleteForm">
+            <MudTextField ReadOnly Value="@cuttingDataModel.Material.Name" Label="Material" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
+            <MudTextField ReadOnly Value="@cuttingDataModel.Thickness" Label="Thickness" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
+            <MudTextField ReadOnly Value="@cuttingDataModel.Remark" Label="Remark" Variant="Variant.Text" Margin="Margin.Normal"
+                Lines="2" For=@(() => cuttingDataModel.Remark)></MudTextField>                  
+        </MudForm>      
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseLoadParamsModal">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="LoadParamsAsync">Delete</MudButton>
+    </DialogActions>
+</MudDialog>
 
 <MudDialog @bind-IsVisible="_deleteParamsDialogVisible">
     <TitleContent>
@@ -362,7 +390,7 @@ VisibleField {
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Delete(@cuttingDataModel.Id))">Save</MudButton>
                 </td>
                 <td>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Delete(@cuttingDataModel.Id))">Load</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Load(@cuttingDataModel.Id))">Load</MudButton>
                 </td>
             </tr>
         </table>
@@ -440,6 +468,7 @@ VisibleField {
     private bool _createParamsDialogVisible;
     private bool _editParamsDialogVisible;
     private bool _deleteParamsDialogVisible;
+    private bool _loadParamsDialogVisible;
     private bool _editOneParamDialogVisible;
     private bool _paramPopUpDialogVisible;
 
@@ -472,6 +501,8 @@ VisibleField {
     private static List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
     private IEnumerable<NozzleModel> nozzleModelList = new List<NozzleModel>();
     private IEnumerable<MaterialModel> materialModelList = new List<MaterialModel>();
+
+    private IhtModbusCommunic IhtModbusCommunic => ihtDevices.ihtModbusCommunic;
 
     public static event EventHandler? StaticParamsClientChanged;
 
@@ -581,6 +612,48 @@ VisibleField {
         OnStaticParamChanged();
     }
 
+    private async Task LoadParamsAsync()
+    {
+        //await cuttingDataDBService.DeleteEntryAsync(cuttingDataModel.Id, CancellationToken.None);
+
+        var modbusDatas = IhtModbusCommunic.GetConnectedModbusDatas();
+        bool result = modbusDatas.Count > 0;
+
+        foreach (IhtModbusData modbusData in modbusDatas)
+        {
+            ihtCutDataAddressMap.SetData(cuttingDataModel, modbusData);
+
+            // Technologie-Parameter Dyn. rite into the Device
+            result = await ihtDevices.Write_TechnologyDynAsync(modbusData, true) && result;
+
+            if (result)
+            {
+                // Read the Dyn Params from the Device
+                IhtModbusResult ihtModbusResult = new();
+                ihtModbusResult.Result = await ihtDevices.Read_TechnologyDynAsync(modbusData, true);
+
+                // Write Dyn Params into the DB
+                var technologyDyn = modbusData.GetDataTechnologyDyn();
+                ushort paramsStartAddress = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.TechnologyDyn).u16StartAddr;
+
+                var paramsAddressAndValues = technologyDyn.Select(x => (paramsStartAddress++, x)).ToArray();
+
+                // parameterDataInfoManager.UpdateDynParamsRangeBySlaveId(modbusData.SlaveId, paramsAddressAndValues);
+            }
+
+
+        }
+
+        //ihtCutDataAddressMap
+
+        cuttingDataModel = new CuttingDataModel();
+        _loadParamsDialogVisible = false;
+        //snackBar.Add("Parameter Deleted.", Severity.Success);
+        await GetEntriesAsync();
+
+        OnStaticParamChanged();
+    }
+
     private async void CloseEditParamsModal()
     {
         await GetEntriesAsync();
@@ -596,6 +669,11 @@ VisibleField {
     private void CloseDeleteParamsModal()
     {
         _deleteParamsDialogVisible = false;
+    }
+
+    private void CloseLoadParamsModal()
+    {
+        _loadParamsDialogVisible = false;
     }
 
     private void CloseEditOneParamModal()
@@ -648,6 +726,12 @@ VisibleField {
     {
         SetUpCuttingDataModel(id);
         _deleteParamsDialogVisible = true;
+    }
+
+    private void Load(int id)
+    {
+        SetUpCuttingDataModel(id);
+        _loadParamsDialogVisible = true;
     }
 
     private void EditOneParam(string paramName, float paramValue, float paramMin, float paramMax, float paramDelta, int id)
