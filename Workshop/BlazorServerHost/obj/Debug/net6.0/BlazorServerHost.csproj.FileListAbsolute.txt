@@ -264,3 +264,8 @@ C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\NModbus.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\NModbus.Serial.dll
 C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\appsettings.Production.json
 C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\BlazorServerHost.MvcApplicationPartsAssemblyInfo.cs
+C:\IHT_Proj\Workshop\BlazorServerHost\bin\Debug\net6.0\MQTTnet.dll
+C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\ar\BlazorServerHost.resources.cs
+C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\de\BlazorServerHost.resources.cs
+C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\en\BlazorServerHost.resources.cs
+C:\IHT_Proj\Workshop\BlazorServerHost\obj\Debug\net6.0\uk\BlazorServerHost.resources.cs

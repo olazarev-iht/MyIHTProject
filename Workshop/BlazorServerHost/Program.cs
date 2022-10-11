@@ -27,9 +27,53 @@ using SharedComponents.Services.APCHardwareManagers;
 using SharedComponents.Services.APCHardwareMockDBServices;
 using SharedComponents.Services.CuttingDataDBServices;
 using SharedComponents.Services.APCWorkerService;
+using System.Diagnostics;
+using System.Net;
+using SharedComponents.Helpers;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.WindowsServices;
+using SharedComponents.MqttModel;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Host.UseWindowsService();
+
+var options = new WebApplicationOptions
+{
+	Args = args,
+	ContentRootPath = WindowsServiceHelpers.IsWindowsService() ? AppContext.BaseDirectory : default
+};
+var builder = WebApplication.CreateBuilder(options);
+
+#region Service, CommandLineParams
+var isService = !(Debugger.IsAttached || args.Contains("--console"));
+
+if (isService)
+{
+	//  Directory.SetCurrentDirectory(Environment.ProcessPath!);
+}
+
+IhtCmdLineParams ihtCmdLineParams = IhtCmdLineParams.GetIhtCmdLineParams();
+
+string tcpIpAddrServer = "127.0.0.1";
+int tcpIpPortServer = 39419;
+
+string cmdLineTcpIpAddrServer = String.Empty;
+if (ihtCmdLineParams.GetParam(IhtCmdLineParams.IdNo.TcpIpAddrServer, ref cmdLineTcpIpAddrServer))
+{
+	tcpIpAddrServer = cmdLineTcpIpAddrServer;
+}
+
+int cmdLineTcpIpPortServer = 0;
+if (ihtCmdLineParams.GetParam(IhtCmdLineParams.IdNo.TcpIpPortServer, ref cmdLineTcpIpPortServer))
+{
+	tcpIpPortServer = cmdLineTcpIpPortServer;
+}
+
+IPAddress iPAddress = IPAddress.Parse(tcpIpAddrServer);
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+	serverOptions.Listen(iPAddress, tcpIpPortServer);
+});
+
+#endregion // Service, CommandLineParams
 
 //builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 //{
@@ -136,6 +180,7 @@ builder.Services.AddSingleton<APCCommunicManager>();
 builder.Services.AddSingleton<CommunicationsService>();
 builder.Services.AddSingleton<DataCommon>();
 builder.Services.AddSingleton<IhtCutDataAddressMap>();
+builder.Services.AddSingleton<MqttModelFactory>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
@@ -164,6 +209,11 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddMudServices();
+
+builder.Host.UseWindowsService(options =>
+{
+	options.ServiceName = "IHT APC WebServer Service";
+});
 
 var app = builder.Build();
 

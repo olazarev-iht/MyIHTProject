@@ -1,32 +1,23 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
-using System.IO.Ports;
+﻿using System.IO.Ports;
 using System.Net.Sockets;
 //using log4net;
 //using Modbus.Device;
 using System.Collections;
-using SharedComponents;
 using SharedComponents.Helpers;
 using SharedComponents.IhtModbusCmd;
-using System.Threading;
 using SharedComponents.IhtMsg;
 using SharedComponents.IhtData;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbusTable;
-using SharedComponents.Cultures;
-using SharedComponents.Services.APCHardwareManagers;
 using SharedComponents.Services.APCHardwareMockDBServices;
-using System.Collections.Generic;
 using SharedComponents.StatusInfo;
 using NModbus;
 using NModbus.Serial;
-using NModbus.Utility;
-using static IhtCommunicService.CutbusData.DownloadKernelInfoData;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SharedComponents.IhtModbus
 {
-    public class IhtModbusResult
+  public class IhtModbusResult
     {
         public IhtModbusResult()
         {
@@ -69,6 +60,11 @@ namespace SharedComponents.IhtModbus
         public static int GetStationNo(SlaveId slaveId)
         {
             return GetStationNo((int)slaveId);
+        }
+
+        public static int GetSlaveId(int stationNo)
+        {
+          return (int)stationNo + (int)SlaveId.Id_Default;
         }
 
         // Declare a delegate
@@ -135,13 +131,23 @@ namespace SharedComponents.IhtModbus
 
         public readonly IAPCSimulationDataMockDBService _apcSimulationDataMockDBService;
 
+        private static IServiceProvider _provider;
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /*
+        public IhtModbusCommunic(IServiceProvider provider)
+        {
+          _provider = provider ?? throw new ArgumentNullException($"{nameof(provider)}");
+        }
+        */
         // instead of ---> in file IhtDevices
         // { get { return IhtModbusCommunic.GetIhtModbusCommunic(); } }
-        public IhtModbusCommunic GetIhtModbusCommunic()
+        public static IhtModbusCommunic GetIhtModbusCommunic()
         {
             if (_ihtModbusCommunic_ == null)
             {
-                _ihtModbusCommunic_ = this; // Application.Current.MainWindow.FindResource("ihtModbusCommunic") as IhtModbusCommunic;
+                _ihtModbusCommunic_ = _provider?.GetService<IhtModbusCommunic>(); // Application.Current.MainWindow.FindResource("ihtModbusCommunic") as IhtModbusCommunic;
             }
             return _ihtModbusCommunic_;
         }
@@ -149,22 +155,26 @@ namespace SharedComponents.IhtModbus
         /// <summary>
         /// 
         /// </summary>
+        /*
         static IhtModbusCommunic()
         {
             CurrOnSlaveBits = 0;
         }
-
+        */
         public IhtModbusCommunic(
-            IAPCSimulationDataMockDBService apcSimulationDataMockDBService)
+          IAPCSimulationDataMockDBService apcSimulationDataMockDBService,
+          IServiceProvider provider
+          )
         {
             _apcSimulationDataMockDBService = apcSimulationDataMockDBService ??
                throw new ArgumentNullException($"{nameof(apcSimulationDataMockDBService)}");
+          _provider = provider ?? throw new ArgumentNullException($"{nameof(provider)}");
         }
 
-        /// <summary>
-        /// Bit entsprechend der Slave ID ermitteln
-        /// </summary>
-        static public UInt16 GetSlaveIdBit(int _slaveId)
+    /// <summary>
+    /// Bit entsprechend der Slave ID ermitteln
+    /// </summary>
+    static public UInt16 GetSlaveIdBit(int _slaveId)
         {
             if (_slaveId > (int)SlaveId.Id_Invalid && _slaveId < (int)SlaveId.Id_Max)
             {
@@ -1937,8 +1947,8 @@ namespace SharedComponents.IhtModbus
         {
             return await WriteAsync(ihtModbusData.SlaveId, ihtModbusData.GetAddrInfo_SetupExec().u16StartAddr, ihtModbusData.GetDataSetupExec()).ConfigureAwait(false);
         }
-#endregion // Write_...
+    #endregion // Write_...
 
-    }
+  }
 
 }

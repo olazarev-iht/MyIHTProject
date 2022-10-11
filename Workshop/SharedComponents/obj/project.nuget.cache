@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "/wXrzdWkGQLPSAS0x0vqUuyB9Gi8oMgbJKRY8sFvXDkT8mPhY8/3cORH15gDGcspyq/ikNDb43pTqYlnMuG6xw==",
+  "dgSpecHash": "MyguVToekmuhg7fxEBrCegWF1YodqmZwi1wwdZZ9Bm1vcJS2KY1T5L8KsHUaAK/XBjl/zc4ZRx2QjR5XGjNPtw==",
   "success": true,
   "projectFilePath": "C:\\IHT_Proj\\Workshop\\SharedComponents\\SharedComponents.csproj",
   "expectedPackageFiles": [
@@ -16,6 +16,7 @@
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\microsoft.jsinterop\\6.0.3\\microsoft.jsinterop.6.0.3.nupkg.sha512",
+    "C:\\Users\\ol\\.nuget\\packages\\mqttnet\\4.1.1.318\\mqttnet.4.1.1.318.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\mudblazor\\6.0.9\\mudblazor.6.0.9.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\ol\\.nuget\\packages\\runtime.linux-arm.runtime.native.system.io.ports\\6.0.0\\runtime.linux-arm.runtime.native.system.io.ports.6.0.0.nupkg.sha512",

@@ -163,6 +163,7 @@ namespace SharedComponents.Helpers
             TcpIpAddrServer,
             TcpIpPortServer,
             Mqtt,
+            GasController,
         }
 
         public bool IsSimulationDemo { get; private set; } = false;
@@ -181,6 +182,9 @@ namespace SharedComponents.Helpers
         protected readonly string ParamTag = "--";
 
         protected Dictionary<IdNo, IhtCmdLineParamBase> cmdLineParams = new Dictionary<IdNo, IhtCmdLineParamBase>();
+
+        //public static string[] CommandLineArgs = null;
+
 #if false
     static private IhtCmdLineParams _ihtCmdLineParams = null;
     static public IhtCmdLineParams GetIhtCmdLineParams()
@@ -192,7 +196,7 @@ namespace SharedComponents.Helpers
       return _ihtCmdLineParams;
     }
 #else
-        private static readonly Lazy<IhtCmdLineParams> ihtCmdLineParamsInstance = new Lazy<IhtCmdLineParams>(() => new IhtCmdLineParams());
+    private static readonly Lazy<IhtCmdLineParams> ihtCmdLineParamsInstance = new Lazy<IhtCmdLineParams>(() => new IhtCmdLineParams());
 
         static public IhtCmdLineParams GetIhtCmdLineParams()
         {
@@ -204,32 +208,33 @@ namespace SharedComponents.Helpers
         /// </summary>
         public IhtCmdLineParams(/*StartupEventArgs e*/)
         {
-            cmdLineParams.Add(IdNo.MainWndWidth, new IhtCmdLineParamDouble("--w", String.Empty));
-            cmdLineParams.Add(IdNo.MainWndHeight, new IhtCmdLineParamDouble("--h", String.Empty));
-            cmdLineParams.Add(IdNo.MainWndLeft, new IhtCmdLineParamDouble("--l", String.Empty));
-            cmdLineParams.Add(IdNo.MainWndTop, new IhtCmdLineParamDouble("--t", String.Empty));
-            cmdLineParams.Add(IdNo.MainWndMaxized, new IhtCmdLineParamInt("--max", String.Empty));
-            cmdLineParams.Add(IdNo.Password, new IhtCmdLineParamInt("--pw", String.Empty));
-            cmdLineParams.Add(IdNo.TorchDistance, new IhtCmdLineParamDouble("--td", String.Empty, true, 1.0, 25.0));
-            cmdLineParams.Add(IdNo.ReduceButton, new IhtCmdLineParamInt("--rb", String.Empty));
-            cmdLineParams.Add(IdNo.SimulationMode, new IhtCmdLineParamString("--m", "demo | messe"));
-            cmdLineParams.Add(IdNo.BorderThickness, new IhtCmdLineParamDouble("--border", String.Empty, true, 0.0, 2.0));
-            cmdLineParams.Add(IdNo.CornerRadius, new IhtCmdLineParamDouble("--corner", String.Empty, true, 0.0, 5.0));
-            cmdLineParams.Add(IdNo.BackButton, new IhtCmdLineParamInt("--home", String.Empty));
-            cmdLineParams.Add(IdNo.Setup, new IhtCmdLineParamInt("--99", String.Empty));
-            cmdLineParams.Add(IdNo.ComPort, new IhtCmdLineParamString("--comport", String.Empty));
-            cmdLineParams.Add(IdNo.LoadDataSet, new IhtCmdLineParamString("--loaddataset", String.Empty));
-            cmdLineParams.Add(IdNo.Testing, new IhtCmdLineParamString("--testing", String.Empty));
-            cmdLineParams.Add(IdNo.MultipleProcess, new IhtCmdLineParamInt("--multiproc", String.Empty));
-            cmdLineParams.Add(IdNo.Robot, new IhtCmdLineParamInt("--robot", String.Empty));
-            cmdLineParams.Add(IdNo.ApcName, new IhtCmdLineParamString("--apcname", String.Empty));
-            cmdLineParams.Add(IdNo.TcpIpAddrServer, new IhtCmdLineParamString("--tcpaddr", "--tcpaddr"));
-            cmdLineParams.Add(IdNo.TcpIpPortServer, new IhtCmdLineParamInt("--tcpport", String.Empty));
-            cmdLineParams.Add(IdNo.Mqtt, new IhtCmdLineParamInt("--mqtt", String.Empty));
+            cmdLineParams.Add(IdNo.MainWndWidth   , new IhtCmdLineParamDouble("--w"           , String.Empty));
+            cmdLineParams.Add(IdNo.MainWndHeight  , new IhtCmdLineParamDouble("--h"           , String.Empty));
+            cmdLineParams.Add(IdNo.MainWndLeft    , new IhtCmdLineParamDouble("--l"           , String.Empty));
+            cmdLineParams.Add(IdNo.MainWndTop     , new IhtCmdLineParamDouble("--t"           , String.Empty));
+            cmdLineParams.Add(IdNo.MainWndMaxized , new IhtCmdLineParamInt   ("--max"         , String.Empty));
+            cmdLineParams.Add(IdNo.Password       , new IhtCmdLineParamInt   ("--pw"          , String.Empty));
+            cmdLineParams.Add(IdNo.TorchDistance  , new IhtCmdLineParamDouble("--td"          , String.Empty, true, 1.0, 25.0));
+            cmdLineParams.Add(IdNo.ReduceButton   , new IhtCmdLineParamInt   ("--rb"          , String.Empty));
+            cmdLineParams.Add(IdNo.SimulationMode , new IhtCmdLineParamString("--m"           , "demo | messe"));
+            cmdLineParams.Add(IdNo.BorderThickness, new IhtCmdLineParamDouble("--border"      , String.Empty, true, 0.0, 2.0));
+            cmdLineParams.Add(IdNo.CornerRadius   , new IhtCmdLineParamDouble("--corner"      , String.Empty, true, 0.0, 5.0));
+            cmdLineParams.Add(IdNo.BackButton     , new IhtCmdLineParamInt   ("--home"        , String.Empty));
+            cmdLineParams.Add(IdNo.Setup          , new IhtCmdLineParamInt   ("--99"          , String.Empty));
+            cmdLineParams.Add(IdNo.ComPort        , new IhtCmdLineParamString("--comport"     , String.Empty));
+            cmdLineParams.Add(IdNo.LoadDataSet    , new IhtCmdLineParamString("--loaddataset" , String.Empty));
+            cmdLineParams.Add(IdNo.Testing        , new IhtCmdLineParamString("--testing"     , String.Empty));
+            cmdLineParams.Add(IdNo.MultipleProcess, new IhtCmdLineParamInt   ("--multiproc"   , String.Empty));
+            cmdLineParams.Add(IdNo.Robot          , new IhtCmdLineParamInt   ("--robot"       , String.Empty));
+            cmdLineParams.Add(IdNo.ApcName        , new IhtCmdLineParamString("--apcname"     , String.Empty));
+            cmdLineParams.Add(IdNo.TcpIpAddrServer, new IhtCmdLineParamString("--tcpaddr"     , "--tcpaddr"));
+            cmdLineParams.Add(IdNo.TcpIpPortServer, new IhtCmdLineParamInt   ("--tcpport"     , String.Empty));
+            cmdLineParams.Add(IdNo.Mqtt           , new IhtCmdLineParamInt   ("--mqtt"        , String.Empty));
+            cmdLineParams.Add(IdNo.GasController  , new IhtCmdLineParamInt   ("--gasctrl"     , String.Empty));
 
             string[] cmdParams = System.Environment.GetCommandLineArgs();//e.Args;
-            int ParamsLength = cmdParams.Length;
-            int ParamsCount = 1;//0;
+            int ParamsLength   = cmdParams != null ? cmdParams.Length : 0;
+            int ParamsCount    = 1;//0;
 
             if (ParamsLength > 2/*1*/)
             {

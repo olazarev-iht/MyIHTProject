@@ -1,8 +1,11 @@
 ﻿@page "/{ComponentMode?}"
 
 @using BlazorServerHost.Features.HeightControlFeature.Services.CNC
+@using MQTTnet.Protocol
+@using SharedComponents.Helpers
 @using SharedComponents.IhtDev
 @using SharedComponents.IhtModbus
+@using SharedComponents.MqttModel
 @using BlazorServerHost.Services.APCCommunic
 @using BlazorServerHost.Services.APCWorkerService;
 @using SharedComponents.Models.APCHardware
@@ -15,8 +18,8 @@
 @inject NavigationManager navigationManager
 @inject HttpClient httpClient
 @inject IhtDevices ihtDevices
+@inject MqttModelFactory mqttModelFactory 
 @inject DataCommon dataCommon
-
 @inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
 @inject IParameterDataInfoManager parameterDataInfoManager
 @inject IAPCSimulationDataMockDBService apcSimulationDataMockDBService
@@ -1031,12 +1034,69 @@ input#password-input:focus {
 
         ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
 
+ #if true
+        string tcpIpAddrServer = "127.0.0.1";
+        #if false
+        IhtCmdLineParams ihtCmdLineParams = IhtCmdLineParams.GetIhtCmdLineParams();
+        string cmdLineTcpIpAddrServer = String.Empty;
+        if (ihtCmdLineParams.GetParam(IhtCmdLineParams.IdNo.TcpIpAddrServer, ref cmdLineTcpIpAddrServer))
+        {
+          tcpIpAddrServer = cmdLineTcpIpAddrServer;
+        }
+        #endif
+        await MqttConnectAsync(new TimeSpan(0, 0, 30), tcpIpAddrServer);
+        #endif
         // We do not need to stop worker
         //await _apcWorkerBackgroundService.StopAsync(APCWorkerBackgroundService._stoppingCts.Token);
 
         navigationManager.NavigateTo(navigationManager.Uri, true);
     }
 
+/// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    private async Task MqttConnectAsync(TimeSpan timeSpan, string tcpServerAddr)
+    {
+      try
+      {
+        MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
+
+        mqttModelFactory = MqttModelFactory.Instance(tcpServerAddr, 1883);
+        mqttModelFactory.RegisterPublishers();
+
+        if (mqttModelFactory.IsClientsError || !mqttModelFactory.IsClientsConnected())
+        {
+          if (mqttModelFactory.IsClientsError)
+          {
+            try {await mqttModelFactory.DisconnectClientsAsync(CancellationToken.None); }
+            catch { }
+            mqttModelFactory.ClearClientsError();
+          }
+         	Console.WriteLine($"MQTT: Connecting with server {mqttModelFactory.Server}:{mqttModelFactory.ServerPort}");
+          await mqttModelFactory.ConnectClientsAsync(timeSpan, CancellationToken.None);
+         	Console.WriteLine($"MQTT: Subscribe clients");
+          await mqttModelFactory.SubscribeClientsAsync(MqttQualityOfServiceLevel.AtLeastOnce, CancellationToken.None);
+        }
+
+       	Console.WriteLine($"MQTT: Connected with server {mqttModelFactory.Server}:{mqttModelFactory.ServerPort}");
+
+        List<string> topics = mqttModelFactory.GetSubscibedTopicsAll();
+        foreach (var item in topics)
+        {
+         	Console.WriteLine($"MQTT: Topic = {item}");
+        }
+      }
+      catch (Exception ex)
+      {
+       	Console.WriteLine($"MQTT: {ex.Message}");
+        if (ex.InnerException != null)
+        {
+         	Console.WriteLine($"MQTT: {ex.InnerException?.Message}");
+        }
+      }
+
+    }
     private void GoToPage(string pageUrl)
     {
         navigationManager.NavigateTo(pageUrl, true);

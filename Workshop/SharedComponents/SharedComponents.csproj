@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MQTTnet" Version="4.1.1.318" />
     <PackageReference Include="MudBlazor" Version="6.0.9" />
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	<PackageReference Include="System.IO.Ports" Version="6.0.0" />
