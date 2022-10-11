@@ -614,16 +614,15 @@ VisibleField {
 
     private async Task LoadParamsAsync()
     {
-        //await cuttingDataDBService.DeleteEntryAsync(cuttingDataModel.Id, CancellationToken.None);
-
         var modbusDatas = IhtModbusCommunic.GetConnectedModbusDatas();
         bool result = modbusDatas.Count > 0;
 
         foreach (IhtModbusData modbusData in modbusDatas)
         {
+            // Write Dyn Params data to the modbusData
             ihtCutDataAddressMap.SetData(cuttingDataModel, modbusData);
 
-            // Technologie-Parameter Dyn. rite into the Device
+            // Technologie-Parameter Dyn. write into the Device
             result = await ihtDevices.Write_TechnologyDynAsync(modbusData, true) && result;
 
             if (result)
@@ -632,19 +631,18 @@ VisibleField {
                 IhtModbusResult ihtModbusResult = new();
                 ihtModbusResult.Result = await ihtDevices.Read_TechnologyDynAsync(modbusData, true);
 
-                // Write Dyn Params into the DB
-                var technologyDyn = modbusData.GetDataTechnologyDyn();
-                ushort paramsStartAddress = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.TechnologyDyn).u16StartAddr;
+                if (ihtModbusResult.Result)
+                {
+                    // Write Dyn Params into the DB
+                    var technologyDyn = modbusData.GetDataTechnologyDyn();
+                    ushort paramsStartAddress = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.TechnologyDyn).u16StartAddr;
 
-                var paramsAddressAndValues = technologyDyn.Select(x => (paramsStartAddress++, x)).ToArray();
+                    var paramsAddressAndValues = technologyDyn.Select(x => (paramsStartAddress++, x)).ToArray();
 
-                // parameterDataInfoManager.UpdateDynParamsRangeBySlaveId(modbusData.SlaveId, paramsAddressAndValues);
+                    await parameterDataInfoManager.UpdateDynParamValuesRangeAsync(modbusData.SlaveId, paramsAddressAndValues, CancellationToken.None);
+                }
             }
-
-
         }
-
-        //ihtCutDataAddressMap
 
         cuttingDataModel = new CuttingDataModel();
         _loadParamsDialogVisible = false;

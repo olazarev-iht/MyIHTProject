@@ -142,6 +142,38 @@ namespace BlazorServerHost.Services.APCHardwareDBServices
 			}
 		}
 
+		public async Task UpdateDynParamValuesRangeAsync(int deviceNumber, (ushort paramAddress, ushort paramValue)[] paramsInfo, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			deviceNumber = deviceNumber > 10 ? deviceNumber - 10 : deviceNumber;
+
+			var entries = await dbContext.ParameterDatas
+				.Include(p => p.APCDevice)
+				.Include(p => p.DynParams)
+				.Where(d => d.APCDevice != null && d.APCDevice.Num == deviceNumber)
+				.Where(d => d.DynParams != null && paramsInfo.Select(x => x.paramAddress).ToList().Contains((ushort)d.DynParams.Address))
+				.OrderBy(d => d.DynParams.Address).ToListAsync();
+
+			if (entries.Any())
+			{
+				for (var i = 0; i < paramsInfo.Count(); i++)
+				{
+					var paramAddress = paramsInfo.Select(x => x.paramAddress).ToArray()[i];
+					var paramValue = paramsInfo.Select(x => x.paramValue).ToArray()[i];
+
+					var entry = entries.FirstOrDefault(p => p.DynParams != null && p.DynParams.Address == paramAddress);
+
+					if (entry != null && entry.DynParams != null)
+					{
+						entry.DynParams.Value = paramValue;
+					}
+				}
+
+				await dbContext.SaveChangesAsync(cancellationToken);
+			}
+		}
+
 		public async Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);

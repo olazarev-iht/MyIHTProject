@@ -162,6 +162,11 @@ namespace SharedComponents.APCHardwareManagers
             await _dynParamsDBService.UpdateDynParamValueByDeviceNumAndAddressAsync(deviceNum, paramAddress, paramValue, cancellationToken);
         }
 
+        public async Task UpdateDynParamValuesRangeAsync(int deviceNumber, (ushort paramAddress, ushort paramValue)[] paramsInfo, CancellationToken cancellationToken)
+        {
+            await _dynParamsDBService.UpdateDynParamValuesRangeAsync(deviceNumber, paramsInfo, cancellationToken);
+        }
+
         public async Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken)
         {
             var settings = _settings;
