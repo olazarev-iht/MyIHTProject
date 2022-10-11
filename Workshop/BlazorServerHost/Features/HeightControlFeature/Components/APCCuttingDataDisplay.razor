@@ -1,5 +1,6 @@
 ﻿@*@inherits IhtComponentBase*@
 @using System.Reflection;
+@using System.Collections;
 @using SharedComponents.CutDataRepository
 @using SharedComponents.IhtDev
 @using SharedComponents.IhtModbus
@@ -121,7 +122,7 @@ VisibleField {
     </DialogContent>
     <DialogActions>
         <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseLoadParamsModal">Cancel</MudButton>
-        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="LoadParamsAsync">Delete</MudButton>
+        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="LoadParamsAsync">Load</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -387,19 +388,10 @@ VisibleField {
                         Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())">Delete</MudButton>
                 </td>
                 <td>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Delete(@cuttingDataModel.Id))">Save</MudButton>
-                </td>
-                <td>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Load(@cuttingDataModel.Id))">Load</MudButton>
+                    <MudButton Disabled="!_enableToLoadData" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Load(@cuttingDataModel.Id))">Load</MudButton>
                 </td>
             </tr>
         </table>
-        @*<MudFab @onclick="@(()=>Duplicate(@cuttingDataModel.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Title="Duplicate" Size="Size.Small" IconSize="Size.Small" />
-        <MudFab @onclick="@(()=>Edit(@cuttingDataModel.Id))" Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Title="Edit" Size="Size.Small" IconSize="Size.Small" />
-        <MudFab @onclick="@(()=>Delete(@cuttingDataModel.Id))" Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />*@
-        
-            @*<MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Duplicate</MudButton>
-        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Edit</MudButton>*@
     </DialogActions>
 </MudDialog>
 
@@ -469,8 +461,10 @@ VisibleField {
     private bool _editParamsDialogVisible;
     private bool _deleteParamsDialogVisible;
     private bool _loadParamsDialogVisible;
+    private bool _enableToLoadData;
     private bool _editOneParamDialogVisible;
     private bool _paramPopUpDialogVisible;
+    private ArrayList _modbusDatas = new();
 
     private MudForm _createForm;
     private MudForm _editForm;
@@ -513,6 +507,9 @@ VisibleField {
         await GetMaterialsAsync();
 
         APCCuttingDataDisplay.StaticParamsClientChanged += StaticAPCParamsOnStaticAPCParamsDataChanged;
+
+        _modbusDatas = IhtModbusCommunic.GetConnectedModbusDatas();
+        _enableToLoadData = _modbusDatas.Count > 0;
     }
 
     private void GoOperatorScreen(string screenMode)
@@ -614,16 +611,15 @@ VisibleField {
 
     private async Task LoadParamsAsync()
     {
-        var modbusDatas = IhtModbusCommunic.GetConnectedModbusDatas();
-        bool result = modbusDatas.Count > 0;
+        //var modbusDatas = IhtModbusCommunic.GetConnectedModbusDatas();
 
-        foreach (IhtModbusData modbusData in modbusDatas)
+        foreach (IhtModbusData modbusData in _modbusDatas)
         {
             // Write Dyn Params data to the modbusData
             ihtCutDataAddressMap.SetData(cuttingDataModel, modbusData);
 
             // Technologie-Parameter Dyn. write into the Device
-            result = await ihtDevices.Write_TechnologyDynAsync(modbusData, true) && result;
+            var result = await ihtDevices.Write_TechnologyDynAsync(modbusData, true);
 
             if (result)
             {
