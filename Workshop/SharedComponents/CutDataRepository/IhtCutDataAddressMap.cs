@@ -104,7 +104,6 @@ namespace SharedComponents.CutDataRepository
                 if (addressMap.TryGetValue(eIdxTechnology, out ihtCutDataMap))
                 {
                     u16Value = Convert.ToUInt16(value * ihtCutDataMap.multiplier);
-                    u16Value = Convert.ToUInt16(value);
 
                     ihtModbusdata.SetValue(eIdxTechnology, u16Value);
                 }
