@@ -218,6 +218,13 @@ input#password-input:focus {
   /* bring your own prefixes */
   transform: translate(-50%, -50%);
 }
+
+.mud-paper.mud-elevation-1 {
+        color: var(--mud-palette-text-primary);
+        background-color: transparent; 
+        border-radius: var(--mud-default-borderradius);
+        transition: box-shadow 300ms cubic-bezier(.4,0,.2,1) 0ms;
+}
 </style>
 
 <style>
@@ -616,12 +623,15 @@ input#password-input:focus {
                         <tr>
             @if(ComponentMode != MANUAL_MODE && EXHIBITION_MODE){
                 <td colspan="2" style="width: 67%;">
+                    <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                    <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
                     <div class="button_container">
                         <div id="ProcessBtn" class="@(_isProcessBtnActive ? "process_btn active" : "process_btn")"
                             @onclick="@(async (_) => await StartProcessAsync())">
                             @(_isProcessBtnActive ? "Stop Process" : "Start Process")
                         </div>
                     </div>
+                    </MudPaper>
                 </td>
                 
             }
@@ -645,6 +655,8 @@ input#password-input:focus {
         <tr>
             <td>
                 <div class="flex-item-left">
+                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
                 <table class="internal_div_table">
                     <tr>
                         <td>
@@ -688,8 +700,11 @@ input#password-input:focus {
                         </td>
                     </tr>
                 </table>
+                </MudPaper>
                 </div>
                 <div class="flex-item-right">
+                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px; ">
+                <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
                     <table class="internal_div_table">
                         <tr>
                             <td class="button_tabcell">
@@ -821,6 +836,7 @@ input#password-input:focus {
                             }
                         </tr>
                     </table>
+                    </MudPaper>
                 </div>
             </td>                      
         </tr>
@@ -1037,12 +1053,12 @@ input#password-input:focus {
  #if true
         string tcpIpAddrServer = "127.0.0.1";
         #if false
-        IhtCmdLineParams ihtCmdLineParams = IhtCmdLineParams.GetIhtCmdLineParams();
-        string cmdLineTcpIpAddrServer = String.Empty;
-        if (ihtCmdLineParams.GetParam(IhtCmdLineParams.IdNo.TcpIpAddrServer, ref cmdLineTcpIpAddrServer))
-        {
-          tcpIpAddrServer = cmdLineTcpIpAddrServer;
-        }
+    IhtCmdLineParams ihtCmdLineParams = IhtCmdLineParams.GetIhtCmdLineParams();
+    string cmdLineTcpIpAddrServer = String.Empty;
+    if (ihtCmdLineParams.GetParam(IhtCmdLineParams.IdNo.TcpIpAddrServer, ref cmdLineTcpIpAddrServer))
+    {
+      tcpIpAddrServer = cmdLineTcpIpAddrServer;
+    }
         #endif
         await MqttConnectAsync(new TimeSpan(0, 0, 30), tcpIpAddrServer);
         #endif
@@ -1052,49 +1068,49 @@ input#password-input:focus {
         navigationManager.NavigateTo(navigationManager.Uri, true);
     }
 
-/// <summary>
+    /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
     private async Task MqttConnectAsync(TimeSpan timeSpan, string tcpServerAddr)
     {
-      try
-      {
-        MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
-
-        mqttModelFactory = MqttModelFactory.Instance(tcpServerAddr, 1883);
-        mqttModelFactory.RegisterPublishers();
-
-        if (mqttModelFactory.IsClientsError || !mqttModelFactory.IsClientsConnected())
+        try
         {
-          if (mqttModelFactory.IsClientsError)
-          {
-            try {await mqttModelFactory.DisconnectClientsAsync(CancellationToken.None); }
-            catch { }
-            mqttModelFactory.ClearClientsError();
-          }
-         	Console.WriteLine($"MQTT: Connecting with server {mqttModelFactory.Server}:{mqttModelFactory.ServerPort}");
-          await mqttModelFactory.ConnectClientsAsync(timeSpan, CancellationToken.None);
-         	Console.WriteLine($"MQTT: Subscribe clients");
-          await mqttModelFactory.SubscribeClientsAsync(MqttQualityOfServiceLevel.AtLeastOnce, CancellationToken.None);
-        }
+            MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
 
-       	Console.WriteLine($"MQTT: Connected with server {mqttModelFactory.Server}:{mqttModelFactory.ServerPort}");
+            mqttModelFactory = MqttModelFactory.Instance(tcpServerAddr, 1883);
+            mqttModelFactory.RegisterPublishers();
 
-        List<string> topics = mqttModelFactory.GetSubscibedTopicsAll();
-        foreach (var item in topics)
-        {
-         	Console.WriteLine($"MQTT: Topic = {item}");
+            if (mqttModelFactory.IsClientsError || !mqttModelFactory.IsClientsConnected())
+            {
+                if (mqttModelFactory.IsClientsError)
+                {
+                    try {await mqttModelFactory.DisconnectClientsAsync(CancellationToken.None); }
+                    catch { }
+                    mqttModelFactory.ClearClientsError();
+                }
+                Console.WriteLine($"MQTT: Connecting with server {mqttModelFactory.Server}:{mqttModelFactory.ServerPort}");
+                await mqttModelFactory.ConnectClientsAsync(timeSpan, CancellationToken.None);
+                Console.WriteLine($"MQTT: Subscribe clients");
+                await mqttModelFactory.SubscribeClientsAsync(MqttQualityOfServiceLevel.AtLeastOnce, CancellationToken.None);
+            }
+
+            Console.WriteLine($"MQTT: Connected with server {mqttModelFactory.Server}:{mqttModelFactory.ServerPort}");
+
+            List<string> topics = mqttModelFactory.GetSubscibedTopicsAll();
+            foreach (var item in topics)
+            {
+                Console.WriteLine($"MQTT: Topic = {item}");
+            }
         }
-      }
-      catch (Exception ex)
-      {
-       	Console.WriteLine($"MQTT: {ex.Message}");
-        if (ex.InnerException != null)
+        catch (Exception ex)
         {
-         	Console.WriteLine($"MQTT: {ex.InnerException?.Message}");
+            Console.WriteLine($"MQTT: {ex.Message}");
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"MQTT: {ex.InnerException?.Message}");
+            }
         }
-      }
 
     }
     private void GoToPage(string pageUrl)
@@ -1539,7 +1555,6 @@ input#password-input:focus {
                     if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
                     {
                         cssClass = "DisabledDeviceSelected  device_tabcell";
-
                     }
                     else
                     {
@@ -1550,6 +1565,11 @@ input#password-input:focus {
             else if (device.IsCommunicError)
             {
                 cssClass = "ErrorConnectionDevice device_tabcell";
+            }
+            else if (device.IsVisible && selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
+            {
+                cssClass = "DisabledDeviceSelected  device_tabcell";
+                device.IsEnabledOn = false;
             }
 
             Task.Run(() => GetDeviceCalibrationState(device));
