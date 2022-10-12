@@ -11,6 +11,6 @@ namespace SharedComponents.Services.APCWorkerService
 		Task RefreshDynamicDataAsync(int deviceNum, int paramAddress);
 		Task DoWork(CancellationToken stoppingToken);
 		void _apcWorkerService_LiveDataChanged(string? sender);
-
+		void _apcWorkerService_DynDataChanged();
 	}
 }

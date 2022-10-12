@@ -121,9 +121,11 @@ namespace SharedComponents.IhtModbus
         public bool IsStarted { get; private set; }
 
         public static int CurrOnSlaveBits { get; set; }
+        public bool IsSimulation { get => isSimulation || IsSimulationHighPriority; set => isSimulation = value; }
 
-        private bool IsSimulation = false;
+        private bool isSimulation = true;
 
+        public bool IsSimulationHighPriority { get; set; }
         /// <summary>
         /// 
         /// </summary>

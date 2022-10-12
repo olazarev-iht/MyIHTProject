@@ -5,10 +5,10 @@
 @using SharedComponents.IhtDev
 @using SharedComponents.IhtModbus
 @using SharedComponents.Models
-@using SharedComponents.Services.APCHardwareManagers
-@using SharedComponents.Services.CuttingDataDBServices
 @using SharedComponents.Models.CuttingData
-
+@using SharedComponents.Services.APCHardwareManagers
+@using SharedComponents.Services.APCWorkerService
+@using SharedComponents.Services.CuttingDataDBServices
 
 @inject NavigationManager navigationManager
 @inject ICuttingDataDBService cuttingDataDBService
@@ -18,6 +18,7 @@
 @inject IhtDevices ihtDevices
 @inject IhtCutDataAddressMap ihtCutDataAddressMap
 @inject IParameterDataInfoManager parameterDataInfoManager
+@inject IAPCWorker apcWorker
 
 @inject MudBlazor.ISnackbar snackBar
 @implements IDisposable
@@ -639,6 +640,8 @@ VisibleField {
                 }
             }
         }
+
+        apcWorker._apcWorkerService_DynDataChanged();
 
         cuttingDataModel = new CuttingDataModel();
         _loadParamsDialogVisible = false;

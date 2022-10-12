@@ -157,6 +157,11 @@ namespace BlazorServerHost.Services.APCWorkerService
 		{
 			LiveDataChanged?.Invoke(changedPropName, EventArgs.Empty);
 		}
+
+		public void _apcWorkerService_DynDataChanged()
+		{
+			LiveDataChanged?.Invoke(this, EventArgs.Empty);
+		}
 	}
 }
 

@@ -11,6 +11,7 @@ using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareManagers;
 using SharedComponents.Services.APCHardwareDBServices;
 using SharedComponents.Services.APCHardwareMockDBServices;
+using SharedComponents.IhtModbusTable;
 
 namespace SharedComponents.APCHardwareManagers
 {
@@ -179,9 +180,12 @@ namespace SharedComponents.APCHardwareManagers
 
             var isParameterDataEmpty = !(await _parameterDataDBService.GetEntriesAsync(CancellationToken.None)).Any();
 
+            /// TODO: Deside if we need this initialization: (commented)
             if (isParameterDataEmpty)
             {
+                _ihtModbusCommunic.IsSimulationHighPriority = true;
                 await UpdateAPCHardwareDataAsync(cancellationToken);
+                _ihtModbusCommunic.IsSimulationHighPriority = false;
             }
         }
 

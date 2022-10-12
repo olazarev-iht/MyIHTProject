@@ -1589,6 +1589,7 @@ input#password-input:focus {
 
     private async void DynamicAPCParamsOnDynamicAPCParamsDataChanged(object? sender, EventArgs e)
     {
+        await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
         await InvokeAsync(StateHasChanged);
     }
 
