@@ -155,6 +155,8 @@ table#controlPanel td  {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+  zoom: 0.5;
+  -moz-transform: scale(0.5);
 }
 
 .flex-item-left {
@@ -224,12 +226,12 @@ input#password-input:focus {
   transform: translate(-50%, -50%);
 }
 
-.mud-paper.mud-elevation-1 {
+/*.mud-paper.mud-elevation-1 {
         color: var(--mud-palette-text-primary);
         background-color: transparent; 
         border-radius: var(--mud-default-borderradius);
         transition: box-shadow 300ms cubic-bezier(.4,0,.2,1) 0ms;
-}
+}*/
 </style>
 
 <style>
@@ -647,7 +649,7 @@ input#password-input:focus {
                 <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
                 @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
             }
-            <MudTd Class="@(_isSumTorchesActive ? "device_lastcell active" : "device_lastcell")" 
+                <MudTd Class="@(_isSumTorchesActive ? "device_lastcell active" : "device_lastcell")" 
                 Style="font-size:25px; padding:6px; font-family:none;" @onclick="@(async (_) => await StartSumTorchesAsync())">&nbsp;&#8721;&nbsp;</MudTd>
                 @*<td class="@(_isFlameOnEndActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")"
                                             @onclick="@(async (_) => await StartFlameOnEndAsync())"></td>*@
@@ -708,8 +710,6 @@ input#password-input:focus {
                 </MudPaper>
                 </div>
                 <div class="flex-item-right">
-                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px; ">
-                <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
                     <table class="internal_div_table">
                         <tr>
                             <td class="button_tabcell">
@@ -841,7 +841,6 @@ input#password-input:focus {
                             }
                         </tr>
                     </table>
-                    </MudPaper>
                 </div>
             </td>                      
         </tr>
@@ -1130,7 +1129,7 @@ input#password-input:focus {
 
     private bool IsMovementButtonsDisabled()
     {
-        return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected;
+        return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl;
     }
 
     private bool IsMoveDownButtonDisabled()
@@ -1407,11 +1406,18 @@ input#password-input:focus {
         _maxHeatTime = maxHeatTime;
     }
 
-
     bool IsEnabledMainControl
     {
         get { return CurrentDevice.IsEnabledMainControl; }
-        set { CurrentDevice.IsEnabledMainControl = value; }
+        set
+        {
+            CurrentDevice.IsEnabledMainControl = value;
+
+            if (value)
+            {
+                dynDataModificationCNCDataProvider.ManualySelectedDeviceIsDisabled = false;
+            }
+        }
     }
 
     private void PreflowStartSwitch_ChangedValue(bool isChecked)

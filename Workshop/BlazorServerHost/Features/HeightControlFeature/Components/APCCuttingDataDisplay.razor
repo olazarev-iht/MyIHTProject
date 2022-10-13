@@ -1,6 +1,7 @@
 ﻿@*@inherits IhtComponentBase*@
 @using System.Reflection;
 @using System.Collections;
+@using BlazorServerHost.Extensions
 @using SharedComponents.CutDataRepository
 @using SharedComponents.IhtDev
 @using SharedComponents.IhtModbus
@@ -536,6 +537,8 @@ VisibleField {
     private async Task<List<CuttingDataModel>> GetEntriesAsync()
     {
         cuttingDataModelList = await cuttingDataDBService.GetEntriesAsync(CancellationToken.None);
+        cuttingDataModelList = cuttingDataModelList.Where(d => d.Gas.Name.Trim().ToLower() == ihtDevices.TorchTypeSetup.GetDescription()?.ToString().Trim().ToLower()).ToList();
+        
         return cuttingDataModelList;
     }
 

@@ -68,8 +68,11 @@ namespace SharedComponents.IhtDev
         public enum TorchType
         {
             Invalid = -1,
+            [Description("Propan")]
             Propane = 0,
+            [Description("Acetylene")]
             Acetylane = 1,
+            [Description("NaturalGas")]
             NaturalGas = 2
         }
 

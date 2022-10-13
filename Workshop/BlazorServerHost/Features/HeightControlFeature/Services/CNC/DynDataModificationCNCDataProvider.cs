@@ -19,35 +19,47 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 		private List<IhtDevice> _devices => _ihtDevices.GetDevices();
 
 		// To have abillity to set up not enabled device as current
-		private bool _currentDeviceWasEnabledBeforeSelect = true;
+		public bool ManualySelectedDeviceIsDisabled { get; set; } = false;
 
 		private int _currentDeviceNumber = 1;
-		public int CurrentDeviceNumber {
-            get
-            {
+		public int CurrentDeviceNumber
+		{
+			get
+			{
 				var currentDevice = IhtDevices.GetIhtDevices().GetDevice(_currentDeviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default);
 
 				// If current device is not enabled, take first enabled device as current
-				if(currentDevice == null || !currentDevice.IsEnabledMainControl && _currentDeviceWasEnabledBeforeSelect)
-                {
-					currentDevice = _devices.Where(d => d.IsEnabledMainControl).OrderBy( d => d.DeviceNumber).FirstOrDefault();
+				if (currentDevice == null || !currentDevice.IsEnabledMainControl && !ManualySelectedDeviceIsDisabled)
+				{
+					currentDevice = _devices.Where(d => d.IsEnabledMainControl).OrderBy(d => d.DeviceNumber).FirstOrDefault();
 				}
-				
+
 				if (currentDevice != null)
-                {
+				{
 					_currentDeviceNumber = currentDevice.DeviceNumber;
 				}
 
+				//_currentDisabledDeviceWasChangedManualy = false;
+
 				return _currentDeviceNumber;
 			}
-            set {
-				
+			set
+			{
+
 				_currentDeviceNumber = value;
 
 				var currentDevice = IhtDevices.GetIhtDevices().GetDevice(_currentDeviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default);
 
 				// To have abillity to set up not enabled device as current
-				if (currentDevice != null && !currentDevice.IsEnabledMainControl) _currentDeviceWasEnabledBeforeSelect = false;
+				if (currentDevice != null)
+					if (!currentDevice.IsEnabledMainControl)
+					{
+						ManualySelectedDeviceIsDisabled = true;
+					}
+					else
+					{
+						ManualySelectedDeviceIsDisabled = false;
+					}
 			}
 		}
 
