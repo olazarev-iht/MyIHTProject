@@ -11,15 +11,6 @@ namespace BlazorServerHost.Pages
 
         private IJSObjectReference? _module;
         private DotNetObjectReference<DynDataModificationCNC>? _selfReference;
-        //private bool _isTorchUpActive = false;
-        //private bool _isTorchDownActive = false;
-        //private bool _isHCTorchUpActive = false;
-        //private bool _isHCTorchDownActive = false;
-        //private bool _isCalibrationActive = false;
-        //private bool _isStartPiercingActive = false;
-        //private bool _isReloadPreHeatingTimeActive = false;
-        //private bool _isFlameOnEndActive = false;
-        //private bool _isFlameOn = false;
 
         private bool _isSumTorchesActive = false;
 
@@ -77,7 +68,12 @@ namespace BlazorServerHost.Pages
             set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsFlameOn = value;
         }
 
-        private bool _isLedPreHeating = false;
+        private bool _isLedPreHeating
+        {
+            get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsLedPreHeating;
+            set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsLedPreHeating = value;
+        }
+
         public bool IsLedPreHeating
         {
             get
