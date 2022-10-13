@@ -18,29 +18,36 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 		private List<IhtDevice> _devices => _ihtDevices.GetDevices();
 
+		// To have abillity to set up not enabled device as current
+		private bool _currentDeviceWasEnabledBeforeSelect = true;
+
+		private int _currentDeviceNumber = 1;
 		public int CurrentDeviceNumber {
             get
             {
-				var currentDeviceNumber = 1;
-				var currentDevice = _devices.Where(d => d.IsCheckedTorch).FirstOrDefault();
+				var currentDevice = IhtDevices.GetIhtDevices().GetDevice(_currentDeviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default);
 
-				if (currentDevice == null)
-                {										
-					var device = IhtDevices.GetIhtDevices().GetDevice(currentDeviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default);
-					device.IsCheckedTorch = true;
-				}
-                else
+				// If current device is not enabled, take first enabled device as current
+				if(currentDevice == null || !currentDevice.IsEnabledMainControl && _currentDeviceWasEnabledBeforeSelect)
                 {
-					currentDeviceNumber = currentDevice.DeviceNumber;
+					currentDevice = _devices.Where(d => d.IsEnabledMainControl).OrderBy( d => d.DeviceNumber).FirstOrDefault();
+				}
+				
+				if (currentDevice != null)
+                {
+					_currentDeviceNumber = currentDevice.DeviceNumber;
 				}
 
-				return currentDeviceNumber;
+				return _currentDeviceNumber;
 			}
-            set
-            {
-				_devices.ForEach(d => d.IsCheckedTorch = false);
-				var currentDevice = _devices.Single(d => d.DeviceNumber == value);
-				currentDevice.IsCheckedTorch = true;
+            set {
+				
+				_currentDeviceNumber = value;
+
+				var currentDevice = IhtDevices.GetIhtDevices().GetDevice(_currentDeviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default);
+
+				// To have abillity to set up not enabled device as current
+				if (currentDevice != null && !currentDevice.IsEnabledMainControl) _currentDeviceWasEnabledBeforeSelect = false;
 			}
 		}
 

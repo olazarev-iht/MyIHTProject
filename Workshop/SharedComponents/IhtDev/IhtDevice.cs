@@ -274,20 +274,20 @@ namespace SharedComponents.IhtDev
 
                     if (eventArgs.PropertyName == "IsEnabledMainControl")
                     {
-                        // Set up the first enabled torch as current
-                        if (ihtDevice.IsCheckedTorch && !ihtDevice.IsEnabledMainControl)
-                        {
-                            ihtDevice.IsCheckedTorch = false;
-                            var firstAvailableDevice = IhtDevices.ihtDevices.ToList().OrderBy(kvp => kvp.Value.DeviceNumber)
-                                .FirstOrDefault(kvp => kvp.Value.IsEnabledMainControl && kvp.Value.IsConnected);
+                        //    // Set up the first enabled torch as current
+                        //    if (ihtDevice.IsCheckedTorch && !ihtDevice.IsEnabledMainControl)
+                        //    {
+                        //        ihtDevice.IsCheckedTorch = false;
+                        //        var firstAvailableDevice = IhtDevices.ihtDevices.ToList().OrderBy(kvp => kvp.Value.DeviceNumber)
+                        //            .FirstOrDefault(kvp => kvp.Value.IsEnabledMainControl && kvp.Value.IsConnected);
 
-                            try
-                            {
-                                if (firstAvailableDevice.Value != null)
-                                    firstAvailableDevice.Value.IsCheckedTorch = true;
-                            }
-                            catch { };
-                        }
+                        //        try
+                        //        {
+                        //            if (firstAvailableDevice.Value != null)
+                        //                firstAvailableDevice.Value.IsCheckedTorch = true;
+                        //        }
+                        //        catch { };
+                        //    }
 
                         // Setup CurrOnSlaveBits
                         var availableDevicesList = IhtDevices.ihtDevices.ToList().Select(kvp => kvp.Value).OrderBy(x => x.DeviceNumber)
