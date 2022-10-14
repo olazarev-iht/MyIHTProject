@@ -167,6 +167,9 @@ table#controlPanel td  {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+}
+
+.scaled {
   zoom: 0.87;
   -moz-transform: scale(0.87);
 }
@@ -203,6 +206,32 @@ button .mud-nav-link-text {
 .mud-dialog-container.mud-dialog-center
 {
     top: -65px;
+}
+
+.mud-dialog .mud-dialog-content {
+    padding: 3px 8px !important;
+}
+
+/*.mud-list.mud-list-padding {
+     padding-top: 0px; 
+    padding-bottom: 0px; 
+}*/
+
+/*.mud-popover.mud-popover-relative-width {
+    width: unset;
+}*/
+
+div222[id^="popovercontent-"]{
+
+    left: 220px !important;
+    /* transform: translate(-50%, -50%); */
+    transition-duration: 251ms !important;
+    transition-delay: 0ms !important;
+    max-height: 300px !important;
+    max-width: 223.132px !important;
+    /*top: 80.3879px !important;*/
+    z-index: 1403 !important;
+    position: relative !important;
 }
 
 .password-dialog {
@@ -300,7 +329,7 @@ input#password-input:focus {
         _flameAdjustVisible = NONE_DISPLAY_CLASS;
         _cutO2Visible = INVISIBLE_CLASS;
     }
-<MudDialog @bind-IsVisible="_editParamDialogVisible" Style="width: 500px;">
+<MudDialog @bind-IsVisible="_editParamDialogVisible" Style="width: 500px;" Class="scaled">
     <TitleContent>
         <MudText Typo="Typo.h6"></MudText>
     </TitleContent>
@@ -329,7 +358,7 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_setupPasswordDialogVisible" Style="width:280px">
+<MudDialog @bind-IsVisible="_setupPasswordDialogVisible" Style="width:280px" Class="scaled">
     <TitleContent>
         <MudTh Style="text-align:left;border-bottom:0px">
             <MudButton Color="MudBlazor.Color.Primary" OnClick="@(() => ResetPassword())">Reset to Level 0</MudButton>
@@ -370,7 +399,7 @@ input#password-input:focus {
     </DialogContent>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_setupParamsDialogVisible" Style="width: 600px;">
+<MudDialog @bind-IsVisible="_setupParamsDialogVisible" Style="width: 600px;" Class="scaled">
     <DialogContent>
     <MudButton OnClick="CloseSetupParamsDialog">&#8592; Go Back</MudButton>
     <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Height="500px" FixedHeader="true"
@@ -456,7 +485,7 @@ input#password-input:focus {
 </MudDialog>
 
 
-<MudDialog @bind-IsVisible="_isOpenParamsListDialog" Class="SelectDialog">
+<MudDialog @bind-IsVisible="_isOpenParamsListDialog" Class="SelectDialog Scaled">
     <TitleContent>
         <MudText Typo="Typo.h6">Param: @dynParamDataModel.ParamName</MudText>
     </TitleContent>
@@ -486,7 +515,7 @@ input#password-input:focus {
 </MudDialog>
 
 
-<MudDialog @bind-IsVisible="_menuExpanded">
+<MudDialog @bind-IsVisible="_menuExpanded" Class="scaled">
     <TitleContent>
         <table>
             <tr><td><MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText></td></tr>
@@ -513,16 +542,16 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="@TorchInstalledDialogVisible" Style="width:500px">
-    <TitleContent>
-        <MudText Typo="Typo.h6">Torch Installed</MudText>
-    </TitleContent>
+<MudDialog @bind-IsVisible="@TorchInstalledDialogVisible" Style="width:470px">
+    @*<TitleContent>
+        <MudText Typo="Typo.h6" Style="text-align: center;">Torch Installed</MudText>
+    </TitleContent>*@
     <DialogContent>
         <MudForm>
             <table width="100%">
                 <tr>
-                    <MudTh>Torch selection</MudTh>
-                    <MudTh>Torch Type</MudTh>
+                    <MudTh><b>Torch selection</b></MudTh>
+                    <MudTh><b>Torch Type</b></MudTh>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -554,7 +583,7 @@ input#password-input:focus {
                         </MudSelect>
 
                         <br />
-                        <MudTh>COM Port</MudTh>
+                        <MudTh><b>COM Port</b></MudTh>
                         <MudSelect T="string" @bind-Value="@_nameComPort" Class="myselect" Style="margin-top: 0px;">             
                           @foreach (string s in SerialPort.GetPortNames())
                           {
@@ -563,7 +592,7 @@ input#password-input:focus {
                         </MudSelect>
 
                         <br/>
-                        <MudTh>Device Connection</MudTh>
+                        <MudTh><b>Device Connection</b></MudTh>
                         <MudButton Variant="Variant.Filled" Style="align-content" OnClick="Connection" Disabled="@IsDeviceConnectionDisabled()">Connection</MudButton>
                         <MudCheckBox @bind-Checked="@_performResetDevices" Dense="false" Color="Color.Primary">
                             <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Perform a reset for all devices</MudText>
@@ -579,17 +608,11 @@ input#password-input:focus {
     </DialogContent>
     <DialogActions>
         <MudButton Color="MudBlazor.Color.Secondary" 
-            OnClick="CloseTorchInstalledDialog" onmousedown="return false">
-            Close
-        </MudButton>
-        @*<MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" 
-            OnClick="CreateParamsAsync">
-            Save
-        </MudButton>*@
+            OnClick="CloseTorchInstalledDialog" onmousedown="return false">Close</MudButton>
     </DialogActions>
 </MudDialog>
 
-<div class="flex-container" >
+<div class="flex-container scaled" >
     <table id="controlPanel" class="tablemobile centered" width="500px">
         <tr>
             <MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
