@@ -31,24 +31,33 @@
 <style>
 .device_tabcell {
     width: 88px;
-    height:50px;
+    height:55px;
     text-align: center;
     border: 1px solid #fff;
 
-    border: 1px solid #fff !important;
-    /* border-right-color: white !important; */
-    /* border-right-style: solid !important; */
-    /* border-right-width: 2px !important; */
+    /*border: 1px solid #fff !important;*/
+
+    border-left-color: white !important; 
+    border-left-style: solid !important; 
+    border-left-width: 2px !important; 
+
+    border-right-color: #fff !important;
+    border-right-style: solid !important;
+    border-right-width: 2px !important;
 }
 
 .device_lastcell {
-    width: 87px;
-    height:50px;
+    width: 88px;
+    height:55px;
     text-align: center;
     font-weight:bold;
     background: #d7e8f9;
     border-left-width: 2px;
     border-left-color: white;
+
+    border-left-color: #fff !important;
+    border-left-style: solid !important;
+    border-left-width: 2px !important;
 }
 
 .button_tabcell {
@@ -70,6 +79,9 @@
     border-bottom-color: white !important;
     border-top-width: 2px !important;
     border-top-color: white !important;
+    border-left-color: #fff !important;
+    border-left-style: solid !important;
+    border-left-width: 2px !important;
 }
 .active {
         box-shadow: 0px 0px 0px #0065c8;
@@ -86,7 +98,7 @@
 }
 
 .divcell {
-    width: 90px;
+    width: 87px;
     height: 63px;
     text-align: center;
 }
@@ -155,8 +167,8 @@ table#controlPanel td  {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-  zoom: 0.5;
-  -moz-transform: scale(0.5);
+  zoom: 1;
+  -moz-transform: scale(1);
 }
 
 .flex-item-left {
@@ -169,7 +181,7 @@ table#controlPanel td  {
 }
 
 .internal_div_table{
-    width:270px; 
+    width:250px; 
     /*height:197px;*/
 }
 
@@ -578,7 +590,7 @@ input#password-input:focus {
 </MudDialog>
 
 <div class="flex-container" >
-    <table id="controlPanel" class="tablemobile centered" width="545px">
+    <table id="controlPanel" class="tablemobile centered" width="500px">
         <tr>
             <MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
         </tr>
@@ -629,7 +641,7 @@ input#password-input:focus {
                     <table class="internal_div_table">
                         <tr>
             @if(ComponentMode != MANUAL_MODE && EXHIBITION_MODE){
-                <td colspan="2" style="width: 67%;">
+                <td colspan="2" style="width: 66.35%;">
                     <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                     <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
                     <div class="button_container">
@@ -796,22 +808,12 @@ input#password-input:focus {
                            else 
                            {                            
                             <td class="button_tabcell">
-                                <table style="border-spacing: 0px !important;"> 
+                                <table style="margin: 0px 0px 0px 3px !important"> 
                                     <tr>
-                                        <td class="divcell tabcell_menu">
-                                            @*<div class="button_container">
-                                                <div id="ProcessBtn" class="@(_isProcessBtnActive ? "process_btn active" : "process_btn")"
-                                                        @onclick="@(async (_) => await StartProcessAsync())">
-                                                        @(_isProcessBtnActive ? "Stop Process" : "Start Process")
-                                                </div>
-                                            </div>*@
-
-                                            <td class="@(_isFlameOnEndActive ? "divcell tabcell_menu" : "divcell tabcell_menu")"
+                                        <td class="@(_isFlameOnEndActive ? "divcell tabcell_menu" : "divcell tabcell_menu")"
                                             @onclick="@(async (_) => await StartFlameOnEndAsync())">
                                             <img draggable="false" src="@(_isFlameOnEndActive ? "Images/torch_too_much_gas.png" : "Images/torch_ignition.png")" 
                                                 style="mix-blend-mode: multiply; width: 50px; height: 55px; vertical-align: middle;" />
-                                        </td>
-
                                         </td>
                                     </tr>
                                     <tr>
