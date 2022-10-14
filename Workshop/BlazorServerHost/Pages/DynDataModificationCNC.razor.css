@@ -1,5 +1,5 @@
 ﻿/* Responsive layout - makes a one column-layout instead of two-column layout */
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 250px) {
     /* horizontal scrollbar for tables if mobile screen */
     .tablemobile {
         overflow-x: auto;

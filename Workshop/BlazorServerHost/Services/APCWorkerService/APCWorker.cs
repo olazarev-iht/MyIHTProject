@@ -30,6 +30,9 @@ namespace BlazorServerHost.Services.APCWorkerService
 		public event EventHandler? LiveDataChanged;
 
 		public event EventHandler? DynamicDataChanged;
+
+		public event EventHandler? DynDataLoaded;
+
 		public APCWorker(
 			IParameterDataInfoManager parameterDataInfoManager,
 			ILogger<APCWorkerService> logger,
@@ -158,9 +161,9 @@ namespace BlazorServerHost.Services.APCWorkerService
 			LiveDataChanged?.Invoke(changedPropName, EventArgs.Empty);
 		}
 
-		public void _apcWorkerService_DynDataChanged()
+		public void _apcWorkerService_DynDataLoaded()
 		{
-			LiveDataChanged?.Invoke(this, EventArgs.Empty);
+			DynDataLoaded?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

@@ -146,6 +146,8 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 
 			_apcWorker.LiveDataChanged += _apcWorkerService_LiveDataChanged;
 
+			_apcWorker.DynDataLoaded += _apcWorkerService_DynDataLoaded;
+
 			CheckIfDynamicDataChangedAndCreateEventForDisplay().Wait();
 		}
 
@@ -404,6 +406,11 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			OnDynamicAPCParamsDataChanged();
 		}
 
+		private async void _apcWorkerService_DynDataLoaded(object? sender, EventArgs e)
+		{
+			await OnDynamicAPCParamsDataLoaded();
+		}
+
 		private async Task CheckIfDynamicDataChangedAndCreateEventForDisplay()
 		{
 			_paramChangedFlag = false;
@@ -505,8 +512,14 @@ namespace BlazorServerHost.Features.HeightControlFeature.Services.CNC
 			_apcWorker.LiveDataChanged -= _apcWorkerService_LiveDataChanged;
 		}
 
-		protected virtual void OnDynamicAPCParamsDataChanged()
+		protected void OnDynamicAPCParamsDataChanged()
 		{
+			DynamicAPCParamsDataChanged?.Invoke(this, EventArgs.Empty);
+		}
+
+		protected async Task OnDynamicAPCParamsDataLoaded()
+		{
+			await RefreshDynamicDataModelToDisplayAsync();
 			DynamicAPCParamsDataChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
