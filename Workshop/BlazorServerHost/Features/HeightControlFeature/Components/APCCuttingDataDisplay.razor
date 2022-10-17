@@ -34,7 +34,7 @@
         padding: 7px 0px 5px;
     }
     .mud-table-cell{
-        padding: 7px 7px 7px 7px;
+        padding: 5px 7px 5px 7px;
         border: 1px solid #e0e0e0;
         
     }
@@ -103,6 +103,12 @@ VisibleField {
     height:50px;*/
     text-align: center;
 }
+
+.scaled {
+  zoom: 0.78;
+  -moz-transform: scale(0.87);
+}
+
     /*--mud-palette-table-striped: #bdbdbd;*/
 </style>
 
@@ -399,7 +405,7 @@ VisibleField {
 
 <br />
 <MudTable Elevation="25" RowsPerPage="6" Items="@cuttingDataModelList" Filter="new Func<CuttingDataModel, bool>(Search)" Hover="true" Striped="true"
-    @bind-cuttingDataModel="cuttingDataModel" OnRowClick="RowClickEvent" T="CuttingDataModel" Class="centered" Style="width: 550px; cursor: default;" 
+    @bind-cuttingDataModel="cuttingDataModel" OnRowClick="RowClickEvent" T="CuttingDataModel" Class="centered scaled" Style="width: 550px; cursor: default;" 
     Dense="false" HeaderClass="tab_head" RowClass="tab_row" SelectedItem="selectedDataModel">
     @*<ToolBarContent>
         <MudText Typo="Typo.h6">Parameters</MudText>
