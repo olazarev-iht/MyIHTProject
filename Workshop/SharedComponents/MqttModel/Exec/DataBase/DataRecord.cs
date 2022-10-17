@@ -1,6 +1,8 @@
 ﻿using SharedComponents.Machine;
 using Newtonsoft.Json;
 using CutDataRepository.Utils;
+using SharedComponents.Models.CuttingData;
+using static IhtCommunic.SlaveInfo;
 
 namespace SharedComponents.MqttModel.Exec.DataBase
 {
@@ -12,10 +14,28 @@ namespace SharedComponents.MqttModel.Exec.DataBase
     /// <summary>
     /// 
     /// </summary>
-    public Data()
+    //public Data()
+    //{
+    //}
+
+    public Data(CuttingDataModel cuttingDataModel)
     {
+      Material            = cuttingDataModel.Material.Name;
+      Remark              = cuttingDataModel.Remark;
+      Nozzle              = cuttingDataModel.Nozzle.Name;
+      Thickness_mm        = cuttingDataModel.Thickness;
+      CuttingSpeed_mm_min = cuttingDataModel.CuttingSpeed;
+      Kerf_mm             = cuttingDataModel.Kerf;
+      PreHeatHeight_mm    = cuttingDataModel.PreHeatHeight;
+      PiercingHeight_mm   = cuttingDataModel.PierceHeight;
+      CuttingHeight_mm    = cuttingDataModel.CutHeight;
+      PreHeatTime_s       = cuttingDataModel.PreHeatTime;
+      PierceTime_s        = cuttingDataModel.PierceTime;
+      LeadInLength_mm     = cuttingDataModel.LeadInLength;
+      GasType             = cuttingDataModel.Gas.Name;
+      DataRecordId        = cuttingDataModel.Id;
     }
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -42,13 +62,13 @@ namespace SharedComponents.MqttModel.Exec.DataBase
     public int? DataRecordId { get; set; }
 
     [JsonProperty("Material")]
-    public string Material { get; set; }
+    public string? Material { get; set; }
 
     [JsonProperty("Remark")]
-    public string Remark { get; set; }
+    public string? Remark { get; set; }
 
     [JsonProperty("Nozzle")]
-    public string Nozzle { get; set; }
+    public string? Nozzle { get; set; }
 
     [JsonProperty("Thickness_mm")]
     public double Thickness_mm { get; set; }
@@ -104,7 +124,7 @@ namespace SharedComponents.MqttModel.Exec.DataBase
   public class RequestDataRecords
   {
     [JsonProperty("Request")]
-    public string Request { get; set; }
+    public string? Request { get; set; }
 
     [JsonProperty("DataRecordNos")]
     public IList<int> DataRecordNos { get; set; }
@@ -163,7 +183,7 @@ namespace SharedComponents.MqttModel.Exec.DataBase
   public class RequestDataRecord
   {
     [JsonProperty("Request")]
-    public string Request { get; set; }
+    public string? Request { get; set; }
 
     [JsonProperty("DataRecordId")]
     public int? DataRecordId { get; set; }
@@ -200,6 +220,21 @@ namespace SharedComponents.MqttModel.Exec.DataBase
     public ResponseDataRecord(string response, ResultStatus resultStatus, int? dataRecordId, CCutData cCutData)
       : this(response, resultStatus.Value, resultStatus.Descprition, dataRecordId, cCutData)
     {
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dataRecord"></param>
+    /// <param name="noError"></param>
+    /// <param name="value"></param>
+    /// <param name="cuttingDataModel"></param>
+    public ResponseDataRecord(string response, ResultStatus resultStatus, CuttingDataModel cuttingDataModel)
+    {
+      Response = response;
+      Status   = resultStatus.Value;
+      StatusDescription = resultStatus.Descprition;
+      Data = new Data(cuttingDataModel);
     }
 
     [JsonProperty("Response")]

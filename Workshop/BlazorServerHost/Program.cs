@@ -217,6 +217,12 @@ builder.Host.UseWindowsService(options =>
 
 var app = builder.Build();
 
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+	CuttingDataDBServiceConfigure(builder.Services.BuildServiceProvider().GetService<ICuttingDataDBService>());
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+	IhtDevicesConfigure(builder.Services.BuildServiceProvider().GetService<IhtDevices>());
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

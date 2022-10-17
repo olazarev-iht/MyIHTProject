@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharedComponents.Models.CuttingData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,6 +88,7 @@ namespace CutDataRepository.Utils
             _iControlBits = 0;
             _idCutDataParent = Guid.Empty;
         }
+
 
         ///////////////////////////////////////////////////////////////////////
         public Guid IdCutData

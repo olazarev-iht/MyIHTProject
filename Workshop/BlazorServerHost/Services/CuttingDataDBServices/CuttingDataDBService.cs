@@ -1,10 +1,10 @@
 ﻿using BlazorServerHost.Data;
 using BlazorServerHost.Data.DataMapper;
 using BlazorServerHost.Data.Models.CuttingData;
-using SharedComponents.Models.CuttingData;
 using Microsoft.EntityFrameworkCore;
+using SharedComponents.Models.CuttingData;
+using SharedComponents.MqttModel;
 using SharedComponents.Services.CuttingDataDBServices;
-using System.Transactions;
 
 namespace BlazorServerHost.Services.CuttingDataDBServices
 {
@@ -27,7 +27,7 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 
 			var entries = await dbContext.CuttingData
 				.OrderBy(p => p.Id)
-					.ThenBy(p => p.Thickness)
+				.ThenBy(p => p.Thickness)
 				.Include(p => p.Gas)
 				.Include(p => p.Nozzle)
 				.Include(p => p.Material)
@@ -37,21 +37,52 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			return entries;
 		}
 
-		public async Task<CuttingDataModel?> GetEntryByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<List<CuttingDataModel>> GetEntriesByGasTypeAsync(int gasTypeId, CancellationToken cancellationToken)
+    {
+      await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+      var entries = await dbContext.CuttingData
+        .OrderBy(p => p.Id)
+        .ThenBy(p => p.Thickness)
+        .Include(p => p.Gas)
+        .Include(p => p.Nozzle)
+        .Include(p => p.Material)
+				.Where(p => p.Gas != null && p.Gas.GasId == gasTypeId)
+        .Select(p => _mapper.Map<CuttingData, CuttingDataModel>(p))
+        .ToListAsync(cancellationToken);
+
+      return entries;
+    }
+
+    public async Task<CuttingDataModel?> GetEntryByIdAsync(int id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 			var entry = await dbContext.CuttingData
 				.Include(p => p.Gas)
 				.Include(p => p.Nozzle)
 				.Include(p => p.Material)
-				.SingleAsync(s => s.Id == id, cancellationToken);
+				.FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
 
 			return _mapper.Map<CuttingData, CuttingDataModel>(entry);
 		}
 
-		public async Task<int?> AddEntryAsync(CuttingDataModel model, CancellationToken cancellationToken)
+    public async Task<CuttingDataModel?> GetEntryByGasIdAndIdAsync(int id, int gasTypeId, CancellationToken cancellationToken)
+    {
+      await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+      var entry = await dbContext.CuttingData
+        .Include(p => p.Gas)
+        .Include(p => p.Nozzle)
+        .Include(p => p.Material)
+        .Where(p => p.Gas != null && p.Gas.GasId == gasTypeId)
+        .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+
+      return _mapper.Map<CuttingData, CuttingDataModel>(entry);
+    }
+
+    public async Task<int?> AddEntryAsync(CuttingDataModel model, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+			bool created = false;
 
 			var entity = _mapper.Map<CuttingDataModel, CuttingData>(model);
 
@@ -69,7 +100,17 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 
 			await tx.CommitAsync();
 
-			return entity.Id;
+      created = true;
+      if (created)
+      {
+        MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
+        // 
+        int dataRecordId = entity.Id;
+        string payload = $"{dataRecordId}";
+        await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordCreatedNotification, payload);
+      }
+
+      return entity.Id;
 		}
 
 		public async Task<int?> AddBaseEntryAsync(CuttingDataModel model, CancellationToken cancellationToken)
@@ -90,6 +131,7 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 		public async Task UpdateEntryAsync(int id, CuttingDataModel newData, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+			bool updated = false;
 
 			try
 			{
@@ -101,7 +143,8 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 					//entry = _mapper.Map<CuttingDataModel, CuttingData>(newData);
 					dbContext.Entry(entry).CurrentValues.SetValues(newData);
 					await dbContext.SaveChangesAsync(cancellationToken);
-				}
+          updated = true;
+        }
 			}
 			catch (DbUpdateConcurrencyException ex)
 			{
@@ -128,19 +171,30 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 				}
 
 				await dbContext.SaveChangesAsync(cancellationToken);
-			}
-			catch (Exception ex)
+        updated = true;
+      }
+      catch (Exception ex)
 			{
 				//throw new Exception(ex.Message, ex);
 				var message = ex.Message;
 			}
-		}
+
+			if (updated && newData != null)
+			{
+        MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
+        // 
+        int dataRecordId = newData.Id;
+        string payload = $"{dataRecordId}";
+        await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordUpdatedNotification, payload);
+      }
+    }
 
 		public async Task DeleteEntryAsync(int id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+      bool deleted = false;
 
-			using var tx = dbContext.Database.BeginTransaction();
+      using var tx = dbContext.Database.BeginTransaction();
 
 			var stub = new CuttingData() { Id = id, };
 
@@ -154,6 +208,17 @@ namespace BlazorServerHost.Services.CuttingDataDBServices
 			//await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
 
 			await tx.CommitAsync(cancellationToken);
-		}
-	}
+
+      deleted = true;
+      if (deleted)
+      {
+        MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
+        // 
+        int dataRecordId = id;
+        string payload = $"{dataRecordId}";
+        await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordDeletedNotification, payload);
+      }
+
+    }
+  }
 }

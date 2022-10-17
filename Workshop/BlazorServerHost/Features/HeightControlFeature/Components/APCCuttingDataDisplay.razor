@@ -542,11 +542,12 @@ VisibleField {
 
     private async Task<List<CuttingDataModel>> GetEntriesAsync()
     {
-        cuttingDataModelList = await cuttingDataDBService.GetEntriesAsync(CancellationToken.None);
-        cuttingDataModelList = cuttingDataModelList.Where(d => d.Gas.Name.Trim().ToLower() == ihtDevices.TorchTypeSetup.GetDescription()?.ToString().Trim().ToLower()).ToList();
+        cuttingDataModelList = await cuttingDataDBService.GetEntriesByGasTypeAsync((int)ihtDevices.TorchTypeSetup, CancellationToken.None);
+        //cuttingDataModelList = cuttingDataModelList.Where(d => d.Gas.GasId == (int)ihtDevices.TorchTypeSetup).ToList();
         
         return cuttingDataModelList;
     }
+
 
     private async Task GetNozzlesAsync()
     {

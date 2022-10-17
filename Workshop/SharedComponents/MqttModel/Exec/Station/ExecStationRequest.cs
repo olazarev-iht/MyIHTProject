@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using CutDataRepository.Utils;
 using SharedComponents.MqttModel.Topic;
 using SharedComponents.IhtModbus;
+using SharedComponents.Models.CuttingData;
+using SharedComponents.MqttModel.Exec.DataBase;
 
 namespace SharedComponents.MqttModel.Exec.Station
 {
@@ -185,9 +187,10 @@ namespace SharedComponents.MqttModel.Exec.Station
 
 
       // Load data record in all APC-Stations
-      CCutData cCutData = new CCutData();
-      resultStatus = await System.ExecSystemRequest.LoadDataRecordAsync(requestLoadDataRecord.DataRecordId.Value, cCutData, IhtModbusCommunic.GetSlaveId(station));
+      CuttingDataModel cuttingDataModel = null;
 
+      CCutData cCutData = new CCutData();
+      resultStatus = await System.ExecSystemRequest.LoadDataRecordAsync(requestLoadDataRecord.DataRecordId.Value, cuttingDataModel, IhtModbusCommunic.GetSlaveId(station));
 
       // If loading went wrong
       if (resultStatus.Value != Machine.ResultStatus.NoError.Value)

@@ -1,20 +1,40 @@
-﻿using CutDataRepository;
-using CutDataRepository.Utils;
+﻿using CutDataRepository.Utils;
 using SharedComponents.Machine.Mqtt;
 using SharedComponents.MqttModel.Topic;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharedComponents.CutDataRepository.Utils;
+using SharedComponents.Models.CuttingData;
+using Microsoft.Extensions.DependencyInjection;
+using SharedComponents.Services.CuttingDataDBServices;
+using SharedComponents.IhtDev;
 
 namespace SharedComponents.MqttModel.Exec.DataBase
 {
-  class ExecDataBaseRequest
+  public class ExecDataBaseRequest
   {
     internal static readonly int MaximumNoOfRecords = 50;
+
+
+    private static ICuttingDataDBService? _cuttingDataDBService;
+    private static IhtDevices? _ihtDevices;
+
+
+    public static void CuttingDataDBServiceConfigure(ICuttingDataDBService? context)
+    {
+      _cuttingDataDBService = context;
+    }
+    public static ICuttingDataDBService? InstanceCuttingDataDBService()
+    {
+      return _cuttingDataDBService;
+    }
+
+    public static void IhtDevicesConfigure(IhtDevices? context)
+    {
+      _ihtDevices = context;
+    }
+    public static IhtDevices? InstanceIhtDevices()
+    {
+      return _ihtDevices;
+    }
 
     /// <summary>
     /// 
@@ -59,14 +79,10 @@ namespace SharedComponents.MqttModel.Exec.DataBase
       Newtonsoft.Json.Serialization.ErrorContext? errorContext = null;
       JsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.CreateSerializerSettings(errorContext);
 
-      CGas gas = GetGasType();
-      #if false // todo
-      IhtCutDataBase ihtCutDataBase = new IhtCutDataBase(IhtCutDataBase.GetIhtCutDataBase().dbRepositoryPath);
-      await Repository.findCutDatasAsync(null, null, null, gas, ihtCutDataBase.cutDatas);
-      int noOfDataRecords = ihtCutDataBase.cutDatas.Count;
-      #else
-      int noOfDataRecords = 25;
-      #endif
+      List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
+      cuttingDataModelList = await InstanceCuttingDataDBService().GetEntriesByGasTypeAsync(
+        (int)InstanceIhtDevices().TorchTypeSetup, CancellationToken.None);
+      int noOfDataRecords = cuttingDataModelList.Count;
 
       ResponseNoOfDataRecords responseNoOfDataRecords = new ResponseNoOfDataRecords(noOfDataRecords);
       var jsonString = Helper.JsonHelper.FromClass<ResponseNoOfDataRecords>(responseNoOfDataRecords, true, jsonSerializerSettings);
@@ -156,33 +172,22 @@ namespace SharedComponents.MqttModel.Exec.DataBase
       }
 
       // Datensätze zusammenstellen
-      #if false // todo
-      CGas gas = GetGasType();
       List<Exec.DataBase.Data> datas = new List<Exec.DataBase.Data>();
-      IhtCutDataBase ihtCutDataBase  = new IhtCutDataBase(IhtCutDataBase.GetIhtCutDataBase().dbRepositoryPath);
-      await Repository.findCutDatasAsync(null, null, null, gas, ihtCutDataBase.cutDatas);
-      IhtUserControls.DataBaseControl.ApplyMaterialNozzleGasToCutDatas(ihtCutDataBase);
+      List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
+      cuttingDataModelList = await InstanceCuttingDataDBService().GetEntriesByGasTypeAsync(
+        (int)InstanceIhtDevices().TorchTypeSetup, CancellationToken.None);
+
       int dataRecordsCnt = 1;
       int dataRecordNos  = 0;
-      foreach (CCutData cCutData in ihtCutDataBase.cutDatas)
+      foreach (CuttingDataModel cuttingDataModel in cuttingDataModelList)
       {
         if (dataRecordsCnt >= start && dataRecordsCnt <= end)
         {
-          datas.Add(new Data(cCutData, IhtCutDataBase.GetDataRecordId(cCutData.IdCutData)));
+          datas.Add(new Data(cuttingDataModel));
           ++dataRecordNos;
         }
         ++dataRecordsCnt;
       }
-      #else
-      List<Exec.DataBase.Data> datas = new List<Exec.DataBase.Data>();
-      int dataRecordsCnt = 1;
-      int dataRecordNos  = 0;
-      for (int i = start; i < end; i++)
-      {
-        datas.Add(new Data(new CCutData(), dataRecordNos));
-        ++dataRecordsCnt;
-      }
-      #endif
 
       // Antwort mit Datenssätze
       ResponseDataRecords responseDataRecords = new ResponseDataRecords
@@ -246,30 +251,13 @@ namespace SharedComponents.MqttModel.Exec.DataBase
         return resultStatus;
       }
 
-      CGas gas = GetGasType();
-      #if false
-      IhtCutDataBase ihtCutDataBase = new IhtCutDataBase(IhtCutDataBase.GetIhtCutDataBase().dbRepositoryPath);
-      await Repository.findCutDatasAsync(null, null, null, gas, ihtCutDataBase.cutDatas);
-      IhtUserControls.DataBaseControl.ApplyMaterialNozzleGasToCutDatas(ihtCutDataBase);
-
-      CCutData cCutDataRequested = null;
-      Guid guid = IhtCutDataBase.GetDataRecordGuid(requestDataRecord.DataRecordId.Value);
-      foreach (CCutData cCutData in ihtCutDataBase.cutDatas)
-      {
-        if (cCutData.IdCutData == guid)
-        {
-          cCutDataRequested = cCutData;
-          break;
-        }
-      }
-      #else
-      CCutData cCutDataRequested = new CCutData();
-      #endif
+      CuttingDataModel cuttingDataModel = await InstanceCuttingDataDBService().GetEntryByGasIdAndIdAsync(
+         requestDataRecord.DataRecordId.Value, (int)InstanceIhtDevices().TorchTypeSetup, CancellationToken.None);
 
       // Wenn Datensatz nicht vorhanden
-      if (cCutDataRequested == null)
+      if (cuttingDataModel == null)
       {
-        resultStatus   = Machine.ResultStatus.DataRecordNotFound;
+        resultStatus = Machine.ResultStatus.DataRecordNotFound;
         responseStatus = new Common.ResponseStatus(Helper.RequestHelper.DataRecord, resultStatus);
         jsonString = Helper.JsonHelper.FromClass<Common.ResponseStatus>(responseStatus, true, jsonSerializerSettings);
         // Antwort senden
@@ -281,8 +269,7 @@ namespace SharedComponents.MqttModel.Exec.DataBase
       ResponseDataRecord responseDataRecord = new ResponseDataRecord
         (Helper.RequestHelper.DataRecord,
         Machine.ResultStatus.NoError,
-        requestDataRecord.DataRecordId.Value,
-        cCutDataRequested);
+        cuttingDataModel);
 
       jsonSerializerSettings = Helper.JsonHelper.CreateSerializerSettings(errorContext);
       jsonString = Helper.JsonHelper.FromClass<ResponseDataRecord>(responseDataRecord, true, jsonSerializerSettings);
@@ -306,27 +293,9 @@ namespace SharedComponents.MqttModel.Exec.DataBase
     /// 
     /// </summary>
     /// <returns></returns>
-    public static CGas GetGasType()
+    public static IhtDevices.TorchType GetGasType()
     {
-      #if false
-      Properties.Settings settings = new Properties.Settings();
-      IhtCutDataBase ihtCutDataBase = IhtCutDataBase.GetIhtCutDataBase();
-      CGas gas = new CGas();
-      foreach (CGas cGas in ihtCutDataBase.gases)
-      {
-        if (cGas.IdGas == settings.TorchType)
-        {
-          gas = cGas;
-          break;
-        }
-      }
-      return gas;
-      #else
-      CGas cGas = new CGas();
-      cGas.IdGas = 0;
-      cGas.Gas   = "Propane";
-      return cGas;
-      #endif
+      return InstanceIhtDevices().TorchTypeSetup;
     }
 
   }

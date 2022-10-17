@@ -2,6 +2,8 @@
 using SharedComponents.Helpers;
 using SharedComponents.IhtModbus;
 using SharedComponents.IhtMsg;
+using SharedComponents.Models.CuttingData;
+using SharedComponents.MqttModel.Exec.DataBase;
 using System.Globalization;
 
 namespace SharedComponents.Machine
@@ -16,55 +18,35 @@ namespace SharedComponents.Machine
 
     public static string TimeStamp => DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
     
-      /// <summary>
+    /// <summary>
     /// Zugehörige Düse und Gasart setzen.
     /// true  -> Gas-Art stimmt mit eingestellter Gas-Art überein
     /// false -> Gas-Art stimmt mit eingestellter Gas-Art nicht überein
     /// </summary>
     public static bool IsAssociatedGasType(CCutData cutData)
     {
-      #if false
-      IhtCutDataBase ihtCutDataBase = IhtCutDataBase.GetIhtCutDataBase();
-      // Zugehörige Düse suchen
-      foreach (CNozzle noz in ihtCutDataBase.nozzles)
-      {
-        if (cutData.IdNozzle == noz.IdNozzle)
-        {
-          // Düse übernehmen
-          cutData.Nozzle = noz;
-          break;
-        }
-      }
-      // Zugehörige Gas-Art suchen
-      bool gasFound = false;
-      foreach (CGas gas in ihtCutDataBase.gases)
-      {
-        if (cutData.IdGas == gas.IdGas)
-        {
-          // Gas-Art übernehmen
-          cutData.Gas = gas;
-          gasFound    = true;
-          break;
-        }
-      }
-          
-      if (gasFound)
-      {
-         todo
-        return MainWindow.GetMainWindow().IsAssociatedGasType(cutData.Gas);
-        return true;
-      }
-      return false;
-      #else
-      // todo
-      return true;
-      #endif
+      return false; // todo
+    }
+
+    /// <summary>
+    /// Zugehörige Düse und Gasart setzen.
+    /// true  -> Gas-Art stimmt mit eingestellter Gas-Art überein
+    /// false -> Gas-Art stimmt mit eingestellter Gas-Art nicht überein
+    /// </summary>
+    public static bool IsAssociatedGasType(CuttingDataModel? cuttingDataModel)
+    {
+      return (int)ExecDataBaseRequest.InstanceIhtDevices().TorchTypeSetup == cuttingDataModel.Gas.GasId;
     }
 
     /// <summary>
     /// Technologie-Daten in Gerät(e) laden
     /// </summary>
     public static async Task<bool> LoadTechnologyDataAsync(CCutData cutData, int slaveId = (int)IhtModbusCommunic.SlaveId.Id_Broadcast)
+    {
+      return false; // todo
+    }
+
+    public static async Task<bool> LoadTechnologyDataAsync(CuttingDataModel? cuttingDataModel, int slaveId = (int)IhtModbusCommunic.SlaveId.Id_Broadcast)
     {
       // todo
       //return await MainWindow.GetMainWindow().LoadTechnologyDataAsync(cutData, slaveId);

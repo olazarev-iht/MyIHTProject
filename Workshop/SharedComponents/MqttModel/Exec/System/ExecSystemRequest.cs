@@ -4,6 +4,11 @@ using System.Reflection;
 using SharedComponents.MqttModel.Topic;
 using CutDataRepository.Utils;
 using SharedComponents.IhtModbus;
+using SharedComponents.Models.CuttingData;
+using SharedComponents.MqttModel.Exec.DataBase;
+using SharedComponents.CutDataRepository.Utils;
+using SharedComponents.IhtMsg;
+using System.Diagnostics;
 
 namespace SharedComponents.MqttModel.Exec.System
 {
@@ -51,12 +56,13 @@ namespace SharedComponents.MqttModel.Exec.System
     /// <returns></returns>
     private static async Task<Machine.ResultStatus> SoftwareVersionAsync(MqttClientWrapper mqttClient)
     {
-      int major         = Assembly.GetExecutingAssembly().GetName().Version.Major;
-      int majorRevision = Assembly.GetExecutingAssembly().GetName().Version.MajorRevision;
-      int minor         = Assembly.GetExecutingAssembly().GetName().Version.Minor;
-      int minorRevision = Assembly.GetExecutingAssembly().GetName().Version.MinorRevision;
-      int revision      = Assembly.GetExecutingAssembly().GetName().Version.Build;
-      int build         = Assembly.GetExecutingAssembly().GetName().Version.Revision;
+      Version? version  = Assembly.GetExecutingAssembly().GetName().Version;
+      int major         = version.Major;
+      int majorRevision = version.MajorRevision;
+      int minor         = version.Minor;
+      int minorRevision = version.MinorRevision;
+      int revision      = version.Build;
+      int build         = version.Revision;
       SoftwareVersion softwareVersion = new SoftwareVersion();
       softwareVersion.Major    = major;
       softwareVersion.Minor    = minor;
@@ -125,8 +131,8 @@ namespace SharedComponents.MqttModel.Exec.System
       }
 
       // Load data record in all APC-Stations
-      CCutData cCutData = new CCutData();
-      resultStatus = await LoadDataRecordAsync(requestLoadDataRecord.DataRecordId.Value, cCutData, (int)IhtModbusCommunic.SlaveId.Id_Broadcast);
+      CuttingDataModel? cuttingDataModel = null;
+      resultStatus = await LoadDataRecordAsync(requestLoadDataRecord.DataRecordId.Value, cuttingDataModel, (int)IhtModbusCommunic.SlaveId.Id_Broadcast);
 
       // If loading went wrong
       if (resultStatus.Value != Machine.ResultStatus.NoError.Value)
@@ -142,8 +148,7 @@ namespace SharedComponents.MqttModel.Exec.System
       DataBase.ResponseDataRecord loadDataRecord = new DataBase.ResponseDataRecord
         (Helper.RequestHelper.LoadDataRecord,
         Machine.ResultStatus.NoError,
-        requestLoadDataRecord.DataRecordId,
-        cCutData);
+        cuttingDataModel);
 
       jsonSerializerSettings = Helper.JsonHelper.CreateSerializerSettings(errorContext);
       jsonString             = Helper.JsonHelper.FromClass<DataBase.ResponseDataRecord>(loadDataRecord, true, jsonSerializerSettings);
@@ -169,7 +174,7 @@ namespace SharedComponents.MqttModel.Exec.System
     /// <param name="dataRecordId"></param>
     /// <param name="cCutData"></param>
     /// <returns></returns>
-    public static async Task<Machine.ResultStatus> LoadDataRecordAsync(int dataRecordId, CCutData cCutData, int slaveId)
+    public static async Task<Machine.ResultStatus> LoadDataRecordAsync(int dataRecordId, CuttingDataModel? cuttingDataModel, int slaveId)
     {
       Machine.ResultStatus resultStatus = Machine.ResultStatus.NoError;
 
@@ -220,8 +225,46 @@ namespace SharedComponents.MqttModel.Exec.System
         }
       }
       #else
-      cCutData = new CCutData();
-      cCutData.DataRecordId = dataRecordId;
+      // Datensatz mit angeforderter ID in der Datenbank suchen
+      cuttingDataModel = await ExecDataBaseRequest.InstanceCuttingDataDBService().GetEntryByGasIdAndIdAsync(
+        (int)ExecDataBaseRequest.InstanceIhtDevices().TorchTypeSetup, dataRecordId, CancellationToken.None);
+      bool dataSetFound = cuttingDataModel != null;
+
+      // Wenn Datensatz nicht gefunden wurde
+      if (!dataSetFound)
+      {
+        // Status: Datensatz nicht gefunden
+        resultStatus = Machine.ResultStatus.DataRecordNotFound;
+        string msg = $"{Machine.Helper.PreInfoApc}: ({resultStatus.Value}) {resultStatus.Descprition}";
+        Machine.Helper.SetStatusMsg(IhtMsgLog.Info.Warning, msg);
+      }
+      else
+      {
+        // Datensatz mit eingestelter Gas-Art überprüfen 
+        bool isAssociatedGasType = Machine.Helper.IsAssociatedGasType(cuttingDataModel);
+        if (!isAssociatedGasType)
+        {
+          // Status: Gasart vom Datensatz stimmt nicht mit eingstellter Gasart überein
+          resultStatus = Machine.ResultStatus.WrongGasType;
+          string msg = $"{Machine.Helper.PreInfoApc}: ({resultStatus.Value}) {resultStatus.Descprition}";
+          Machine.Helper.SetStatusMsg(IhtMsgLog.Info.Warning, msg);
+        }
+        else
+        {
+          // Technologie-Daten in Gerät(e) laden
+          bool loadTechnologyData = await Machine.Helper.LoadTechnologyDataAsync(cuttingDataModel, slaveId);
+          // Bei Erfolg
+          if (loadTechnologyData)
+          {
+            Debug.Print($"{Machine.Helper.GetDateTimeDebug()}: MqttModel.ExecData.DataBaseSet.LoadTechnologyDataAsync() status={resultStatus.Value}, {resultStatus.Descprition}");
+          }
+          else
+          {
+            // Status: Fehler beim Laden vom angeforderten Datensatz in Gerät(e)
+            resultStatus = Machine.ResultStatus.LoadError;
+          }
+        }
+      }
       #endif
 
       return resultStatus;
