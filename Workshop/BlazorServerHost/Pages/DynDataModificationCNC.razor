@@ -295,7 +295,7 @@ input#password-input:focus {
 
     .mud-dialog.mud-dialog-width-sm {
         position: relative !important; 
-        top: 50px !important;
+        top: 80px !important;
     }
 
     .mud-table-cell  {
@@ -399,10 +399,10 @@ input#password-input:focus {
     </DialogContent>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_setupParamsDialogVisible" Style="width: 600px;" Class="scaled">
+<MudDialog @bind-IsVisible="_setupParamsDialogVisible" Style="min-width: 500px; zoom: 0.75; top: 90px !important">
     <DialogContent>
     <MudButton OnClick="CloseSetupParamsDialog">&#8592; Go Back</MudButton>
-    <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Height="500px" FixedHeader="true"
+    <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Style="min-height: 450px" FixedHeader="true"
           Items="@Elements"
           GroupBy="@_groupDefinition"
           GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
