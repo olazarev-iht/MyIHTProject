@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharedComponents.IhtDev;
 using Microsoft.Extensions.Options;
+using SharedComponents.CutDataRepository;
+using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
+using SharedComponents.IhtModbusTable;
 using SharedComponents.Models;
+using SharedComponents.Models.CuttingData;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareManagers;
 using SharedComponents.Services.APCHardwareDBServices;
 using SharedComponents.Services.APCHardwareMockDBServices;
-using SharedComponents.IhtModbusTable;
 
 namespace SharedComponents.APCHardwareManagers
 {
@@ -30,6 +33,7 @@ namespace SharedComponents.APCHardwareManagers
         protected readonly IAPCSimulationDataMockDBService _apcSimulationDataMockDBService;
         protected readonly IAPCDefaultDataMockDBService _apcDefaultDataMockDBService;
         private readonly IhtModbusCommunic _ihtModbusCommunic;
+        private readonly IhtCutDataAddressMap _ihtCutDataAddressMap;
         private readonly Settings _settings;
 
         public ParameterDataInfoManager(
@@ -45,6 +49,7 @@ namespace SharedComponents.APCHardwareManagers
             IAPCSimulationDataMockDBService apcSimulationDataMockDBService,
             IAPCDefaultDataMockDBService apcDefaultDataMockDBService,
             IhtModbusCommunic ihtModbusCommunic,
+            IhtCutDataAddressMap ihtCutDataAddressMap,
             IOptions<Settings> settings
             )
         {
@@ -83,6 +88,9 @@ namespace SharedComponents.APCHardwareManagers
 
             _ihtModbusCommunic = ihtModbusCommunic ??
                throw new ArgumentNullException($"{nameof(ihtModbusCommunic)}");
+
+            _ihtCutDataAddressMap = ihtCutDataAddressMap ??
+               throw new ArgumentNullException($"{nameof(ihtCutDataAddressMap)}");
 
             _settings = settings != null ? settings.Value : 
                 throw new ArgumentNullException($"{nameof(settings)}");
@@ -198,6 +206,37 @@ namespace SharedComponents.APCHardwareManagers
         public async Task UpdateSimulationDataMockWithDefaultData(CancellationToken cancellationToken)
         {
             await _apcSimulationDataMockDBService.UpdateFromDefaultDataAsync(cancellationToken);
+        }
+
+        public async Task LoadCuttingDataParamsFromDBAsync(ArrayList _modbusDatas, CuttingDataModel cuttingDataModel)
+        {
+            foreach (IhtModbusData modbusData in _modbusDatas)
+            {
+                // Write Dyn Params data to the modbusData
+                _ihtCutDataAddressMap.SetData(cuttingDataModel, modbusData);
+
+                // Technologie-Parameter Dyn. write into the Device
+                var result = await _ihtModbusCommunic.ihtDevices.Write_TechnologyDynAsync(modbusData, true);
+
+                if (result)
+                {
+                    // Read the Dyn Params from the Device
+                    IhtModbusResult ihtModbusResult = new();
+                    ihtModbusResult.Result = await _ihtModbusCommunic.ihtDevices.Read_TechnologyDynAsync(modbusData, true);
+
+                    if (ihtModbusResult.Result)
+                    {
+                        // Write Dyn Params into the DB
+                        var technologyDyn = modbusData.GetDataTechnologyDyn();
+                        ushort paramsStartAddress = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.TechnologyDyn).u16StartAddr;
+
+                        var paramsAddressAndValues = technologyDyn.Select(x => (paramsStartAddress++, x)).ToArray();
+
+                        await UpdateDynParamValuesRangeAsync(modbusData.SlaveId, paramsAddressAndValues, CancellationToken.None);
+                    }
+                }
+            }
+
         }
 
         private async Task DeleteAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null)

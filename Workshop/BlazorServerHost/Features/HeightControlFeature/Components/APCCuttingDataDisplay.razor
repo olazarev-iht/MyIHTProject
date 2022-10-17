@@ -622,40 +622,12 @@ VisibleField {
 
     private async Task LoadParamsAsync()
     {
-        //var modbusDatas = IhtModbusCommunic.GetConnectedModbusDatas();
-
-        foreach (IhtModbusData modbusData in _modbusDatas)
-        {
-            // Write Dyn Params data to the modbusData
-            ihtCutDataAddressMap.SetData(cuttingDataModel, modbusData);
-
-            // Technologie-Parameter Dyn. write into the Device
-            var result = await ihtDevices.Write_TechnologyDynAsync(modbusData, true);
-
-            if (result)
-            {
-                // Read the Dyn Params from the Device
-                IhtModbusResult ihtModbusResult = new();
-                ihtModbusResult.Result = await ihtDevices.Read_TechnologyDynAsync(modbusData, true);
-
-                if (ihtModbusResult.Result)
-                {
-                    // Write Dyn Params into the DB
-                    var technologyDyn = modbusData.GetDataTechnologyDyn();
-                    ushort paramsStartAddress = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.TechnologyDyn).u16StartAddr;
-
-                    var paramsAddressAndValues = technologyDyn.Select(x => (paramsStartAddress++, x)).ToArray();
-
-                    await parameterDataInfoManager.UpdateDynParamValuesRangeAsync(modbusData.SlaveId, paramsAddressAndValues, CancellationToken.None);
-                }
-            }
-        }
+        await parameterDataInfoManager.LoadCuttingDataParamsFromDBAsync(_modbusDatas, cuttingDataModel);
 
         apcWorker._apcWorkerService_DynDataLoaded();
 
         cuttingDataModel = new CuttingDataModel();
         _loadParamsDialogVisible = false;
-        //snackBar.Add("Parameter Deleted.", Severity.Success);
         await GetEntriesAsync();
 
         OnStaticParamChanged();

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharedComponents.IhtModbus;
 using SharedComponents.Models.APCHardware;
+using SharedComponents.Models.CuttingData;
 
 
 namespace SharedComponents.Services.APCHardwareManagers
@@ -20,6 +22,7 @@ namespace SharedComponents.Services.APCHardwareManagers
         public Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId, int paramValue, CancellationToken cancellationToken);
         public Task UpdateDynParamValueByDeviceNumAndAddressAsync(int deviceNum, int paramAddress, int paramValue, CancellationToken cancellationToken);
         public Task UpdateDynParamValuesRangeAsync(int deviceNumber, (ushort paramAddress, ushort paramValue)[] paramsInfo, CancellationToken cancellationToken);
+        public Task LoadCuttingDataParamsFromDBAsync(ArrayList _modbusDatas, CuttingDataModel cuttingDataModel);
         public Task<int> GetAPCDevicesNumber(CancellationToken cancellationToken);
         public Task<int> GetValueFromSimulationDataByAddress(int address, CancellationToken cancellationToken);
         public Task UpdateAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null);
