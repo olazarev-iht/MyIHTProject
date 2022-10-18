@@ -209,7 +209,7 @@ button .mud-nav-link-text {
 }
 
 .mud-dialog .mud-dialog-content {
-    padding: 3px 8px !important;
+    padding: 3px 4px !important;
 }
 
 /*.mud-list.mud-list-padding {
@@ -295,7 +295,7 @@ input#password-input:focus {
 
     .mud-dialog.mud-dialog-width-sm {
         position: relative !important; 
-        top: 80px !important;
+        top: 75px !important;
     }
 
     .mud-table-cell  {
@@ -304,6 +304,36 @@ input#password-input:focus {
         /*border-bottom: 0px solid*/
         border: 0px
     }
+
+    .my-install-toarch .mud-table-cell {
+        padding: 3px;
+    }
+
+    .my-install-toarch .mud-dialog-title {
+        display: none;
+    }
+
+    .my-install-toarch .mud-grid-spacing-xs-3>.mud-grid-item {
+        padding: 4px;
+    }
+
+    .my-install-toarch .mud-dialog-actions {
+        padding: 0px;
+    }
+
+    .my-install-toarch .mud-icon-button {
+        padding: 10px;
+    }
+
+    .my-install-toarch .mud-grid-spacing-xs-3 {
+        width: calc(100% + 0px); 
+        margin: 0px;
+    }
+
+    .my-install-toarch .mud-input>input.mud-input-root, div.mud-input-slot.mud-input-root {
+        padding: 6px 0 3px; 
+    }
+}
 </style>
 
 @if (dynDataModificationCNCDataProvider != null)
@@ -402,7 +432,7 @@ input#password-input:focus {
 <MudDialog @bind-IsVisible="_setupParamsDialogVisible" Style="min-width: 500px; zoom: 0.75; top: 90px !important">
     <DialogContent>
     <MudButton OnClick="CloseSetupParamsDialog">&#8592; Go Back</MudButton>
-    <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Style="min-height: 450px" FixedHeader="true"
+    <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Style="min-height: 440px" FixedHeader="true"
           Items="@Elements"
           GroupBy="@_groupDefinition"
           GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
@@ -542,7 +572,7 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="@TorchInstalledDialogVisible" Style="width:470px">
+<MudDialog @bind-IsVisible="@TorchInstalledDialogVisible" Class="my-install-toarch" Style="width:440px;">
     @*<TitleContent>
         <MudText Typo="Typo.h6" Style="text-align: center;">Torch Installed</MudText>
     </TitleContent>*@
