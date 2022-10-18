@@ -27,6 +27,7 @@ namespace SharedComponents.Services.APCHardwareManagers
         public Task<int> GetValueFromSimulationDataByAddress(int address, CancellationToken cancellationToken);
         public Task UpdateAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null);
         public Task WriteHoldingRegistersAsync(int apcDeviceNum, int paramAddress, int paramValue, IhtModbusResult? ihtModbusResult = null);
+        public Task WriteHoldingRegistersRangeAsync(int apcDeviceNum, int paramAddress, ushort[] paramValues, IhtModbusResult? ihtModbusResult = null);
         public Task<ushort?> ReadOneHoldingRegisterAsync(byte slaveAddress, ushort startAddress);
     }
 }

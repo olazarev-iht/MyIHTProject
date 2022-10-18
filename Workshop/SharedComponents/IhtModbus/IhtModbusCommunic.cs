@@ -629,6 +629,7 @@ namespace SharedComponents.IhtModbus
                 {
                     modbusMaster.WriteMultipleRegisters(slaveAddress, startAddress, u16Registers);
                 }
+                
                 ihtModbusResult.Result = true;
                 ihtDevices.ClrCommunicError((int)slaveAddress);
             }
@@ -1461,7 +1462,8 @@ namespace SharedComponents.IhtModbus
                 }
                 else
                 {
-                    ihtModbusData.SetAreasData((ushort[])values);
+                    var info = values.Select((v, i) => new { Index = i, Value = v }).Where(x => x.Index >= 10).Select(x => x.Value).ToArray();
+                    ihtModbusData.SetAreasData(info);
                 }
             }
             return ihtModbusResult.Result;

@@ -79,6 +79,33 @@ namespace BlazorServerHost.Services.APCHardwareMockDBServices
 			}
 		}
 
+		public async Task WriteHoldingRegistersRangeAsync(byte slaveAddress, ushort address, ushort[] values, IhtModbusResult? ihtModbusResult = null)
+		{
+			var deviceId = slaveAddress > 10 ? slaveAddress - 10 : slaveAddress;
+
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(CancellationToken.None);
+
+			var entries = await dbContext.APCSimulationDatas.Where(x => x.Device == deviceId && x.Address >= address).Take(values.Count()).OrderBy(x => x.Address).ToListAsync();
+
+			if (entries.Any())
+			{				
+				for (var i = 0; i < values.Count(); i++)
+				{
+					var paramAddress = address++;
+					var paramValue = values[i];
+
+					var entry = entries.FirstOrDefault(p => p.Address == paramAddress);
+
+					if (entry != null)
+					{
+						entry.Value = paramValue;
+					}
+				}
+
+				await dbContext.SaveChangesAsync(CancellationToken.None);
+			}
+		}
+
 		public async Task<(ushort Address, ushort Value)[]> GetHoldingRegistersWithAddressAsync(byte slaveAddress, ushort startAddress, ushort numRegisters, IhtModbusResult? ihtModbusResult = null)
 		{
 			var deviceId = slaveAddress > 10 ? slaveAddress - 10 : slaveAddress;

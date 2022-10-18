@@ -161,6 +161,11 @@ namespace SharedComponents.APCHardwareManagers
             await _apcSimulationDataMockDBService.WriteHoldingRegistersAsync((byte)apcDeviceNum, (ushort)paramAddress, paramValue, ihtModbusResult);
         }
 
+        public async Task WriteHoldingRegistersRangeAsync(int apcDeviceNum, int paramAddress, ushort[] paramValues, IhtModbusResult? ihtModbusResult = null)
+        {
+            await _apcSimulationDataMockDBService.WriteHoldingRegistersRangeAsync((byte)apcDeviceNum, (ushort)paramAddress, paramValues, ihtModbusResult);
+        }
+
         public async Task UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(int apcDeviceNum, ParamGroup paramGroup, int paramId, int paramValue, CancellationToken cancellationToken)
         {
             await _dynParamsDBService.UpdateDynParamValueByAPCDeviceNumAndParamIdAsync(apcDeviceNum, paramGroup, paramId, paramValue, cancellationToken);
@@ -220,6 +225,14 @@ namespace SharedComponents.APCHardwareManagers
 
                 if (result)
                 {
+                    var startAddress = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.TechnologyDyn).u16StartAddr;
+
+                    if (_ihtModbusCommunic.IsSimulation)
+                    {
+                        await _apcSimulationDataMockDBService
+                            .WriteHoldingRegistersRangeAsync((byte)modbusData.SlaveId, startAddress, modbusData.GetDataTechnologyDyn());
+                    }
+
                     // Read the Dyn Params from the Device
                     IhtModbusResult ihtModbusResult = new();
                     ihtModbusResult.Result = await _ihtModbusCommunic.ihtDevices.Read_TechnologyDynAsync(modbusData, true);
@@ -228,9 +241,9 @@ namespace SharedComponents.APCHardwareManagers
                     {
                         // Write Dyn Params into the DB
                         var technologyDyn = modbusData.GetDataTechnologyDyn();
-                        ushort paramsStartAddress = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.TechnologyDyn).u16StartAddr;
+                        //ushort paramsStartAddress = modbusData.GetAddrInfo(IhtModbusAddrAreas.eIdxAddrInfo.TechnologyDyn).u16StartAddr;
 
-                        var paramsAddressAndValues = technologyDyn.Select(x => (paramsStartAddress++, x)).ToArray();
+                        var paramsAddressAndValues = technologyDyn.Select(x => (startAddress++, x)).ToArray();
 
                         await UpdateDynParamValuesRangeAsync(modbusData.SlaveId, paramsAddressAndValues, CancellationToken.None);
                     }
