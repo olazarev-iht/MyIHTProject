@@ -1,0 +1,26 @@
+﻿@page "/hardwareInfo"
+@using IhtApcWebServer.Services
+
+<MudText Typo="Typo.h3">HardwareInfo</MudText>
+
+@inject CommunicationsService Comms;
+
+@if (IsInitialized)
+{
+    <AuthorizeView Roles="User">
+        <Authorized>
+            <MudProgressLinear Color="Color.Primary" Value="@HardwareStatus.CurrentState.FuelGasPressure" Min="0" Max="30" Class="my-7" />
+            <MudProgressLinear Color="Color.Secondary" Value="@HardwareStatus.CurrentState.CuttingOxygenePressure" Min="0" Max="30" Class="my-7" />
+            <MudProgressLinear Color="Color.Tertiary" Value="@HardwareStatus.CurrentState.HeatingOxygenePressure" Min="0" Max="30" Class="my-7" />
+            
+            <HeightControlDisplay />
+        </Authorized>
+        <NotAuthorized>
+            <MudProgressLinear Color="Color.Primary" Value="0" Min="0" Max="30" Class="my-7"><MudText>Not Allowed</MudText></MudProgressLinear>
+            <MudProgressLinear Color="Color.Secondary" Value="0" Min="0" Max="30" Class="my-7"><MudText>Not Allowed</MudText></MudProgressLinear>
+            <MudProgressLinear Color="Color.Tertiary" Value="0" Min="0" Max="30" Class="my-7"><MudText>Not Allowed</MudText></MudProgressLinear>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <MudButton OnClick="@(_ => Comms.ButtonPressed())">Press this</MudButton>
+}

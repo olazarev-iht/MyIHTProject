@@ -1,0 +1,22 @@
+﻿@page "/CuttingDB"
+
+@using IhtApcWebServer.Services
+
+<MudText Typo="Typo.h3">Static APC Params Info</MudText>
+
+@inject CommunicationsService Comms;
+
+@if (IsInitialized)
+{
+    <AuthorizeView Roles="User">
+        <Authorized>            
+            <APCCuttingDataDisplay />
+        </Authorized>
+
+        <NotAuthorized>
+            <APCCuttingDataDisplay />
+        </NotAuthorized>
+    </AuthorizeView>
+
+    @*<MudButton OnClick="@(_ => Comms.ButtonPressed())">Press this</MudButton>*@
+}

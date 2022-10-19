@@ -1,0 +1,24 @@
+﻿@page "/liveAPCParamsInfo"
+
+@using IhtApcWebServer.Services
+
+<MudText Typo="Typo.h3">LiveAPCParamsInfo</MudText>
+
+@inject CommunicationsService Comms;
+
+@if (IsInitialized)
+{
+    <AuthorizeView Roles="User">
+        <Authorized>            
+            <LiveAPCParamsDisplay />
+            <DynamicAPCParamsDisplay />
+        </Authorized>
+
+        <NotAuthorized>
+            <LiveAPCParamsDisplay />
+            <DynamicAPCParamsDisplay />
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <MudButton OnClick="@(_ => Comms.ButtonPressed())">Press this</MudButton>
+}
