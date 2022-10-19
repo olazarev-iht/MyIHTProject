@@ -159,7 +159,38 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 			// Only to show the flow
 			//await Task.Delay(TimeSpan.FromSeconds(5));
 
-			await _apcWorker.RefreshDynamicDataAsync(CurrentSlaveId, parameter.DynParams.Address);
+			await _apcWorker.RefreshDynamicDataAsync(CurrentSlaveId, parameter.DynParams.Address, false);
+		}
+
+		public async void dynamicParamsDysplay_DynamicAPCParamsClientChangedCommon(object? sender, EventArgs e)
+        {
+			var parameter = sender as ParameterDataModel;
+			if (parameter == null || parameter.DynParams == null) return;
+
+			// Update prameter value in the APC Device (Mock DB)
+
+			var connectedDevices = _ihtModbusCommunic.GetConnectedModbusDatas();
+
+			foreach(IhtModbusData ihtModbusData in connectedDevices)
+            {
+				int deviceNo = ihtModbusData.SlaveId - (int)IhtModbusCommunic.SlaveId.Id_Default;
+				await UpdateDynParamInAPCDeviceOrMockDBAsync(deviceNo, ihtModbusData.SlaveId, parameter.DynParams.Address, parameter.DynParams.Value);
+				if (CurrentSlaveId != ihtModbusData.SlaveId)
+                {
+					await _apcWorker.RefreshDynamicDataAsync(ihtModbusData.SlaveId, parameter.DynParams.Address, true);
+				}
+				else
+                {
+					await _apcWorker.RefreshDynamicDataAsync(ihtModbusData.SlaveId, parameter.DynParams.Address, false);
+				}
+			}
+
+			//await UpdateDynParamInAPCDeviceOrMockDBAsync(CurrentDeviceNumber, parameter.DynParams.Address, parameter.DynParams.Value);
+
+			// Only to show the flow
+			//await Task.Delay(TimeSpan.FromSeconds(5));
+
+			//await _apcWorker.RefreshDynamicDataAsync(CurrentSlaveId, parameter.DynParams.Address);
 		}
 
 		private bool IsAnOtherUserWorkingWithDeviceNow()
@@ -390,6 +421,17 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
             else
             {
 				await _ihtModbusCommunic.WriteAsync(CurrentSlaveId, (ushort)paramAddress, (ushort)paramValue).ConfigureAwait(false);
+			}
+		}
+		private async Task UpdateDynParamInAPCDeviceOrMockDBAsync(int deviceNum, int slaveId, int paramAddress, int paramValue, IhtModbusResult? ihtModbusResult = null)
+		{
+			if (IsSimulation)
+			{
+				await _parameterDataInfoManager.WriteHoldingRegistersAsync(deviceNum, paramAddress, paramValue, ihtModbusResult);
+			}
+			else
+			{
+				await _ihtModbusCommunic.WriteAsync(slaveId, (ushort)paramAddress, (ushort)paramValue).ConfigureAwait(false);
 			}
 		}
 

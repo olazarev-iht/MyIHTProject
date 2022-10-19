@@ -992,6 +992,7 @@ input#password-input:focus {
     private bool IsDeviceConnectionDisabled() => _nameComPort?.Length == 0 && !_isSimulation;
 
     public event EventHandler? DynamicAPCParamsClientChanged;
+    public event EventHandler? DynamicAPCParamsClientChangedCommon;
     public event EventHandler? APCTorchPositionChanged;
     public event EventHandler? APCTorchPositionStoped;
     public static event EventHandler? ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded;
@@ -1539,6 +1540,8 @@ input#password-input:focus {
         dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
         this.DynamicAPCParamsClientChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
 
+        this.DynamicAPCParamsClientChangedCommon += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChangedCommon;
+
         // Subscribe of Data Provider for the Client Event of moving torch (Up or Down)
         this.APCTorchPositionChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
 
@@ -1556,11 +1559,23 @@ input#password-input:focus {
 
 
 
-    private async void SetParamsType(string paramsType)
+    private async Task SetParamsType(string paramsType)
     {
         dynDataModificationCNCDataProvider.CurrentParamsType = paramsType;
 
         await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
+
+        switch (paramsType)
+        {
+            case "Ignition": await ihtDevices.SetupCtrl_SetIgnitionCommonAsync(); break;
+            case "PreHeat": await ihtDevices.SetupCtrl_SetPreHeatingCommonAsync(); break;
+            case "Pierce": await ihtDevices.SetupCtrl_SetPiercingCommonAsync(); break;
+            case "Cut": await ihtDevices.SetupCtrl_SetCuttingCommonAsync(); break;
+            case "Heat": await ihtDevices.SetupCtrl_SetHeatingCommonAsync(); break;
+
+        }
+
+
 
         await InvokeAsync(StateHasChanged);
     }
@@ -1696,12 +1711,14 @@ input#password-input:focus {
     {
         dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
         this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+        this.DynamicAPCParamsClientChangedCommon -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChangedCommon;
 
         this.APCTorchPositionChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
         this.APCTorchPositionStoped -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
 
+        _ = TurnFlameOffAsync();
         // Stop the SP moving and refresh component for all the users
-        dynDataModificationCNCDataProvider.StopMovingTorchAsync();
+        _ = dynDataModificationCNCDataProvider.StopMovingTorchAsync();
         ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
 
         ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
@@ -1717,7 +1734,15 @@ input#password-input:focus {
 
     private void OnParamChanged(object eventParam)
     {
-        this.DynamicAPCParamsClientChanged?.Invoke(eventParam, EventArgs.Empty);
+        if (IsBroadCastMode)
+        {
+            DynamicAPCParamsClientChangedCommon?.Invoke(eventParam, EventArgs.Empty);
+        }
+        else
+        {
+            DynamicAPCParamsClientChanged?.Invoke(eventParam, EventArgs.Empty);
+        }
+        
     }
 
 }

@@ -9,7 +9,7 @@ namespace SharedComponents.Services.APCWorkerService
 		event EventHandler LiveDataChanged;
 		event EventHandler DynamicDataChanged;
 		event EventHandler DynDataLoaded;
-		Task RefreshDynamicDataAsync(int deviceNum, int paramAddress);
+		Task RefreshDynamicDataAsync(int deviceNum, int paramAddress, bool refresh);
 		Task DoWork(CancellationToken stoppingToken);
 		void _apcWorkerService_LiveDataChanged(string? sender);
 		void _apcWorkerService_DynDataLoaded();

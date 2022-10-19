@@ -257,7 +257,19 @@ namespace IhtApcWebServer.Pages
 
             await InvokeAsync(StateHasChanged);
 
-            await ihtDevices.SetupCtrl_SetStartAsync(dynDataModificationCNCDataProvider.CurrentSlaveId);
+            if (IsBroadCastMode)
+            {
+                var devices = ihtDevices.GetOnDevices();
+                foreach (IhtDevice device in devices)
+                {
+                  ihtDevices.GetDataCmdExecution(device.SlaveId).IsFlameOn = _isFlameOn;
+                  await ihtDevices.SetupCtrl_SetStartAsync(device.SlaveId);
+                }
+            }
+            else
+            {
+              await ihtDevices.SetupCtrl_SetStartAsync(dynDataModificationCNCDataProvider.CurrentSlaveId);
+            }
         }
 
         private async Task TurnFlameOffAsync()
@@ -269,7 +281,12 @@ namespace IhtApcWebServer.Pages
 
             await InvokeAsync(StateHasChanged);
 
-            await ihtDevices.SetupCtrl_SetOffAsync(dynDataModificationCNCDataProvider.CurrentSlaveId);
+            var devices = ihtDevices.GetOnDevices();
+            foreach (IhtDevice device in devices)
+            {
+                ihtDevices.GetDataCmdExecution(device.SlaveId).IsFlameOn = _isFlameOn;
+                await ihtDevices.SetupCtrl_SetOffAsync(device.SlaveId);
+            }
         }
         int CurrentSlaveId => dynDataModificationCNCDataProvider.CurrentSlaveId;
         int BroadCastId => dynDataModificationCNCDataProvider.CurrentBroadCastId;

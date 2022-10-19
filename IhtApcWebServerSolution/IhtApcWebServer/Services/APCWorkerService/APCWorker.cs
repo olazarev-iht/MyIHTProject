@@ -124,7 +124,7 @@ namespace IhtApcWebServer.Services.APCWorkerService
 
 		}
 
-		public async Task RefreshDynamicDataAsync(int apcSlaveId, int paramAddress)
+		public async Task RefreshDynamicDataAsync(int apcSlaveId, int paramAddress, bool refresh)
 		{
 			try
 			{
@@ -139,8 +139,17 @@ namespace IhtApcWebServer.Services.APCWorkerService
 						CancellationToken.None);
 				}
 
-				// Invoke DynamicDataChanged Event after the Dynamic Parameter had been updated
-				DynamicDataChanged?.Invoke(this, EventArgs.Empty);
+
+				if (refresh)
+                {
+					// Refresh always
+					DynDataLoaded?.Invoke(this, EventArgs.Empty);
+				}
+				else
+                {
+					// Invoke DynamicDataChanged Event after the Dynamic Parameter had been updated
+					DynamicDataChanged?.Invoke(this, EventArgs.Empty);
+				}
 			}
 			catch (Exception ex)
 			{
