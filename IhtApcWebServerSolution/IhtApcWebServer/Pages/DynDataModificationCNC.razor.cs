@@ -270,6 +270,9 @@ namespace IhtApcWebServer.Pages
             {
               await ihtDevices.SetupCtrl_SetStartAsync(dynDataModificationCNCDataProvider.CurrentSlaveId);
             }
+
+            await SetParamsType(IGNITION);
+
         }
 
         private async Task TurnFlameOffAsync()

@@ -341,14 +341,14 @@ input#password-input:focus {
     paramHeatO2 = dynDataModificationCNCDataProvider._paramHeatO2;
     paramFuelGas = dynDataModificationCNCDataProvider._paramFuelGas;
 
-    if(dynDataModificationCNCDataProvider.CurrentParamsType == "Ignition")
+    if(dynDataModificationCNCDataProvider.CurrentParamsType == IGNITION)
     {
         paramFlameAdjust = dynDataModificationCNCDataProvider._paramFlameAdjust;
         _cutO2Visible = NONE_DISPLAY_CLASS;
         _flameAdjustVisible = VISIBLE_CLASS;
     }
-    else if(dynDataModificationCNCDataProvider.CurrentParamsType != "PreHeat" 
-            && dynDataModificationCNCDataProvider.CurrentParamsType != "Heat")
+    else if(dynDataModificationCNCDataProvider.CurrentParamsType != PRE_HEAT 
+            && dynDataModificationCNCDataProvider.CurrentParamsType != HEATTING)
     {
         paramCutO2 = dynDataModificationCNCDataProvider._paramCutO2;
         _flameAdjustVisible = NONE_DISPLAY_CLASS;
@@ -714,11 +714,11 @@ input#password-input:focus {
                 <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
                 @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
             }
-                <MudTd Class="@(_isSumTorchesActive ? "device_lastcell active" : "device_lastcell")" 
-                Style="font-size:25px; padding:6px; font-family:none;" @onclick="@(async (_) => await StartSumTorchesAsync())">&nbsp;&#8721;&nbsp;</MudTd>
-                @*<td class="@(_isFlameOnEndActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")"
-                                            @onclick="@(async (_) => await StartFlameOnEndAsync())"></td>*@
-            
+                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
+                    <MudTd Class="@(_isSumTorchesActive ? "device_lastcell active" : "device_lastcell")" 
+                        Style="font-size:25px; padding:6px; font-family:none;" @onclick="@(async (_) => await StartSumTorchesAsync())">&nbsp;&#8721;&nbsp;</MudTd> 
+                </MudPaper>
                         </tr>
                     </table>
                 </div>
@@ -846,12 +846,12 @@ input#password-input:focus {
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsIgnitionButtonDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
-                                    <div id="FlameOnButton" class="FlameIsOff flame_btn" style="display: @(!_isFlameOn ? "flex" : "none"); height:191px"
+                                    <div id="FlameOnButton" class="FlameIsOff flame_btn" style="display: @(!_isFlameOn ? "flex" : "none"); height:184px"
                                         @onclick="@(async (e) => await TurnFlameOnAsync())">On
                                     </div>
                                 </div>
                                 <div class="button_container">
-                                    <div id="FlameOffButton" class="FlameIsOn flame_btn" style="display: @(_isFlameOn ? "flex" : "none"); height:191px"
+                                    <div id="FlameOffButton" class="FlameIsOn flame_btn" style="display: @(_isFlameOn ? "flex" : "none"); height:184px"
                                         @onclick="@(async (e) => await TurnFlameOffAsync())">Off
                                 </div>
                                 </div>
@@ -901,17 +901,19 @@ input#password-input:focus {
         </tr>
         <tr>
             <td style="border-top-width: 2px !important; border-top-color: white !important;">
+                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
                 <div class="flex-item-left">
                     <table style="border-spacing: @(ComponentMode == MANUAL_MODE ? "1" : "0")px !important;">
                         <tr>
                             @if (ComponentMode == MANUAL_MODE)
                             {
-                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Ignition")"
-                                    @onclick="@(()=>SetParamsType("Ignition"))">Ignition</MudTd>
-                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("PreHeat")"
-                                    @onclick="@(()=>SetParamsType("PreHeat"))">Preheat</MudTd>
-                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Pierce")"
-                                    @onclick="@(()=>SetParamsType("Pierce"))">Piercing</MudTd>
+                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(IGNITION)"
+                                    @onclick="@(()=>SetParamsType(IGNITION))">Ignition</MudTd>
+                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(PRE_HEAT)"
+                                    @onclick="@(()=>SetParamsType(PRE_HEAT))">Preheat</MudTd>
+                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(PIERCING)"
+                                    @onclick="@(()=>SetParamsType(PIERCING))">Piercing</MudTd>
                             }
                             else
                             {
@@ -927,10 +929,10 @@ input#password-input:focus {
                         <tr>
                             @if (ComponentMode == MANUAL_MODE)
                             {
-                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Cut")"
-                                    @onclick="@(()=>SetParamsType("Cut"))">Cutting</MudTd>
-                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass("Heat")"
-                                    @onclick="@(()=>SetParamsType("Heat"))">Heating</MudTd>
+                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(CUTTING)"
+                                    @onclick="@(()=>SetParamsType(CUTTING))">Cutting</MudTd>
+                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(HEATTING)"
+                                    @onclick="@(()=>SetParamsType(HEATTING))">Heating</MudTd>
                                 <td style="width:90px" class="UnselectedParamsType">@ComponentMode</td>
                             }
                             else
@@ -945,7 +947,8 @@ input#password-input:focus {
                             }
                         </tr>
                     </table>                   
-                </div>                    
+                </div> 
+                </MudPaper>
             </td>
         </tr>
     </table>
@@ -1012,6 +1015,12 @@ input#password-input:focus {
     private const string DISPLAY_CLASS = "d-block";
 
     private const string CUTTING_DB_URL = "/CuttingDB";
+
+    private const string IGNITION = "Ignition";
+    private const string PRE_HEAT = "PreHeat";
+    private const string PIERCING = "Pierce";
+    private const string CUTTING = "Cut";
+    private const string HEATTING = "Heat";
 
     //private int spValueOriginal = 50;
     private int spValueCurrent = 50;
@@ -1567,15 +1576,12 @@ input#password-input:focus {
 
         switch (paramsType)
         {
-            case "Ignition": await ihtDevices.SetupCtrl_SetIgnitionCommonAsync(); break;
-            case "PreHeat": await ihtDevices.SetupCtrl_SetPreHeatingCommonAsync(); break;
-            case "Pierce": await ihtDevices.SetupCtrl_SetPiercingCommonAsync(); break;
-            case "Cut": await ihtDevices.SetupCtrl_SetCuttingCommonAsync(); break;
-            case "Heat": await ihtDevices.SetupCtrl_SetHeatingCommonAsync(); break;
-
+            case IGNITION: await ihtDevices.SetupCtrl_SetIgnitionCommonAsync(); break;
+            case PRE_HEAT: await ihtDevices.SetupCtrl_SetPreHeatingCommonAsync(); break;
+            case PIERCING: await ihtDevices.SetupCtrl_SetPiercingCommonAsync(); break;
+            case CUTTING: await ihtDevices.SetupCtrl_SetCuttingCommonAsync(); break;
+            case HEATTING: await ihtDevices.SetupCtrl_SetHeatingCommonAsync(); break;
         }
-
-
 
         await InvokeAsync(StateHasChanged);
     }
