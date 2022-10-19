@@ -4,6 +4,7 @@ using SharedComponents.IhtModbus;
 using SharedComponents.IhtMsg;
 using SharedComponents.Models.CuttingData;
 using SharedComponents.MqttModel.Exec.DataBase;
+using System.Collections;
 using System.Globalization;
 
 namespace SharedComponents.Machine
@@ -48,7 +49,24 @@ namespace SharedComponents.Machine
 
     public static async Task<bool> LoadTechnologyDataAsync(CuttingDataModel? cuttingDataModel, int slaveId = (int)IhtModbusCommunic.SlaveId.Id_Broadcast)
     {
-      var modbusDatas = ExecDataBaseRequest.InstanceIhtDevices().GetModbusDatas();
+      ArrayList arrayList = new ArrayList();
+      var modbusDatas = ExecDataBaseRequest.InstanceIhtDevices().ihtModbusCommunic.GetConnectedModbusDatas();
+      if (slaveId != (int)IhtModbusCommunic.SlaveId.Id_Broadcast)
+      {
+        foreach (IhtModbusData modbusData in modbusDatas)
+        {
+          if (modbusData.SlaveId == slaveId)
+          {
+            arrayList.Add(modbusData);
+            modbusDatas = arrayList;
+            break;
+          }
+        }
+        if (arrayList.Count == 0)
+        {
+          return false;
+        }
+      }
       await ExecDataBaseRequest.InstanceParameterDataInfoManager().LoadCuttingDataParamsFromDBAsync(modbusDatas, cuttingDataModel);
 
       ExecDataBaseRequest.InstanceAPCWorker()._apcWorkerService_DynDataLoaded();

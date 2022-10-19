@@ -52,9 +52,8 @@ if (isService)
 
 IhtCmdLineParams ihtCmdLineParams = IhtCmdLineParams.GetIhtCmdLineParams();
 
-var ihtCmdParams = IhtCmdLineParams.GetIhtCmdLineParams();
-//return ihtCmdParams.IsSimulationExhibiton;
-bool isExhib = ihtCmdParams.IsSimulationExhibiton;
+//var ihtCmdParams = IhtCmdLineParams.GetIhtCmdLineParams();
+//bool isExhib = ihtCmdParams.IsSimulationExhibiton;
 
 string tcpIpAddrServer = "127.0.0.1";
 int tcpIpPortServer = 39419;
@@ -147,10 +146,10 @@ builder.Services.AddDbContextFactory<APCHardwareDBContext>(options =>
 builder.Services.AddScoped<ICuttingParametersService, CuttingParametersService>();
 
 // CuttingData
-builder.Services.AddScoped<ICuttingDataDBService, CuttingDataDBService>();
-builder.Services.AddScoped<IGasDBService, GasDBService>();
-builder.Services.AddScoped<IMaterialDBService, MaterialDBService>();
-builder.Services.AddScoped<INozzleDBService, NozzleDBService>();
+builder.Services.AddSingleton<ICuttingDataDBService, CuttingDataDBService>();
+builder.Services.AddSingleton<IGasDBService, GasDBService>();
+builder.Services.AddSingleton<IMaterialDBService, MaterialDBService>();
+builder.Services.AddSingleton<INozzleDBService, NozzleDBService>();
 
 // APC DB
 builder.Services.AddSingleton<IAPCDeviceDBService, APCDeviceDBService>();
@@ -221,6 +220,7 @@ builder.Host.UseWindowsService(options =>
 
 var app = builder.Build();
 
+#if false
 SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
 	CuttingDataDBServiceConfigure(builder.Services.BuildServiceProvider().GetService<ICuttingDataDBService>());
 SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
@@ -229,7 +229,17 @@ SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
   ParameterDataInfoManagerConfigure(builder.Services.BuildServiceProvider().GetService<IParameterDataInfoManager>());
 SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
   APCWorkerConfigure(builder.Services.BuildServiceProvider().GetService<IAPCWorker>());
+#else
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+  CuttingDataDBServiceConfigure(app.Services.GetRequiredService<ICuttingDataDBService>());
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+  IhtDevicesConfigure(app.Services.GetRequiredService<IhtDevices>());
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+  ParameterDataInfoManagerConfigure(app.Services.GetRequiredService<IParameterDataInfoManager>());
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+  APCWorkerConfigure(app.Services.GetRequiredService<IAPCWorker>());
 
+#endif
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
