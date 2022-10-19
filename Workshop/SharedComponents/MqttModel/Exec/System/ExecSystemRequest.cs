@@ -130,9 +130,12 @@ namespace SharedComponents.MqttModel.Exec.System
         return resultStatus;
       }
 
+      // Datensatz mit angeforderter ID in der Datenbank suchen
+      CuttingDataModel? cuttingDataModel = await ExecDataBaseRequest.InstanceCuttingDataDBService().GetEntryByGasIdAndIdAsync(
+        requestLoadDataRecord.DataRecordId.Value, (int)ExecDataBaseRequest.InstanceIhtDevices().TorchTypeSetup, CancellationToken.None);
+
       // Load data record in all APC-Stations
-      CuttingDataModel? cuttingDataModel = null;
-      resultStatus = await LoadDataRecordAsync(requestLoadDataRecord.DataRecordId.Value, cuttingDataModel, (int)IhtModbusCommunic.SlaveId.Id_Broadcast);
+      resultStatus = await LoadDataRecordAsync(cuttingDataModel, (int)IhtModbusCommunic.SlaveId.Id_Broadcast);
 
       // If loading went wrong
       if (resultStatus.Value != Machine.ResultStatus.NoError.Value)
@@ -174,7 +177,7 @@ namespace SharedComponents.MqttModel.Exec.System
     /// <param name="dataRecordId"></param>
     /// <param name="cCutData"></param>
     /// <returns></returns>
-    public static async Task<Machine.ResultStatus> LoadDataRecordAsync(int dataRecordId, CuttingDataModel? cuttingDataModel, int slaveId)
+    public static async Task<Machine.ResultStatus> LoadDataRecordAsync(CuttingDataModel? cuttingDataModel, int slaveId)
     {
       Machine.ResultStatus resultStatus = Machine.ResultStatus.NoError;
 
@@ -225,9 +228,6 @@ namespace SharedComponents.MqttModel.Exec.System
         }
       }
       #else
-      // Datensatz mit angeforderter ID in der Datenbank suchen
-      cuttingDataModel = await ExecDataBaseRequest.InstanceCuttingDataDBService().GetEntryByGasIdAndIdAsync(
-        (int)ExecDataBaseRequest.InstanceIhtDevices().TorchTypeSetup, dataRecordId, CancellationToken.None);
       bool dataSetFound = cuttingDataModel != null;
 
       // Wenn Datensatz nicht gefunden wurde

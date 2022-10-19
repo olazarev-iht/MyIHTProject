@@ -6,6 +6,8 @@ using SharedComponents.Models.CuttingData;
 using Microsoft.Extensions.DependencyInjection;
 using SharedComponents.Services.CuttingDataDBServices;
 using SharedComponents.IhtDev;
+using SharedComponents.Services.APCHardwareManagers;
+using SharedComponents.Services.APCWorkerService;
 
 namespace SharedComponents.MqttModel.Exec.DataBase
 {
@@ -16,8 +18,8 @@ namespace SharedComponents.MqttModel.Exec.DataBase
 
     private static ICuttingDataDBService? _cuttingDataDBService;
     private static IhtDevices? _ihtDevices;
-
-
+    private static IParameterDataInfoManager? _parameterDataInfoManager;
+    private static IAPCWorker? _apcWorker;
     public static void CuttingDataDBServiceConfigure(ICuttingDataDBService? context)
     {
       _cuttingDataDBService = context;
@@ -34,6 +36,24 @@ namespace SharedComponents.MqttModel.Exec.DataBase
     public static IhtDevices? InstanceIhtDevices()
     {
       return _ihtDevices;
+    }
+
+    public static void ParameterDataInfoManagerConfigure(IParameterDataInfoManager? context)
+    {
+      _parameterDataInfoManager = context;
+    }
+    public static IParameterDataInfoManager? InstanceParameterDataInfoManager()
+    {
+      return _parameterDataInfoManager;
+    }
+
+    public static void APCWorkerConfigure(IAPCWorker? context)
+    {
+      _apcWorker = context;
+    }
+    public static IAPCWorker? InstanceAPCWorker()
+    {
+      return _apcWorker;
     }
 
     /// <summary>

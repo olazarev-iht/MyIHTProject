@@ -186,11 +186,11 @@ namespace SharedComponents.MqttModel.Exec.Station
       }
 
 
-      // Load data record in all APC-Stations
-      CuttingDataModel cuttingDataModel = null;
+      // Datensatz mit angeforderter ID in der Datenbank suchen
+      CuttingDataModel? cuttingDataModel = await ExecDataBaseRequest.InstanceCuttingDataDBService().GetEntryByGasIdAndIdAsync(
+        requestLoadDataRecord.DataRecordId.Value, (int)ExecDataBaseRequest.InstanceIhtDevices().TorchTypeSetup, CancellationToken.None);
 
-      CCutData cCutData = new CCutData();
-      resultStatus = await System.ExecSystemRequest.LoadDataRecordAsync(requestLoadDataRecord.DataRecordId.Value, cuttingDataModel, IhtModbusCommunic.GetSlaveId(station));
+      resultStatus = await System.ExecSystemRequest.LoadDataRecordAsync(cuttingDataModel, IhtModbusCommunic.GetSlaveId(station));
 
       // If loading went wrong
       if (resultStatus.Value != Machine.ResultStatus.NoError.Value)
@@ -205,9 +205,8 @@ namespace SharedComponents.MqttModel.Exec.Station
       // Send the loaded data record back
       Exec.Common.StationResponseLoadDataRecord loadDataRecord = new Exec.Common.StationResponseLoadDataRecord
         (station,
-        resultStatus,
-        requestLoadDataRecord.DataRecordId,
-        cCutData);
+        Machine.ResultStatus.NoError,
+        cuttingDataModel);
 
       jsonSerializerSettings = Helper.JsonHelper.CreateSerializerSettings(errorContext);
       jsonString = Helper.JsonHelper.FromClass<DataBase.ResponseDataRecord>(loadDataRecord, true, jsonSerializerSettings);

@@ -48,8 +48,11 @@ namespace SharedComponents.Machine
 
     public static async Task<bool> LoadTechnologyDataAsync(CuttingDataModel? cuttingDataModel, int slaveId = (int)IhtModbusCommunic.SlaveId.Id_Broadcast)
     {
-      // todo
-      //return await MainWindow.GetMainWindow().LoadTechnologyDataAsync(cutData, slaveId);
+      var modbusDatas = ExecDataBaseRequest.InstanceIhtDevices().GetModbusDatas();
+      await ExecDataBaseRequest.InstanceParameterDataInfoManager().LoadCuttingDataParamsFromDBAsync(modbusDatas, cuttingDataModel);
+
+      ExecDataBaseRequest.InstanceAPCWorker()._apcWorkerService_DynDataLoaded();
+
       return true;
     }
 

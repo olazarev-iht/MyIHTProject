@@ -221,6 +221,10 @@ SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
 	CuttingDataDBServiceConfigure(builder.Services.BuildServiceProvider().GetService<ICuttingDataDBService>());
 SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
 	IhtDevicesConfigure(builder.Services.BuildServiceProvider().GetService<IhtDevices>());
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+  ParameterDataInfoManagerConfigure(builder.Services.BuildServiceProvider().GetService<IParameterDataInfoManager>());
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+  APCWorkerConfigure(builder.Services.BuildServiceProvider().GetService<IAPCWorker>());
 
 
 // Configure the HTTP request pipeline.

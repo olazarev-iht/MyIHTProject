@@ -7,6 +7,7 @@
 @using SharedComponents.IhtModbus
 @using SharedComponents.Models
 @using SharedComponents.Models.CuttingData
+@using SharedComponents.MqttModel
 @using SharedComponents.Services.APCHardwareManagers
 @using SharedComponents.Services.APCWorkerService
 @using SharedComponents.Services.CuttingDataDBServices
@@ -630,11 +631,15 @@ VisibleField {
 
         apcWorker._apcWorkerService_DynDataLoaded();
 
+        int dataRecordId = cuttingDataModel.Id;
         cuttingDataModel = new CuttingDataModel();
         _loadParamsDialogVisible = false;
         await GetEntriesAsync();
 
         OnStaticParamChanged();
+        MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
+        string payload = $"{dataRecordId}";
+        await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordCreatedNotification, payload);
     }
 
     private async void CloseEditParamsModal()
