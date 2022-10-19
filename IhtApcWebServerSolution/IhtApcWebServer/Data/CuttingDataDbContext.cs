@@ -74,13 +74,16 @@ namespace IhtApcWebServer.Data
 			modelBuilder.Entity<Nozzle>().HasData(new Nozzle { Id = Guid.NewGuid(), Name = "PSF 200-250" });
 			modelBuilder.Entity<Nozzle>().HasData(new Nozzle { Id = Guid.NewGuid(), Name = "PSF 250-300" });
 
-            //modelBuilder.Entity<CustomCounter>().HasData(new CustomCounter { Ids = 1 });
+			//modelBuilder.Entity<CustomCounter>().HasData(new CustomCounter { Ids = 1 });
 
 
-   //         await ctx.Database.ExecuteSqlRawAsync(@" insert into sqlite_sequence(name,seq) values('CuttingData', 50000);
-			//            insert into CustomCounter(Ids) values(1);
-			
-			//            insert into [CuttingData]
+			//await ctx.Database.ExecuteSqlRawAsync(@" insert into sqlite_sequence(name,seq) values('CuttingData', 50000);
+			//            insert into CustomCounter(Ids) values(1);";
+
+			// For manual changing run Trunkate table for sqlite_sequence and CustomCounter first
+			// Then - run insert into sqlite_sequence(name,seq) values('CuttingData', 50000) and insert into CustomCounter(Ids) values(1)
+			// Then run:
+			// insert into [CuttingData]
 			// ( MaterialId, NozzleId, Thickness, LeadInLength, Kerf, GasId, CuttingSpeed, IgnitionFlameAdjustment, PI0, PI1, PreHeatHeight, PreHeatHeatingOxygenPressure, 
 			// PreHeatFuelGasPressure, PreHeatTime, PierceHeight, PierceHeatingOxygenPressure, PierceCuttingOxygenPressure, PierceFuelGasPressure, PierceCuttingSpeedChange, 
 			// PierceTime, PP0, PP1, PP2, PP3, PP4, CutHeight, CutHeatingOxygenPressure, CutCuttingOxygenPressure, CutFuelGasPressure, Remark, ExtKey, ControlBits ) 
@@ -90,6 +93,6 @@ namespace IhtApcWebServer.Data
 			//apc.PP4, apc.CutHeight, apc.CutHeatingOxygenPressure, apc.CutCuttingOxygenPressure, apc.CutFuelGasPressure, apc.Remark, apc.ExtKey, apc.ControlBits
 			//FROM APCCuttingParametersIHT apc LEFT JOIN Nozzle ON apc.Nozzle = Nozzle.Name LEFT JOIN Material ON apc.Material = Material.Name LEFT JOIN Gas on apc.IdGas = Gas.GasId ");
 
-        }
-    }
+		}
+	}
 }

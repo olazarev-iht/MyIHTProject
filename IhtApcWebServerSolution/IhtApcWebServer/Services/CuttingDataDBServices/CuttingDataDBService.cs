@@ -37,24 +37,24 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 			return entries;
 		}
 
-    public async Task<List<CuttingDataModel>> GetEntriesByGasTypeAsync(int gasTypeId, CancellationToken cancellationToken)
-    {
-      await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+		public async Task<List<CuttingDataModel>> GetEntriesByGasTypeAsync(int gasTypeId, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-      var entries = await dbContext.CuttingData
-        .OrderBy(p => p.Id)
-        .ThenBy(p => p.Thickness)
-        .Include(p => p.Gas)
-        .Include(p => p.Nozzle)
-        .Include(p => p.Material)
-				.Where(p => p.Gas != null && p.Gas.GasId == gasTypeId)
-        .Select(p => _mapper.Map<CuttingData, CuttingDataModel>(p))
-        .ToListAsync(cancellationToken);
+			var entries = await dbContext.CuttingData
+			  .OrderBy(p => p.Id)
+			  .ThenBy(p => p.Thickness)
+			  .Include(p => p.Gas)
+			  .Include(p => p.Nozzle)
+			  .Include(p => p.Material)
+					  .Where(p => p.Gas != null && p.Gas.GasId == gasTypeId)
+			  .Select(p => _mapper.Map<CuttingData, CuttingDataModel>(p))
+			  .ToListAsync(cancellationToken);
 
-      return entries;
-    }
+			return entries;
+		}
 
-    public async Task<CuttingDataModel?> GetEntryByIdAsync(int id, CancellationToken cancellationToken)
+		public async Task<CuttingDataModel?> GetEntryByIdAsync(int id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 			var entry = await dbContext.CuttingData
@@ -66,20 +66,20 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 			return _mapper.Map<CuttingData, CuttingDataModel>(entry);
 		}
 
-    public async Task<CuttingDataModel?> GetEntryByGasIdAndIdAsync(int id, int gasTypeId, CancellationToken cancellationToken)
-    {
-      await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
-      var entry = await dbContext.CuttingData
-        .Include(p => p.Gas)
-        .Include(p => p.Nozzle)
-        .Include(p => p.Material)
-        .Where(p => p.Gas != null && p.Gas.GasId == gasTypeId)
-        .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+		public async Task<CuttingDataModel?> GetEntryByGasIdAndIdAsync(int id, int gasTypeId, CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+			var entry = await dbContext.CuttingData
+			  .Include(p => p.Gas)
+			  .Include(p => p.Nozzle)
+			  .Include(p => p.Material)
+			  .Where(p => p.Gas != null && p.Gas.GasId == gasTypeId)
+			  .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
 
-      return _mapper.Map<CuttingData, CuttingDataModel>(entry);
-    }
+			return _mapper.Map<CuttingData, CuttingDataModel>(entry);
+		}
 
-    public async Task<int?> AddEntryAsync(CuttingDataModel model, CancellationToken cancellationToken)
+		public async Task<int?> AddEntryAsync(CuttingDataModel model, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 			bool created = false;
@@ -89,8 +89,8 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 			using var tx = dbContext.Database.BeginTransaction();
 
 			var customCounter = await dbContext.CustomCounter.SingleAsync();
-			
-			entity.Id = customCounter.Ids ;
+
+			entity.Id = customCounter.Ids;
 			entity.idCutDataParent = !string.IsNullOrWhiteSpace(model.idCutDataParent.ToString()) ? model.idCutDataParent : model.Id;
 
 			await dbContext.Database.ExecuteSqlRawAsync($@"update CustomCounter Set Ids = {++customCounter.Ids}");
@@ -100,17 +100,17 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 
 			await tx.CommitAsync();
 
-      created = true;
-      if (created)
-      {
-        MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
-        // 
-        int dataRecordId = entity.Id;
-        string payload = $"{dataRecordId}";
-        await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordCreatedNotification, payload);
-      }
+			created = true;
+			if (created)
+			{
+				MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
+				// 
+				int dataRecordId = entity.Id;
+				string payload = $"{dataRecordId}";
+				await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordCreatedNotification, payload);
+			}
 
-      return entity.Id;
+			return entity.Id;
 		}
 
 		public async Task<int?> AddBaseEntryAsync(CuttingDataModel model, CancellationToken cancellationToken)
@@ -143,8 +143,8 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 					//entry = _mapper.Map<CuttingDataModel, CuttingData>(newData);
 					dbContext.Entry(entry).CurrentValues.SetValues(newData);
 					await dbContext.SaveChangesAsync(cancellationToken);
-          updated = true;
-        }
+					updated = true;
+				}
 			}
 			catch (DbUpdateConcurrencyException ex)
 			{
@@ -171,9 +171,9 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 				}
 
 				await dbContext.SaveChangesAsync(cancellationToken);
-        updated = true;
-      }
-      catch (Exception ex)
+				updated = true;
+			}
+			catch (Exception ex)
 			{
 				//throw new Exception(ex.Message, ex);
 				var message = ex.Message;
@@ -181,20 +181,20 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 
 			if (updated && newData != null)
 			{
-        MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
-        // 
-        int dataRecordId = newData.Id;
-        string payload = $"{dataRecordId}";
-        await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordUpdatedNotification, payload);
-      }
-    }
+				MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
+				// 
+				int dataRecordId = newData.Id;
+				string payload = $"{dataRecordId}";
+				await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordUpdatedNotification, payload);
+			}
+		}
 
 		public async Task DeleteEntryAsync(int id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
-      bool deleted = false;
+			bool deleted = false;
 
-      using var tx = dbContext.Database.BeginTransaction();
+			using var tx = dbContext.Database.BeginTransaction();
 
 			var stub = new CuttingData() { Id = id, };
 
@@ -209,16 +209,16 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 
 			await tx.CommitAsync(cancellationToken);
 
-      deleted = true;
-      if (deleted)
-      {
-        MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
-        // 
-        int dataRecordId = id;
-        string payload = $"{dataRecordId}";
-        await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordDeletedNotification, payload);
-      }
+			deleted = true;
+			if (deleted)
+			{
+				MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
+				// 
+				int dataRecordId = id;
+				string payload = $"{dataRecordId}";
+				await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordDeletedNotification, payload);
+			}
 
-    }
-  }
+		}
+	}
 }

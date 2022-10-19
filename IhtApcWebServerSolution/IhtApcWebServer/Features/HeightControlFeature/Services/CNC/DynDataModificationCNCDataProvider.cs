@@ -38,8 +38,6 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 					_currentDeviceNumber = currentDevice.DeviceNumber;
 				}
 
-				//_currentDisabledDeviceWasChangedManualy = false;
-
 				return _currentDeviceNumber;
 			}
 			set
