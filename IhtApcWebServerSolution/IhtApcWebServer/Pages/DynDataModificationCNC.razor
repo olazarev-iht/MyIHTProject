@@ -550,7 +550,7 @@ input#password-input:focus {
         <table>
             <tr><td><MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText></td></tr>
             <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">Cutting Data</MudButton></td></tr>
-            <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@OtherComponentMode Mode</MudButton></td></tr>
+            <tr><td><MudButton Disabled="IsOtherModeDisabled()" Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@OtherComponentMode Mode</MudButton></td></tr>
         </table>
     </TitleContent>
     <DialogContent>  
@@ -667,10 +667,13 @@ input#password-input:focus {
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(4)"
             @onclick="@(()=>SetDeviceNum(4))">4</MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)"
-            @onclick="@(()=>SetDeviceNum(5))">5</MudTd>
+            @onclick="@(()=>SetDeviceNum(5))">5</MudTd>            
+            <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+            <MudOverlay Visible="_isProcessBtnActive" LightBackground="true" Absolute="true" />
             <MudTd Style="padding:0px;" Class="device_lastcell">
                 <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())" />           
             </MudTd>
+            </MudPaper>
                         </tr>
                     </table>
                 </div>
@@ -696,7 +699,7 @@ input#password-input:focus {
             @if(ComponentMode != MANUAL_MODE && EXHIBITION_MODE){
                 <td colspan="2" style="width: 66.35%;">
                     <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                    <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
+                    <MudOverlay Visible="IsStartProcessDisabled()" LightBackground="true" Absolute="true" />
                     <div class="button_container">
                         <div id="ProcessBtn" class="@(_isProcessBtnActive ? "process_btn active" : "process_btn")"
                             @onclick="@(async (_) => await StartProcessAsync())">
@@ -715,7 +718,7 @@ input#password-input:focus {
                 @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
             }
                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
+                <MudOverlay Visible="IsSumDisabled()" LightBackground="true" Absolute="true" />
                     <MudTd Class="@(_isSumTorchesActive ? "device_lastcell active" : "device_lastcell")" 
                         Style="font-size:25px; padding:6px; font-family:none;" @onclick="@(async (_) => await StartSumTorchesAsync())">&nbsp;&#8721;&nbsp;</MudTd> 
                 </MudPaper>
@@ -779,7 +782,7 @@ input#password-input:focus {
                         <tr>
                             <td class="button_tabcell">
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsHCButtonsDisabled()" LightBackground="true" Absolute="true" />
+                                <MudOverlay Visible="IsHCButtonsDisabled() || ComponentMode == MANUAL_MODE" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
                                     <div id="HCMoveTorchUp" class="@(_isHCTorchUpActive ? "up_btn active" : "up_btn")"
                                         @onpointerdown="@(async (e) => await HCMoveTorchUpAsync("HCMoveTorchUp"))"
@@ -787,11 +790,18 @@ input#password-input:focus {
                                         @onmouseout="@((_) => DeactiveButton("HCMoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchUp"))">HCUp
                                     </div>
                                 </div>
+                                </MudPaper>
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="IsHCOnOffDisabled() || ComponentMode != MANUAL_MODE" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
-                                    <div id="OnOff" class="@(_isHCTorchUpActive ? "central_btn active" : "central_btn")">
-                                        On/<br />Off
+                                    <div id="OnOff" class="@(_isHCOnOffActive ? "central_btn active" : "central_btn")"
+                                        @onclick="@(async () => await TurnHCOnOffAsync())">
+                                        @(_isHCOnOffActive ? "Off" : "On")
                                     </div>
-                                </div>                              
+                                </div>
+                                </MudPaper>
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="IsHCButtonsDisabled() || ComponentMode == MANUAL_MODE" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
                                     <div id="HCMoveTorchDown" class="@(_isHCTorchDownActive ? "down_btn active" : "down_btn")"
                                         @onpointerdown="@(async (e) => await HCMoveTorchDownAsync("HCMoveTorchDown"))"
@@ -804,7 +814,7 @@ input#password-input:focus {
                             
                             <td class="button_tabcell">
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsMovementButtonsDisabled()" LightBackground="true" Absolute="true"/>
+                                <MudOverlay Visible="IsMoveUpButtonDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
                                     <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")"
                                         @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
@@ -829,7 +839,7 @@ input#password-input:focus {
                                 }
                                 </MudPaper>
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsMovementButtonsDisabled() || IsMoveDownButtonDisabled()" LightBackground="true" Absolute="true" />
+                                <MudOverlay Visible="IsMoveDownButtonDisabled()" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
                                     <div id="MoveTorchDown" class="@(_isTorchDownActive ? "down_btn active" : "down_btn")"
                                         @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
@@ -908,8 +918,11 @@ input#password-input:focus {
                         <tr>
                             @if (ComponentMode == MANUAL_MODE)
                             {
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="_isHCOnOffActive" LightBackground="true" Absolute="true" />
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(IGNITION)"
                                     @onclick="@(()=>SetParamsType(IGNITION))">Ignition</MudTd>
+                                </MudPaper>
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(PRE_HEAT)"
                                     @onclick="@(()=>SetParamsType(PRE_HEAT))">Preheat</MudTd>
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(PIERCING)"
@@ -931,8 +944,11 @@ input#password-input:focus {
                             {
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(CUTTING)"
                                     @onclick="@(()=>SetParamsType(CUTTING))">Cutting</MudTd>
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="_isHCOnOffActive" LightBackground="true" Absolute="true" />
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(HEATTING)"
                                     @onclick="@(()=>SetParamsType(HEATTING))">Heating</MudTd>
+                                </MudPaper>
                                 <td style="width:90px" class="UnselectedParamsType">@ComponentMode</td>
                             }
                             else
@@ -1200,16 +1216,21 @@ input#password-input:focus {
         return !IsEnableds;
     }
 
-    private bool IsMovementButtonsDisabled()
+    private bool IsMoveUpButtonDisabled()
     {
         return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl;
     }
 
+    //private bool IsMovementButtonDownDisabled()
+    //{
+    //    return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl || _isHCOnOffActive;
+    //}
+
     private bool IsMoveDownButtonDisabled()
     {
-        if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
+        if (CurrentDevice != null && CurrentDevice.IsEnabledMainControl && CurrentDevice.dataProcessInfo != null)
         {
-            return !CurrentDevice.dataProcessInfo.IsEnabledManDown;
+            return !CurrentDevice.dataProcessInfo.IsEnabledManDown || !CurrentDevice.IsConnected;
         }
 
         return true;
@@ -1232,7 +1253,7 @@ input#password-input:focus {
 
     private bool IsIgnitionButtonDisabled()
     {
-        return IsMovementButtonsDisabled();
+        return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl || _isHCOnOffActive;
     }
 
     private bool IsHCButtonsDisabled()
@@ -1243,6 +1264,28 @@ input#password-input:focus {
         }
 
         return true;
+    }
+
+    private bool IsHCOnOffDisabled()
+    {
+        return _isFlameOn || !CurrentDevice.IsEnabledMainControl;
+    }
+
+    private bool IsStartProcessDisabled()
+    {
+        return !CurrentDevice.IsEnabledMainControl || _isCalibrationActive;
+    }
+
+    private bool IsSumDisabled()
+    {
+        var enabledDevicesCount = ihtDevices.GetDevices().Where(dev => dev.IsEnabledMainControl).ToList().Count;
+
+        return enabledDevicesCount < 2 || _isFlameOn || _isHCOnOffActive || _isCalibrationActive;
+    }
+
+    private bool IsOtherModeDisabled()
+    {
+        return ihtDevices.GetConnectedDevices().Count == 0;
     }
 
     private void OpenSetupParamsDialog()
@@ -1567,12 +1610,56 @@ input#password-input:focus {
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="heigthCtrlHandler"></param>
+    /// <returns></returns>
+    private async Task ExecHeightCtrlAsync(Func<int, Task> heigthCtrlHandler, bool IsHCOnOffActive = true)
+    {
+        if (IsBroadCastMode)
+        {
+            var devices = ihtDevices.GetOnDevices();
+            foreach (IhtDevice device in devices)
+            {
+             ihtDevices.GetDataCmdExecution(device.SlaveId).IsHCOnOffActive = IsHCOnOffActive;
+              await heigthCtrlHandler(device.SlaveId);
+            }
+        }
+        else
+        {
+           _isHCOnOffActive = IsHCOnOffActive;
+           await heigthCtrlHandler(CurrentSlaveId);
+        }
+    }
 
+    /// <summary>
+    /// 
+    /// 
+    /// </summary>
+    /// <param name="paramsType"></param>
+    /// <returns></returns>
     private async Task SetParamsType(string paramsType)
     {
-        dynDataModificationCNCDataProvider.CurrentParamsType = paramsType;
+        if (_isHCOnOffActive)
+        {
+            if (paramsType == IGNITION)
+            {
+                paramsType = PRE_HEAT;
+            }
 
-        await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
+            Func<int, Task>? heigthCtrlHandler = null;
+            switch (paramsType)
+            {
+                case PRE_HEAT: heigthCtrlHandler = ihtDevices.HeightControlPreHeatingAsync; break;
+                case PIERCING: heigthCtrlHandler = ihtDevices.HeightControlPiercingAsync  ; break;
+                case CUTTING : heigthCtrlHandler = ihtDevices.HeightControlCuttingAsync   ; break;
+                case HEATTING: heigthCtrlHandler = ihtDevices.HeightControlCuttingAsync   ; break;
+                default: return;
+            }
+
+            await ExecHeightCtrlAsync(heigthCtrlHandler, IsHCOnOffActive: true);
+        }
 
         switch (paramsType)
         {
@@ -1583,9 +1670,17 @@ input#password-input:focus {
             case HEATTING: await ihtDevices.SetupCtrl_SetHeatingCommonAsync(); break;
         }
 
+        dynDataModificationCNCDataProvider.CurrentParamsType = paramsType;
+
+        await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
+
         await InvokeAsync(StateHasChanged);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="deviceNum"></param>
     private async void SetDeviceNum(int deviceNum)
     {
         //TODO: implemet: not to go to error device!!!!
@@ -1607,6 +1702,11 @@ input#password-input:focus {
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="selectedType"></param>
+    /// <returns></returns>
     private string GetParamsTypeClass(string selectedType)
     {
         if (selectedType.ToLower() == dynDataModificationCNCDataProvider.CurrentParamsType.ToLower())
@@ -1723,6 +1823,12 @@ input#password-input:focus {
         this.APCTorchPositionStoped -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
 
         _ = TurnFlameOffAsync();
+
+        if(_isHCOnOffActive)
+        { 
+            _ = TurnHCOffAsync();
+        }
+
         // Stop the SP moving and refresh component for all the users
         _ = dynDataModificationCNCDataProvider.StopMovingTorchAsync();
         ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded?.Invoke(this, EventArgs.Empty);

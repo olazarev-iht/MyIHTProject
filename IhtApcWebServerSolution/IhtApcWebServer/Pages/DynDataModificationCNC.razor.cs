@@ -91,6 +91,13 @@ namespace IhtApcWebServer.Pages
             set { }
         }
 
+        private bool _isHCOnOffActive
+        {
+            get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsHCOnOffActive;
+            set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsHCOnOffActive = value;
+        }
+
+        
         private Stopwatch stopwatch = new Stopwatch();
 
         [JSInvokable]
@@ -149,6 +156,30 @@ namespace IhtApcWebServer.Pages
 
                 await ActivatateAsync(newEventName);
             }
+        }
+
+        private async Task TurnHCOnOffAsync()
+        {
+            if (!_isHCOnOffActive)
+            {
+                await TurnHCOnAsync();
+            }
+            else
+            {
+                await TurnHCOffAsync();
+            }
+        }
+
+        private async Task TurnHCOnAsync()
+        {
+            _isHCOnOffActive = true;
+
+            await SetParamsType(CurrentParamsType);
+        }
+
+        private async Task TurnHCOffAsync()
+        {
+            await ExecHeightCtrlAsync(ihtDevices.HeightControlOffAsync, IsHCOnOffActive: false);
         }
 
         private async Task MoveTorchDownAsync(string newEventName)
@@ -268,7 +299,7 @@ namespace IhtApcWebServer.Pages
             }
             else
             {
-              await ihtDevices.SetupCtrl_SetStartAsync(dynDataModificationCNCDataProvider.CurrentSlaveId);
+              await ihtDevices.SetupCtrl_SetStartAsync(CurrentSlaveId);
             }
 
             await SetParamsType(IGNITION);
@@ -293,6 +324,7 @@ namespace IhtApcWebServer.Pages
         }
         int CurrentSlaveId => dynDataModificationCNCDataProvider.CurrentSlaveId;
         int BroadCastId => dynDataModificationCNCDataProvider.CurrentBroadCastId;
+        string CurrentParamsType => dynDataModificationCNCDataProvider.CurrentParamsType;
 
         bool IsBroadCastMode => dynDataModificationCNCDataProvider.IsBroadCastMode;
         private async Task CalibrationProcessAsync()
@@ -404,8 +436,6 @@ namespace IhtApcWebServer.Pages
                     }
                 }
             }
-
-            //return _isCalibrationActive ? "central_btn active" : "central_btn";
         }
 
         private async Task Calibration_StartCalibration()
@@ -430,6 +460,7 @@ namespace IhtApcWebServer.Pages
             }
 
         }
+
         private async Task Calibration_StopCalibration()
         {
             if (IsBroadCastMode)
