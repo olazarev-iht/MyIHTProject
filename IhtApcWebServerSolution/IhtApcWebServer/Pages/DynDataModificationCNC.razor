@@ -30,7 +30,7 @@
 
 <style>
 .device_tabcell {
-    width: 88px;
+    width: 83px;
     height:55px;
     text-align: center;
     border: 1px solid #fff;
@@ -67,9 +67,15 @@
 }
 
 .tabcell {
-    width: 88.7px;
-    height:50px;
+    width: 83px;
+    height: 50px;
     text-align: center;
+    border-left-color: white !important;
+    border-left-style: solid !important;
+    border-left-width: 2px !important;
+    border-right-color: #fff !important;
+    /*border-right-style: solid !important;
+    border-right-width: 2px !important;*/
 }
 
 .tabcell_menu {
@@ -300,7 +306,7 @@ input#password-input:focus {
 
     .mud-table-cell  {
         font-size: 1rem;
-        padding: 11.5px;
+        padding: 9px;
         /*border-bottom: 0px solid*/
         border: 0px
     }
@@ -832,8 +838,7 @@ input#password-input:focus {
                                     <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                     <MudOverlay Visible="IsCalibrationButtonDisabled()" LightBackground="true" Absolute="true" />
                                     <div class="button_container">
-                                        <div id="CalibrateBtn" class="@GetCalibrationClass()" @onclick="@(async (_) => await CalibrationProcessAsync())">Cali-<br />brate
-                                        </div>
+                                        <div id="CalibrateBtn" class="@GetCalibrationClass()" @onclick="@(async (_) => await CalibrationProcessAsync())">CALIB</div>
                                     </div>
                                     </MudPaper>
                                 }
@@ -914,7 +919,7 @@ input#password-input:focus {
                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                 <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
                 <div class="flex-item-left">
-                    <table style="border-spacing: @(ComponentMode == MANUAL_MODE ? "1" : "0")px !important;">
+                    <table class="internal_div_table" style="border-spacing: @(ComponentMode == MANUAL_MODE ? "0" : "0")px !important;">
                         <tr>
                             @if (ComponentMode == MANUAL_MODE)
                             {
@@ -938,7 +943,7 @@ input#password-input:focus {
                     </table>
                 </div>
                 <div class="flex-item-right">
-                    <table style="border-spacing: @(ComponentMode == MANUAL_MODE ? "1" : "0")px !important;">
+                    <table class="internal_div_table" style="border-spacing: @(ComponentMode == MANUAL_MODE ? "0" : "0")px !important;">
                         <tr>
                             @if (ComponentMode == MANUAL_MODE)
                             {
@@ -949,7 +954,7 @@ input#password-input:focus {
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(HEATTING)"
                                     @onclick="@(()=>SetParamsType(HEATTING))">Heating</MudTd>
                                 </MudPaper>
-                                <td style="width:90px" class="UnselectedParamsType">@ComponentMode</td>
+                                <td class="mud-table-cell UnselectedParamsType tabcell">@ComponentMode</td>
                             }
                             else
                             {
