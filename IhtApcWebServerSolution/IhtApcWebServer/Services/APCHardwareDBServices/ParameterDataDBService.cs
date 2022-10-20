@@ -3,6 +3,8 @@ using IhtApcWebServer.Data.DataMapper;
 using IhtApcWebServer.Data.Models.APCHardware;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
+using System.Linq;
+using SharedComponents.IhtModbus;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareDBServices;
 
@@ -39,13 +41,28 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
+			int[] paramsArray = new int[4];
+
+			int[] ignitionParamsArray = { (int)IhtModbusParamDyn.eIdxTechnology.HeatO2Ignition, (int)IhtModbusParamDyn.eIdxTechnology.FuelGasIgnition, (int)IhtModbusParamDyn.eIdxTechnology.IgnitionFlameAdjust };
+			int[] preheatParamsArray = { (int)IhtModbusParamDyn.eIdxTechnology.HeatO2PreHeat, (int)IhtModbusParamDyn.eIdxTechnology.FuelGasPreHeat};
+			int[] piercingParamsArray = { (int)IhtModbusParamDyn.eIdxTechnology.HeatO2Pierce, (int)IhtModbusParamDyn.eIdxTechnology.FuelGasPierce, (int)IhtModbusParamDyn.eIdxTechnology.CutO2Pierce };
+			int[] cuttingParamsArray = { (int)IhtModbusParamDyn.eIdxTechnology.HeatO2Cut, (int)IhtModbusParamDyn.eIdxTechnology.FuelGasCut, (int)IhtModbusParamDyn.eIdxTechnology.CutO2Cut };
+
+			switch (ParamsType)
+			{
+				case "Ignition": paramsArray = ignitionParamsArray; break;
+				case "PreHeat": paramsArray = preheatParamsArray; break;
+				case "Pierce": paramsArray = piercingParamsArray; break;
+				case "Cut": paramsArray = cuttingParamsArray; break;
+			}
+
 			var entries = await dbContext.ParameterDatas
 				.AsNoTracking()
 				.Include(p => p.APCDevice)
 				.Include(p => p.DynParams)
 					.ThenInclude(dp => dp.ConstParams)			
 				.Where(p => p.APCDevice != null && p.APCDevice.Num == DeviceId)
-				.Where(p => p.ParamName.Contains(ParamsType))
+				.Where(p => p.DynParams != null && paramsArray.ToList().Contains(p.DynParams.ParamId) && p.ParamGroupId == ParamGroup.Technology)
 				.Select(p => _mapper.Map<ParameterData, ParameterDataModel>(p))
 				.ToArrayAsync(cancellationToken);
 
