@@ -339,6 +339,11 @@ input#password-input:focus {
     .my-install-toarch .mud-input>input.mud-input-root, div.mud-input-slot.mud-input-root {
         padding: 6px 0 3px; 
     }
+
+    .mud-slider.mud-slider-small.mud-slider {
+        margin-left: 5px !important;
+        padding-right: 20px !important;
+    }
 }
 </style>
 
@@ -726,7 +731,7 @@ input#password-input:focus {
                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                 <MudOverlay Visible="IsSumDisabled()" LightBackground="true" Absolute="true" />
                     <MudTd Class="@(_isSumTorchesActive ? "device_lastcell active" : "device_lastcell")" 
-                        Style="font-size:25px; padding:6px; font-family:none;" @onclick="@(async (_) => await StartSumTorchesAsync())">&nbsp;&#8721;&nbsp;</MudTd> 
+                        Style="font-size:25px; padding:6px; font-family:none;" @onclick="@(() => ClickSumTorches())">&nbsp;&#8721;&nbsp;</MudTd> 
                 </MudPaper>
                         </tr>
                     </table>
@@ -746,9 +751,10 @@ input#password-input:focus {
                             Min="@paramHeatO2.DynParams.ConstParams.Min" 
                             Max="@paramHeatO2.DynParams.ConstParams.Max"
                             Step="@paramHeatO2.DynParams.ConstParams.Step" 
-                            Color="Color.Info">Flame (H-O): @paramHeatO2.DynParams.Value.ToString()
+                            Color="Color.Info"><table><tr><td style="text-align:left;">Flame (H-O):</td><td style="text-align:right; width:40%">@( (@paramHeatO2.DynParams.Value * 0.001).ToString("0.0"))&nbsp;&nbsp;</td><td style="text-align:right; width:10%">Bar</td></tr></table>
                             </MudSlider>
-                        </td>
+                            
+                        </td>                     
                     </tr>
                     <tr>
                         <td>
@@ -757,9 +763,9 @@ input#password-input:focus {
                             Min="@paramFuelGas.DynParams.ConstParams.Min" 
                             Max="@paramFuelGas.DynParams.ConstParams.Max"
                             Step="@paramFuelGas.DynParams.ConstParams.Step" 
-                            Color="Color.Info">F - G: @paramFuelGas.DynParams.Value.ToString()
+                            Color="Color.Info"><table><tr><td style="text-align:left;">Flame (F-G):</td><td style="text-align:right; width:50%">@( (@paramFuelGas.DynParams.Value * 0.001).ToString("0.00"))</td><td style="text-align:right; width:10%">Bar</td></tr></table>
                             </MudSlider>
-                        </td>
+                        </td>                       
                     </tr>
                     <tr>
                         <td>                            
@@ -768,17 +774,18 @@ input#password-input:focus {
                             Min="@paramCutO2.DynParams.ConstParams.Min" 
                             Max="@paramCutO2.DynParams.ConstParams.Max"
                             Step="@paramCutO2.DynParams.ConstParams.Step" 
-                            Color="Color.Info">C - O: @paramCutO2.DynParams.Value.ToString()
+                            Color="Color.Info"><table><tr><td style="text-align:left;">C - O:</td><td style="text-align:right; width:50%">@( (@paramCutO2.DynParams.Value * 0.001).ToString("0.0"))&nbsp;&nbsp;</td><td style="text-align:right; width:10%">Bar</td></tr></table>
                             </MudSlider>
                            
-                            <MudSlider Class="@_flameAdjustVisible" @ontouchend="@(()=>UpdateDynParam(@paramFlameAdjust))" @onmouseup="@(()=>UpdateDynParam(@paramFlameAdjust))"
+                            @*<MudSlider Class="@_flameAdjustVisible" @ontouchend="@(()=>UpdateDynParam(@paramFlameAdjust))" @onmouseup="@(()=>UpdateDynParam(@paramFlameAdjust))"
                             @bind-Value="@paramFlameAdjust.DynParams.Value" 
                             Min="@paramFlameAdjust.DynParams.ConstParams.Min" 
                             Max="@paramFlameAdjust.DynParams.ConstParams.Max"
                             Step="@paramFlameAdjust.DynParams.ConstParams.Step" 
                             Color="Color.Info">Flame Adjust: @paramFlameAdjust.DynParams.Value.ToString()
-                            </MudSlider>
+                            </MudSlider>*@
                         </td>
+                        
                     </tr>
                 </table>
                 </MudPaper>
@@ -793,7 +800,10 @@ input#password-input:focus {
                                     <div id="HCMoveTorchUp" class="@(_isHCTorchUpActive ? "up_btn active" : "up_btn")"
                                         @onpointerdown="@(async (e) => await HCMoveTorchUpAsync("HCMoveTorchUp"))"
                                         @onpointerup="@((_) => DeactiveButton("HCMoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchUp"))"
-                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchUp"))">HCUp
+                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchUp"))">
+                                        <img draggable="false" src="Images/button_clearance_control_on_new.png" style="mix-blend-mode: normal; width: 25px; height: 35px; vertical-align: middle;" />
+                                        <img draggable="false" src="Images/__15_Top.png" style="mix-blend-mode: normal; width: 27px; height: 16px; vertical-align: middle;" />
+                                        
                                     </div>
                                 </div>
                                 </MudPaper>
@@ -812,7 +822,9 @@ input#password-input:focus {
                                     <div id="HCMoveTorchDown" class="@(_isHCTorchDownActive ? "down_btn active" : "down_btn")"
                                         @onpointerdown="@(async (e) => await HCMoveTorchDownAsync("HCMoveTorchDown"))"
                                         @onpointerup="@((_) => DeactiveButton("HCMoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchDown"))"
-                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchDown"))">HCDown
+                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchDown"))">
+                                        <img draggable="false" src="Images/button_clearance_control_on_new.png" style="mix-blend-mode: normal; width: 25px; height: 35px; vertical-align: middle;" />
+                                        <img draggable="false" src="Images/__15_Bottom.png" style="mix-blend-mode: normal; width: 27px; height: 16px; vertical-align: middle;" />
                                     </div>
                                </div>
                               </MudPaper>
@@ -825,7 +837,8 @@ input#password-input:focus {
                                     <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")"
                                         @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
                                         @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
-                                        @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">Up
+                                        @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">
+                                        <img draggable="false" src="Images/__15_Top.svg" style="mix-blend-mode: normal; width: 80px; height: 55px; vertical-align: middle;" />
                                     </div>
                                 </div>
                                 @if (ComponentMode == MANUAL_MODE)
@@ -849,7 +862,8 @@ input#password-input:focus {
                                     <div id="MoveTorchDown" class="@(_isTorchDownActive ? "down_btn active" : "down_btn")"
                                         @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
                                         @onpointerup="@((_) => DeactiveButton("MoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("MoveTorchDown"))"
-                                        @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">Down
+                                        @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">
+                                        <img draggable="false" src="Images/__15_Bottom.svg" style="mix-blend-mode: normal; width: 80px; height: 55px; vertical-align: middle;" />
                                     </div>
                                </div>
                                </MudPaper>                             
@@ -879,7 +893,7 @@ input#password-input:focus {
                                 <table style="margin: 0px 0px 0px 3px !important"> 
                                     <tr>
                                         <td class="@(_isFlameOnEndActive ? "divcell tabcell_menu" : "divcell tabcell_menu")"
-                                            @onclick="@(async (_) => await StartFlameOnEndAsync())">
+                                            @onclick="@(async (_) => await ClickFlameOnEndAsync())">
                                             <img draggable="false" src="@(_isFlameOnEndActive ? "Images/torch_too_much_gas.png" : "Images/torch_ignition.png")" 
                                                 style="mix-blend-mode: multiply; width: 50px; height: 55px; vertical-align: middle;" />
                                         </td>
@@ -1285,6 +1299,12 @@ input#password-input:focus {
     {
         var enabledDevicesCount = ihtDevices.GetDevices().Where(dev => dev.IsEnabledMainControl).ToList().Count;
 
+        if (enabledDevicesCount < 2)
+        {
+            _isSumTorchesActive = false;
+            dynDataModificationCNCDataProvider.IsBroadCastMode = false;
+        }
+
         return enabledDevicesCount < 2 || _isFlameOn || _isHCOnOffActive || _isCalibrationActive;
     }
 
@@ -1648,7 +1668,7 @@ input#password-input:focus {
     {
         if (_isHCOnOffActive)
         {
-            if (paramsType == IGNITION)
+            if (paramsType == IGNITION || paramsType == HEATTING)
             {
                 paramsType = PRE_HEAT;
             }

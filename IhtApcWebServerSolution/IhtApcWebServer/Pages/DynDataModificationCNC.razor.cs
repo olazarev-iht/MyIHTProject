@@ -351,7 +351,7 @@ namespace IhtApcWebServer.Pages
             }
         }
 
-        private async Task StartFlameOnEndAsync()
+        private async Task ClickFlameOnEndAsync()
         {
             if (!_isFlameOnEndActive)
             {
@@ -365,21 +365,17 @@ namespace IhtApcWebServer.Pages
             }
         }
 
-        private async Task StartSumTorchesAsync()
+        private void ClickSumTorches()
         {
             if (!_isSumTorchesActive)
             {
                 _isSumTorchesActive = true;
                 dynDataModificationCNCDataProvider.IsBroadCastMode = true;
-
-                await ihtDevices.SetFlameOnAtProcessEndCommonAsync();
             }
             else
             {
                 _isSumTorchesActive = false;
                 dynDataModificationCNCDataProvider.IsBroadCastMode = false;
-
-                await ihtDevices.ClrFlameOnAtProcessEndCommonAsync();
             }
         }
 
