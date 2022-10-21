@@ -810,9 +810,10 @@ input#password-input:focus {
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsHCOnOffDisabled() || ComponentMode != MANUAL_MODE" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
-                                    <div id="OnOff" class="@(_isHCOnOffActive ? "central_btn active" : "central_btn")"
+                                    <div id="OnOff" class="@(_isHCOnOffActive ? "central_ch_btn active" : "central_ch_btn")"
                                         @onclick="@(async () => await TurnHCOnOffAsync())">
-                                        @(_isHCOnOffActive ? "Off" : "On")
+                                        <img draggable="false" src="@(_isHCOnOffActive ? "Images/button_clearance_control_on_new.png" : "Images/button_clearance_control_off_w.png")" 
+                                                style="mix-blend-mode: normal; vertical-align: middle; @(_isHCOnOffActive ? "width: 25px; height: 35px;" : "width: 45px; height: 40px;")" />                                  
                                     </div>
                                 </div>
                                 </MudPaper>
@@ -876,12 +877,16 @@ input#password-input:focus {
                                 <MudOverlay Visible="IsIgnitionButtonDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
                                     <div id="FlameOnButton" class="FlameIsOff flame_btn" style="display: @(!_isFlameOn ? "flex" : "none"); height:184px"
-                                        @onclick="@(async (e) => await TurnFlameOnAsync())">On
+                                        @onclick="@(async (e) => await TurnFlameOnAsync())">
+                                        <img draggable="false" src="Images/torch_only_no_flame_w.png" 
+                                                style="mix-blend-mode: normal; width: 50px; height: 55px; vertical-align: middle;" />
                                     </div>
                                 </div>
                                 <div class="button_container">
                                     <div id="FlameOffButton" class="FlameIsOn flame_btn" style="display: @(_isFlameOn ? "flex" : "none"); height:184px"
-                                        @onclick="@(async (e) => await TurnFlameOffAsync())">Off
+                                        @onclick="@(async (e) => await TurnFlameOffAsync())">
+                                        <img draggable="false" src="Images/torch_with_CO_w.png" 
+                                                style="mix-blend-mode: normal; width: 50px; height: 55px; vertical-align: middle;" />
                                 </div>
                                 </div>
                                 </MudPaper>

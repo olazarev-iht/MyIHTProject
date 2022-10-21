@@ -67,6 +67,33 @@
         background-color: #FF584F;
     }
 
+.central_ch_btn {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    border: 0;
+    outline: 0;
+    /*padding: 1.5rem 2rem;*/
+    font-size: 1.1rem;
+    font-family: monospace;
+    font-weight: 600;
+    box-shadow: 0px 0px 0px #0057ab;
+    /*cursor: pointer;*/
+    color: #ffff;
+    border-radius: 0px;
+    background-color: rgb(203 223 243);
+    width: 90%;
+    height: 58px;
+    /* text-align: center; */
+    /* to center text in the div - use 3 following rows: */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+    .central_ch_btn.active {
+        box-shadow: 0px 0px 0px #0065c8;
+        background-color: #3D6FB4;
+    }
+
 .central_btn {
     margin-bottom: 5px;
     margin-top: 5px;
