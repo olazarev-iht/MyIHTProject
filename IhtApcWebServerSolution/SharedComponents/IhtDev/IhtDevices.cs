@@ -542,8 +542,8 @@ namespace SharedComponents.IhtDev
 
         public List<IhtDevice> GetEnabledDevices()
         {
-            var _ihtDevices = new List<IhtDevice>();
-            _ihtDevices = ihtDevices.Where(kpv => kpv.Value.IsEnabledMainControl).Select(kpv => kpv.Value).ToList();
+            var _ihtDevices = ihtDevices.Select(d => d.Value).Where(d => d.IsConnected && d.IsEnabledMainControl).ToList();
+
             return _ihtDevices;
         }
 

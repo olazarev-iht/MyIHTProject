@@ -283,45 +283,42 @@ namespace IhtApcWebServer.Pages
         {
             if (!_isFlameOn)
             {
-                _isFlameOn = true;
-            }
-
-            await InvokeAsync(StateHasChanged);
-
-            if (IsBroadCastMode)
-            {
-                var devices = ihtDevices.GetOnDevices();
-                foreach (IhtDevice device in devices)
+                if (IsBroadCastMode)
                 {
-                  ihtDevices.GetDataCmdExecution(device.SlaveId).IsFlameOn = _isFlameOn;
-                  await ihtDevices.SetupCtrl_SetStartAsync(device.SlaveId);
+                    var devices = ihtDevices.GetEnabledDevices();
+
+                    foreach (IhtDevice device in devices)
+                    {
+                        ihtDevices.GetDataCmdExecution(device.SlaveId).IsFlameOn = true;
+                        await ihtDevices.SetupCtrl_SetStartAsync(device.SlaveId);
+                    }
                 }
-            }
-            else
-            {
-              await ihtDevices.SetupCtrl_SetStartAsync(CurrentSlaveId);
-            }
+                else
+                {
+                    _isFlameOn = true;
+                    await ihtDevices.SetupCtrl_SetStartAsync(CurrentSlaveId);
+                }
 
-            await SetParamsType(IGNITION);
-
+                await SetParamsType(IGNITION);
+            }
         }
 
         private async Task TurnFlameOffAsync()
         {
             if (_isFlameOn)
             {
+                var devices = ihtDevices.GetEnabledDevices();
+
+                foreach (IhtDevice device in devices)
+                {
+                    ihtDevices.GetDataCmdExecution(device.SlaveId).IsFlameOn = false;
+                    await ihtDevices.SetupCtrl_SetOffAsync(device.SlaveId);
+                }
+
                 _isFlameOn = false;
             }
-
-            await InvokeAsync(StateHasChanged);
-
-            var devices = ihtDevices.GetOnDevices();
-            foreach (IhtDevice device in devices)
-            {
-                ihtDevices.GetDataCmdExecution(device.SlaveId).IsFlameOn = _isFlameOn;
-                await ihtDevices.SetupCtrl_SetOffAsync(device.SlaveId);
-            }
         }
+
         int CurrentSlaveId => dynDataModificationCNCDataProvider.CurrentSlaveId;
         int BroadCastId => dynDataModificationCNCDataProvider.CurrentBroadCastId;
         string CurrentParamsType => dynDataModificationCNCDataProvider.CurrentParamsType;
@@ -383,7 +380,7 @@ namespace IhtApcWebServer.Pages
         {
             if (IsBroadCastMode)
             {
-                var devices = ihtDevices.GetOnDevices();
+                var devices = ihtDevices.GetEnabledDevices();
                 var dataClass = "central_btn";
 
                 if (devices.Cast<IhtDevice>().Any(d => d.dataCmdExecution.IsCalibrationActive))
@@ -440,7 +437,7 @@ namespace IhtApcWebServer.Pages
 
             if (IsBroadCastMode)
             {
-                var devices = ihtDevices.GetOnDevices();
+                var devices = ihtDevices.GetEnabledDevices();
                 foreach (IhtDevice device in devices)
                 {
                     device.dataCmdExecution.IsCalibrationActive = true;
@@ -461,7 +458,7 @@ namespace IhtApcWebServer.Pages
         {
             if (IsBroadCastMode)
             {
-                var devices = ihtDevices.GetOnDevices();
+                var devices = ihtDevices.GetEnabledDevices();
                 foreach (IhtDevice device in devices)
                 {
                     device.dataCmdExecution.IsCalibrationActive = false;
