@@ -1,12 +1,13 @@
 ﻿using IhtApcWebServer.Data;
 using IhtApcWebServer.Data.DataMapper;
 using IhtApcWebServer.Data.Models.APCHardware;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Common;
-using System.Linq;
 using SharedComponents.IhtModbus;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareDBServices;
+using System.Data;
+using System.Text;
 
 namespace IhtApcWebServer.Services.APCHardwareDBServices
 {
@@ -164,14 +165,34 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 
 			var entries = _mapper.Map<IEnumerable<ParameterDataModel>, IEnumerable<ParameterData>>(entities);
 
-			//foreach(var entry in entries)
-			//	dbContext.Entry<ParameterData>(entry).State = EntityState.Detached;
+			string cmd = "Insert Or Ignore Into ParameterDatas(Id, ParamName, APCDeviceId, ParamGroupId, DynParamsId) Values";
+			StringBuilder sb = new(cmd);
+			var paramItems = new List<object>();
 
-			await dbContext.Set<ParameterData>().AddRangeAsync(entries);
-			await dbContext.SaveChangesAsync();
+			var num = 1;
+
+			foreach (var entry in entries)
+			{
+				paramItems.Add(new SqliteParameter($"@Id{num}", entry.Id));
+				paramItems.Add(new SqliteParameter($"@ParamName{num}", entry.ParamName));
+				paramItems.Add(new SqliteParameter($"@APCDeviceId{num}", entry.APCDeviceId));
+				paramItems.Add(new SqliteParameter($"@ParamGroupId{num}", entry.ParamGroupId));
+				paramItems.Add(new SqliteParameter($"@DynParamsId{num}", entry.DynParamsId));
+
+				sb.Append($"(@Id{num}, @ParamName{num}, @APCDeviceId{num}, @ParamGroupId{num}, @DynParamsId{num})");
+
+				if (num < entries.Count())
+				{
+					sb.AppendLine(",");
+					num++;
+				}
+			}
+
+			cmd = sb.ToString();
+
+			await dbContext.Database.ExecuteSqlRawAsync(cmd, paramItems, cancellationToken);
 
 			return _mapper.Map<IEnumerable<ParameterData>, IEnumerable<ParameterDataModel>>(entries);
-
 		}
 
 		public async Task UpdateEntryAsync(Guid id, ParameterDataModel newData, CancellationToken cancellationToken)

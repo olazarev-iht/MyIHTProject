@@ -1,9 +1,12 @@
 ﻿using IhtApcWebServer.Data;
 using IhtApcWebServer.Data.DataMapper;
 using IhtApcWebServer.Data.Models.APCHardware;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareDBServices;
+using System.Data;
+using System.Text;
 
 namespace IhtApcWebServer.Services.APCHardwareDBServices
 {
@@ -58,11 +61,37 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 
 			var entries = _mapper.Map<IEnumerable<ParameterDataInfoModel>, IEnumerable<ParameterDataInfo>>(entities);
 
-			await dbContext.Set<ParameterDataInfo>().AddRangeAsync(entries);
-			await dbContext.SaveChangesAsync();
+			string cmd = "Insert Or Ignore Into ParameterDataInfos(Id, Unit, Format, MinDescription, MaxDescription, StepDescription, ValueDescription, Multiplier) Values";
+			StringBuilder sb = new(cmd);
+			var paramItems = new List<object>();
+
+			var num = 1;
+
+			foreach (var entry in entries)
+			{
+				paramItems.Add(new SqliteParameter($"@Id{num}", entry.Id));
+				paramItems.Add(new SqliteParameter($"@Unit{num}", entry.Unit));
+				paramItems.Add(new SqliteParameter($"@Format{num}", entry.Format));
+				paramItems.Add(new SqliteParameter($"@MinDescription{num}", entry.MinDescription));
+				paramItems.Add(new SqliteParameter($"@MaxDescription{num}", entry.MaxDescription));				
+				paramItems.Add(new SqliteParameter($"@StepDescription{num}", entry.StepDescription));
+				paramItems.Add(new SqliteParameter($"@ValueDescription{num}", entry.ValueDescription));
+				paramItems.Add(new SqliteParameter($"@Multiplier{num}", entry.Multiplier));
+				
+				sb.Append($"(@Id{num}, @Unit{num}, @Format{num}, @MinDescription{num}, @MaxDescription{num}, @StepDescription{num}, @ValueDescription{num}, @Multiplier{num} )");
+
+				if (num < entries.Count())
+				{
+					sb.AppendLine(",");
+					num++;
+				}
+			}
+
+			cmd = sb.ToString();
+
+			await dbContext.Database.ExecuteSqlRawAsync(cmd, paramItems, cancellationToken);
 
 			return _mapper.Map<IEnumerable<ParameterDataInfo>, IEnumerable<ParameterDataInfoModel>>(entries);
-
 		}
 
 		public async Task UpdateEntryAsync(Guid id, ParameterDataInfoModel newData, CancellationToken cancellationToken)

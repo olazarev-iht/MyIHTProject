@@ -1,9 +1,12 @@
 ﻿using IhtApcWebServer.Data;
 using IhtApcWebServer.Data.DataMapper;
 using IhtApcWebServer.Data.Models.APCHardware;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareDBServices;
+using System.Data;
+using System.Text;
 
 namespace IhtApcWebServer.Services.APCHardwareDBServices
 {
@@ -61,14 +64,35 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 
 			var entries = _mapper.Map<IEnumerable<DynParamsModel>, IEnumerable<DynParams>>(entities);
 
-			//foreach(var entry in entries)
-			//	dbContext.Entry<ParameterData>(entry).State = EntityState.Detached;
+			string cmd = "Insert Or Ignore Into DynParams(Id, ParamId, Address, ConstParamsId, ParameterDataInfoId, Value) Values";
+			StringBuilder sb = new(cmd);
+			var paramItems = new List<object>();
 
-			await dbContext.Set<DynParams>().AddRangeAsync(entries);
-			await dbContext.SaveChangesAsync();
+			var num = 1;
+
+			foreach (var entry in entries)
+			{
+				paramItems.Add(new SqliteParameter($"@Id{num}", entry.Id));
+				paramItems.Add(new SqliteParameter($"@ParamId{num}", entry.ParamId));
+				paramItems.Add(new SqliteParameter($"@Address{num}", entry.Address));
+				paramItems.Add(new SqliteParameter($"@ConstParamsId{num}", entry.ConstParamsId));
+				paramItems.Add(new SqliteParameter($"@ParameterDataInfoId{num}", entry.ParameterDataInfoId));
+				paramItems.Add(new SqliteParameter($"@Value{num}", entry.Value));
+
+				sb.Append($"(@Id{num}, @ParamId{num}, @Address{num}, @ConstParamsId{num}, @ParameterDataInfoId{num}, @Value{num})");
+
+				if (num < entries.Count())
+				{
+					sb.AppendLine(",");
+					num++;
+				}
+			}
+
+			cmd = sb.ToString();
+
+			await dbContext.Database.ExecuteSqlRawAsync(cmd, paramItems, cancellationToken);
 
 			return _mapper.Map<IEnumerable<DynParams>, IEnumerable<DynParamsModel>>(entries);
-
 		}
 
 		public async Task UpdateEntryAsync(Guid id, DynParamsModel newData, CancellationToken cancellationToken)

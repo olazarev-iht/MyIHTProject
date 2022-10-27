@@ -1,9 +1,12 @@
 ﻿using IhtApcWebServer.Data;
 using IhtApcWebServer.Data.DataMapper;
 using IhtApcWebServer.Data.Models.APCHardware;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareDBServices;
+using System.Data;
+using System.Text;
 
 namespace IhtApcWebServer.Services.APCHardwareDBServices
 {
@@ -58,14 +61,33 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 
 			var entries = _mapper.Map<IEnumerable<ConstParamsModel>, IEnumerable<ConstParams>>(entities);
 
-			//foreach(var entry in entries)
-			//	dbContext.Entry<ParameterData>(entry).State = EntityState.Detached;
+			string cmd = "Insert Or Ignore Into ConstParams(Id, Min, Max, Step) Values";
+			StringBuilder sb = new (cmd);
+			var paramItems = new List<object>();
 
-			await dbContext.Set<ConstParams>().AddRangeAsync(entries);
-			await dbContext.SaveChangesAsync();
+			var num = 1;
+
+			foreach (var entry in entries)
+			{
+				paramItems.Add(new SqliteParameter($"@Id{num}", entry.Id));
+				paramItems.Add(new SqliteParameter($"@Min{num}", entry.Min));
+				paramItems.Add(new SqliteParameter($"@Max{num}", entry.Max));
+				paramItems.Add(new SqliteParameter($"@Step{num}", entry.Step));
+
+				sb.Append($"(@Id{num}, @Min{num}, @Max{num}, @Step{num})");
+
+				if (num < entries.Count())
+                {
+					sb.AppendLine(",");
+					num++;
+				}
+			}
+
+			cmd = sb.ToString();
+
+			await dbContext.Database.ExecuteSqlRawAsync(cmd, paramItems, cancellationToken);
 
 			return _mapper.Map<IEnumerable<ConstParams>, IEnumerable<ConstParamsModel>>(entries);
-
 		}
 
 		public async Task UpdateEntryAsync(Guid id, ConstParamsModel newData, CancellationToken cancellationToken)
