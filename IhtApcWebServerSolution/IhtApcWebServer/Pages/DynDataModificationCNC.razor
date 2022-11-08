@@ -1693,7 +1693,7 @@ input#password-input:focus {
 
         switch (paramsType)
         {
-            case IGNITION: await ihtDevices.SetupCtrl_SetIgnitionCommonAsync(); break;
+            case IGNITION: await Task.Delay(250); await ihtDevices.SetupCtrl_SetIgnitionCommonAsync(); break;
             case PRE_HEAT: await ihtDevices.SetupCtrl_SetPreHeatingCommonAsync(); break;
             case PIERCING: await ihtDevices.SetupCtrl_SetPiercingCommonAsync(); break;
             case CUTTING: await ihtDevices.SetupCtrl_SetCuttingCommonAsync(); break;
