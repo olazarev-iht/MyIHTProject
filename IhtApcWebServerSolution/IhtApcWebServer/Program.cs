@@ -12,9 +12,12 @@ using IhtApcWebServer.Services.CuttingDataDBServices;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.WindowsServices;
 using Microsoft.Extensions.Localization;
 using MudBlazor.Services;
 using IhtApcWebServer.Services.APCCommunic;
+using Serilog;
 using SharedComponents.APCHardwareManagers;
 using SharedComponents.CutDataRepository;
 using SharedComponents.IhtData;
@@ -30,10 +33,8 @@ using SharedComponents.Services.APCWorkerService;
 using System.Diagnostics;
 using System.Net;
 using SharedComponents.Helpers;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.WindowsServices;
 using SharedComponents.MqttModel;
-
+using Serilog.Context;
 
 var options = new WebApplicationOptions
 {
@@ -213,10 +214,32 @@ builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddMudServices();
 
+//var logger = new LoggerConfiguration()
+//			.WriteTo.Console()
+//			.WriteTo.SQLite(Environment.CurrentDirectory + @"\Log.db")
+//			.ReadFrom.Configuration(builder.Configuration)
+//			.Enrich.FromLogContext()
+//			//.Enrich.With<SerilogContextEnricher>()
+//			.CreateLogger();
+
+//builder.Logging.ClearProviders();
+//builder.Logging.AddSerilog(logger);
+
 builder.Host.UseWindowsService(options =>
 {
 	options.ServiceName = "IHT APC WebServer Service";
 });
+
+//builder.Host.UseSerilog();
+
+//builder.Host.UseSerilog((ctx, lc) => lc
+//	.WriteTo.Console()
+//	.Enrich.FromLogContext()
+//	.WriteTo.SQLite(Environment.CurrentDirectory + @"\Log.db")
+//    .ReadFrom.Configuration(ctx.Configuration));
+
+//LogContext.PushProperty("UserId", 12);
+//Log.Information("Starting up 1111");
 
 var app = builder.Build();
 
