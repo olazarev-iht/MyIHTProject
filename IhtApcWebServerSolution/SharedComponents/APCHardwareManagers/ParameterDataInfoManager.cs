@@ -15,6 +15,7 @@ using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareManagers;
 using SharedComponents.Services.APCHardwareDBServices;
 using SharedComponents.Services.APCHardwareMockDBServices;
+using SharedComponents.Services.CuttingDataDBServices;
 
 namespace SharedComponents.APCHardwareManagers
 {
@@ -25,6 +26,7 @@ namespace SharedComponents.APCHardwareManagers
         protected readonly IDynParamsDBService _dynParamsDBService;
         protected readonly IParameterDataDBService _parameterDataDBService;
         protected readonly IParameterDataInfoDBService _parameterDataInfoDBService;
+        protected readonly ICuttingDataDBService _cuttingDataDBService;
 
         protected readonly IAPCDeviceMockDBService _apcDeviceMockDBService;
         protected readonly IConstParamsMockDBService _constParamsMockDBService;
@@ -32,6 +34,7 @@ namespace SharedComponents.APCHardwareManagers
         protected readonly IParameterDataMockDBService _parameterDataMockDBService;
         protected readonly IAPCSimulationDataMockDBService _apcSimulationDataMockDBService;
         protected readonly IAPCDefaultDataMockDBService _apcDefaultDataMockDBService;
+
         private readonly IhtModbusCommunic _ihtModbusCommunic;
         private readonly IhtCutDataAddressMap _ihtCutDataAddressMap;
         private readonly Settings _settings;
@@ -42,6 +45,7 @@ namespace SharedComponents.APCHardwareManagers
             IDynParamsDBService dynParamsDBService,
             IParameterDataDBService parameterDataDBService,
             IParameterDataInfoDBService parameterDataInfoDBService,
+            ICuttingDataDBService cuttingDataDBService,
             IAPCDeviceMockDBService apcDeviceMockDBService,
             IConstParamsMockDBService constParamsMockDBService,
             IDynParamsMockDBService dynParamsMockDBService,
@@ -67,6 +71,9 @@ namespace SharedComponents.APCHardwareManagers
 
             _parameterDataInfoDBService = parameterDataInfoDBService ??
                throw new ArgumentNullException($"{nameof(parameterDataInfoDBService)}");
+
+            _cuttingDataDBService = cuttingDataDBService ??
+               throw new ArgumentNullException($"{nameof(cuttingDataDBService)}");
 
             _apcDeviceMockDBService = apcDeviceMockDBService ??
                throw new ArgumentNullException($"{nameof(apcDeviceMockDBService)}");
@@ -179,6 +186,11 @@ namespace SharedComponents.APCHardwareManagers
         public async Task UpdateDynParamValuesRangeAsync(int deviceNumber, (ushort paramAddress, ushort paramValue)[] paramsInfo, CancellationToken cancellationToken)
         {
             await _dynParamsDBService.UpdateDynParamValuesRangeAsync(deviceNumber, paramsInfo, cancellationToken);
+        }
+
+        public async Task DeleteAllEntriesFromCutingDataSequenceTableAsync(CancellationToken cancellationToken)
+        {
+            await _cuttingDataDBService.DeleteAllEntriesFromSequenceAsync(cancellationToken);
         }
 
         public async Task InitializeParameterDataInfoAsync(CancellationToken cancellationToken)

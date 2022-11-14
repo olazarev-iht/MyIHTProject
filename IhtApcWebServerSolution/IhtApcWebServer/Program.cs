@@ -36,10 +36,12 @@ using SharedComponents.Helpers;
 using SharedComponents.MqttModel;
 using Serilog.Context;
 
+var BaseDirectory = WindowsServiceHelpers.IsWindowsService() ? AppContext.BaseDirectory : default;
+
 var options = new WebApplicationOptions
 {
 	Args = args,
-	ContentRootPath = WindowsServiceHelpers.IsWindowsService() ? AppContext.BaseDirectory : default
+	ContentRootPath = BaseDirectory
 };
 var builder = WebApplication.CreateBuilder(options);
 
@@ -133,7 +135,10 @@ builder.Services.AddDbContextFactory<HardwareAPCDbContext>(options =>
 });
 builder.Services.AddDbContextFactory<CuttingDataDbContext>(options =>
 {
-	options.UseSqlite(builder.Configuration.GetConnectionString("CuttingDataDbContext"));
+	//Directory.GetCurrentDirectory()
+	//options.UseSqlite(builder.Configuration.GetConnectionString("CuttingDataDbContext"));
+
+	options.UseSqlite($"Data Source={BaseDirectory}CuttingData.db");
 });
 builder.Services.AddDbContextFactory<APCHardwareMockDBContext>(options =>
 {
@@ -349,8 +354,9 @@ try
 	{
 		using var tx = ctx.Database.BeginTransaction();
 		await ctx.Database.MigrateAsync();
-		// await ctx.Database.ExecuteSqlRawAsync(@"insert into sqlite_sequence(name,seq) values('CuttingData', 50000);");
 		await tx.CommitAsync();
+
+		//await ctx.Database.ExecuteSqlRawAsync(@"DELETE FROM [sqlite_sequence]; insert into sqlite_sequence(name,seq) values('CuttingData', 50000);");
 	}
 
 	// migrate APCHardwareMoqDBContext

@@ -90,10 +90,10 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 
 			var customCounter = await dbContext.CustomCounter.SingleAsync();
 
-			entity.Id = customCounter.Ids;
+			entity.Id = customCounter.CounterId;
 			entity.idCutDataParent = !string.IsNullOrWhiteSpace(model.idCutDataParent.ToString()) ? model.idCutDataParent : model.Id;
 
-			await dbContext.Database.ExecuteSqlRawAsync($@"update CustomCounter Set Ids = {++customCounter.Ids}");
+			await dbContext.Database.ExecuteSqlRawAsync($@"update CustomCounter Set CounterId = {++customCounter.CounterId}");
 
 			await dbContext.CuttingData.AddAsync(entity, cancellationToken);
 			await dbContext.SaveChangesAsync(cancellationToken);
@@ -203,10 +203,6 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 
 			await dbContext.SaveChangesAsync(cancellationToken);
 
-
-			string cmd = $"DELETE FROM sqlite_sequence WHERE name = 'CuttingData'";
-			//await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
-
 			await tx.CommitAsync(cancellationToken);
 
 			deleted = true;
@@ -219,6 +215,15 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 				await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordDeletedNotification, payload);
 			}
 
+		}
+
+		public async Task DeleteAllEntriesFromSequenceAsync(CancellationToken cancellationToken)
+		{
+			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+			string cmd = $"DELETE FROM sqlite_sequence; insert into sqlite_sequence(name,seq) values('CuttingData', 50000);";
+
+			await dbContext.Database.ExecuteSqlRawAsync(cmd, cancellationToken);
 		}
 	}
 }

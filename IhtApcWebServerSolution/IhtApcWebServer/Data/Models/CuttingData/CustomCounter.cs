@@ -2,6 +2,7 @@
 {
     public class CustomCounter
     {
-        public int Ids { get; set; } = 0;
+        public Guid Id { get; set; }
+        public int CounterId { get; set; } = 0;
     }
 }

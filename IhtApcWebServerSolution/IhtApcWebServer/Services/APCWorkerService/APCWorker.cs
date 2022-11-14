@@ -159,7 +159,9 @@ namespace IhtApcWebServer.Services.APCWorkerService
 
 		private async Task InitializeAsync()
 		{
+			
 			await _parameterDataInfoManager.InitializeParameterDataInfoAsync(CancellationToken.None);
+			//await _parameterDataInfoManager.DeleteAllEntriesFromCutingDataSequenceTableAsync(CancellationToken.None);
 
 			// await _apcCommunicManager.Init(nameComPort: DEFAULT_COM_PORT, isSimulation: false, performResetDevices: false);
 
