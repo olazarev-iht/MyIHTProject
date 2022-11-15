@@ -127,26 +127,24 @@ builder.Services.AddCors();
 builder.Services.AddMvc();
 builder.Services.AddDbContextFactory<CuttingParametersDbContext>(options =>
 {
-	options.UseSqlite(builder.Configuration.GetConnectionString("CuttingParametersDbContext"));
+	options.UseSqlite($"Data Source={BaseDirectory}CuttingParameters.db");
 });
 builder.Services.AddDbContextFactory<HardwareAPCDbContext>(options =>
 {
-	options.UseSqlite(builder.Configuration.GetConnectionString("CuttingParametersDbContext"));
+	options.UseSqlite($"Data Source={BaseDirectory}CuttingParameters.db");
 });
 builder.Services.AddDbContextFactory<CuttingDataDbContext>(options =>
 {
-	//Directory.GetCurrentDirectory()
 	//options.UseSqlite(builder.Configuration.GetConnectionString("CuttingDataDbContext"));
-
 	options.UseSqlite($"Data Source={BaseDirectory}CuttingData.db");
 });
 builder.Services.AddDbContextFactory<APCHardwareMockDBContext>(options =>
 {
-	options.UseSqlite(builder.Configuration.GetConnectionString("APCHardwareMoqDBContext"));
+	options.UseSqlite($"Data Source={BaseDirectory}APCHardwareMoq.db");
 });
 builder.Services.AddDbContextFactory<APCHardwareDBContext>(options =>
 {
-	options.UseSqlite(builder.Configuration.GetConnectionString("APCHardwareDBContext"));
+	options.UseSqlite($"Data Source={BaseDirectory}APCHardware.db");
 });
 
 builder.Services.AddScoped<ICuttingParametersService, CuttingParametersService>();
@@ -244,7 +242,7 @@ builder.Host.UseWindowsService(options =>
 //    .ReadFrom.Configuration(ctx.Configuration));
 
 //LogContext.PushProperty("UserId", 12);
-//Log.Information("Starting up 1111");
+Log.Information("Starting up 1111");
 
 var app = builder.Build();
 

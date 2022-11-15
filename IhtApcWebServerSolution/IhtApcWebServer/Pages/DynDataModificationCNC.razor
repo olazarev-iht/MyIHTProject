@@ -341,8 +341,24 @@ input#password-input:focus {
     }
 
     .mud-slider.mud-slider-small.mud-slider {
-        margin-left: 5px !important;
-        padding-right: 20px !important;
+        margin-left: 0px !important;
+        padding-right: 0px !important;
+    }
+
+    .img_plus1 {
+        mix-blend-mode: normal; width: 25px; height: 20px; vertical-align: bottom; margin-left: 10px;
+    }
+
+    .img_minus1 {
+        mix-blend-mode: normal; width: 30px; height: 16px; vertical-align: bottom;
+    }
+
+    .td_plus1 {
+        color:#2196f3ff; width: 35px; padding-left: 0px; padding-bottom: 8px; vertical-align: bottom;
+    }
+
+    .td_minus1 {
+        color:#2196f3ff; padding-bottom: 8px; padding-left: 0px; padding-right: 7px; width: 10px; vertical-align: bottom;
     }
 }
 </style>
@@ -745,47 +761,61 @@ input#password-input:focus {
                 <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
                 <table class="internal_div_table">
                     <tr>
+                        <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramHeatO2.DynParams))">
+                            @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
+                            @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
+                             <img draggable="false" src="Images/minus1.png" class="img_minus1" />
+                        </MudTd>
                         <td>
-                            <MudSlider @ontouchend="@(()=>UpdateDynParam(@paramHeatO2))" @onmouseup="@(()=>UpdateDynParam(@paramHeatO2))"
+                            <MudSlider Style="margin-bottom:0px" @ontouchend="@(()=>UpdateDynParam(@paramHeatO2))" @onmouseup="@(()=>UpdateDynParam(@paramHeatO2))"
                             @bind-Value="@paramHeatO2.DynParams.Value" 
                             Min="@paramHeatO2.DynParams.ConstParams.Min" 
                             Max="@paramHeatO2.DynParams.ConstParams.Max"
                             Step="@paramHeatO2.DynParams.ConstParams.Step" 
-                            Color="Color.Info"><table><tr><td style="text-align:left;">Flame (H-O):</td><td style="text-align:right; width:40%">@( (@paramHeatO2.DynParams.Value * 0.001).ToString("0.0"))&nbsp;&nbsp;</td><td style="text-align:right; width:10%">Bar</td></tr></table>
-                            </MudSlider>
-                            
-                        </td>                     
+                            Color="Color.Info"><table><tr><td style="text-align:left;">Flame (H-O):</td><td style="text-align:right; width:30%">@( (@paramHeatO2.DynParams.Value * 0.001).ToString("0.0"))&nbsp;&nbsp;</td><td style="text-align:right; width:10%">Bar</td></tr></table>
+                            </MudSlider>                           
+                        </td> 
+                        <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramHeatO2.DynParams))">
+                             <img draggable="false" src="Images/plus1.png" class="img_plus1" />
+                        </MudTd>
                     </tr>
                     <tr>
+                        <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramFuelGas.DynParams))">
+                            @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
+                            @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
+                             <img draggable="false" src="Images/minus1.png" class="img_minus1" />
+                        </MudTd>
                         <td>
                             <MudSlider @ontouchend="@(()=>UpdateDynParam(@paramFuelGas))" @onmouseup="@(()=>UpdateDynParam(@paramFuelGas))"
                             @bind-Value="@paramFuelGas.DynParams.Value" 
                             Min="@paramFuelGas.DynParams.ConstParams.Min" 
                             Max="@paramFuelGas.DynParams.ConstParams.Max"
                             Step="@paramFuelGas.DynParams.ConstParams.Step" 
-                            Color="Color.Info"><table><tr><td style="text-align:left;">Flame (F-G):</td><td style="text-align:right; width:50%">@( (@paramFuelGas.DynParams.Value * 0.001).ToString("0.00"))</td><td style="text-align:right; width:10%">Bar</td></tr></table>
+                            Color="Color.Info"><table><tr><td style="text-align:left;">Flame (F-G):</td><td style="text-align:right; width:30%">@( (@paramFuelGas.DynParams.Value * 0.001).ToString("0.00"))</td><td style="text-align:right; width:10%">Bar</td></tr></table>
                             </MudSlider>
-                        </td>                       
+                        </td>  
+                        <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramFuelGas.DynParams))">
+                            @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
+                            @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
+                             <img draggable="false" src="Images/plus1.png" class="img_plus1" />
+                        </MudTd>
                     </tr>
                     <tr>
+                        <MudTd Class="@($"td_minus1 {@_cutO2Visible}")" @onclick="@(() => ReduceParamValue(@paramCutO2.DynParams))">
+                             <img draggable="false" src="Images/minus1.png" class="img_minus1" />
+                        </MudTd>
                         <td>                            
                             <MudSlider Class="@_cutO2Visible" @ontouchend="@(()=>UpdateDynParam(@paramCutO2))" @onmouseup="@(()=>UpdateDynParam(@paramCutO2))"                
                             @bind-Value="@paramCutO2.DynParams.Value" 
                             Min="@paramCutO2.DynParams.ConstParams.Min" 
                             Max="@paramCutO2.DynParams.ConstParams.Max"
                             Step="@paramCutO2.DynParams.ConstParams.Step" 
-                            Color="Color.Info"><table><tr><td style="text-align:left;">C - O:</td><td style="text-align:right; width:50%">@( (@paramCutO2.DynParams.Value * 0.001).ToString("0.0"))&nbsp;&nbsp;</td><td style="text-align:right; width:10%">Bar</td></tr></table>
-                            </MudSlider>
-                           
-                            @*<MudSlider Class="@_flameAdjustVisible" @ontouchend="@(()=>UpdateDynParam(@paramFlameAdjust))" @onmouseup="@(()=>UpdateDynParam(@paramFlameAdjust))"
-                            @bind-Value="@paramFlameAdjust.DynParams.Value" 
-                            Min="@paramFlameAdjust.DynParams.ConstParams.Min" 
-                            Max="@paramFlameAdjust.DynParams.ConstParams.Max"
-                            Step="@paramFlameAdjust.DynParams.ConstParams.Step" 
-                            Color="Color.Info">Flame Adjust: @paramFlameAdjust.DynParams.Value.ToString()
-                            </MudSlider>*@
+                            Color="Color.Info"><table><tr><td style="text-align:left;">C - O:</td><td style="text-align:right; width:30%">@( (@paramCutO2.DynParams.Value * 0.001).ToString("0.0"))&nbsp;&nbsp;</td><td style="text-align:right; width:10%">Bar</td></tr></table>
+                            </MudSlider>                        
                         </td>
-                        
+                        <MudTd Class="@($"td_plus1 {@_cutO2Visible}")" @onclick="@(() => IncreaseParamValue(@paramCutO2.DynParams))">
+                             <img draggable="false" src="Images/plus1.png" class="img_plus1" />
+                        </MudTd>                       
                     </tr>
                 </table>
                 </MudPaper>
@@ -1001,6 +1031,8 @@ input#password-input:focus {
 
     private const string PROCESS_MODE = "Process";
     private const string MANUAL_MODE = "Manual";
+
+    private const string minus = "-";
 
     // TODO: read from settings
     private bool EXHIBITION_MODE 
@@ -1245,10 +1277,35 @@ input#password-input:focus {
         return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl;
     }
 
-    //private bool IsMovementButtonDownDisabled()
-    //{
-    //    return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl || _isHCOnOffActive;
-    //}
+    private void IncreaseParamValue(DynParamsModel dynParamsModel)
+    {
+        if(dynParamsModel != null && dynParamsModel.ConstParams != null)
+        {
+            dynParamsModel.Value = dynParamsModel.Value + dynParamsModel.ConstParams.Step;
+
+            if (dynParamsModel.Value > dynParamsModel.ConstParams.Max)
+            {
+                dynParamsModel.Value = dynParamsModel.ConstParams.Max;
+            }
+
+            //TODO: Save new value to DB
+        }
+    }
+
+    private void ReduceParamValue(DynParamsModel dynParamsModel)
+    {
+        if(dynParamsModel != null && dynParamsModel.ConstParams != null)
+        {
+            dynParamsModel.Value = dynParamsModel.Value - dynParamsModel.ConstParams.Step;
+
+            if (dynParamsModel.Value < dynParamsModel.ConstParams.Min)
+            {
+                dynParamsModel.Value = dynParamsModel.ConstParams.Min;
+            }
+
+            //TODO: Save new value to DB
+        }
+    }
 
     private bool IsMoveDownButtonDisabled()
     {
