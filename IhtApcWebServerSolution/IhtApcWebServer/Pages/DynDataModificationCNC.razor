@@ -761,7 +761,7 @@ input#password-input:focus {
                 <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
                 <table class="internal_div_table">
                     <tr>
-                        <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramHeatO2.DynParams))">
+                        <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramHeatO2, 10))">
                             @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
                             @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
                              <img draggable="false" src="Images/minus1.png" class="img_minus1" />
@@ -775,12 +775,12 @@ input#password-input:focus {
                             Color="Color.Info"><table><tr><td style="text-align:left;">Flame (H-O):</td><td style="text-align:right; width:30%">@( (@paramHeatO2.DynParams.Value * 0.001).ToString("0.0"))&nbsp;&nbsp;</td><td style="text-align:right; width:10%">Bar</td></tr></table>
                             </MudSlider>                           
                         </td> 
-                        <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramHeatO2.DynParams))">
+                        <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramHeatO2, 10))">
                              <img draggable="false" src="Images/plus1.png" class="img_plus1" />
                         </MudTd>
                     </tr>
                     <tr>
-                        <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramFuelGas.DynParams))">
+                        <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramFuelGas))">
                             @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
                             @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
                              <img draggable="false" src="Images/minus1.png" class="img_minus1" />
@@ -794,14 +794,14 @@ input#password-input:focus {
                             Color="Color.Info"><table><tr><td style="text-align:left;">Flame (F-G):</td><td style="text-align:right; width:30%">@( (@paramFuelGas.DynParams.Value * 0.001).ToString("0.00"))</td><td style="text-align:right; width:10%">Bar</td></tr></table>
                             </MudSlider>
                         </td>  
-                        <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramFuelGas.DynParams))">
+                        <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramFuelGas))">
                             @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
                             @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
                              <img draggable="false" src="Images/plus1.png" class="img_plus1" />
                         </MudTd>
                     </tr>
                     <tr>
-                        <MudTd Class="@($"td_minus1 {@_cutO2Visible}")" @onclick="@(() => ReduceParamValue(@paramCutO2.DynParams))">
+                        <MudTd Class="@($"td_minus1 {@_cutO2Visible}")" @onclick="@(() => ReduceParamValue(@paramCutO2, 10))">
                              <img draggable="false" src="Images/minus1.png" class="img_minus1" />
                         </MudTd>
                         <td>                            
@@ -813,7 +813,7 @@ input#password-input:focus {
                             Color="Color.Info"><table><tr><td style="text-align:left;">C - O:</td><td style="text-align:right; width:30%">@( (@paramCutO2.DynParams.Value * 0.001).ToString("0.0"))&nbsp;&nbsp;</td><td style="text-align:right; width:10%">Bar</td></tr></table>
                             </MudSlider>                        
                         </td>
-                        <MudTd Class="@($"td_plus1 {@_cutO2Visible}")" @onclick="@(() => IncreaseParamValue(@paramCutO2.DynParams))">
+                        <MudTd Class="@($"td_plus1 {@_cutO2Visible}")" @onclick="@(() => IncreaseParamValue(@paramCutO2, 10))">
                              <img draggable="false" src="Images/plus1.png" class="img_plus1" />
                         </MudTd>                       
                     </tr>
@@ -1277,33 +1277,33 @@ input#password-input:focus {
         return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl;
     }
 
-    private void IncreaseParamValue(DynParamsModel dynParamsModel)
+    private void IncreaseParamValue(ParameterDataModel parameterData, int stepMultiplayer = 1)
     {
-        if(dynParamsModel != null && dynParamsModel.ConstParams != null)
+        if(parameterData != null && parameterData.DynParams != null && parameterData.DynParams.ConstParams != null)
         {
-            dynParamsModel.Value = dynParamsModel.Value + dynParamsModel.ConstParams.Step;
+            parameterData.DynParams.Value = parameterData.DynParams.Value + parameterData.DynParams.ConstParams.Step * stepMultiplayer;
 
-            if (dynParamsModel.Value > dynParamsModel.ConstParams.Max)
+            if (parameterData.DynParams.Value > parameterData.DynParams.ConstParams.Max)
             {
-                dynParamsModel.Value = dynParamsModel.ConstParams.Max;
+                parameterData.DynParams.Value = parameterData.DynParams.ConstParams.Max;
             }
 
-            //TODO: Save new value to DB
+            UpdateDynParam(parameterData);
         }
     }
 
-    private void ReduceParamValue(DynParamsModel dynParamsModel)
+    private void ReduceParamValue(ParameterDataModel parameterData, int stepMultiplayer = 1)
     {
-        if(dynParamsModel != null && dynParamsModel.ConstParams != null)
+        if(parameterData != null && parameterData.DynParams != null && parameterData.DynParams.ConstParams != null)
         {
-            dynParamsModel.Value = dynParamsModel.Value - dynParamsModel.ConstParams.Step;
+            parameterData.DynParams.Value = parameterData.DynParams.Value - parameterData.DynParams.ConstParams.Step * stepMultiplayer;
 
-            if (dynParamsModel.Value < dynParamsModel.ConstParams.Min)
+            if (parameterData.DynParams.Value < parameterData.DynParams.ConstParams.Min)
             {
-                dynParamsModel.Value = dynParamsModel.ConstParams.Min;
+                parameterData.DynParams.Value = parameterData.DynParams.ConstParams.Min;
             }
 
-            //TODO: Save new value to DB
+            UpdateDynParam(parameterData);
         }
     }
 
