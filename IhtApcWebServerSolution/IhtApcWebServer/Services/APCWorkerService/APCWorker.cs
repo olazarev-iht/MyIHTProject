@@ -161,9 +161,11 @@ namespace IhtApcWebServer.Services.APCWorkerService
 		{
 			
 			await _parameterDataInfoManager.InitializeParameterDataInfoAsync(CancellationToken.None);
+
+			// initialize CutingDataSequence table - we can implement if we need
 			//await _parameterDataInfoManager.DeleteAllEntriesFromCutingDataSequenceTableAsync(CancellationToken.None);
 
-			// await _apcCommunicManager.Init(nameComPort: DEFAULT_COM_PORT, isSimulation: false, performResetDevices: false);
+			await _apcCommunicManager.Init(nameComPort: DEFAULT_COM_PORT, isSimulation: false, performResetDevices: false);
 
 		}
 

@@ -93,8 +93,10 @@ namespace IhtApcWebServer.Services.APCCommunic
 
             //TODO: implement ?
             //StopBackgroundWorker();
-            await _apcWorkerBackgroundService.StopAsync(APCWorkerBackgroundService._stoppingCts.Token);
-
+            if (_apcWorkerBackgroundService != null && APCWorkerBackgroundService._stoppingCts != null)
+            {
+                await _apcWorkerBackgroundService.StopAsync(APCWorkerBackgroundService._stoppingCts.Token);
+            }
             // Eingeschaltete Geräte merken
             UInt16 u16OnSlaveIdBits = (UInt16)IhtModbusCommunic.CurrOnSlaveBits;
 
@@ -166,7 +168,10 @@ namespace IhtApcWebServer.Services.APCCommunic
                 //eventDisplay.Visibility = Visibility.Hidden;
                 //CommandManager.InvalidateRequerySuggested();
                 //----> StartBackgroundWorker();
-                await _apcWorkerBackgroundService.StartAsync(new CancellationToken());
+                if (_apcWorkerBackgroundService != null)
+                {
+                    await _apcWorkerBackgroundService.StartAsync(new CancellationToken());
+                }
                 //commonDataControl.MainAereaIsEnabled = blEnable;
             }
         }
