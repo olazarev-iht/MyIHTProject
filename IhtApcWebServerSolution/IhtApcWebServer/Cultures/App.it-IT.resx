@@ -415,7 +415,7 @@
     <value>Lingua</value>
   </data>
   <data name="_CultureLanguageImage" xml:space="preserve">
-    <value>IhtImages/LanguageItaly.gif</value>
+    <value>Images/Culture/LanguageItaly.gif</value>
   </data>
   <data name="_CultureLeadInLength" xml:space="preserve">
     <value>Lunghezza di Attacco</value>

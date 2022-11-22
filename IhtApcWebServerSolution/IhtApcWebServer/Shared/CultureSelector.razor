@@ -1,16 +1,38 @@
 ﻿@using  System.Globalization
 @inject NavigationManager Nav
+@inherits IhtComponentBase
 
-<p style="font-size: medium;">
+<style>
+.my-install-toarch .mud-input > input.mud-input-root, div.mud-input-slot.mud-input-root {
+    padding: 12px 10px !important;
+    font-size: 18px
+}
+</style>
+@*<p style="font-size: medium;">
     <label>
         <select @bind="Culture">
             @foreach (var culture in supportedCultures)
             {
-                <option value="@culture">@culture.NativeName</option>
+                <option value="@culture">
+                    <img draggable="false" src="@T["_CultureLanguageImage"]" style="mix-blend-mode: normal; width: 25px; height: 35px; vertical-align: middle;" /> 
+                    @culture.NativeName</option>
             }
         </select>
     </label>
-</p>
+</p>*@
+
+
+<MudSelect @bind-Value="@Culture" Label="Language" Variant="Variant.Outlined">
+    @foreach (var culture in supportedCultures)
+    {
+        var languageName = @culture.EnglishName.Split()[0];
+
+        <MudSelectItem Value="@culture">
+            <img src="@($"Images/Culture/{@languageName}.gif")" style="mix-blend-mode: normal; width: 35px; height: 20px; vertical-align: middle;" /> @languageName
+        </MudSelectItem>
+    }
+</MudSelect>
+
 
 @code
 {
