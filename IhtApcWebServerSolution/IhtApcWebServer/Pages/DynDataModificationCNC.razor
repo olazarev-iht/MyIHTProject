@@ -25,7 +25,7 @@
 @inject IAPCSimulationDataMockDBService apcSimulationDataMockDBService
 @inject APCCommunicManager apcCommunicManager
 @inject APCWorkerBackgroundService _apcWorkerBackgroundService
-@inherits ComponentBase
+@inherits IhtComponentBase
 @implements IDisposable
 
 <style>
@@ -571,6 +571,17 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
+<MudDialog @bind-IsVisible="@_cultureSelectorVisible" Class="scaled">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Select your locale:</MudText>
+    </TitleContent>
+    <DialogContent>
+        <CultureSelector></CultureSelector>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseLocalizationDialog">Close</MudButton>
+    </DialogActions>
+</MudDialog>
 
 <MudDialog @bind-IsVisible="_menuExpanded" Class="scaled">
     <TitleContent>
@@ -583,10 +594,11 @@ input#password-input:focus {
     <DialogContent>  
         <MudTd>Torch @CurrentDevice.DeviceNumber is:
         <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? "Enabled" : "Disabled")</MudSwitch></MudTd>
-        <MudList Clickable="true" Style="Height:200px;" >
+        <MudList Clickable="true" Style="Height:220px;" >
             <MudListItem Icon="@Icons.Filled.Settings" Text="Settings" InitiallyExpanded="false">
                 <NestedList>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenSetupParamsDialog">Setup</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenSetupParamsDialog">@T["_Setup"]</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenLocalizationDialog">Localization</MudListItem>
                     <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenPasswordSetupDialog">Password</MudListItem>
                     <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenTorchInstalledDialog">Torch Installed</MudListItem>
                 </NestedList>
@@ -1117,6 +1129,8 @@ input#password-input:focus {
     private string _setupPasswordValue = "";
     private bool _setupPasswordDialogVisible = false;
 
+    private bool _cultureSelectorVisible = false;
+
     private bool _torchInstalledDialogVisible = false;
     public bool TorchInstalledDialogVisible
     {
@@ -1407,6 +1421,16 @@ input#password-input:focus {
     private void CloseTorchInstalledDialog()
     {
         TorchInstalledDialogVisible = false;
+    }
+
+    private void OpenLocalizationDialog()
+    {
+        _cultureSelectorVisible = true;
+    }
+
+    private void CloseLocalizationDialog()
+    {
+        _cultureSelectorVisible = false;
     }
 
     private void RestoreIsVisibleAndTorchType()
