@@ -27,15 +27,13 @@ namespace SharedComponents.Models.APCHardware
         public ParamGroup ParamGroupId { get; set; }
         public Guid? DynParamsId { get; set; }
         public DynParamsModel? DynParams { get; set; } = new();
-
-        // TODO: implement
-        //public ParamSettingsModel ParamSettings { get; set; } = new();
+        public ParamSettingsModel ParamSettings { get; set; } = new();
         // setup ViewGroup, ViewGroupOrder, ViewItemOrder, PasswordLevel from ParamSettings
         public string ViewGroup
         {
             get
             {
-                return _viewGroupDictionary[ParamName].Group;
+                return ParamSettings?.ParamViewGroup?.GroupName ?? string.Empty;
             }
         }
 
@@ -43,7 +41,7 @@ namespace SharedComponents.Models.APCHardware
         {
             get
             {
-                return _viewGroupDictionary[ParamName].GroupOrder;
+                return ParamSettings.ParamViewGroup?.GroupOrder ?? 100;
             }
         }
 
@@ -51,7 +49,7 @@ namespace SharedComponents.Models.APCHardware
         {
             get
             {
-                return _viewGroupDictionary[ParamName].ItemOrder;
+                return ParamSettings.ParamOrder;
             }
         }
 
@@ -59,79 +57,79 @@ namespace SharedComponents.Models.APCHardware
         {
             get
             {
-                return _passwordLevelDictionary[ParamName];
+                return (IhtDevices.PasswordLevel_SW)ParamSettings.PasswordLevel;
             }
         }
 
-        public Dictionary<string, (string Group, int GroupOrder, int ItemOrder)> _viewGroupDictionary = new Dictionary<string, (string, int, int)>()
-        {
-            { IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), (ViewGroups.HeightCalibration.Group, ViewGroups.HeightCalibration.Order, 1)},
-            { IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), (ViewGroups.HeightCalibration.Group, ViewGroups.HeightCalibration.Order, 2)},
+        //public Dictionary<string, (string Group, int GroupOrder, int ItemOrder)> _viewGroupDictionary = new Dictionary<string, (string, int, int)>()
+        //{
+        //    { IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), (ViewGroups.HeightCalibration.Group, ViewGroups.HeightCalibration.Order, 1)},
+        //    { IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), (ViewGroups.HeightCalibration.Group, ViewGroups.HeightCalibration.Order, 2)},
 
-            { IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), (ViewGroups.RetractPosition.Group, ViewGroups.RetractPosition.Order, 1)},
-            // RetractPosition - experimental
-            { IhtModbusParamDyn.eIdxAdditional.RetractPosition.ToString(), (ViewGroups.RetractPosition.Group, ViewGroups.RetractPosition.Order, 2)},
+        //    { IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), (ViewGroups.RetractPosition.Group, ViewGroups.RetractPosition.Order, 1)},
+        //    // RetractPosition - experimental
+        //    { IhtModbusParamDyn.eIdxAdditional.RetractPosition.ToString(), (ViewGroups.RetractPosition.Group, ViewGroups.RetractPosition.Order, 2)},
 
-            { IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), (ViewGroups.Slag.Group, ViewGroups.Slag.Order, 1)},
-            { IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), (ViewGroups.Slag.Group, ViewGroups.Slag.Order, 2)},
-            { IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), (ViewGroups.Slag.Group, ViewGroups.Slag.Order, 3)},
+        //    { IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), (ViewGroups.Slag.Group, ViewGroups.Slag.Order, 1)},
+        //    { IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), (ViewGroups.Slag.Group, ViewGroups.Slag.Order, 2)},
+        //    { IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), (ViewGroups.Slag.Group, ViewGroups.Slag.Order, 3)},
 
-            { IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 1)},
-            { IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 2)},
-            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 3)},
-            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 4)},
-            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 5)},
+        //    { IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 1)},
+        //    { IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 2)},
+        //    { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 3)},
+        //    { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 4)},
+        //    { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), (ViewGroups.PreFlow.Group, ViewGroups.PreFlow.Order, 5)},
 
-            { IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl.ToString(), (ViewGroups.Piercing.Group, ViewGroups.Piercing.Order, 1)},
-            { IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), (ViewGroups.Piercing.Group, ViewGroups.Piercing.Order, 2)},
+        //    { IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl.ToString(), (ViewGroups.Piercing.Group, ViewGroups.Piercing.Order, 1)},
+        //    { IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), (ViewGroups.Piercing.Group, ViewGroups.Piercing.Order, 2)},
 
-            { IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 1)},
-            { IhtModbusParamDyn.eIdxAdditional.HeightControlActive.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 2)},
-            { IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 3)},
-            { IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 4)},
-            { IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 5)},
-            { IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 6)}
-        };
+        //    { IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 1)},
+        //    { IhtModbusParamDyn.eIdxAdditional.HeightControlActive.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 2)},
+        //    { IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 3)},
+        //    { IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 4)},
+        //    { IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 5)},
+        //    { IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), (ViewGroups.HeightControl.Group, ViewGroups.HeightControl.Order, 6)}
+        //};
 
-        public Dictionary<string, IhtDevices.PasswordLevel_SW> _passwordLevelDictionary = new Dictionary<string, IhtDevices.PasswordLevel_SW>()
-        {
-            { IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
-            { IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //public Dictionary<string, IhtDevices.PasswordLevel_SW> _passwordLevelDictionary = new Dictionary<string, IhtDevices.PasswordLevel_SW>()
+        //{
+        //    { IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    { IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
 
-            { IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
-            // RetractPosition - experimental
-            { IhtModbusParamDyn.eIdxAdditional.RetractPosition.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    { IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    // RetractPosition - experimental
+        //    { IhtModbusParamDyn.eIdxAdditional.RetractPosition.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
 
-            { IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
-            { IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
-            { IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), IhtDevices.PasswordLevel_SW.Level_2 },
+        //    { IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    { IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
+        //    { IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), IhtDevices.PasswordLevel_SW.Level_2 },
 
-            { IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
-            { IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
-            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
-            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
-            { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
+        //    { IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    { IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
+        //    { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
+        //    { IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
 
-            { IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
-            { IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    { IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    { IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
 
-            { IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
-            { IhtModbusParamDyn.eIdxAdditional.HeightControlActive.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
-            { IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
-            { IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
-            { IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
-            { IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), IhtDevices.PasswordLevel_SW.Level_0 }
-        };
+        //    { IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), IhtDevices.PasswordLevel_SW.Level_1 },
+        //    { IhtModbusParamDyn.eIdxAdditional.HeightControlActive.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    { IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    { IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    { IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), IhtDevices.PasswordLevel_SW.Level_0 },
+        //    { IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), IhtDevices.PasswordLevel_SW.Level_0 }
+        //};
 
     }
 
-    class ViewGroups
-    {
-        public static (string Group, int Order) HeightCalibration = ("Height Calibration", 1);
-        public static (string Group, int Order) RetractPosition = ("Retract Position", 2);
-        public static (string Group, int Order) Slag = ("Slag", 3);
-        public static (string Group, int Order) PreFlow = ("Pre Flow", 4);
-        public static (string Group, int Order) Piercing = ("Piercing", 5);
-        public static (string Group, int Order) HeightControl = ("Height Control", 6);
-    }
+    //class ViewGroups
+    //{
+    //    public static (string Group, int Order) HeightCalibration = ("Height Calibration", 1);
+    //    public static (string Group, int Order) RetractPosition = ("Retract Position", 2);
+    //    public static (string Group, int Order) Slag = ("Slag", 3);
+    //    public static (string Group, int Order) PreFlow = ("Pre Flow", 4);
+    //    public static (string Group, int Order) Piercing = ("Piercing", 5);
+    //    public static (string Group, int Order) HeightControl = ("Height Control", 6);
+    //}
 }

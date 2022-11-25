@@ -164,6 +164,7 @@ namespace SharedComponents.Helpers
             TcpIpPortServer,
             Mqtt,
             GasController,
+            ClientCode
         }
 
         public bool IsSimulationDemo { get; private set; } = false;
@@ -231,6 +232,8 @@ namespace SharedComponents.Helpers
             cmdLineParams.Add(IdNo.TcpIpPortServer, new IhtCmdLineParamInt   ("--tcpport"     , String.Empty));
             cmdLineParams.Add(IdNo.Mqtt           , new IhtCmdLineParamInt   ("--mqtt"        , String.Empty));
             cmdLineParams.Add(IdNo.GasController  , new IhtCmdLineParamInt   ("--gasctrl"     , String.Empty));
+
+            cmdLineParams.Add(IdNo.ClientCode, new IhtCmdLineParamInt("--client", String.Empty));
 
             string[] cmdParams = System.Environment.GetCommandLineArgs();//e.Args;
             int ParamsLength   = cmdParams != null ? cmdParams.Length : 0;

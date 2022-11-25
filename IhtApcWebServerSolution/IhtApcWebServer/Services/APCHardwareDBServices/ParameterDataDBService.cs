@@ -135,6 +135,23 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 					.ThenBy(p => p.ViewItemOrder)
 				.ToArray();
 
+			if (entry.Any())
+			{
+				var clientCode = IhtModbusCommunic.clientCode;
+
+				var paramNames = entry.Select(pd => pd.ParamName).ToList();
+
+				var paramSettingsEntry = await dbContext.ParamSettings
+					.AsNoTracking()
+					.Include(p => p.ParamViewGroup)
+					.Where(p => p.ClientId == clientCode && paramNames.Contains(p.ParamId))
+					.Select(p => _mapper.Map<ParamSettings, ParamSettingsModel>(p))
+					.ToListAsync();
+
+				entry.ToList().ForEach(p => p.ParamSettings = paramSettingsEntry.Where(ps => ps.ParamId == p.ParamName).First());
+
+			}
+
 			return entry;
 		}
 		

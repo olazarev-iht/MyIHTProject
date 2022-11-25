@@ -10,7 +10,7 @@
   "profiles": {
     "IhtApcWebServer": {
       "commandName": "Project",
-      "commandLineArgs": "--m messe",
+      "commandLineArgs": "--m messe --client client1",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -20,7 +20,7 @@
     },
     "IIS Express": {
       "commandName": "IISExpress",
-      "commandLineArgs": "--m messe",
+      "commandLineArgs": "--m messe --client client1",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

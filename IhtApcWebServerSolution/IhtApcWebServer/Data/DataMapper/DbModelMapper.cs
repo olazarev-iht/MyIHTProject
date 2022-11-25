@@ -90,7 +90,10 @@ namespace IhtApcWebServer.Data.DataMapper
                 .ForMember(
                     dest => dest.DynParams,
                     opt => opt.Ignore())
-                .ReverseMap();                
+                .ReverseMap();
+
+                cfg.CreateMap<ParamViewGroupModel, ParamViewGroup>().ReverseMap();
+                cfg.CreateMap<ParamSettingsModel, ParamSettings>().ReverseMap();
             });
 
             return configuration.CreateMapper();

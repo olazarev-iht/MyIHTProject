@@ -67,6 +67,8 @@ namespace SharedComponents.IhtModbus
           return (int)stationNo + (int)SlaveId.Id_Default;
         }
 
+        public static string clientCode = string.Empty;
+
         // Declare a delegate
         public delegate IhtModbusAddrInfo GetAddrInfoDelegate();
         public delegate UInt16[] GetValuesDelegate();

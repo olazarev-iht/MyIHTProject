@@ -2,7 +2,7 @@
 {
     public class ParamViewGroup
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         public string GroupName { get; set; } = string.Empty;
         public int GroupOrder { get; set; }
     }

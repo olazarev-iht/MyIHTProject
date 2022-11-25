@@ -93,22 +93,24 @@ namespace IhtApcWebServer.Data
 			//Seed ParamViewGroups Table
 			var ParamViewGroupList = new List<ParamViewGroup>();
 
-			var ParamViewGroup_HeightCalibration = new ParamViewGroup { Id = Guid.NewGuid(), GroupName = "Height Calibration", GroupOrder = 1 };
+			var ParamViewGroup_HeightCalibration = new ParamViewGroup { Id = "HeightCalibration", GroupName = "Height Calibration", GroupOrder = 1 };
 			ParamViewGroupList.Add(ParamViewGroup_HeightCalibration);
-			var ParamViewGroup_RetractPosition = new ParamViewGroup { Id = Guid.NewGuid(), GroupName = "Retract Position", GroupOrder = 2 };
+			var ParamViewGroup_RetractPosition = new ParamViewGroup { Id = "RetractPosition", GroupName = "Retract Position", GroupOrder = 2 };
 			ParamViewGroupList.Add(ParamViewGroup_RetractPosition);
-			var ParamViewGroup_Slag = new ParamViewGroup { Id = Guid.NewGuid(), GroupName = "Slag", GroupOrder = 3 };
+			var ParamViewGroup_Slag = new ParamViewGroup { Id = "Slag", GroupName = "Slag", GroupOrder = 3 };
 			ParamViewGroupList.Add(ParamViewGroup_Slag);
-			var ParamViewGroup_PreFlow = new ParamViewGroup { Id = Guid.NewGuid(), GroupName = "Pre Flow", GroupOrder = 4 };
+			var ParamViewGroup_PreFlow = new ParamViewGroup { Id = "PreFlow", GroupName = "Pre Flow", GroupOrder = 4 };
 			ParamViewGroupList.Add(ParamViewGroup_PreFlow);
-			var ParamViewGroup_Piercing = new ParamViewGroup { Id = Guid.NewGuid(), GroupName = "Piercing", GroupOrder = 5 };
+			var ParamViewGroup_Piercing = new ParamViewGroup { Id = "Piercing", GroupName = "Piercing", GroupOrder = 5 };
 			ParamViewGroupList.Add(ParamViewGroup_Piercing);
-			var ParamViewGroup_HeightControl = new ParamViewGroup { Id = Guid.NewGuid(), GroupName = "Height Control", GroupOrder = 6 };
+			var ParamViewGroup_HeightControl = new ParamViewGroup { Id = "HeightControl", GroupName = "Height Control", GroupOrder = 6 };
 			ParamViewGroupList.Add(ParamViewGroup_HeightControl);
 
 			modelBuilder.Entity<ParamViewGroup>().HasData(ParamViewGroupList);
 
-			//Seed ParamSettings Table
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+			//Seed ParamSettings Table row for client - default
 			var ParamSettingsList_default = new List<ParamSettings>();
 
 			var ParamSettings1 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 1 };
@@ -159,27 +161,58 @@ namespace IhtApcWebServer.Data
 
 			modelBuilder.Entity<ParamSettings>().HasData(ParamSettingsList_default);
 
-			// Clients List
-			var ClientList = new[] { "client1", "client2", "client3", "client4", "client5" };
+			//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			//Seed ParamSettings Table row for client - client1
+			var ParamSettingsList_client1 = new List<ParamSettings>();
 
+			var ParamSettings_client1_1 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 1 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_1);
+			var ParamSettings_client1_2 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 2 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_2);
 
-			//var ParamSettingsList_Client = ParamSettingsList_default.Select(p => { p.Id = Guid.NewGuid(); p.ClientId = Client; return p; });
-			//modelBuilder.Entity<ParamSettings>().HasData(ParamSettingsList_Client);
+			var ParamSettings_client1_3 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition.Id, ParamOrder = 1 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_3);
+			var ParamSettings_client1_4 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxAdditional.RetractPosition.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition.Id, ParamOrder = 2 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_4);
 
-			foreach (var Client in ClientList)
-            {
-                //var ParamSettingsList_Client = ParamSettingsList_default.Select(p => { p.Id = Guid.NewGuid(); p.ClientId = Client; return p; });
-                //modelBuilder.Entity<ParamSettings>().HasData(ParamSettingsList_Client);
+			var ParamSettings_client1_5 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 1 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_5);
+			var ParamSettings_client1_6 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 2 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_6);
+			var ParamSettings_client1_7 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), ClientId = "client1", PasswordLevel = 2, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 3 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_7);
 
-                ParamSettingsList_default.ForEach(p => p.ClientId = Client );
-				ParamSettingsList_default.ForEach(PredicatForParamSettings);
-				modelBuilder.Entity<ParamSettings>().HasData(ParamSettingsList_default);
-            }
-        }
+			var ParamSettings_client1_8 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 1 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_8);
+			var ParamSettings_client1_9 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 2 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_9);
+			var ParamSettings_client1_10 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 3 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_10);
+			var ParamSettings_client1_11 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 4 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_11);
+			var ParamSettings_client1_12 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 5 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_12);
 
-		void PredicatForParamSettings(ParamSettings paramSettings)
-        {
-			paramSettings.Id = Guid.NewGuid();
+			var ParamSettings_client1_13 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxAdditional.PiercingHeightControl.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing.Id, ParamOrder = 1 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_13);
+			var ParamSettings_client1_14 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing.Id, ParamOrder = 2 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_14);
+
+			var ParamSettings_client1_15 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 1 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_15);
+			var ParamSettings_client1_16 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxAdditional.HeightControlActive.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 2 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_16);
+			var ParamSettings_client1_17 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 3 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_17);
+			var ParamSettings_client1_18 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 4 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_18);
+			var ParamSettings_client1_19 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 5 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_19);
+			var ParamSettings_client1_20 = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 6 };
+			ParamSettingsList_client1.Add(ParamSettings_client1_20);
+
+			modelBuilder.Entity<ParamSettings>().HasData(ParamSettingsList_client1);
 		}
 	}
 }

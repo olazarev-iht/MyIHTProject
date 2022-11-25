@@ -79,6 +79,17 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 	serverOptions.Listen(iPAddress, tcpIpPortServer);
 });
 
+string clientCode = "default";
+
+string cmdLineClientCode = builder.Configuration["client"];
+
+if (!string.IsNullOrWhiteSpace(cmdLineClientCode))
+{
+	clientCode = cmdLineClientCode;
+}
+
+IhtModbusCommunic.clientCode = clientCode;
+
 #endregion // Service, CommandLineParams
 
 //builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
@@ -246,26 +257,26 @@ Log.Information("Starting up 1111");
 
 var app = builder.Build();
 
-#if false
-SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
-	CuttingDataDBServiceConfigure(builder.Services.BuildServiceProvider().GetService<ICuttingDataDBService>());
-SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
-	IhtDevicesConfigure(builder.Services.BuildServiceProvider().GetService<IhtDevices>());
-SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
-  ParameterDataInfoManagerConfigure(builder.Services.BuildServiceProvider().GetService<IParameterDataInfoManager>());
-SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
-  APCWorkerConfigure(builder.Services.BuildServiceProvider().GetService<IAPCWorker>());
-#else
-SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
-  CuttingDataDBServiceConfigure(app.Services.GetRequiredService<ICuttingDataDBService>());
-SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
-  IhtDevicesConfigure(app.Services.GetRequiredService<IhtDevices>());
-SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
-  ParameterDataInfoManagerConfigure(app.Services.GetRequiredService<IParameterDataInfoManager>());
-SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
-  APCWorkerConfigure(app.Services.GetRequiredService<IAPCWorker>());
+//#if false
+//SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+//	CuttingDataDBServiceConfigure(builder.Services.BuildServiceProvider().GetService<ICuttingDataDBService>());
+//SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+//	IhtDevicesConfigure(builder.Services.BuildServiceProvider().GetService<IhtDevices>());
+//SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+//  ParameterDataInfoManagerConfigure(builder.Services.BuildServiceProvider().GetService<IParameterDataInfoManager>());
+//SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+//  APCWorkerConfigure(builder.Services.BuildServiceProvider().GetService<IAPCWorker>());
+//#else
+//SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+//  CuttingDataDBServiceConfigure(app.Services.GetRequiredService<ICuttingDataDBService>());
+//SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+//  IhtDevicesConfigure(app.Services.GetRequiredService<IhtDevices>());
+//SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+//  ParameterDataInfoManagerConfigure(app.Services.GetRequiredService<IParameterDataInfoManager>());
+//SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+//  APCWorkerConfigure(app.Services.GetRequiredService<IAPCWorker>());
 
-#endif
+//#endif
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -372,6 +383,27 @@ try
 		await ctx.Database.MigrateAsync();
 		await tx.CommitAsync();
 	}
+
+#if false
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+	CuttingDataDBServiceConfigure(builder.Services.BuildServiceProvider().GetService<ICuttingDataDBService>());
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+	IhtDevicesConfigure(builder.Services.BuildServiceProvider().GetService<IhtDevices>());
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+  ParameterDataInfoManagerConfigure(builder.Services.BuildServiceProvider().GetService<IParameterDataInfoManager>());
+SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+  APCWorkerConfigure(builder.Services.BuildServiceProvider().GetService<IAPCWorker>());
+#else
+	SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+	  CuttingDataDBServiceConfigure(app.Services.GetRequiredService<ICuttingDataDBService>());
+	SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+	  IhtDevicesConfigure(app.Services.GetRequiredService<IhtDevices>());
+	SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+	  ParameterDataInfoManagerConfigure(app.Services.GetRequiredService<IParameterDataInfoManager>());
+	SharedComponents.MqttModel.Exec.DataBase.ExecDataBaseRequest.
+	  APCWorkerConfigure(app.Services.GetRequiredService<IAPCWorker>());
+
+#endif
 
 	await app.RunAsync();
 	return 0;
