@@ -28,7 +28,6 @@ namespace SharedComponents.Models.APCHardware
         public Guid? DynParamsId { get; set; }
         public DynParamsModel? DynParams { get; set; } = new();
         public ParamSettingsModel ParamSettings { get; set; } = new();
-        // setup ViewGroup, ViewGroupOrder, ViewItemOrder, PasswordLevel from ParamSettings
         public string ViewGroup
         {
             get
