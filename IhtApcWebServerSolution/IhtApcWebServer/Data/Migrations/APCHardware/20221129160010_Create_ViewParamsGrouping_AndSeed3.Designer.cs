@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IhtApcWebServer.Data.Migrations.APCHardware
 {
     [DbContext(typeof(APCHardwareDBContext))]
-    [Migration("20221125162544_Create_ViewParamsGrouping_AndSeed3")]
+    [Migration("20221129160010_Create_ViewParamsGrouping_AndSeed3")]
     partial class Create_ViewParamsGrouping_AndSeed3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,61 +39,61 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5df7b336-96a4-4921-a304-fa0923b3fc87"),
+                            Id = new Guid("618339f8-1388-4710-a232-298cc550417f"),
                             Name = "APCDevice_1",
                             Num = 1
                         },
                         new
                         {
-                            Id = new Guid("2ac3216f-0a5a-4065-b439-b78374ee9a11"),
+                            Id = new Guid("19144c05-333e-43c9-8a91-e2e2f2a6f12e"),
                             Name = "APCDevice_2",
                             Num = 2
                         },
                         new
                         {
-                            Id = new Guid("2028c7e0-903b-4330-b95b-639511357e81"),
+                            Id = new Guid("0572e3db-896b-4be1-ad6a-a1ff1b5933b3"),
                             Name = "APCDevice_3",
                             Num = 3
                         },
                         new
                         {
-                            Id = new Guid("0d5fb5e8-3088-452f-ba27-ec08958e7c57"),
+                            Id = new Guid("f24f7f79-84ad-4cc3-9055-868c57d84902"),
                             Name = "APCDevice_4",
                             Num = 4
                         },
                         new
                         {
-                            Id = new Guid("206332f6-6f9e-44ea-b406-24b9db1b943d"),
+                            Id = new Guid("c12f911d-8ffe-4d2c-af22-47b7e3eae2a5"),
                             Name = "APCDevice_5",
                             Num = 5
                         },
                         new
                         {
-                            Id = new Guid("42e0eb36-a94a-4c7e-a47d-b8aef8ba0664"),
+                            Id = new Guid("7f3c78af-1a4b-422b-9154-6193876898b1"),
                             Name = "APCDevice_6",
                             Num = 6
                         },
                         new
                         {
-                            Id = new Guid("cd485034-3e29-4434-a54a-a9dde01199a8"),
+                            Id = new Guid("5c3ea349-360b-44d5-aab9-ebacb93aae66"),
                             Name = "APCDevice_7",
                             Num = 7
                         },
                         new
                         {
-                            Id = new Guid("cd0a6b3c-1979-4b93-94f5-11b1e4a33de8"),
+                            Id = new Guid("bd0a2346-c831-4fe6-80f0-c8a9ee1348eb"),
                             Name = "APCDevice_8",
                             Num = 8
                         },
                         new
                         {
-                            Id = new Guid("faa7fea3-2eb4-4c0d-b900-d52ad98b3747"),
+                            Id = new Guid("415f264c-f945-4516-93d6-45834fe8b968"),
                             Name = "APCDevice_9",
                             Num = 9
                         },
                         new
                         {
-                            Id = new Guid("1cbebeba-4ca3-4dca-a163-9d3dd68e7e10"),
+                            Id = new Guid("fe6d78b4-7dda-49f5-870c-0c647d4617bd"),
                             Name = "APCDevice_10",
                             Num = 10
                         });
@@ -263,7 +263,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d87b2bff-6bfb-44e5-bf23-838be6e3ce61"),
+                            Id = new Guid("c872b435-bd93-42f2-93f1-8c1739d1a289"),
                             ClientId = "default",
                             ParamId = "TactileInitialPosFinding",
                             ParamOrder = 1,
@@ -272,7 +272,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("026d888a-f592-405d-8438-02da03d16b8a"),
+                            Id = new Guid("14af81fe-3240-40e7-82bc-9cd8b2878705"),
                             ClientId = "default",
                             ParamId = "DistanceCalibration",
                             ParamOrder = 2,
@@ -281,7 +281,34 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("0af11601-fc09-4b0a-a77e-63cccca9c2c5"),
+                            Id = new Guid("117371e7-0b62-445f-b5d0-fa779107e1e3"),
+                            ClientId = "default",
+                            ParamId = "LinearDrivePosition",
+                            ParamOrder = 3,
+                            ParamViewGroupId = "HeightCalibration",
+                            PasswordLevel = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("117804b8-b738-44b3-8b4f-1551045a6132"),
+                            ClientId = "default",
+                            ParamId = "CalibrationValid",
+                            ParamOrder = 4,
+                            ParamViewGroupId = "HeightCalibration",
+                            PasswordLevel = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("27717c11-aff2-4437-8d3c-a127b91d57ff"),
+                            ClientId = "default",
+                            ParamId = "CalibrationActive",
+                            ParamOrder = 5,
+                            ParamViewGroupId = "HeightCalibration",
+                            PasswordLevel = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("d9b1c00f-3761-45f9-9e33-573edca6a4b3"),
                             ClientId = "default",
                             ParamId = "RetractHeight",
                             ParamOrder = 1,
@@ -290,16 +317,16 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("19652d09-967a-4f12-8d20-8886d5044c73"),
+                            Id = new Guid("a81075c1-26c1-43e9-b6ac-6aac327e84f6"),
                             ClientId = "default",
-                            ParamId = "RetractPosition",
+                            ParamId = "RetractPosAtProcessEnd",
                             ParamOrder = 2,
                             ParamViewGroupId = "RetractPosition",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("0816b949-c021-460d-b3d3-bae0f33c25ad"),
+                            Id = new Guid("7258cc8a-bdea-4033-bb5d-63839b28f157"),
                             ClientId = "default",
                             ParamId = "SlagSensitivity",
                             ParamOrder = 1,
@@ -308,7 +335,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("06cfb712-0106-4d07-914b-7034e215462f"),
+                            Id = new Guid("c4bc70ec-86b8-4418-9402-691e22676276"),
                             ClientId = "default",
                             ParamId = "SlagPostTime",
                             ParamOrder = 2,
@@ -317,7 +344,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("af13530b-b303-4606-8377-52ea3d1d042b"),
+                            Id = new Guid("5c96c2b8-8462-4932-b5a2-34b7e874cd54"),
                             ClientId = "default",
                             ParamId = "SlagCuttingSpeedReduction",
                             ParamOrder = 3,
@@ -326,61 +353,79 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("fe5b09ba-3fab-45e3-8cd7-df576d1fbb78"),
+                            Id = new Guid("416b23bb-1adb-400a-bc95-9c9fa8c53e23"),
                             ClientId = "default",
-                            ParamId = "StartPreflow",
+                            ParamId = "CutO2Blowout",
                             ParamOrder = 1,
                             ParamViewGroupId = "PreFlow",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("a7e0b9bc-a084-45e8-a748-53cd1c4341e4"),
+                            Id = new Guid("2f6a828d-f171-490c-8758-8f5e06db79f7"),
                             ClientId = "default",
-                            ParamId = "PreflowActive",
+                            ParamId = "CutO2BlowoutBreak",
                             ParamOrder = 2,
                             ParamViewGroupId = "PreFlow",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("d2b94bad-25c2-4268-8755-419378d837d0"),
+                            Id = new Guid("5fae095b-0b7f-415d-948e-09fefb15c951"),
                             ClientId = "default",
-                            ParamId = "CutO2BlowOutTime",
+                            ParamId = "CutO2BlowoutActive",
                             ParamOrder = 3,
                             ParamViewGroupId = "PreFlow",
-                            PasswordLevel = 1
+                            PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("05aa8cf0-04da-4674-bbc2-507fb12ecc1a"),
+                            Id = new Guid("e0c6eb11-c3da-4e18-81a4-66535f6d5539"),
                             ClientId = "default",
-                            ParamId = "CutO2BlowOutPressure",
+                            ParamId = "CurrCutO2BlowoutTime",
                             ParamOrder = 4,
                             ParamViewGroupId = "PreFlow",
-                            PasswordLevel = 1
+                            PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("0d73982a-aff2-43b1-8952-175cf5bb6165"),
+                            Id = new Guid("a87a53ce-872c-4358-bacd-7d33e1842bf0"),
                             ClientId = "default",
-                            ParamId = "CutO2BlowOutTimeOut",
+                            ParamId = "CutO2BlowOutTime",
                             ParamOrder = 5,
                             ParamViewGroupId = "PreFlow",
                             PasswordLevel = 1
                         },
                         new
                         {
-                            Id = new Guid("8c0f3dea-979a-4d74-8809-46edc127eb6e"),
+                            Id = new Guid("02254cf8-1c56-44c0-b5a9-0e3748adb885"),
                             ClientId = "default",
-                            ParamId = "PiercingHeightControl",
+                            ParamId = "CutO2BlowOutPressure",
+                            ParamOrder = 6,
+                            ParamViewGroupId = "PreFlow",
+                            PasswordLevel = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("968362d9-57ce-481b-a18c-7cc7314efa80"),
+                            ClientId = "default",
+                            ParamId = "CutO2BlowOutTimeOut",
+                            ParamOrder = 7,
+                            ParamViewGroupId = "PreFlow",
+                            PasswordLevel = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("db3505d7-8aa4-4676-9350-c73df6b9a711"),
+                            ClientId = "default",
+                            ParamId = "HeightPierce",
                             ParamOrder = 1,
                             ParamViewGroupId = "Piercing",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("79a22ed2-4bf7-441b-95d7-5e9011bbeca0"),
+                            Id = new Guid("1eb11fbf-05d0-4624-97b4-24acc488e97c"),
                             ClientId = "default",
                             ParamId = "PiercingDetection",
                             ParamOrder = 2,
@@ -389,7 +434,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("c18880d8-734d-4690-8489-754d0e6b4c9e"),
+                            Id = new Guid("11a82885-4680-4fc2-9577-58e5ab1fef10"),
                             ClientId = "default",
                             ParamId = "Dynamic",
                             ParamOrder = 1,
@@ -398,16 +443,16 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("2bdc9b92-4354-40bd-9afc-8778b124c9f4"),
+                            Id = new Guid("c45ee6e8-f110-416d-b879-cbcbe7c60909"),
                             ClientId = "default",
-                            ParamId = "HeightControlActive",
+                            ParamId = "ClearanceCtrlOff",
                             ParamOrder = 2,
                             ParamViewGroupId = "HeightControl",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("45c7209e-d0e6-42c6-88a9-640c9ab4d22e"),
+                            Id = new Guid("df177e54-5952-456b-9f34-6076c1d8f897"),
                             ClientId = "default",
                             ParamId = "Off",
                             ParamOrder = 3,
@@ -416,7 +461,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("b4eed169-a909-4571-812b-ba78090e93ea"),
+                            Id = new Guid("1da3ec73-1a5a-4a63-b64f-b0e8f37ecfea"),
                             ClientId = "default",
                             ParamId = "HeightPreHeat",
                             ParamOrder = 4,
@@ -425,7 +470,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("a6b8f249-5691-4342-8d81-b4b18e2c5d66"),
+                            Id = new Guid("76a0a83e-ef90-4014-b179-4dfdb67f0b85"),
                             ClientId = "default",
                             ParamId = "HeightPierce",
                             ParamOrder = 5,
@@ -434,7 +479,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("0a92bb99-6812-4470-8b24-3a223d114ce2"),
+                            Id = new Guid("558fa33c-d724-4a2b-8212-86c0f37cbe42"),
                             ClientId = "default",
                             ParamId = "HeightCut",
                             ParamOrder = 6,
@@ -443,182 +488,236 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("2a6d1c64-f4d4-4b84-a46e-76a38b36bdc8"),
+                            Id = new Guid("b00afc5d-857c-4af8-80f9-2eae26fbb622"),
                             ClientId = "client1",
                             ParamId = "TactileInitialPosFinding",
                             ParamOrder = 1,
-                            ParamViewGroupId = "HeightCalibration",
+                            ParamViewGroupId = "RetractPosition_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("fe20f34b-7279-4efd-b800-db651d50815a"),
+                            Id = new Guid("ca1fc0d8-1115-409b-b684-67a912f545c4"),
                             ClientId = "client1",
                             ParamId = "DistanceCalibration",
                             ParamOrder = 2,
-                            ParamViewGroupId = "HeightCalibration",
+                            ParamViewGroupId = "HeightCalibration_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("af71f1c8-a5a2-4722-a8e1-2574b9f28ec3"),
+                            Id = new Guid("f1bbc391-a3cb-4882-adcf-14b114658778"),
+                            ClientId = "client1",
+                            ParamId = "LinearDrivePosition",
+                            ParamOrder = 3,
+                            ParamViewGroupId = "HeightCalibration_client1",
+                            PasswordLevel = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("10c0d854-8f51-430b-b6b6-ddda660942fd"),
+                            ClientId = "client1",
+                            ParamId = "CalibrationValid",
+                            ParamOrder = 4,
+                            ParamViewGroupId = "HeightCalibration_client1",
+                            PasswordLevel = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("23a1b0b2-401e-43aa-8e0d-dbe34be07b2b"),
+                            ClientId = "client1",
+                            ParamId = "CalibrationActive",
+                            ParamOrder = 5,
+                            ParamViewGroupId = "HeightCalibration_client1",
+                            PasswordLevel = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("2697ed76-c2b4-49d6-896f-7ce64734b61b"),
                             ClientId = "client1",
                             ParamId = "RetractHeight",
                             ParamOrder = 1,
-                            ParamViewGroupId = "RetractPosition",
+                            ParamViewGroupId = "HeightCalibration_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("9f3e271a-4f44-4c07-bc48-a8eb43031f19"),
+                            Id = new Guid("d7420414-2542-482f-9838-27d01dc147a8"),
                             ClientId = "client1",
-                            ParamId = "RetractPosition",
+                            ParamId = "RetractPosAtProcessEnd",
                             ParamOrder = 2,
-                            ParamViewGroupId = "RetractPosition",
+                            ParamViewGroupId = "RetractPosition_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("ff297227-332b-4380-a941-bb90f2544538"),
+                            Id = new Guid("ff8ad0e0-b11c-411c-a227-436b152f9387"),
                             ClientId = "client1",
                             ParamId = "SlagSensitivity",
                             ParamOrder = 1,
-                            ParamViewGroupId = "Slag",
+                            ParamViewGroupId = "Slag_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("c509e757-8bac-474a-af2c-38ca4569c731"),
+                            Id = new Guid("0cc968d4-ba01-43a6-b36c-c90270bcda4c"),
                             ClientId = "client1",
                             ParamId = "SlagPostTime",
                             ParamOrder = 2,
-                            ParamViewGroupId = "Slag",
+                            ParamViewGroupId = "Slag_client1",
                             PasswordLevel = 1
                         },
                         new
                         {
-                            Id = new Guid("afcc31d7-2623-4c92-95a3-41e740372247"),
+                            Id = new Guid("24280c20-00bb-46e5-af0b-3da60ae20bc1"),
                             ClientId = "client1",
                             ParamId = "SlagCuttingSpeedReduction",
                             ParamOrder = 3,
-                            ParamViewGroupId = "Slag",
+                            ParamViewGroupId = "Slag_client1",
                             PasswordLevel = 2
                         },
                         new
                         {
-                            Id = new Guid("fac9ff2c-4345-4e9d-ae8e-75bce511481e"),
+                            Id = new Guid("4b3a37cc-ad3a-4731-8826-4a9bf5437419"),
                             ClientId = "client1",
-                            ParamId = "StartPreflow",
-                            ParamOrder = 1,
-                            ParamViewGroupId = "PreFlow",
+                            ParamId = "CutO2Blowout",
+                            ParamOrder = 3,
+                            ParamViewGroupId = "PreFlow_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("b5b69660-eeae-4eb1-ad3c-612caee93b32"),
+                            Id = new Guid("9055bd4a-9394-4201-917c-37c16eb36755"),
                             ClientId = "client1",
-                            ParamId = "PreflowActive",
+                            ParamId = "CutO2BlowoutBreak",
                             ParamOrder = 2,
-                            ParamViewGroupId = "PreFlow",
+                            ParamViewGroupId = "PreFlow_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("0d95d8d4-6b82-4bd8-beae-caa4f3bce6cf"),
+                            Id = new Guid("ae00399e-3a08-405d-9ded-5aff2bc7a076"),
+                            ClientId = "client1",
+                            ParamId = "CutO2BlowoutActive",
+                            ParamOrder = 1,
+                            ParamViewGroupId = "PreFlow_client1",
+                            PasswordLevel = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("44ba350b-96a0-48ba-9a91-595dccf6954f"),
+                            ClientId = "client1",
+                            ParamId = "CurrCutO2BlowoutTime",
+                            ParamOrder = 4,
+                            ParamViewGroupId = "PreFlow_client1",
+                            PasswordLevel = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("1786f359-ff2c-4580-b3a4-6da57a112bd1"),
                             ClientId = "client1",
                             ParamId = "CutO2BlowOutTime",
-                            ParamOrder = 3,
-                            ParamViewGroupId = "PreFlow",
+                            ParamOrder = 5,
+                            ParamViewGroupId = "PreFlow_client1",
                             PasswordLevel = 1
                         },
                         new
                         {
-                            Id = new Guid("150384dd-05be-4604-870b-7c13ff26f6e5"),
+                            Id = new Guid("2dd92cd4-02bc-4315-9aa3-01e4368bb1bc"),
                             ClientId = "client1",
                             ParamId = "CutO2BlowOutPressure",
-                            ParamOrder = 4,
-                            ParamViewGroupId = "PreFlow",
+                            ParamOrder = 6,
+                            ParamViewGroupId = "PreFlow_client1",
                             PasswordLevel = 1
                         },
                         new
                         {
-                            Id = new Guid("588f853e-b825-4948-83f8-4bcedbedefdb"),
+                            Id = new Guid("81724529-3da8-41b6-9c95-4ddfeb99e942"),
                             ClientId = "client1",
                             ParamId = "CutO2BlowOutTimeOut",
-                            ParamOrder = 5,
-                            ParamViewGroupId = "PreFlow",
+                            ParamOrder = 7,
+                            ParamViewGroupId = "PreFlow_client1",
                             PasswordLevel = 1
                         },
                         new
                         {
-                            Id = new Guid("d3db7459-9834-46b5-8115-eab5d453197b"),
+                            Id = new Guid("0b477875-de81-449e-829f-edb924f22e1a"),
                             ClientId = "client1",
-                            ParamId = "PiercingHeightControl",
+                            ParamId = "HeightPierce",
                             ParamOrder = 1,
-                            ParamViewGroupId = "Piercing",
+                            ParamViewGroupId = "Piercing_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("328b032b-e642-42f0-900c-b87165829aa7"),
+                            Id = new Guid("fdca6f47-14d5-466f-99e0-6a47dcb799aa"),
                             ClientId = "client1",
                             ParamId = "PiercingDetection",
                             ParamOrder = 2,
-                            ParamViewGroupId = "Piercing",
+                            ParamViewGroupId = "Piercing_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("8c7b8830-9520-4f13-a550-320adc71c729"),
+                            Id = new Guid("9387aff9-751c-440b-abc0-dd6cb198312a"),
                             ClientId = "client1",
                             ParamId = "Dynamic",
                             ParamOrder = 1,
-                            ParamViewGroupId = "HeightControl",
+                            ParamViewGroupId = "HeightControl_client1",
                             PasswordLevel = 1
                         },
                         new
                         {
-                            Id = new Guid("f44c5cc2-3491-4351-9aab-a94d40f9c580"),
+                            Id = new Guid("f12a0fa3-6247-4c92-b840-844a0bde8c52"),
                             ClientId = "client1",
-                            ParamId = "HeightControlActive",
+                            ParamId = "ClearanceCtrlOff",
                             ParamOrder = 2,
-                            ParamViewGroupId = "HeightControl",
+                            ParamViewGroupId = "HeightControl_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("e564fd12-3323-4cb7-820d-d5306a1da615"),
+                            Id = new Guid("8c6169b9-d955-46b8-b258-75e830f4e584"),
+                            ClientId = "client1",
+                            ParamId = "LinearDrivePosition",
+                            ParamOrder = 3,
+                            ParamViewGroupId = "HeightCalibration_client1",
+                            PasswordLevel = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("063baf51-65c6-4d96-a312-9236cdc72bed"),
                             ClientId = "client1",
                             ParamId = "Off",
-                            ParamOrder = 3,
-                            ParamViewGroupId = "HeightControl",
+                            ParamOrder = 4,
+                            ParamViewGroupId = "HeightControl_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("9318e3f7-77b8-4d15-956c-1e3aecdcd3bc"),
+                            Id = new Guid("9a480e74-9fda-4b86-8be5-88989b439b75"),
                             ClientId = "client1",
                             ParamId = "HeightPreHeat",
-                            ParamOrder = 4,
-                            ParamViewGroupId = "HeightControl",
+                            ParamOrder = 5,
+                            ParamViewGroupId = "HeightControl_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("5ee3a6b7-ce93-49a5-a488-6ea7c0954900"),
+                            Id = new Guid("06761a39-a77e-4c7c-a518-150557b26b4b"),
                             ClientId = "client1",
                             ParamId = "HeightPierce",
-                            ParamOrder = 5,
-                            ParamViewGroupId = "HeightControl",
+                            ParamOrder = 6,
+                            ParamViewGroupId = "HeightControl_client1",
                             PasswordLevel = 0
                         },
                         new
                         {
-                            Id = new Guid("fb7b9ff7-96fc-49ef-90c6-77b2219d8193"),
+                            Id = new Guid("75748008-018e-426d-8b8a-2c026dc79ad0"),
                             ClientId = "client1",
                             ParamId = "HeightCut",
-                            ParamOrder = 6,
-                            ParamViewGroupId = "HeightControl",
+                            ParamOrder = 7,
+                            ParamViewGroupId = "HeightControl_client1",
                             PasswordLevel = 0
                         });
                 });
@@ -673,6 +772,42 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         new
                         {
                             Id = "HeightControl",
+                            GroupName = "Height Control",
+                            GroupOrder = 6
+                        },
+                        new
+                        {
+                            Id = "HeightCalibration_client1",
+                            GroupName = "Height Calibration",
+                            GroupOrder = 1
+                        },
+                        new
+                        {
+                            Id = "RetractPosition_client1",
+                            GroupName = "Retract Position",
+                            GroupOrder = 3
+                        },
+                        new
+                        {
+                            Id = "Slag_client1",
+                            GroupName = "Slag",
+                            GroupOrder = 2
+                        },
+                        new
+                        {
+                            Id = "PreFlow_client1",
+                            GroupName = "Pre Flow",
+                            GroupOrder = 4
+                        },
+                        new
+                        {
+                            Id = "Piercing_client1",
+                            GroupName = "Piercing",
+                            GroupOrder = 5
+                        },
+                        new
+                        {
+                            Id = "HeightControl_client1",
                             GroupName = "Height Control",
                             GroupOrder = 6
                         });
