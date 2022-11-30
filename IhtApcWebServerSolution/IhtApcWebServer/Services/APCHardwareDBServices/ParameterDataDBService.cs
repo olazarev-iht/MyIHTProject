@@ -116,9 +116,9 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var setupParameters = new ParamIdsHelper().SetupParameters;
+			//var setupParameters = new ParamIdsHelper().SetupParameters;
 
-			var entryItems = await dbContext.ParameterDatas
+			var paramDataItems = await dbContext.ParameterDatas
 				.AsNoTracking()
 				.Include(p => p.APCDevice)
 				.Include(p => p.DynParams)
@@ -126,35 +126,37 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 				.Include(p => p.DynParams)
 					.ThenInclude(p => p.ParameterDataInfo)
 				.Where(p => p.DynParams != null && p.APCDevice != null && p.APCDevice.Num == apcDeviceNum && p.ParamName != null)
-				.ToArrayAsync(cancellationToken);
-
-			var entry = entryItems
-				.Where(p => setupParameters.Contains(GetParamName(p.ParamName)))
 				.Select(p => _mapper.Map<ParameterData, ParameterDataModel>(p))
-				.OrderBy(p => p.ViewGroupOrder)
-					.ThenBy(p => p.ViewItemOrder)
-				.ToArray();
+				.ToListAsync(cancellationToken);
 
-			if (entry.Any())
-			{
-				var clientCode = IhtModbusCommunic.clientCode;
-
-				var paramNames = entry.Select(pd => pd.ParamName).ToList();
-
-				var paramSettingsEntry = await dbContext.ParamSettings
+			var clientCode = IhtModbusCommunic.clientCode;
+			var paramSettingsItems = await dbContext.ParamSettings
 					.AsNoTracking()
 					.Include(p => p.ParamViewGroup)
-					.Where(p => p.ClientId == clientCode && paramNames.Contains(p.ParamId))
+					.Where(p => p.ClientId == clientCode)
 					.Select(p => _mapper.Map<ParamSettings, ParamSettingsModel>(p))
 					.ToListAsync();
 
-				entry.ToList().ForEach(p => p.ParamSettings = paramSettingsEntry.Where(ps => ps.ParamId == p.ParamName).First());
+			paramSettingsItems.ForEach(ps =>
+			{
+				var paramData = paramDataItems.FirstOrDefault(p => p.ParamName == ps.ParamId);
 
-				entry = entry.OrderBy(p => p.ViewGroupOrder).ThenBy(p => p.ViewItemOrder).ToArray();
+				if(paramData != null)
+                {
+					paramData.ParamSettings = ps;
+				}
+                else
+                {
+					paramData = new ParameterDataModel { Id = Guid.NewGuid(), ParamName = ps.ParamId, ParamSettings = ps };
+					paramDataItems.Add(paramData);
+				}
+			});
 
-			}
+			paramDataItems = paramDataItems.Where(p => !string.IsNullOrWhiteSpace(p.ViewGroup))
+				.OrderBy(p => p.ViewGroupOrder).ThenBy(p => p.ViewItemOrder)
+				.ToList();
 
-			return entry;
+			return paramDataItems;
 		}
 		
 

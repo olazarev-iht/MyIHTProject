@@ -128,167 +128,178 @@ namespace IhtApcWebServer.Data
 			var ParamSettingsList_default = new List<ParamSettings>();
 
 			//Automatic Height Calibration
-			var ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 1 };
+			var ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), ParamName = "Automatic Height Calibration", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 1 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Manual Height Calibration
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 2 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), ParamName = "Manual Height Calibration", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 2 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Position (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 3 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition.ToString(), ParamName = "Position", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 3 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Height Calibration Valid (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CalibrationValid.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 4 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CalibrationValid.ToString(), ParamName = "Height Calibration Valid", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 4 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Height Calibration Active (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CalibrationActive.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 5 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CalibrationActive.ToString(), ParamName = "Height Calibration Active", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 5 };
 			ParamSettingsList_default.Add(ParamSettings);
 
-			//Retract Position
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition.Id, ParamOrder = 1 };
+			//Retract Position 
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), ParamName = "Retract Position", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition.Id, ParamOrder = 1 };
 			ParamSettingsList_default.Add(ParamSettings);
-			//Retract Position (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecSwitch.eCmdBit.RetractPosAtProcessEnd.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition.Id, ParamOrder = 2 };
+			//Retract Position enable (read only)
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecSwitch.eCmdBit.RetractPosAtProcessEnd.ToString(), ParamName = "Retract Position Enable", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition.Id, ParamOrder = 2 };
 			ParamSettingsList_default.Add(ParamSettings);
 
 			//Slag Sensitivity
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 1 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), ParamName = "Slag Sensitivity", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 1 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Slag Post Time
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 2 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), ParamName = "Slag Post Time", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 2 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Slag Cutting Speed Reduction (Slag detection Yes/No)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), ClientId = "default", PasswordLevel = 2, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 3 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), ParamName = "Slag Cutting Speed Reduction", ClientId = "default", PasswordLevel = 2, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 3 };
 			ParamSettingsList_default.Add(ParamSettings);
 
 			//Start Preflow
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecTactile.eCmdBit.CutO2Blowout.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 1 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecTactile.eCmdBit.CutO2Blowout.ToString(), ParamName = "Start Preflow", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 1 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Break Preflow
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecTactile.eCmdBit.CutO2BlowoutBreak.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 2 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecTactile.eCmdBit.CutO2BlowoutBreak.ToString(), ParamName = "Break Preflow", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 2 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Preflow active (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CutO2BlowoutActive.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 3 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CutO2BlowoutActive.ToString(), ParamName = "Preflow active", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 3 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Preflow active time (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.CurrCutO2BlowoutTime.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 4 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.CurrCutO2BlowoutTime.ToString(), ParamName = "Preflow active time", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 4 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//PreFlow Time
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 5 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), ParamName = "PreFlow Time", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 5 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//PreFlow Pressure
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 6 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), ParamName = "PreFlow Pressure", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 6 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//PreFlow Timeout
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 7 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), ParamName = "PreFlow Timeout", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 7 };
 			ParamSettingsList_default.Add(ParamSettings);
 
 			//Piercing with Height Control
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing.Id, ParamOrder = 1 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), ParamName = "Piercing with Height Control", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing.Id, ParamOrder = 1 };
 			ParamSettingsList_default.Add(ParamSettings);
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing.Id, ParamOrder = 2 };
+			//Piercing detection
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), ParamName = "Piercing detection", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing.Id, ParamOrder = 2 };
 			ParamSettingsList_default.Add(ParamSettings);
 
 			//Dynamic
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 1 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), ParamName = "Dynamic", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 1 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Height Control Active ---- IsHeightControlActive = (StatusHeightControl != (int)IhtModbusParamDyn.eStatusHeightCtrl.Off) && !IsInpClearanceCtrlOff;
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusInpBit.ClearanceCtrlOff.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 2 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusInpBit.ClearanceCtrlOff.ToString(), ParamName = "Height Control Active", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 2 };
 			ParamSettingsList_default.Add(ParamSettings);
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 3 };
+			//Position (read only)
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition.ToString(), ParamName = "Position", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 3 };
 			ParamSettingsList_default.Add(ParamSettings);
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 4 };
+			//Off
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), ParamName = "Off", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 4 };
 			ParamSettingsList_default.Add(ParamSettings);
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 5 };
+			//Preheating
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), ParamName = "Preheating", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 5 };
 			ParamSettingsList_default.Add(ParamSettings);
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 6 };
+			//Piercing
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), ParamName = "Piercing", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 6 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Cutting
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), ParamName = "Cutting", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 7 };
+			ParamSettingsList_default.Add(ParamSettings);
+
+			//////////////////////////////////////////////////////////////////////////////////////////////
+
+			//Seed ParamSettings Table row for client - client1
+
+			//Automatic Height Calibration
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), ParamName = "Automatic Height Calibration", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 1 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Manual Height Calibration
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), ParamName = "Manual Height Calibration", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 2 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Position (read only)
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition.ToString(), ParamName = "Position", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 3 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Height Calibration Valid (read only)
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CalibrationValid.ToString(), ParamName = "Height Calibration Valid", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 4 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Height Calibration Active (read only)
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CalibrationActive.ToString(), ParamName = "Height Calibration Active", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 5 };
+			ParamSettingsList_default.Add(ParamSettings);
+
+			//Retract Position 
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), ParamName = "Retract Position", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition.Id, ParamOrder = 1 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Retract Position enable (read only)
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecSwitch.eCmdBit.RetractPosAtProcessEnd.ToString(), ParamName = "Retract Position Enable", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition.Id, ParamOrder = 2 };
+			ParamSettingsList_default.Add(ParamSettings);
+
+			//Slag Sensitivity
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), ParamName = "Slag Sensitivity", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 1 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Slag Post Time
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), ParamName = "Slag Post Time", ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 2 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Slag Cutting Speed Reduction (Slag detection Yes/No)
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), ParamName = "Slag Cutting Speed Reduction", ClientId = "client1", PasswordLevel = 2, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 3 };
+			ParamSettingsList_default.Add(ParamSettings);
+
+			//Start Preflow
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecTactile.eCmdBit.CutO2Blowout.ToString(), ParamName = "Start Preflow", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 1 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Break Preflow
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecTactile.eCmdBit.CutO2BlowoutBreak.ToString(), ParamName = "Break Preflow", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 2 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Preflow active (read only)
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CutO2BlowoutActive.ToString(), ParamName = "Preflow active", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 3 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Preflow active time (read only)
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.CurrCutO2BlowoutTime.ToString(), ParamName = "Preflow active time", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 4 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//PreFlow Time
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), ParamName = "PreFlow Time", ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 5 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//PreFlow Pressure
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), ParamName = "PreFlow Pressure", ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 6 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//PreFlow Timeout
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), ParamName = "PreFlow Timeout", ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 7 };
+			ParamSettingsList_default.Add(ParamSettings);
+
+			//Piercing with Height Control
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), ParamName = "Piercing with Height Control", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing.Id, ParamOrder = 1 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Piercing detection
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), ParamName = "Piercing detection", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing.Id, ParamOrder = 2 };
+			ParamSettingsList_default.Add(ParamSettings);
+
+			//Dynamic
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), ParamName = "Dynamic", ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 1 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Height Control Active ---- IsHeightControlActive = (StatusHeightControl != (int)IhtModbusParamDyn.eStatusHeightCtrl.Off) && !IsInpClearanceCtrlOff;
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusInpBit.ClearanceCtrlOff.ToString(), ParamName = "Height Control Active", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 2 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Position (read only)
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition.ToString(), ParamName = "Position", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 3 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Off
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), ParamName = "Off", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 4 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Preheating
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), ParamName = "Preheating", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 5 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Piercing
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), ParamName = "Piercing", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 6 };
+			ParamSettingsList_default.Add(ParamSettings);
+			//Cutting
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), ParamName = "Cutting", ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 7 };
 			ParamSettingsList_default.Add(ParamSettings);
 
 			modelBuilder.Entity<ParamSettings>().HasData(ParamSettingsList_default);
-
-			//////////////////////////////////////////////////////////////////////////////////////////////
-			
-			//Seed ParamSettings Table row for client - client1
-			var ParamSettingsList_client1 = new List<ParamSettings>();
-
-			//Automatic Height Calibration
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition_client1.Id, ParamOrder = 1 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//Manual Height Calibration
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration_client1.Id, ParamOrder = 2 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//Position (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration_client1.Id, ParamOrder = 3 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//Height Calibration Valid (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CalibrationValid.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration_client1.Id, ParamOrder = 4 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//Height Calibration Active (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CalibrationActive.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration_client1.Id, ParamOrder = 5 };
-			ParamSettingsList_client1.Add(ParamSettings);
-
-			//Retract Position
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration_client1.Id, ParamOrder = 1 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//Retract Position (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecSwitch.eCmdBit.RetractPosAtProcessEnd.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition_client1.Id, ParamOrder = 2 };
-			ParamSettingsList_client1.Add(ParamSettings);
-
-			//Slag Sensitivity
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Slag_client1.Id, ParamOrder = 1 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//Slag Post Time
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_Slag_client1.Id, ParamOrder = 2 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//Slag Cutting Speed Reduction (Slag detection Yes/No)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), ClientId = "client1", PasswordLevel = 2, ParamViewGroupId = ParamViewGroup_Slag_client1.Id, ParamOrder = 3 };
-			ParamSettingsList_client1.Add(ParamSettings);
-
-			//Start Preflow
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecTactile.eCmdBit.CutO2Blowout.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow_client1.Id, ParamOrder = 3 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//Break Preflow
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecTactile.eCmdBit.CutO2BlowoutBreak.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow_client1.Id, ParamOrder = 2 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//Preflow active (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CutO2BlowoutActive.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow_client1.Id, ParamOrder = 1 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//Preflow active time (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.CurrCutO2BlowoutTime.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow_client1.Id, ParamOrder = 4 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//PreFlow Time
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow_client1.Id, ParamOrder = 5 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//PreFlow Pressure
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow_client1.Id, ParamOrder = 6 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//PreFlow Timeout
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow_client1.Id, ParamOrder = 7 };
-			ParamSettingsList_client1.Add(ParamSettings);
-
-			//Piercing with Height Control
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing_client1.Id, ParamOrder = 1 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing_client1.Id, ParamOrder = 2 };
-			ParamSettingsList_client1.Add(ParamSettings);
-
-			//Dynamic
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), ClientId = "client1", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_HeightControl_client1.Id, ParamOrder = 1 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			//Height Control Active ---- IsHeightControlActive = (StatusHeightControl != (int)IhtModbusParamDyn.eStatusHeightCtrl.Off) && !IsInpClearanceCtrlOff;
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusInpBit.ClearanceCtrlOff.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl_client1.Id, ParamOrder = 2 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration_client1.Id, ParamOrder = 3 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl_client1.Id, ParamOrder = 4 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPreHeat.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl_client1.Id, ParamOrder = 5 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightPierce.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl_client1.Id, ParamOrder = 6 };
-			ParamSettingsList_client1.Add(ParamSettings);
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), ClientId = "client1", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl_client1.Id, ParamOrder = 7 };
-			ParamSettingsList_client1.Add(ParamSettings);
-
-			modelBuilder.Entity<ParamSettings>().HasData(ParamSettingsList_client1);
 		}
 	}
 }
