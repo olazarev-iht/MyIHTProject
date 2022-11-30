@@ -150,6 +150,8 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 
 				entry.ToList().ForEach(p => p.ParamSettings = paramSettingsEntry.Where(ps => ps.ParamId == p.ParamName).First());
 
+				entry = entry.OrderBy(p => p.ViewGroupOrder).ThenBy(p => p.ViewItemOrder).ToArray();
+
 			}
 
 			return entry;
