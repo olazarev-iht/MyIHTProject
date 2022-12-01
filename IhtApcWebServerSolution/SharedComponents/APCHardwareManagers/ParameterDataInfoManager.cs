@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using SharedComponents.CutDataRepository;
 using SharedComponents.IhtDev;
+using SharedComponents.IhtData;
 using SharedComponents.IhtModbus;
 using SharedComponents.IhtModbusTable;
 using SharedComponents.Models;
@@ -125,7 +127,45 @@ namespace SharedComponents.APCHardwareManagers
 
         public async Task<IEnumerable<ParameterDataModel>> GetDeviceSetupParamsAsync(int deviceNum, CancellationToken cancellationToken)
         {
+            var maxDevNum = (int)IhtModbusCommunic.SlaveId.Id_Default;
+
+            if (deviceNum > maxDevNum)
+            {
+                deviceNum -= maxDevNum;
+            }
+
             var deviceParams = await _parameterDataDBService.GetDeviceSetupParamsAsync(deviceNum, cancellationToken);
+
+            var currSlaveId = deviceNum + maxDevNum;
+
+            DataProcessInfo dataProcessInfo = _ihtModbusCommunic.ihtDevices.GetDataProcessInfo(currSlaveId);
+            DataCmdExecution dataCmdExecution = _ihtModbusCommunic.ihtDevices.GetDataCmdExecution(currSlaveId);
+            object dataSourceObj;
+
+            deviceParams.ToList().ForEach(p => {
+
+                // The parameter is not dynamic
+                if (p.DynParams != null && p.DynParams.Address == 0) {
+
+                    PropertyInfo? prop = Type.GetType(p.ParamSettings.ParamType)?.GetProperty(p.ParamSettings.ParamName, BindingFlags.Public | BindingFlags.Instance);
+
+                    if (prop != null)
+                    {
+                        if (p.ParamSettings.ParamType.Contains(dataProcessInfo.GetType().ToString()))
+                        {
+                            dataSourceObj = dataProcessInfo;
+                        }
+                        else
+                        {
+                            dataSourceObj = dataCmdExecution;
+                        }
+
+                        p.DynParams.Value = prop?.GetValue(dataProcessInfo) as int? ?? -1;
+                    }
+                }
+            });
+            
+
             return deviceParams;
         }
 

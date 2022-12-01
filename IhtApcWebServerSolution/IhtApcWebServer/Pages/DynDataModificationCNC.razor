@@ -492,7 +492,7 @@ input#password-input:focus {
         <MudTh Class="mud-table-cell-custom-group" colspan="5">@($"{context.Key}")</MudTh>
     </GroupHeaderTemplate>
     <RowTemplate>
-        <MudTd DataLabel="Name">@context.DynParams.ParameterDataInfo?.ValueDescription</MudTd>
+        <MudTd DataLabel="Name">@context.ParamSettings.ParamName</MudTd>
         <MudTd DataLabel="Value">
             @if(@context.ParamName == IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString()){
                 <MudSlider @bind-Value="@preflowActiveValue" Disabled="@preflowActiveDisabled" Min="0" Max="5" Step="1" Color="Color.Info">
