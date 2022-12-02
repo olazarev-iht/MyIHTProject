@@ -7,6 +7,7 @@
         public string ParamType { get; set; } = string.Empty;
         public string ParamName { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
+        public string Format { get; set; } = string.Empty;
         public string ClientId { get; set; } = string.Empty;
         public int PasswordLevel { get; set; }
         public string? ParamViewGroupId { get; set; }

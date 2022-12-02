@@ -198,6 +198,10 @@ namespace IhtApcWebServer.Data
 			//Position (read only)
 			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition.ToString(), ParamType = "SharedComponents.IhtData.DataProcessInfo", ParamName = "Position", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 3 };
 			ParamSettingsList_default.Add(ParamSettings);
+			// StatusHeightControl - Off, Preheating, Piercing, Cutting
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.StatusHeightControl.ToString(), ParamType = "SharedComponents.IhtData.DataProcessInfo", ParamName = "StatusHeightControl", DisplayName = "Status Height Control", Format = @"{ 'Name':'Status Height Control', 'Mode':'Select', 'Values': ['Off','Low','Default','High'] }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 4 };
+			ParamSettingsList_default.Add(ParamSettings);
+			/*
 			//Off
 			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.Off.ToString(), ParamName = "Off", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 4 };
 			ParamSettingsList_default.Add(ParamSettings);
@@ -210,6 +214,7 @@ namespace IhtApcWebServer.Data
 			//Cutting
 			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusHeightCtrl.HeightCut.ToString(), ParamName = "Cutting", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 7 };
 			ParamSettingsList_default.Add(ParamSettings);
+			*/
 
 			//////////////////////////////////////////////////////////////////////////////////////////////
 
