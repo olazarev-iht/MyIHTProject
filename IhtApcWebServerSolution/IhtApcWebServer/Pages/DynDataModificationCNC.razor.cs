@@ -14,6 +14,8 @@ namespace IhtApcWebServer.Pages
 
         private bool _isSumTorchesActive = false;
 
+        private const string DEFAULT_COM_PORT = "COM3";
+
         private bool _isTorchUpActive
         {
             get => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsTorchUpActive;

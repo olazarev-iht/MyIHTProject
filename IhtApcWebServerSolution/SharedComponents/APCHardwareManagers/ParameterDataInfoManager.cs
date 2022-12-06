@@ -125,7 +125,9 @@ namespace SharedComponents.APCHardwareManagers
             return value.Value;
         }
 
-        public async Task<IEnumerable<ParameterDataModel>> GetDeviceSetupParamsAsync(int deviceNum, CancellationToken cancellationToken)
+        static IEnumerable<ParameterDataModel> deviceParams;
+
+        public async Task<IEnumerable<ParameterDataModel>> GetDeviceSetupParamsAsync(int deviceNum, CancellationToken cancellationToken, bool refreshAll = true)
         {
             var maxDevNum = (int)IhtModbusCommunic.SlaveId.Id_Default;
 
@@ -134,7 +136,8 @@ namespace SharedComponents.APCHardwareManagers
                 deviceNum -= maxDevNum;
             }
 
-            var deviceParams = await _parameterDataDBService.GetDeviceSetupParamsAsync(deviceNum, cancellationToken);
+            if(refreshAll)
+                deviceParams = await _parameterDataDBService.GetDeviceSetupParamsAsync(deviceNum, cancellationToken);
 
             var currSlaveId = deviceNum + maxDevNum;
 
@@ -160,7 +163,7 @@ namespace SharedComponents.APCHardwareManagers
                             dataSourceObj = dataCmdExecution;
                         }
 
-                        p.DynParams.Value = prop?.GetValue(dataProcessInfo) as int? ?? -1;
+                        p.DynParams.Value = prop?.GetValue(dataSourceObj) as int? ?? -1;
                     }
                 }
             });

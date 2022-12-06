@@ -24,6 +24,7 @@
 @inject IParameterDataInfoManager parameterDataInfoManager
 @inject IAPCSimulationDataMockDBService apcSimulationDataMockDBService
 @inject APCCommunicManager apcCommunicManager
+@inject IhtModbusCommunic ihtModbusCommunic
 @inject APCWorkerBackgroundService _apcWorkerBackgroundService
 @inherits IhtComponentBase
 @implements IDisposable
@@ -669,7 +670,7 @@ input#password-input:focus {
 
                         <br/>
                         <MudTh><b>Device Connection</b></MudTh>
-                        <MudButton Variant="Variant.Filled" Style="align-content" OnClick="Connection" Disabled="@IsDeviceConnectionDisabled()">Connection</MudButton>
+                        <MudButton Variant="Variant.Filled" Style="align-content" OnClick="@(async () => { await Connection(); })" Disabled="@IsDeviceConnectionDisabled()">Connection</MudButton>
                         <MudCheckBox @bind-Checked="@_performResetDevices" Dense="false" Color="Color.Primary">
                             <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Perform a reset for all devices</MudText>
                         </MudCheckBox>																										
@@ -688,7 +689,13 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
-<div class="flex-container scaled" >
+<MudDialog IsVisible="_initialDialogIsBlocked" Class=@($"{@_connectVisible} scaled") Style="height:400px;width:500px;background-color:transparent">
+    <DialogContent>
+        <MudProgressCircular Style="height:70px;width:70px;" Color="Color.Primary" Indeterminate="true" Class=@($"{_connectVisible} centered")/>
+    </DialogContent>
+</MudDialog>
+
+<div class="flex-container scaled" >  
     <table id="controlPanel" class="tablemobile centered" width="500px">
         <tr>
             <MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
@@ -823,7 +830,7 @@ input#password-input:focus {
                         <MudTd Class="@($"td_minus1 {@_cutO2Visible}")" @onclick="@(() => ReduceParamValue(@paramCutO2, 10))">
                              <img draggable="false" src="Images/minus1.png" class="img_minus1" />
                         </MudTd>
-                        <td>                            
+                        <td>
                             <MudSlider Class="@_cutO2Visible" @ontouchend="@(()=>UpdateDynParam(@paramCutO2))" @onmouseup="@(()=>UpdateDynParam(@paramCutO2))"                
                             @bind-Value="@paramCutO2.DynParams.Value" 
                             Min="@paramCutO2.DynParams.ConstParams.Min" 
@@ -1162,6 +1169,7 @@ input#password-input:focus {
 
     private bool _performResetDevices = false;
     private bool _torchInstalledDialogIsBlocked = false;
+    private bool _initialDialogIsBlocked = false;
     private int _currentVisibleTorchesNum = 0;
     private IhtDevices.TorchType _currentTorchTypeSetup;
     private bool _isControlPanelDisabled = false;
@@ -1197,11 +1205,16 @@ input#password-input:focus {
     protected override async Task OnInitializedAsync()
     {
         await GetSetupParametersAsync();
+
+        if (ihtModbusCommunic.GetConnectedModbusDatas().Count == 0)
+        {
+            await Connection(false);
+        }
     }
 
-    private async Task GetSetupParametersAsync()
+    private async Task GetSetupParametersAsync(bool refreshAll = true)
     {
-        Elements = await parameterDataInfoManager.GetDeviceSetupParamsAsync(dynDataModificationCNCDataProvider.CurrentDeviceNumber, CancellationToken.None);
+        Elements = await parameterDataInfoManager.GetDeviceSetupParamsAsync(dynDataModificationCNCDataProvider.CurrentDeviceNumber, CancellationToken.None, refreshAll);
 
         if (Elements != null)
         {
@@ -1209,13 +1222,22 @@ input#password-input:focus {
         }
     }
 
-    private async Task Connection()
+    private async Task Connection(bool manual = true)
     {
-        _torchInstalledDialogIsBlocked = true;
+        if (manual)
+        {
+            _torchInstalledDialogIsBlocked = true;
+        }
+        else
+        {
+            _initialDialogIsBlocked = true;
+        }
 
-        await Task.Delay(TimeSpan.FromSeconds(0.05));
+        await Task.Delay(TimeSpan.FromSeconds(0.1));
 
         // Connection to the APC devices
+        _nameComPort = string.IsNullOrWhiteSpace(_nameComPort) ? DEFAULT_COM_PORT : _nameComPort;
+
         await apcCommunicManager.Init(_nameComPort, _isSimulation, _performResetDevices);
 
         ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
@@ -1231,11 +1253,18 @@ input#password-input:focus {
     }
         #endif
         await MqttConnectAsync(new TimeSpan(0, 0, 30), tcpIpAddrServer);
-        #endif
+#endif
         // We do not need to stop worker
         //await _apcWorkerBackgroundService.StopAsync(APCWorkerBackgroundService._stoppingCts.Token);
 
-        navigationManager.NavigateTo(navigationManager.Uri, true);
+        if (manual)
+        {
+            navigationManager.NavigateTo(navigationManager.Uri, true);
+        }
+        else
+        {
+            _initialDialogIsBlocked = false;
+        }
     }
 
     /// <summary>
@@ -1692,6 +1721,14 @@ input#password-input:focus {
         }
     }
 
+    private string _connectVisible {
+        get
+        {
+            return _initialDialogIsBlocked ? DISPLAY_CLASS : NONE_DISPLAY_CLASS;
+        }
+        set { }
+    }
+
     private IhtDevice CurrentDevice
     {
         get
@@ -1740,14 +1777,14 @@ input#password-input:focus {
             var devices = ihtDevices.GetOnDevices();
             foreach (IhtDevice device in devices)
             {
-             ihtDevices.GetDataCmdExecution(device.SlaveId).IsHCOnOffActive = IsHCOnOffActive;
-              await heigthCtrlHandler(device.SlaveId);
+                ihtDevices.GetDataCmdExecution(device.SlaveId).IsHCOnOffActive = IsHCOnOffActive;
+                await heigthCtrlHandler(device.SlaveId);
             }
         }
         else
         {
-           _isHCOnOffActive = IsHCOnOffActive;
-           await heigthCtrlHandler(CurrentSlaveId);
+            _isHCOnOffActive = IsHCOnOffActive;
+            await heigthCtrlHandler(CurrentSlaveId);
         }
     }
 
@@ -1922,7 +1959,13 @@ input#password-input:focus {
 
     private async void DynamicAPCParamsOnDynamicAPCParamsDataChanged(object? sender, EventArgs e)
     {
-        await InvokeAsync(StateHasChanged);
+        try
+        {
+            await GetSetupParametersAsync(false);
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch { };
     }
 
     private async void DynamicAPCParamsOnConnectedTorchesInstalled(object? sender, EventArgs e)

@@ -102,7 +102,7 @@ namespace IhtApcWebServer.Services.APCWorkerService
 						}
 
 					}
-					long interval_ms = 500 - stopwatch.ElapsedMilliseconds;
+					long interval_ms = 250 - stopwatch.ElapsedMilliseconds;
 
 					if (interval_ms > 0)
 					{
@@ -111,7 +111,7 @@ namespace IhtApcWebServer.Services.APCWorkerService
 					// Für alle nicht verbundenen Geräte die Process-Info Daten löschen
 					_ihtDevices.ClrProcessInfoDatas();
 
-					//LiveDataChanged?.Invoke(this, EventArgs.Empty);
+					LiveDataChanged?.Invoke(this, EventArgs.Empty);
 				}
 				catch (Exception ex)
 				{
@@ -165,7 +165,8 @@ namespace IhtApcWebServer.Services.APCWorkerService
 			// initialize CutingDataSequence table - we can implement if we need
 			//await _parameterDataInfoManager.DeleteAllEntriesFromCutingDataSequenceTableAsync(CancellationToken.None);
 
-			await _apcCommunicManager.Init(nameComPort: DEFAULT_COM_PORT, isSimulation: false, performResetDevices: false);
+			//Moved To DynDataModificationCNC component
+			//await _apcCommunicManager.Init(nameComPort: DEFAULT_COM_PORT, isSimulation: false, performResetDevices: false);
 
 		}
 
