@@ -369,6 +369,10 @@ input#password-input:focus {
         left: 50% !important;
         transform: translate(-50%, -50%);
     }
+
+    .mud-progress-circular.mud-progress-indeterminate {
+        animation: none;
+    }
 </style>
 
 @if (dynDataModificationCNCDataProvider != null)
@@ -691,7 +695,8 @@ input#password-input:focus {
 
 <MudDialog IsVisible="_initialDialogIsBlocked" Class=@($"{@_connectVisible} scaled") Style="height:400px;width:500px;background-color:transparent">
     <DialogContent>
-        <MudProgressCircular Style="height:70px;width:70px;" Color="Color.Primary" Indeterminate="true" Class=@($"{_connectVisible} centered")/>
+         <MudText Typo="Typo.h6" Class="centered" Style="top:120px">Connecting to device...</MudText>
+        <MudProgressCircular Style="height:100px;width:100px;color:#585656 !important" Color="Color.Primary" Indeterminate="true" Class=@($"{_connectVisible} centered")/>
     </DialogContent>
 </MudDialog>
 
