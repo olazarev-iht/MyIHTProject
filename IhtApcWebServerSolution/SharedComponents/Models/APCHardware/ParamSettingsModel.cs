@@ -34,7 +34,9 @@ namespace SharedComponents.Models.APCHardware
                 {
                     Name = formatDetails?.Name != null ? formatDetails.Name : string.Empty,
                     Mode = formatDetails?.Mode != null ? formatDetails.Mode : string.Empty,
-                    Values = formatDetails?.Values != null ? formatDetails.Values : Array.Empty<string>()
+                    Values = formatDetails?.Values != null ? formatDetails.Values : Array.Empty<string>(),
+                    ReadOnly = formatDetails?.ReadOnly != null ? formatDetails.ReadOnly : false,
+                    Unit = formatDetails?.Unit != null ? formatDetails.Unit : false,
                 };
             }
         }

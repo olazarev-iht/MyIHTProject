@@ -163,7 +163,10 @@ namespace SharedComponents.APCHardwareManagers
                             dataSourceObj = dataCmdExecution;
                         }
 
-                        p.DynParams.Value = prop?.GetValue(dataSourceObj) as int? ?? -1;
+                        //p.DynParams.Value = prop?.GetValue(dataSourceObj) as int? ?? -1;
+                        var propValue = prop.GetValue(dataSourceObj, null);
+                        p.DynParams.Value = Convert.ToInt32(propValue);
+
                     }
                 }
             });

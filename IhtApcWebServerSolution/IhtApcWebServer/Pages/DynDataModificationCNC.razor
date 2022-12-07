@@ -508,20 +508,23 @@ input#password-input:focus {
             {
                 <MudSwitch @bind-Checked="@PreflowStarted" Color="Color.Secondary">
                     @(@context.DynParams.Value == 1 ? 
-                    @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[1] : 
-                    @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[0])
+                    @context?.ParamSettings?.ViewParameter?.Values[1] : 
+                    @context?.ParamSettings?.ViewParameter?.Values[0])
                 </MudSwitch>
             }
-            else if(@context.DynParams?.ParameterDataInfo?.ViewParameter?.Mode == "Switch")
+            else if(@context?.ParamSettings?.ViewParameter?.Mode == "Switch")
             {
                 <MudSwitch @bind-Checked="@context.DynParams.Value" Color="Color.Secondary">
                     @(@context.DynParams.Value == 1 ? 
-                    @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[1] : 
-                    @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[0])
+                    @context?.ParamSettings?.ViewParameter?.Values[1] : 
+                    @context?.ParamSettings?.ViewParameter?.Values[0])
                 </MudSwitch>
             }
-            else if(@context.DynParams?.ParameterDataInfo?.ViewParameter?.Mode == "Select"){
-                @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values[@context.DynParams.Value]
+            else if(@context?.ParamSettings?.ViewParameter?.Mode == "Select" || 
+                    @context?.ParamSettings?.ViewParameter?.Mode == "NoYes"){
+
+                        @context?.ParamSettings?.ViewParameter?.Values[@context?.DynParams?.Value ?? 0]
+
             }
             @*else if(@context.DynParams?.ParameterDataInfo?.ViewParameter?.Mode == "Select")
             { int i = 0; 

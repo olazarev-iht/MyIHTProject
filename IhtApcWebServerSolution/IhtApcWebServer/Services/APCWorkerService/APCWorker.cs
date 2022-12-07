@@ -102,7 +102,7 @@ namespace IhtApcWebServer.Services.APCWorkerService
 						}
 
 					}
-					long interval_ms = 250 - stopwatch.ElapsedMilliseconds;
+					long interval_ms = 500 - stopwatch.ElapsedMilliseconds;
 
 					if (interval_ms > 0)
 					{
