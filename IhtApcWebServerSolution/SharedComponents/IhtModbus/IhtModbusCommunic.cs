@@ -780,6 +780,7 @@ namespace SharedComponents.IhtModbus
                         //    string text = ((milliseconds < 10000) ? "    " : "   ") + (milliseconds / 1000).ToString() + "s";
                         //    MainWindow.GetMainWindow().eventDisplay.TextLoadingAnimation = text;
                         //}));
+                        
                         await Task.Delay(1000).ConfigureAwait(false);
                     }
 

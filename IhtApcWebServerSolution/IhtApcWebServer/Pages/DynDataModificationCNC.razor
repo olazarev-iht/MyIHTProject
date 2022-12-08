@@ -497,7 +497,8 @@ input#password-input:focus {
         <MudTh Class="mud-table-cell-custom-group" colspan="5">@($"{context.Key}")</MudTh>
     </GroupHeaderTemplate>
     <RowTemplate>
-        <MudTd DataLabel="Name">@context.ParamSettings.ParamName</MudTd>
+        <MudTd DataLabel="Name">@(!string.IsNullOrWhiteSpace(context.ParamSettings.DisplayName) 
+            ? context.ParamSettings.DisplayName : context.ParamSettings.ViewParameter.Name)</MudTd>
         <MudTd DataLabel="Value">
             @if(@context.ParamName == IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString()){
                 <MudSlider @bind-Value="@preflowActiveValue" Disabled="@preflowActiveDisabled" Min="0" Max="5" Step="1" Color="Color.Info">
@@ -559,7 +560,7 @@ input#password-input:focus {
 
 <MudDialog @bind-IsVisible="_isOpenParamsListDialog" Class="SelectDialog Scaled">
     <TitleContent>
-        <MudText Typo="Typo.h6">Param: @dynParamDataModel.ParamName</MudText>
+        <MudText Typo="Typo.h6">@dynParamDataModel.ParamSettings.DisplayName</MudText>
     </TitleContent>
     <DialogContent>
         <MudForm Model="@dynParamDataModel" @ref="_editParamListFormDialog">
@@ -571,7 +572,7 @@ input#password-input:focus {
             </MudChip>
             </MudListSubheader>*@
             @{ int i = 0; }
-            @foreach (var paramText in @dynParamDataModel.DynParams?.ParameterDataInfo?.ViewParameter?.Values)
+            @foreach (var paramText in @dynParamDataModel.ParamSettings.ViewParameter?.Values)
             {
                 <MudListItem T="int" Value="@i">@paramText</MudListItem>
                 i = i + 1;
@@ -698,7 +699,7 @@ input#password-input:focus {
 
 <MudDialog IsVisible="_initialDialogIsBlocked" Class=@($"{@_connectVisible} scaled") Style="height:400px;width:500px;background-color:transparent">
     <DialogContent>
-         <MudText Typo="Typo.h6" Class="centered" Style="top:120px">Connecting to device...</MudText>
+         <MudText Typo="Typo.h6" Class="centered" Style="top:120px">Connecting to the device...</MudText>
         <MudProgressCircular Style="height:100px;width:100px;color:#585656 !important" Color="Color.Primary" Indeterminate="true" Class=@($"{_connectVisible} centered")/>
     </DialogContent>
 </MudDialog>
@@ -1557,8 +1558,6 @@ input#password-input:focus {
 
     private void CloseEditParamDialog()
     {
-        // dynParamDataModel.Position = _sliderDynParamValue;
-
         _editParamDialogVisible = false;
     }
 
@@ -1585,7 +1584,7 @@ input#password-input:focus {
     private void RowClickEvent(TableRowClickEventArgs<ParameterDataModel> tableRowClickEventArgs)
     {
         var id = tableRowClickEventArgs.Item.Id;
-        var editMode = tableRowClickEventArgs.Item.DynParams?.ParameterDataInfo?.ViewParameter?.Mode;
+        var editMode = tableRowClickEventArgs.Item.ParamSettings.ViewParameter?.Mode;
 
         GetParamDataModel(id);
 

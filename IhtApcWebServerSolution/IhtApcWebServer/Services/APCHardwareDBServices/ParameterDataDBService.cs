@@ -139,7 +139,7 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 
 			paramSettingsItems.ForEach(ps =>
 			{
-				var paramData = paramDataItems.FirstOrDefault(p => p.ParamName == ps.ParamId);
+				var paramData = paramDataItems.FirstOrDefault(p => p.ParamName == ps.ParamId && p.DynParams != null && p.DynParams.Address != 0);
 
 				if(paramData != null)
                 {
@@ -152,7 +152,7 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 				}
 			});
 
-			paramDataItems = paramDataItems.Where(p => !string.IsNullOrWhiteSpace(p.ViewGroup))
+			paramDataItems = paramDataItems.Where(p => !string.IsNullOrWhiteSpace(p.ParamSettings?.ParamViewGroup?.GroupName))
 				.OrderBy(p => p.ViewGroupOrder).ThenBy(p => p.ViewItemOrder)
 				.ToList();
 
