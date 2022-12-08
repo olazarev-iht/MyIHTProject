@@ -37,61 +37,61 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ea67cc0c-1f24-4e6e-a8be-d45a38f33744"),
+                            Id = new Guid("d7215d1b-d13c-4ad8-9ae3-22e034c547ae"),
                             Name = "APCDevice_1",
                             Num = 1
                         },
                         new
                         {
-                            Id = new Guid("4427941c-9fb1-4fb1-9600-0df5764f14b7"),
+                            Id = new Guid("e891bb40-93e8-4014-b53c-ceb73f3d84d6"),
                             Name = "APCDevice_2",
                             Num = 2
                         },
                         new
                         {
-                            Id = new Guid("0ada8cb3-3494-45fb-ab04-12103da47f88"),
+                            Id = new Guid("e7c63021-95c4-439e-9c62-42fe7081a9fc"),
                             Name = "APCDevice_3",
                             Num = 3
                         },
                         new
                         {
-                            Id = new Guid("b852b056-a29d-4d80-ba7a-6db5e0b69045"),
+                            Id = new Guid("279c286c-a72b-49c8-befe-789c22700603"),
                             Name = "APCDevice_4",
                             Num = 4
                         },
                         new
                         {
-                            Id = new Guid("956f804f-7f7d-4b9b-910a-2830dce80162"),
+                            Id = new Guid("b02308d0-01be-4a7a-b4fc-7fa01f6a3c50"),
                             Name = "APCDevice_5",
                             Num = 5
                         },
                         new
                         {
-                            Id = new Guid("51b94736-fb36-4514-be33-047f1354169e"),
+                            Id = new Guid("6aa188e1-d117-4ec8-87ef-be8c42274865"),
                             Name = "APCDevice_6",
                             Num = 6
                         },
                         new
                         {
-                            Id = new Guid("5b9cd653-299c-4e87-a2ce-be4fcf1856c6"),
+                            Id = new Guid("1af10384-d68d-433f-9b05-cdb7f486493a"),
                             Name = "APCDevice_7",
                             Num = 7
                         },
                         new
                         {
-                            Id = new Guid("72e34c7c-b75f-49b2-ab97-630a7362c5bc"),
+                            Id = new Guid("b078bb1f-ade0-4559-884e-6ec5e31921a1"),
                             Name = "APCDevice_8",
                             Num = 8
                         },
                         new
                         {
-                            Id = new Guid("9345db91-5274-4b58-ada9-f05c626c764e"),
+                            Id = new Guid("559fa930-4305-4a54-80fb-9324ad369946"),
                             Name = "APCDevice_9",
                             Num = 9
                         },
                         new
                         {
-                            Id = new Guid("07b6a150-baa3-4678-a1d4-b10f09753cb1"),
+                            Id = new Guid("93094d3c-f207-42ce-8c2a-f8b200bdaeed"),
                             Name = "APCDevice_10",
                             Num = 10
                         });
@@ -277,7 +277,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d08f4edb-afe4-4fcd-ba30-420a1c89a311"),
+                            Id = new Guid("badc6839-4774-43e9-a5f7-13d8b735052e"),
                             ClientId = "default",
                             DisplayName = "Automatic Height Calibration",
                             Format = "{ 'Name':'Automatic Height Calibration', 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }",
@@ -290,7 +290,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("75835acd-4103-4690-8b4b-702d7098f459"),
+                            Id = new Guid("f697e6ff-3e4c-4970-b892-7d4c503e6447"),
                             ClientId = "default",
                             DisplayName = "Manual Height Calibration",
                             Format = "{ 'Name':'Manual Height Calibration', 'Mode':'Slider', 'Unit' : true }",
@@ -303,7 +303,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("06f7d51e-5c93-4e1e-bb5a-34f4e7d26d32"),
+                            Id = new Guid("e5cee410-3551-4a9e-80d0-8d1b07c95c89"),
                             ClientId = "default",
                             DisplayName = "Position",
                             Format = "{ 'Unit' : true }",
@@ -316,7 +316,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("b7c5d36e-2b42-4d2c-9a75-79ee0515235f"),
+                            Id = new Guid("498e10d9-92a3-4df1-8392-ac266c543d5c"),
                             ClientId = "default",
                             DisplayName = "Height Calibration Valid",
                             Format = "{ 'Name':'Height Calibration Valid', 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }",
@@ -329,10 +329,10 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("15bf4602-b563-40f8-bd4a-47b26c3097ac"),
+                            Id = new Guid("b9d86967-8f50-4a2c-9bc5-e7e01c51b0c2"),
                             ClientId = "default",
                             DisplayName = "Height Calibration Active",
-                            Format = "",
+                            Format = "{ 'Name':'Height Calibration Valid', 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }",
                             ParamId = "CalibrationActive",
                             ParamName = "IsCalibrationActive",
                             ParamOrder = 5,
@@ -342,7 +342,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("cb7d8c0e-222f-4f1e-bf4e-3912d0ccbda6"),
+                            Id = new Guid("f0a1d408-620e-4533-a659-b9d6dab0f37a"),
                             ClientId = "default",
                             DisplayName = "Retract Position",
                             Format = "{ 'Name':'Retract Position', 'Mode':'Slider' }",
@@ -355,7 +355,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("92d0a136-29c1-4dd0-9430-5776247c9c7e"),
+                            Id = new Guid("0dbf0724-5ae7-4dc8-934d-cbdee1c8eec7"),
                             ClientId = "default",
                             DisplayName = "Retract Position enable",
                             Format = "",
@@ -368,12 +368,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("17a0a7a7-2816-4c09-a9a7-9d434d3f11b6"),
+                            Id = new Guid("a0d039c6-9d4c-466d-8e32-73041de16829"),
                             ClientId = "default",
-                            DisplayName = "",
+                            DisplayName = "Slag Sensitivity",
                             Format = "{ 'Name':'Slag Sensitivity', 'Mode':'Select', 'Values': ['Off','Low','Default','High'] }",
                             ParamId = "SlagSensitivity",
-                            ParamName = "Slag Sensitivity",
+                            ParamName = "SlagSensitivity",
                             ParamOrder = 1,
                             ParamType = "",
                             ParamViewGroupId = "Slag",
@@ -381,12 +381,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("9645dbef-dcd0-43a7-bd0e-f06aca4e907a"),
+                            Id = new Guid("d3cee498-a8a2-419a-a99b-6174692ba678"),
                             ClientId = "default",
-                            DisplayName = "",
+                            DisplayName = "Slag Post Time",
                             Format = "{ 'Name':'Slag Post Time', 'Mode':'Slider' }",
                             ParamId = "SlagPostTime",
-                            ParamName = "Slag Post Time",
+                            ParamName = "SlagPostTime",
                             ParamOrder = 2,
                             ParamType = "",
                             ParamViewGroupId = "Slag",
@@ -394,12 +394,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("228a8b7e-388b-42b0-b74a-fbe3b05c9cac"),
+                            Id = new Guid("96d5b4cd-5c37-4532-b875-db5c64c362d1"),
                             ClientId = "default",
-                            DisplayName = "",
+                            DisplayName = "Slag Cutting Speed Reduction",
                             Format = "{ 'Name':'Slag Cutting Speed Reduction', 'Mode':'Slider' }",
                             ParamId = "SlagCuttingSpeedReduction",
-                            ParamName = "Slag Cutting Speed Reduction",
+                            ParamName = "SlagCuttingSpeedReduction",
                             ParamOrder = 3,
                             ParamType = "",
                             ParamViewGroupId = "Slag",
@@ -407,12 +407,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("15aaeb13-b0f5-4d6a-b509-bcf93257304e"),
+                            Id = new Guid("162fd825-ebfd-4061-a932-a532c9435f43"),
                             ClientId = "default",
-                            DisplayName = "",
+                            DisplayName = "Start Preflow",
                             Format = "{ 'Name':'Start Preflow', 'Mode':'NoYes', 'Values': ['No','Yes'] }",
                             ParamId = "CutO2Blowout",
-                            ParamName = "Start Preflow",
+                            ParamName = "CutO2Blowout",
                             ParamOrder = 1,
                             ParamType = "",
                             ParamViewGroupId = "PreFlow",
@@ -420,12 +420,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("a6d2befd-1fa5-4996-a422-d7383e86d27a"),
+                            Id = new Guid("5ac0ac86-06dd-4c2a-81d3-1587516c2b88"),
                             ClientId = "default",
-                            DisplayName = "",
+                            DisplayName = "Break Preflow",
                             Format = "",
                             ParamId = "CutO2BlowoutBreak",
-                            ParamName = "Break Preflow",
+                            ParamName = "CutO2BlowoutBreak",
                             ParamOrder = 2,
                             ParamType = "",
                             ParamViewGroupId = "PreFlow",
@@ -433,7 +433,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("71669672-17f9-4a86-b485-ff2d065aa0b2"),
+                            Id = new Guid("e4479e4b-67c0-4fb5-ba7b-d75c50cf5040"),
                             ClientId = "default",
                             DisplayName = "Preflow active",
                             Format = "",
@@ -446,7 +446,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("4c67fb77-bea9-4761-9932-6e02417146ae"),
+                            Id = new Guid("b1dc5880-ec74-4ee9-9d8c-74098a6d0657"),
                             ClientId = "default",
                             DisplayName = "Preflow active time",
                             Format = "",
@@ -459,12 +459,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("5102891f-6257-47c9-bbb5-4c06ea99afef"),
+                            Id = new Guid("7de4ce8a-9db0-4189-9847-2bf9db8769b4"),
                             ClientId = "default",
-                            DisplayName = "",
+                            DisplayName = "PreFlow Time",
                             Format = "{ 'Name':'PreFlow Time', 'Mode':'Slider' }",
                             ParamId = "CutO2BlowOutTime",
-                            ParamName = "PreFlow Time",
+                            ParamName = "CutO2BlowOutTime",
                             ParamOrder = 5,
                             ParamType = "",
                             ParamViewGroupId = "PreFlow",
@@ -472,12 +472,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("70a7130e-2b3d-434b-ae57-3b8680ed6ed2"),
+                            Id = new Guid("5f12f4c3-ae36-4b15-868f-fdc35fa7456b"),
                             ClientId = "default",
-                            DisplayName = "",
+                            DisplayName = "PreFlow Pressure",
                             Format = "{ 'Name':'PreFlow Pressure', 'Mode':'Slider' }",
                             ParamId = "CutO2BlowOutPressure",
-                            ParamName = "PreFlow Pressure",
+                            ParamName = "CutO2BlowOutPressure",
                             ParamOrder = 6,
                             ParamType = "",
                             ParamViewGroupId = "PreFlow",
@@ -485,12 +485,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("314e9b5c-f873-44cd-b8ac-442801206ffa"),
+                            Id = new Guid("2b3a4d6e-7e1d-4b5e-8682-389220b513b3"),
                             ClientId = "default",
-                            DisplayName = "",
+                            DisplayName = "PreFlow Timeout",
                             Format = "{ 'Name':'PreFlow Timeout', 'Mode':'Slider' }",
                             ParamId = "CutO2BlowOutTimeOut",
-                            ParamName = "PreFlow Timeout",
+                            ParamName = "CutO2BlowOutTimeOut",
                             ParamOrder = 7,
                             ParamType = "",
                             ParamViewGroupId = "PreFlow",
@@ -498,12 +498,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("e862b7a2-13bc-493e-9d04-c27a5c7d288f"),
+                            Id = new Guid("3d6c4bba-a427-4193-a212-cb1ca71ab8f3"),
                             ClientId = "default",
-                            DisplayName = "",
+                            DisplayName = "Piercing with Height Control",
                             Format = "",
                             ParamId = "PiercingSensorMode",
-                            ParamName = "Piercing with Height Control",
+                            ParamName = "PiercingSensorMode",
                             ParamOrder = 1,
                             ParamType = "",
                             ParamViewGroupId = "Piercing",
@@ -511,9 +511,9 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("bb764ff2-5f33-4ce4-af9e-01d63689714e"),
+                            Id = new Guid("d93c322c-d017-465e-8cd8-6bf567627c4a"),
                             ClientId = "default",
-                            DisplayName = "",
+                            DisplayName = "Dynamic",
                             Format = "{ 'Name':'Dynamic', 'Mode':'Slider' }",
                             ParamId = "Dynamic",
                             ParamName = "Dynamic",
@@ -524,7 +524,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("faf04a79-0f43-40cb-beb3-040bfafe4510"),
+                            Id = new Guid("a15fdfbf-fb87-4937-b979-46e1ed82ed0a"),
                             ClientId = "default",
                             DisplayName = "Height Control Active",
                             Format = "{ 'Name':'Height Control Active', 'Mode':'NoYes', 'Values': ['No','Yes'] }",
@@ -537,7 +537,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("ba802c23-dd98-4ec0-9b27-33ba8dd3422a"),
+                            Id = new Guid("1618b4e0-5b8d-4348-a2f5-06b4a63949f4"),
                             ClientId = "default",
                             DisplayName = "Position",
                             Format = "{ 'Unit' : true }",
@@ -550,7 +550,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("f212a976-2188-4ed7-ace9-d483d535e790"),
+                            Id = new Guid("12beab6d-04f8-424d-964f-4de7b08c1822"),
                             ClientId = "default",
                             DisplayName = "Status Height Control",
                             Format = "{ 'Name':'Status Height Control', 'Mode':'Select', 'Values': ['Off','PreHeating','Piercing','Cutting'] }",
@@ -563,7 +563,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("e23000f9-daa6-4ab0-a3e2-45ddef046f4e"),
+                            Id = new Guid("ab42d8d6-f752-435b-99f1-4fc32f5b02ae"),
                             ClientId = "client1",
                             DisplayName = "Automatic Height Calibration",
                             Format = "{ 'Name':'Automatic Height Calibration', 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }",
@@ -576,7 +576,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("a0a41d32-2349-4ea9-86cc-90f431a0c03e"),
+                            Id = new Guid("84ce1ec1-9f40-4d9a-973c-ded7a1941d43"),
                             ClientId = "client1",
                             DisplayName = "Manual Height Calibration",
                             Format = "{ 'Name':'Manual Height Calibration', 'Mode':'Slider', 'Unit' : true }",
@@ -589,7 +589,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("55981a3e-c058-422d-8149-c4ee8982e586"),
+                            Id = new Guid("cc7592a8-2ee6-4fd7-b84d-0c3d2f7afe82"),
                             ClientId = "client1",
                             DisplayName = "Position",
                             Format = "{ 'Unit' : true }",
@@ -602,7 +602,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("60dc1f09-b513-4682-9143-8e07cc48c1dc"),
+                            Id = new Guid("13958bad-03ea-4c1f-bc3c-e0392302c97d"),
                             ClientId = "client1",
                             DisplayName = "Height Calibration Valid",
                             Format = "{ 'Name':'Height Calibration Valid', 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }",
@@ -615,10 +615,10 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("842ff115-598d-4333-a151-7c6155dea986"),
+                            Id = new Guid("61c52adc-aaaa-4335-8591-8180f495ab33"),
                             ClientId = "client1",
                             DisplayName = "Height Calibration Active",
-                            Format = "",
+                            Format = "{ 'Name':'Height Calibration Valid', 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }",
                             ParamId = "CalibrationActive",
                             ParamName = "IsCalibrationActive",
                             ParamOrder = 5,
@@ -628,7 +628,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("ba055367-ee67-4d0e-982a-bcbb96ace35d"),
+                            Id = new Guid("0367b4ad-0876-48cb-90d2-281b4e3c9ceb"),
                             ClientId = "client1",
                             DisplayName = "Retract Position",
                             Format = "{ 'Name':'Retract Position', 'Mode':'Slider' }",
@@ -641,7 +641,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("8f564224-0fb9-4ccb-a4eb-a8f1672b7381"),
+                            Id = new Guid("5ab417cd-2d15-46b6-bfb7-e11012f4a7e0"),
                             ClientId = "client1",
                             DisplayName = "Retract Position enable",
                             Format = "",
@@ -654,12 +654,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("54ce2dd9-16e0-41a7-b4fb-eba0c7ca3c48"),
+                            Id = new Guid("308c47f6-3be6-4926-ba68-9ba2957d143c"),
                             ClientId = "client1",
-                            DisplayName = "",
+                            DisplayName = "Slag Sensitivity",
                             Format = "{ 'Name':'Slag Sensitivity', 'Mode':'Select', 'Values': ['Off','Low','Default','High'] }",
                             ParamId = "SlagSensitivity",
-                            ParamName = "Slag Sensitivity",
+                            ParamName = "SlagSensitivity",
                             ParamOrder = 1,
                             ParamType = "",
                             ParamViewGroupId = "Slag",
@@ -667,12 +667,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("0693452c-2282-44b5-b920-3ebb0e81fad0"),
+                            Id = new Guid("5f29ffac-4833-40a4-a0ce-e12c9aa526b3"),
                             ClientId = "client1",
-                            DisplayName = "",
+                            DisplayName = "Slag Post Time",
                             Format = "{ 'Name':'Slag Post Time', 'Mode':'Slider' }",
                             ParamId = "SlagPostTime",
-                            ParamName = "Slag Post Time",
+                            ParamName = "SlagPostTime",
                             ParamOrder = 2,
                             ParamType = "",
                             ParamViewGroupId = "Slag",
@@ -680,12 +680,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("da3a736b-023c-42ae-9553-049738a31545"),
+                            Id = new Guid("2d285458-7abd-4d9f-bfca-52e5338c1556"),
                             ClientId = "client1",
-                            DisplayName = "",
+                            DisplayName = "Slag Cutting Speed Reduction",
                             Format = "{ 'Name':'Slag Cutting Speed Reduction', 'Mode':'Slider' }",
                             ParamId = "SlagCuttingSpeedReduction",
-                            ParamName = "Slag Cutting Speed Reduction",
+                            ParamName = "SlagCuttingSpeedReduction",
                             ParamOrder = 3,
                             ParamType = "",
                             ParamViewGroupId = "Slag",
@@ -693,12 +693,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("4b0d1cbe-17d7-4775-a015-7474c49dc0d0"),
+                            Id = new Guid("19c73840-fa97-4fe7-b114-dcba2c1efd08"),
                             ClientId = "client1",
-                            DisplayName = "",
+                            DisplayName = "Start Preflow",
                             Format = "{ 'Name':'Start Preflow', 'Mode':'NoYes', 'Values': ['No','Yes'] }",
                             ParamId = "CutO2Blowout",
-                            ParamName = "Start Preflow",
+                            ParamName = "CutO2Blowout",
                             ParamOrder = 1,
                             ParamType = "",
                             ParamViewGroupId = "PreFlow",
@@ -706,12 +706,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("d20008f6-0a76-4364-b5ba-256c15a96d20"),
+                            Id = new Guid("b4570ff6-a110-49b4-944c-dc95036bc881"),
                             ClientId = "client1",
-                            DisplayName = "",
+                            DisplayName = "Break Preflow",
                             Format = "",
                             ParamId = "CutO2BlowoutBreak",
-                            ParamName = "Break Preflow",
+                            ParamName = "CutO2BlowoutBreak",
                             ParamOrder = 2,
                             ParamType = "",
                             ParamViewGroupId = "PreFlow",
@@ -719,7 +719,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("f5dc9b02-eea3-4e72-a97d-a3323d6b4351"),
+                            Id = new Guid("5bc6b834-f959-4637-8e7f-f26185d4ee50"),
                             ClientId = "client1",
                             DisplayName = "Preflow active",
                             Format = "",
@@ -732,7 +732,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("35cac32d-ae85-4a0d-b4ef-39548d27b5ec"),
+                            Id = new Guid("fc0c00ad-61ef-4981-aa61-edf5f3aafda9"),
                             ClientId = "client1",
                             DisplayName = "Preflow active time",
                             Format = "",
@@ -745,12 +745,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("eee524de-9ddc-412d-91e2-1cd4e8d91738"),
+                            Id = new Guid("6fc1a888-af62-416c-a2b7-f12cb204bb5b"),
                             ClientId = "client1",
-                            DisplayName = "",
+                            DisplayName = "PreFlow Time",
                             Format = "{ 'Name':'PreFlow Time', 'Mode':'Slider' }",
                             ParamId = "CutO2BlowOutTime",
-                            ParamName = "PreFlow Time",
+                            ParamName = "CutO2BlowOutTime",
                             ParamOrder = 5,
                             ParamType = "",
                             ParamViewGroupId = "PreFlow",
@@ -758,12 +758,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("b0ff30ee-83e0-4829-a534-97c385f4297a"),
+                            Id = new Guid("b4851fcd-a30c-4011-927d-5ec1749e4d33"),
                             ClientId = "client1",
-                            DisplayName = "",
+                            DisplayName = "PreFlow Pressure",
                             Format = "{ 'Name':'PreFlow Pressure', 'Mode':'Slider' }",
                             ParamId = "CutO2BlowOutPressure",
-                            ParamName = "PreFlow Pressure",
+                            ParamName = "CutO2BlowOutPressure",
                             ParamOrder = 6,
                             ParamType = "",
                             ParamViewGroupId = "PreFlow",
@@ -771,12 +771,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("6955d318-4dbe-47b1-b054-5d01eee83587"),
+                            Id = new Guid("d89d0e22-78d1-413a-b04e-c5924a5e85cf"),
                             ClientId = "client1",
-                            DisplayName = "",
+                            DisplayName = "PreFlow Timeout",
                             Format = "{ 'Name':'PreFlow Timeout', 'Mode':'Slider' }",
                             ParamId = "CutO2BlowOutTimeOut",
-                            ParamName = "PreFlow Timeout",
+                            ParamName = "CutO2BlowOutTimeOut",
                             ParamOrder = 7,
                             ParamType = "",
                             ParamViewGroupId = "PreFlow",
@@ -784,12 +784,12 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("2fe03687-8506-4a3f-91d1-78ad28cb28cc"),
+                            Id = new Guid("5e72f5af-5047-4bfc-b962-1f093253c15a"),
                             ClientId = "client1",
-                            DisplayName = "",
+                            DisplayName = "Piercing with Height Control",
                             Format = "",
                             ParamId = "PiercingSensorMode",
-                            ParamName = "Piercing with Height Control",
+                            ParamName = "PiercingSensorMode",
                             ParamOrder = 1,
                             ParamType = "",
                             ParamViewGroupId = "Piercing",
@@ -797,9 +797,9 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("a1074dd5-67fa-4e7a-a2ae-7571e015859f"),
+                            Id = new Guid("6c3af5ec-95ff-45ef-bc4a-16d4088634ad"),
                             ClientId = "client1",
-                            DisplayName = "",
+                            DisplayName = "Dynamic",
                             Format = "{ 'Name':'Dynamic', 'Mode':'Slider' }",
                             ParamId = "Dynamic",
                             ParamName = "Dynamic",
@@ -810,7 +810,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("1f86f88d-a1ec-4818-ba1a-cbf5bd60e436"),
+                            Id = new Guid("a936744a-64ec-4bb5-ba1a-16c9f79f5219"),
                             ClientId = "client1",
                             DisplayName = "Height Control Active",
                             Format = "{ 'Name':'Height Control Active', 'Mode':'NoYes', 'Values': ['No','Yes'] }",
@@ -823,7 +823,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("60c102fc-d83a-48ae-a93f-7a42dcf52cf9"),
+                            Id = new Guid("6f608bb2-c946-409c-883d-922bdd8fc474"),
                             ClientId = "client1",
                             DisplayName = "Position",
                             Format = "{ 'Unit' : true }",
@@ -836,7 +836,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("98484d0e-6999-4670-aee5-09efbf4b24d8"),
+                            Id = new Guid("50ccda05-c035-4538-becf-883e1c78852e"),
                             ClientId = "client1",
                             DisplayName = "Status Height Control",
                             Format = "{ 'Name':'Status Height Control', 'Mode':'Select', 'Values': ['Off','PreHeating','Piercing','Cutting'] }",
