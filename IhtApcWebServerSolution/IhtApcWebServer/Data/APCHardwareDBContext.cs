@@ -128,13 +128,13 @@ namespace IhtApcWebServer.Data
 			var ParamSettingsList_default = new List<ParamSettings>();
 
 			//Automatic Height Calibration
-			var ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), ParamName = "TactileInitialPosFinding", DisplayName = "Automatic Height Calibration", Format = @"{ 'Name':'Automatic Height Calibration', 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 1 };
+			var ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.Config, ParamName = "TactileInitialPosFinding", DisplayName = "Automatic Height Calibration", Format = @"{ 'Name':'Automatic Height Calibration', 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 1 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Manual Height Calibration
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), ParamName = "DistanceCalibration", DisplayName = "Manual Height Calibration", Format = @"{ 'Name':'Manual Height Calibration', 'Mode':'Slider', 'Unit' : true }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 2 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.DistanceCalibration.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.Config, ParamName = "DistanceCalibration", DisplayName = "Manual Height Calibration", Format = @"{ 'Name':'Manual Height Calibration', 'Mode':'Slider', 'Unit' : true }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 2 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Position (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition.ToString(), ParamType = "SharedComponents.IhtData.DataProcessInfo", ParamName = "LinearDrivePosition", DisplayName = "Position", Format = @"{ 'Unit' : true }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 3 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.ProcessInfo, ParamType = "SharedComponents.IhtData.DataProcessInfo", ParamName = "LinearDrivePosition", DisplayName = "Position", Format = @"{ 'Unit' : true }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 3 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Height Calibration Valid (read only)
 			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CalibrationValid.ToString(), ParamType = "SharedComponents.IhtData.DataProcessInfo", ParamName = "IsCalibrationValid", DisplayName = "Height Calibration Valid", Format = @"{ 'Name':'Height Calibration Valid', 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightCalibration.Id, ParamOrder = 4 };
@@ -144,20 +144,20 @@ namespace IhtApcWebServer.Data
 			ParamSettingsList_default.Add(ParamSettings);
 
 			//Retract Position 
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), ParamName = "RetractHeight", DisplayName = "Retract Position", Format = @"{ 'Name':'Retract Position', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition.Id, ParamOrder = 1 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.RetractHeight.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.Process, ParamName = "RetractHeight", DisplayName = "Retract Position", Format = @"{ 'Name':'Retract Position', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition.Id, ParamOrder = 1 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Retract Position enable (read only)
 			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusCmdExecSwitch.eCmdBit.RetractPosAtProcessEnd.ToString(), ParamType = "SharedComponents.IhtData.DataCmdExecution", ParamName = "IsRetractPosAtProcessEnd", DisplayName = "Retract Position enable", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_RetractPosition.Id, ParamOrder = 2 };
 			ParamSettingsList_default.Add(ParamSettings);
 
 			//Slag Sensitivity
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), ParamName = "SlagSensitivity", DisplayName = "Slag Sensitivity", Format = @"{ 'Name':'Slag Sensitivity', 'Mode':'Select', 'Values': ['Off','Low','Default','High'] }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 1 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagSensitivity.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.Process, ParamName = "SlagSensitivity", DisplayName = "Slag Sensitivity", Format = @"{ 'Name':'Slag Sensitivity', 'Mode':'Select', 'Values': ['Off','Low','Default','High'] }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 1 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Slag Post Time
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), ParamName = "SlagPostTime", DisplayName = "Slag Post Time", Format = @"{ 'Name':'Slag Post Time', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 2 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.SlagPostTime.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.Process, ParamName = "SlagPostTime", DisplayName = "Slag Post Time", Format = @"{ 'Name':'Slag Post Time', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 2 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Slag Cutting Speed Reduction (Slag detection Yes/No)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), ParamName = "SlagCuttingSpeedReduction", DisplayName = "Slag Cutting Speed Reduction", Format = @"{ 'Name':'Slag Cutting Speed Reduction', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 2, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 3 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.Service, ParamName = "SlagCuttingSpeedReduction", DisplayName = "Slag Cutting Speed Reduction", Format = @"{ 'Name':'Slag Cutting Speed Reduction', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 2, ParamViewGroupId = ParamViewGroup_Slag.Id, ParamOrder = 3 };
 			ParamSettingsList_default.Add(ParamSettings);
 
 			//Start Preflow ??????
@@ -170,27 +170,27 @@ namespace IhtApcWebServer.Data
 			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusBit.CutO2BlowoutActive.ToString(), ParamType = "SharedComponents.IhtData.DataProcessInfo", ParamName = "IsCutO2BlowoutActive", DisplayName = "Preflow active", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 3 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Preflow active time (read only)
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.CurrCutO2BlowoutTime.ToString(), ParamType = "SharedComponents.IhtData.DataProcessInfo", ParamName = "CurrCutO2BlowoutTime", DisplayName = "Preflow active time", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 4 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcessInfo.CurrCutO2BlowoutTime.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.ProcessInfo, ParamType = "SharedComponents.IhtData.DataProcessInfo", ParamName = "CurrCutO2BlowoutTime", DisplayName = "Preflow active time", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 4 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//PreFlow Time
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), ParamName = "CutO2BlowOutTime", DisplayName = "PreFlow Time", Format = @"{ 'Name':'PreFlow Time', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 5 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.Config, ParamName = "CutO2BlowOutTime", DisplayName = "PreFlow Time", Format = @"{ 'Name':'PreFlow Time', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 5 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//PreFlow Pressure
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), ParamName = "CutO2BlowOutPressure", DisplayName = "PreFlow Pressure", Format = @"{ 'Name':'PreFlow Pressure', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 6 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.Config, ParamName = "CutO2BlowOutPressure", DisplayName = "PreFlow Pressure", Format = @"{ 'Name':'PreFlow Pressure', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 6 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//PreFlow Timeout
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), ParamName = "CutO2BlowOutTimeOut", DisplayName = "PreFlow Timeout", Format = @"{ 'Name':'PreFlow Timeout', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 7 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.Config, ParamName = "CutO2BlowOutTimeOut", DisplayName = "PreFlow Timeout", Format = @"{ 'Name':'PreFlow Timeout', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_PreFlow.Id, ParamOrder = 7 };
 			ParamSettingsList_default.Add(ParamSettings);
 
 			//Piercing with Height Control ????
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.PiercingSensorMode.ToString(), ParamName = "PiercingSensorMode", DisplayName = "Piercing with Height Control", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing.Id, ParamOrder = 1 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxProcess.PiercingSensorMode.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.Process, ParamName = "PiercingSensorMode", DisplayName = "Piercing with Height Control", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing.Id, ParamOrder = 1 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Piercing detection ???? will use in the future
 			// ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxAdditional.PiercingDetection.ToString(), ParamName = "Piercing detection", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_Piercing.Id, ParamOrder = 2 };
 			// ParamSettingsList_default.Add(ParamSettings);
 
 			//Dynamic
-			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), ParamName = "Dynamic", DisplayName = "Dynamic", Format = @"{ 'Name':'Dynamic', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 1 };
+			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eIdxConfig.Dynamic.ToString(), ParamGroup = SharedComponents.Models.APCHardware.ParamGroup.Config, ParamName = "Dynamic", DisplayName = "Dynamic", Format = @"{ 'Name':'Dynamic', 'Mode':'Slider' }", ClientId = "default", PasswordLevel = 1, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 1 };
 			ParamSettingsList_default.Add(ParamSettings);
 			//Height Control Active ---- IsHeightControlActive = (StatusHeightControl != (int)IhtModbusParamDyn.eStatusHeightCtrl.Off) && !IsInpClearanceCtrlOff;
 			ParamSettings = new ParamSettings { Id = Guid.NewGuid(), ParamId = IhtModbusParamDyn.eStatusInpBit.ClearanceCtrlOff.ToString(), ParamType = "SharedComponents.IhtData.DataProcessInfo", ParamName = "IsHeightControlActive", DisplayName = "Height Control Active", Format = @"{ 'Name':'Height Control Active', 'Mode':'NoYes', 'Values': ['No','Yes'] }", ClientId = "default", PasswordLevel = 0, ParamViewGroupId = ParamViewGroup_HeightControl.Id, ParamOrder = 2 };

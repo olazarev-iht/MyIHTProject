@@ -8,11 +8,12 @@ using SharedComponents.ViewModels;
 
 namespace SharedComponents.Models.APCHardware
 {
-    public class ParamSettingsModel
+    public class ParamSettingsModel <T> where T : System.Enum
     {
         public Guid Id { get; set; }
         public string ParamId { get; set; } = string.Empty;
         public string ParamType { get; set; } = string.Empty;
+        public ParamGroup? ParamGroup { get; set; }
         public string ParamName { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
         public string Format { get; set; } = string.Empty;
@@ -21,6 +22,8 @@ namespace SharedComponents.Models.APCHardware
         public string? ParamViewGroupId { get; set; }
         public ParamViewGroupModel? ParamViewGroup { get; set; }
         public int ParamOrder { get; set; }
+
+        public T? ParamGroupType { get; set; }
 
         public ViewParameter ViewParameter
         {

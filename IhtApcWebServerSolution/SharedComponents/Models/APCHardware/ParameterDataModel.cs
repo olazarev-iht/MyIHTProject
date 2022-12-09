@@ -27,7 +27,7 @@ namespace SharedComponents.Models.APCHardware
         public ParamGroup ParamGroupId { get; set; }
         public Guid? DynParamsId { get; set; }
         public DynParamsModel? DynParams { get; set; } = new();
-        public ParamSettingsModel ParamSettings { get; set; } = new();
+        public ParamSettingsModel<System.Enum> ParamSettings { get; set; } = new();
         public string ViewGroup
         {
             get

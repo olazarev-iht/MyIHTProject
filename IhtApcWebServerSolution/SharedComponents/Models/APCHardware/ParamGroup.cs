@@ -107,7 +107,7 @@ namespace SharedComponents.Models.APCHardware
 
         public static Dictionary<ParamGroup, Type> ParamGroupToEnumType = new Dictionary<ParamGroup, Type>()
         {
-            { ParamGroup.Technology, typeof(ParamIds) },
+            { ParamGroup.Technology, typeof(IhtModbusParamDyn.eIdxTechnology) },
             { ParamGroup.Process, typeof(IhtModbusParamDyn.eIdxProcess) },
             { ParamGroup.Config, typeof(IhtModbusParamDyn.eIdxConfig) },
             { ParamGroup.Service, typeof(IhtModbusParamDyn.eIdxService) },
