@@ -93,7 +93,7 @@ namespace IhtApcWebServer.Data.DataMapper
                 .ReverseMap();
 
                 cfg.CreateMap<ParamViewGroupModel, ParamViewGroup>().ReverseMap();
-                cfg.CreateMap<ParamSettingsModel, ParamSettings>().ReverseMap();
+                cfg.CreateMap<ParamSettingsModel<Enum>, ParamSettings>().ReverseMap();
             });
 
             return configuration.CreateMapper();

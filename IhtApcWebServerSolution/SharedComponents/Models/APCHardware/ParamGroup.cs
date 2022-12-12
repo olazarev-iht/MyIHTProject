@@ -73,7 +73,7 @@ namespace SharedComponents.Models.APCHardware
 
         public static Dictionary<ParamGroup, int[]> ParamGroupToParamEnum = new Dictionary<ParamGroup, int[]>()
         {
-            { ParamGroup.Technology, (int[])Enum.GetValues(typeof(ParamIds)) },
+            { ParamGroup.Technology, (int[])Enum.GetValues(typeof(IhtModbusParamDyn.eIdxTechnology)) },
             { ParamGroup.Process, (int[])Enum.GetValues(typeof(IhtModbusParamDyn.eIdxProcess)) },
             { ParamGroup.Config, (int[])Enum.GetValues(typeof(IhtModbusParamDyn.eIdxConfig)) },
             { ParamGroup.Service, (int[])Enum.GetValues(typeof(IhtModbusParamDyn.eIdxService)) },

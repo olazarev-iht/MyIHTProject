@@ -1599,9 +1599,11 @@ input#password-input:focus {
 
     }
 
-    private void ParameterValChangedBySlider()
+    private async void ParameterValChangedBySlider()
     {
         // Save data in to the DB
+
+        await dynParamDataModel.ParamSettings.WriteAsync(ihtDevices, CurrentSlaveId, (ushort)(dynParamDataModel?.DynParams?.Value ?? 0));
     }
 
     private void SelectedListItemParamChanged(MudListItem mudListItem)
