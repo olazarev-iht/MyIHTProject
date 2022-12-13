@@ -6,13 +6,18 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
+using SharedComponents.MqttModel.Exec.DataBase;
 using SharedComponents.Models.APCHardware;
+using SharedComponents.Services.APCWorkerService;
 using SharedComponents.ViewModels;
+using Microsoft.AspNetCore.Components;
+
+
 
 
 namespace SharedComponents.Models.APCHardware
 {
-    public class ParamSettingsModel <T> where T : System.Enum
+    public class ParamSettingsModel
     {
         public Guid Id { get; set; }
         public string ParamId { get; set; } = string.Empty;
@@ -27,9 +32,14 @@ namespace SharedComponents.Models.APCHardware
         public ParamViewGroupModel? ParamViewGroup { get; set; }
         public int ParamOrder { get; set; }
 
-        public T? ParamGroupType { get; set; }
+        private IAPCWorker? _apcWorker { get; set; }
 
-        public System.Enum? Enum { get; set; }
+        public ParamSettingsModel()
+        {
+            _apcWorker = ExecDataBaseRequest.InstanceAPCWorker();
+        }
+
+        //public ParamSettingsModel()
 
         public ViewParameter ViewParameter
         {
@@ -52,25 +62,37 @@ namespace SharedComponents.Models.APCHardware
 
         public async Task<bool> WriteAsync(IhtDevices ihtDevices, int SlaveId, ushort u16Data, bool updateRegister = true)
         {
-            Type enumType = ParamGroupHelper.ParamGroupToEnumType[ParamGroup]; //.GetElementType();
-            //dynamic value3 = Convert.ChangeType(Enum, enumType);
+            bool result = true;
 
-            //var u16Data = ((ParamGroup[])Enum.GetValues(typeof(ParamGroup))).Where(x => x.ToString() != null).ToArray();
+            var enumType = ParamGroupHelper.ParamGroupToEnumType[ParamGroup];
 
-            //var paramTypeValues = (int[])ParamGroupHelper.ParamGroupToEnumType[ParamGroup].GetEnumValues();
-
-            //var paramTypeNames = ParamGroupHelper.ParamGroupToEnumType[ParamGroup].GetEnumNames();
-
-            //Array.IndexOf(paramTypeNames, ParamId);
-
-
-
-
-            var eIdx = Enum.Parse(ParamGroupHelper.ParamGroupToEnumType[ParamGroup], ParamId);
+            var eIdx = Enum.Parse(enumType, ParamId);
 
             eIdx = Convert.ChangeType(eIdx, enumType);
 
-            return await ihtDevices.ihtModbusCommunic.ihtModbusCmdParam.WriteAsync(SlaveId, (dynamic)eIdx, u16Data, updateRegister);
+            var paramStartAddress = await ihtDevices.ihtModbusCommunic.ihtModbusCmdParam.WriteAsync(SlaveId, (dynamic)eIdx, u16Data, updateRegister);
+
+            try
+            {
+                if (paramStartAddress != null && paramStartAddress != 0)
+                {
+                    //It might make sense to move the database update out of this method.
+                    //Then you will need to create a dictionary depending on the address of the parameter group.
+                    //var modbusData = ihtDevices.ihtModbusCommunic.GetConnectedModbusData(SlaveId);
+                    //ushort paramStartAddress = modbusData.GetAddrInfo((dynamic)eIdx)?.u16StartAddr ?? 0;
+
+                    if (_apcWorker != null)
+                    {
+                        await _apcWorker.RefreshDynamicDataAsync(SlaveId, paramStartAddress, false);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            return result;
         }
     }
 }

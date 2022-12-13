@@ -134,7 +134,7 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 					.AsNoTracking()
 					.Include(p => p.ParamViewGroup)
 					.Where(p => p.ClientId == clientCode)
-					.Select(p => _mapper.Map<ParamSettings, ParamSettingsModel<Enum>>(p))
+					.Select(p => _mapper.Map<ParamSettings, ParamSettingsModel>(p))
 					.ToListAsync();
 
 			paramSettingsItems.ForEach(ps =>

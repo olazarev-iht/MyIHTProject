@@ -1603,7 +1603,10 @@ input#password-input:focus {
     {
         // Save data in to the DB
 
-        await dynParamDataModel.ParamSettings.WriteAsync(ihtDevices, CurrentSlaveId, (ushort)(dynParamDataModel?.DynParams?.Value ?? 0));
+        if (dynParamDataModel.ParamSettings != null)
+        {
+            var result = await dynParamDataModel.ParamSettings.WriteAsync(ihtDevices, CurrentSlaveId, (ushort)(dynParamDataModel?.DynParams?.Value ?? 0));
+        }
     }
 
     private void SelectedListItemParamChanged(MudListItem mudListItem)
