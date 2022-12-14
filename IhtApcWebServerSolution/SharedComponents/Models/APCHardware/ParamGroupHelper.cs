@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharedComponents.IhtModbus;
+using System.ComponentModel;
 
 namespace SharedComponents.Models.APCHardware
 {
@@ -45,6 +46,53 @@ namespace SharedComponents.Models.APCHardware
         StartServiceDyn = 16,
         //NumberServiceDyn
     }
+
+    public enum SettingParamIds
+    {
+        [Description("Automatic Height Calibration")]
+        TactileInitialPosFinding = 1,
+        [Description("Manual Height Calibration")]
+        DistanceCalibration,
+        [Description("Position")]
+        LinearDrivePosition,
+        [Description("Height Calibration Valid")]
+        CalibrationValid,
+        [Description("Height Calibration Active")]
+        CalibrationActive,
+        [Description("Retract Position")]
+        RetractHeight,
+        [Description("Retract Position enable")]
+        RetractPosAtProcessEnd,
+        [Description("Slag Sensitivity")]
+        SlagSensitivity,
+        [Description("Slag Post Time")]
+        SlagPostTime,
+        [Description("Slag Cutting Speed Reduction")]
+        SlagCuttingSpeedReduction,
+        [Description("Start Preflow")]
+        CutO2Blowout,
+        [Description("Break Preflow")]
+        CutO2BlowoutBreak,
+        [Description("Preflow active")]
+        CutO2BlowoutActive,
+        [Description("Preflow active time")]
+        CurrCutO2BlowoutTime,
+        [Description("PreFlow Time")]
+        CutO2BlowOutTime,
+        [Description("SPreFlow Pressure")]
+        CutO2BlowOutPressure,
+        [Description("PreFlow Timeout")]
+        CutO2BlowOutTimeOut,
+        [Description("Piercing with Height Control")]
+        PiercingSensorMode,
+        [Description("Dynamic")]
+        Dynamic,
+        [Description("Height Control Active")]
+        HeightControlActive,
+        [Description("Status Height Control")]
+        StatusHeightControl
+    }
+
     public class ParamGroupHelper
     {
         public static ushort startTechnologyConstStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.StartTechnologyConst;
@@ -70,6 +118,31 @@ namespace SharedComponents.Models.APCHardware
 
         public static ushort startServiceDynStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.StartServiceDyn;
         public static ushort numberServiceDynStoreValue = (ushort)IhtModbusData.eAddress.StartAddress + (ushort)IhtModbusData.eIdxAddr.NumberServiceDyn;
+
+
+        private const string ParamType_DataProcessInfo = "SharedComponents.IhtData.DataProcessInfo";
+        private const string ParamType_DataCmdExecution = "SharedComponents.IhtData.DataCmdExecution";
+
+        private const string ParamName_CalibrationValid = "IsCalibrationValid";
+        private const string ParamName_CalibrationActive = "IsCalibrationActive";
+        private const string ParamName_RetractPosAtProcessEnd = "IsRetractPosAtProcessEnd";
+        private const string ParamName_CutO2BlowoutActive = "IsCutO2BlowoutActive";
+        private const string ParamName_CurrCutO2BlowoutTime = "CurrCutO2BlowoutTime";
+        private const string ParamName_HeightControlActive = "IsHeightControlActive";
+        private const string ParamName_LinearDrivePosition = "LinearDrivePosition";
+        private const string ParamName_StatusHeightControl = "StatusHeightControl";
+
+        public static readonly Dictionary<SettingParamIds, (string paramType, string paramName)> NonDynSettingParamTypeAndName = new()
+        {
+            { SettingParamIds.CalibrationValid, (ParamType_DataProcessInfo, ParamName_CalibrationValid) },
+            { SettingParamIds.CalibrationActive, (ParamType_DataProcessInfo, ParamName_CalibrationActive) },
+            { SettingParamIds.RetractPosAtProcessEnd, (ParamType_DataCmdExecution, ParamName_RetractPosAtProcessEnd) },
+            { SettingParamIds.CutO2BlowoutActive, (ParamType_DataProcessInfo, ParamName_CutO2BlowoutActive) },
+            { SettingParamIds.CurrCutO2BlowoutTime, (ParamType_DataProcessInfo, ParamName_CurrCutO2BlowoutTime) },
+            { SettingParamIds.HeightControlActive, (ParamType_DataProcessInfo, ParamName_HeightControlActive) },
+            { SettingParamIds.LinearDrivePosition, (ParamType_DataProcessInfo, ParamName_LinearDrivePosition) },
+            { SettingParamIds.StatusHeightControl, (ParamType_DataProcessInfo, ParamName_StatusHeightControl) },
+        };
 
         public static Dictionary<ParamGroup, int[]> ParamGroupToParamEnum = new Dictionary<ParamGroup, int[]>()
         {
