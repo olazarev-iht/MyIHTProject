@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.ComponentModel;
 
-namespace IhtApcWebServer.Extensions
+namespace SharedComponents.Extensions
 {
     public static class EnumExtentions
     {

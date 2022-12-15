@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharedComponents.IhtModbus;
 using System.ComponentModel;
+using SharedComponents.IhtModbusCmd;
 
 namespace SharedComponents.Models.APCHardware
 {
@@ -132,6 +133,31 @@ namespace SharedComponents.Models.APCHardware
         private const string ParamName_LinearDrivePosition = "LinearDrivePosition";
         private const string ParamName_StatusHeightControl = "StatusHeightControl";
 
+        public static readonly Dictionary<SettingParamIds, (Enum? paramModbusEnumType, string Format)> SettingParamsProperties = new()
+        {
+            { SettingParamIds.TactileInitialPosFinding, (IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },
+            { SettingParamIds.DistanceCalibration, (IhtModbusParamDyn.eIdxConfig.DistanceCalibration, @"{ 'Mode':'Slider', 'Unit' : true }") },
+            { SettingParamIds.LinearDrivePosition, (IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition, @"{ 'Unit' : true }") },
+            { SettingParamIds.CalibrationValid, (null, @"{ 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }") },
+            { SettingParamIds.CalibrationActive, (null, @"{ 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }") },
+            { SettingParamIds.RetractHeight, (IhtModbusParamDyn.eIdxProcess.RetractHeight, @"{ 'Name':'Retract Position', 'Mode':'Slider' }") },
+            { SettingParamIds.RetractPosAtProcessEnd, (IhtModbusCmdExecSwitch.eCmdBit.RetractPosAtProcessEnd, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },
+            { SettingParamIds.SlagSensitivity, (IhtModbusParamDyn.eIdxProcess.SlagSensitivity, @"{ 'Mode':'Select', 'Values': ['Off','Low','Default','High'] }") },
+            { SettingParamIds.SlagPostTime, (IhtModbusParamDyn.eIdxProcess.SlagPostTime, @"{ 'Mode':'Slider' }") },
+            { SettingParamIds.SlagCuttingSpeedReduction, (IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },
+            { SettingParamIds.CutO2Blowout, (IhtModbusCmdExecTactile.eCmdBit.CutO2Blowout, @"{ 'Mode':'Button', 'Values': ['Start'] }") },
+            { SettingParamIds.CutO2BlowoutBreak, (IhtModbusCmdExecTactile.eCmdBit.CutO2BlowoutBreak, @"{ 'Mode':'Button', 'Values': ['Break'] }") },
+            { SettingParamIds.CutO2BlowoutActive, (null, @"{ 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }") },
+            { SettingParamIds.CurrCutO2BlowoutTime, (IhtModbusParamDyn.eIdxProcessInfo.CurrCutO2BlowoutTime, @"") },
+            { SettingParamIds.CutO2BlowOutTime, (IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime, @"{ 'Mode':'Slider' }") },
+            { SettingParamIds.CutO2BlowOutPressure, (IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure, @"{ 'Mode':'Slider' }") },
+            { SettingParamIds.CutO2BlowOutTimeOut, (IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut, @"{ 'Mode':'Slider' }") },
+            { SettingParamIds.PiercingSensorMode, (IhtModbusParamDyn.eIdxProcess.PiercingSensorMode, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },            
+            { SettingParamIds.Dynamic, (IhtModbusParamDyn.eIdxConfig.Dynamic, @"{ 'Mode':'Slider' }") },
+            { SettingParamIds.HeightControlActive, (null, @"{ 'Mode':'NoYes', 'Values': ['No','Yes'], 'ReadOnly':true }") },
+            { SettingParamIds.StatusHeightControl, (IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition, @"{ 'Unit' : true }") }
+        };
+
         public static readonly Dictionary<SettingParamIds, (string paramType, string paramName)> NonDynSettingParamTypeAndName = new()
         {
             { SettingParamIds.CalibrationValid, (ParamType_DataProcessInfo, ParamName_CalibrationValid) },
@@ -191,4 +217,17 @@ namespace SharedComponents.Models.APCHardware
             { ParamGroup.Additional, typeof(IhtModbusParamDyn.eIdxAdditional) }
         };
     }
+
+    //internal record struct NewStruct(ParamGroup Technology, Type? Item2)
+    //{
+    //    public static implicit operator (ParamGroup Technology, Type?)(NewStruct value)
+    //    {
+    //        return (value.Technology, value.Item2);
+    //    }
+
+    //    public static implicit operator NewStruct((ParamGroup Technology, Type?) value)
+    //    {
+    //        return new NewStruct(value.Technology, value.Item2);
+    //    }
+    //}
 }

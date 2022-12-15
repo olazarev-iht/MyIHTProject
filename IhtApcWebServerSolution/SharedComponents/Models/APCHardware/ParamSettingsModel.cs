@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharedComponents.Extensions;
 using Newtonsoft.Json;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
@@ -21,11 +22,41 @@ namespace SharedComponents.Models.APCHardware
     {
         public Guid Id { get; set; }
         public string ParamId { get; set; } = string.Empty;
+        public SettingParamIds SettingParam
+        { 
+            get
+            {
+                return (SettingParamIds)Enum.Parse(typeof(SettingParamIds), ParamId);
+            }
+            set { }
+        }
+        public Enum? paramModbusEnumType
+        {
+            get
+            {
+                return ParamGroupHelper.SettingParamsProperties[SettingParam].paramModbusEnumType;
+            }
+            set { }
+        }
         public string ParamType { get; set; } = string.Empty;
-        public ParamGroup ParamGroup { get; set; }
         public string ParamName { get; set; } = string.Empty;
-        public string DisplayName { get; set; } = string.Empty;
-        public string Format { get; set; } = string.Empty;
+        public string DisplayName
+        {
+            get
+            {
+                return SettingParam.GetDescription() ?? string.Empty;
+            }
+            set { }
+        }
+        public string Format
+        {
+            get
+            {
+                return ParamGroupHelper.SettingParamsProperties[SettingParam].Format;
+            }
+            set { }
+        }
+
         public string ClientId { get; set; } = string.Empty;
         public int PasswordLevel { get; set; }
         public string? ParamViewGroupId { get; set; }
@@ -64,26 +95,31 @@ namespace SharedComponents.Models.APCHardware
         {
             bool result = true;
 
-            var enumType = ParamGroupHelper.ParamGroupToEnumType[ParamGroup];
-
-            var eIdx = Enum.Parse(enumType, ParamId);
-
-            eIdx = Convert.ChangeType(eIdx, enumType);
-
-            var paramStartAddress = await ihtDevices.ihtModbusCommunic.ihtModbusCmdParam.WriteAsync(SlaveId, (dynamic)eIdx, u16Data, updateRegister);
-
             try
             {
-                if (paramStartAddress != null && paramStartAddress != 0)
-                {
-                    //It might make sense to move the database update out of this method.
-                    //Then you will need to create a dictionary depending on the address of the parameter group.
-                    //var modbusData = ihtDevices.ihtModbusCommunic.GetConnectedModbusData(SlaveId);
-                    //ushort paramStartAddress = modbusData.GetAddrInfo((dynamic)eIdx)?.u16StartAddr ?? 0;
+                //var enumType = ParamGroupHelper.ParamGroupToEnumType[ParamGroup];
 
-                    if (_apcWorker != null)
+                //var eIdx = Enum.Parse(enumType, ParamId);
+
+                //eIdx = Convert.ChangeType(eIdx, enumType);
+
+                var eIdx = paramModbusEnumType;
+
+                if (eIdx != null)
+                {
+                    var paramStartAddress = await ihtDevices.ihtModbusCommunic.ihtModbusCmdParam.WriteAsync(SlaveId, (dynamic?)eIdx, u16Data, updateRegister);
+
+                    if (paramStartAddress != null && paramStartAddress != 0)
                     {
-                        await _apcWorker.RefreshDynamicDataAsync(SlaveId, paramStartAddress, false);
+                        //It might make sense to move the database update out of this method.
+                        //Then you will need to create a dictionary depending on the address of the parameter group.
+                        //var modbusData = ihtDevices.ihtModbusCommunic.GetConnectedModbusData(SlaveId);
+                        //ushort paramStartAddress = modbusData.GetAddrInfo((dynamic)eIdx)?.u16StartAddr ?? 0;
+
+                        if (_apcWorker != null)
+                        {
+                            await _apcWorker.RefreshDynamicDataAsync(SlaveId, paramStartAddress, false);
+                        }
                     }
                 }
             }

@@ -7,7 +7,6 @@ namespace IhtApcWebServer.Data.Models.APCHardware
         public Guid Id { get; set; }
         public string ParamId { get; set; } = string.Empty;
         public string? ParamType { get; set; } = string.Empty;
-        public ParamGroup? ParamGroup { get; set; }
         public string? ParamName { get; set; } = string.Empty;
         public string? DisplayName { get; set; } = string.Empty;
         public string? Format { get; set; } = string.Empty;
