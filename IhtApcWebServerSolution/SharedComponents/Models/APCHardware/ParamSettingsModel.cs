@@ -30,16 +30,45 @@ namespace SharedComponents.Models.APCHardware
             }
             set { }
         }
-        public Enum? paramModbusEnumType
+        public Enum? paramModbusEnum
         {
             get
             {
-                return ParamGroupHelper.SettingParamsProperties[SettingParam].paramModbusEnumType;
+                return ParamGroupHelper.SettingParamsProperties[SettingParam].paramModbusEnum;
             }
             set { }
         }
-        public string ParamType { get; set; } = string.Empty;
-        public string ParamName { get; set; } = string.Empty;
+        public string ParamType
+        {
+            get
+            {
+                string paramType = string.Empty;
+
+                if (ParamGroupHelper.NonDynSettingParamTypeAndName.ContainsKey(SettingParam))
+                {
+                    paramType = ParamGroupHelper.NonDynSettingParamTypeAndName[SettingParam].paramType;
+                }
+
+                return paramType;
+
+            }
+            set { }
+        }
+        public string ParamName
+        {
+            get
+            {
+                string paramName = string.Empty;
+
+                if (ParamGroupHelper.NonDynSettingParamTypeAndName.ContainsKey(SettingParam))
+                {
+                    paramName = ParamGroupHelper.NonDynSettingParamTypeAndName[SettingParam].paramName;
+                }
+
+                return paramName;
+            }
+            set { }
+        }
         public string DisplayName
         {
             get
@@ -70,8 +99,6 @@ namespace SharedComponents.Models.APCHardware
             _apcWorker = ExecDataBaseRequest.InstanceAPCWorker();
         }
 
-        //public ParamSettingsModel()
-
         public ViewParameter ViewParameter
         {
             get
@@ -97,28 +124,26 @@ namespace SharedComponents.Models.APCHardware
 
             try
             {
-                //var enumType = ParamGroupHelper.ParamGroupToEnumType[ParamGroup];
-
-                //var eIdx = Enum.Parse(enumType, ParamId);
-
-                //eIdx = Convert.ChangeType(eIdx, enumType);
-
-                var eIdx = paramModbusEnumType;
+                var eIdx = paramModbusEnum;
 
                 if (eIdx != null)
                 {
                     var paramStartAddress = await ihtDevices.ihtModbusCommunic.ihtModbusCmdParam.WriteAsync(SlaveId, (dynamic?)eIdx, u16Data, updateRegister);
-
-                    if (paramStartAddress != null && paramStartAddress != 0)
+                    if (_apcWorker != null)
                     {
-                        //It might make sense to move the database update out of this method.
-                        //Then you will need to create a dictionary depending on the address of the parameter group.
-                        //var modbusData = ihtDevices.ihtModbusCommunic.GetConnectedModbusData(SlaveId);
-                        //ushort paramStartAddress = modbusData.GetAddrInfo((dynamic)eIdx)?.u16StartAddr ?? 0;
-
-                        if (_apcWorker != null)
+                        if (paramStartAddress != null && paramStartAddress != 0)
                         {
+                            //It might make sense to move the database update out of this method.
+                            //Then you will need to create a dictionary depending on the address of the parameter group.
+                            //var modbusData = ihtDevices.ihtModbusCommunic.GetConnectedModbusData(SlaveId);
+                            //ushort paramStartAddress = modbusData.GetAddrInfo((dynamic)eIdx)?.u16StartAddr ?? 0;
+
                             await _apcWorker.RefreshDynamicDataAsync(SlaveId, paramStartAddress, false);
+                        }
+                        else
+                        {
+                            //if(eIdx.GetType() == typeof(IhtModbusParamDyn.eIdxCmdExec))
+                            _apcWorker._apcWorkerService_LiveDataChanged(eIdx.ToString());
                         }
                     }
                 }

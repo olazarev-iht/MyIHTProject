@@ -148,25 +148,28 @@ namespace SharedComponents.APCHardwareManagers
             deviceParams.ToList().ForEach(p => {
 
                 // The parameter is not dynamic
-                if (p.DynParams != null && p.DynParams.Address == 0) {
-
-                    PropertyInfo? prop = Type.GetType(p.ParamSettings.ParamType)?.GetProperty(p.ParamSettings.ParamName, BindingFlags.Public | BindingFlags.Instance);
-
-                    if (prop != null)
+                if (p.DynParams != null && p.DynParams.Address == 0) 
+                {
+                    if (p.ParamSettings != null)
                     {
-                        if (p.ParamSettings.ParamType.Contains(dataProcessInfo.GetType().ToString()))
-                        {
-                            dataSourceObj = dataProcessInfo;
-                        }
-                        else
-                        {
-                            dataSourceObj = dataCmdExecution;
-                        }
+                        PropertyInfo? prop = Type.GetType(p.ParamSettings.ParamType)?.GetProperty(p.ParamSettings.ParamName, BindingFlags.Public | BindingFlags.Instance);
 
-                        //p.DynParams.Value = prop?.GetValue(dataSourceObj) as int? ?? -1;
-                        var propValue = prop.GetValue(dataSourceObj, null);
-                        p.DynParams.Value = Convert.ToInt32(propValue);
+                        if (prop != null)
+                        {
+                            if (p.ParamSettings.ParamType.Contains(dataProcessInfo.GetType().ToString()))
+                            {
+                                dataSourceObj = dataProcessInfo;
+                            }
+                            else
+                            {
+                                dataSourceObj = dataCmdExecution;
+                            }
 
+                            //p.DynParams.Value = prop?.GetValue(dataSourceObj) as int? ?? -1;
+                            var propValue = prop.GetValue(dataSourceObj, null);
+                            p.DynParams.Value = Convert.ToInt32(propValue);
+
+                        }
                     }
                 }
             });

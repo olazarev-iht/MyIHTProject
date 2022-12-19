@@ -408,7 +408,7 @@ input#password-input:focus {
             @*<MudTextField @bind-Value="@dynParamDataModel.Sign" Label="Sign" 
                 For=@(() => dynParamDataModel.Sign) Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>*@
 
-            <MudSlider @onchange="ParameterValChangedBySlider" @bind-Value="@dynParamDataModel.DynParams.Value" 
+            <MudSlider @onchange="@( () => ParameterValueChanged() )" @bind-Value="@dynParamDataModel.DynParams.Value" 
                 Min="@dynParamDataModel.DynParams.ConstParams.Min" Max="@dynParamDataModel.DynParams.ConstParams.Max" 
                 Step="@dynParamDataModel.DynParams.ConstParams.Step" 
                 Color="Color.Info">@dynParamDataModel.ParamName: @dynParamDataModel.DynParams.Value.ToString()
@@ -513,9 +513,9 @@ input#password-input:focus {
                     @context?.ParamSettings?.ViewParameter?.Values[0])
                 </MudSwitch>
             }
-            else if(@context?.ParamSettings?.ViewParameter?.Mode == "Switch")
+            else if(@context?.ParamSettings?.ParamId == SettingParamIds.RetractPosAtProcessEnd.ToString())
             {
-                <MudSwitch @bind-Checked="@context.DynParams.Value" Color="Color.Secondary">
+                <MudSwitch T="bool" @bind-Checked="@RetractPosAtProcessEndValue" Color="Color.Secondary">
                     @(@context.DynParams.Value == 1 ? 
                     @context?.ParamSettings?.ViewParameter?.Values[1] : 
                     @context?.ParamSettings?.ViewParameter?.Values[0])
@@ -1584,28 +1584,33 @@ input#password-input:focus {
     private void RowClickEvent(TableRowClickEventArgs<ParameterDataModel> tableRowClickEventArgs)
     {
         var id = tableRowClickEventArgs.Item.Id;
-        var editMode = tableRowClickEventArgs.Item.ParamSettings.ViewParameter?.Mode;
+        var editMode = tableRowClickEventArgs.Item.ParamSettings?.ViewParameter?.Mode;
 
         GetParamDataModel(id);
 
-        if (editMode != null && editMode == "Slider")
+        if (editMode == "Slider")
         {
             OpenEditParamDialog();
         }
-        else if (editMode != null && editMode == "Select")
+        else if (editMode == "Select")
         {
             OpenParamsListDialog();
         }
 
     }
 
-    private async void ParameterValChangedBySlider()
+    private async void ParameterValueChanged(ushort? paramValue = null)
     {
         // Save data in to the DB
 
-        if (dynParamDataModel.ParamSettings != null)
+        if(paramValue == null)
         {
-            var result = await dynParamDataModel.ParamSettings.WriteAsync(ihtDevices, CurrentSlaveId, (ushort)(dynParamDataModel?.DynParams?.Value ?? 0));
+            paramValue = (ushort)(dynParamDataModel?.DynParams?.Value ?? 0);
+        }
+
+        if (dynParamDataModel?.ParamSettings != null)
+        {
+            var result = await dynParamDataModel.ParamSettings.WriteAsync(ihtDevices, CurrentSlaveId, (ushort)(paramValue));
         }
     }
 
@@ -1692,6 +1697,23 @@ input#password-input:focus {
             {
                 dynDataModificationCNCDataProvider.ManualySelectedDeviceIsDisabled = false;
             }
+        }
+    }
+
+
+    bool RetractPosAtProcessEndValue
+    {
+        get
+        {
+            var param = Elements.FirstOrDefault(p => p.ParamSettings != null && p.ParamSettings.SettingParam == SettingParamIds.RetractPosAtProcessEnd);
+
+            return (param?.DynParams?.Value ?? 0) == 0 ? false : true;
+        }
+        set 
+        {            
+            var paramValue = value == false ? 0 : 1;
+
+            ParameterValueChanged((ushort)paramValue);
         }
     }
 

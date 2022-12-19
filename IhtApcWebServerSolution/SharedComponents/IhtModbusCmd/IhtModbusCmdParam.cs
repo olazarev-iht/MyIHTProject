@@ -185,6 +185,39 @@ namespace SharedComponents.IhtModbusCmd
             return _result;
         }
 
+        internal async Task<int> WriteAsync(int slaveId, IhtModbusCmdExecSwitch.eCmdBit eIdx, UInt16 u16Data, bool updateRegister = true)
+        {
+            // original code chkButRetractPosEnable_Clicked(object sender, RoutedEventArgs e) 
+            // TODO: check variable blIgnoreIsChecked if needed
+            //if (blIgnoreIsChecked == false)
+            //{
+
+            var ihtDevices = IhtDevices.GetIhtDevices();
+
+            if (ihtDevices != null && ihtDevices.ihtModbusCommunic != null)
+            {
+                IhtModbusData modbusData = ihtDevices.GetModbusData(slaveId);
+                if (modbusData != null)
+                {
+                    IhtModbusCmdExecSwitch ihtModbusCmdExecSwitch = ihtDevices.ihtModbusCommunic.ihtModbusCmdExecSwitch;
+                    UInt16 register = 0;
+                    if (u16Data == 1)
+                    {
+                        register = await ihtModbusCmdExecSwitch.EnableRetractPosAtProcessEndAsync(slaveId);
+                    }
+                    else
+                    {
+                        register = await ihtModbusCmdExecSwitch.DisableRetractPosAtProcessEndAsync(slaveId);
+                    }
+                    modbusData.SetValue(IhtModbusParamDyn.eIdxCmdExec.Switch, register);
+                    ihtDevices.UpdateCmdExec(modbusData);
+                }
+            }
+            return 0;
+            //}
+            //blIgnoreIsChecked = false;
+        }
+
         /// <summary>
         /// Daten auf Adresse schreiben
         /// </summary>

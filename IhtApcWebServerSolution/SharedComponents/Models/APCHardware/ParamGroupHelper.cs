@@ -133,7 +133,7 @@ namespace SharedComponents.Models.APCHardware
         private const string ParamName_LinearDrivePosition = "LinearDrivePosition";
         private const string ParamName_StatusHeightControl = "StatusHeightControl";
 
-        public static readonly Dictionary<SettingParamIds, (Enum? paramModbusEnumType, string Format)> SettingParamsProperties = new()
+        public static readonly Dictionary<SettingParamIds, (Enum? paramModbusEnum, string Format)> SettingParamsProperties = new()
         {
             { SettingParamIds.TactileInitialPosFinding, (IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },
             { SettingParamIds.DistanceCalibration, (IhtModbusParamDyn.eIdxConfig.DistanceCalibration, @"{ 'Mode':'Slider', 'Unit' : true }") },
@@ -155,7 +155,7 @@ namespace SharedComponents.Models.APCHardware
             { SettingParamIds.PiercingSensorMode, (IhtModbusParamDyn.eIdxProcess.PiercingSensorMode, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },            
             { SettingParamIds.Dynamic, (IhtModbusParamDyn.eIdxConfig.Dynamic, @"{ 'Mode':'Slider' }") },
             { SettingParamIds.HeightControlActive, (null, @"{ 'Mode':'NoYes', 'Values': ['No','Yes'], 'ReadOnly':true }") },
-            { SettingParamIds.StatusHeightControl, (IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition, @"{ 'Unit' : true }") }
+            { SettingParamIds.StatusHeightControl, (IhtModbusParamDyn.eIdxProcessInfo.StatusHeightControl, @"{ 'Mode':'Select', 'Values': ['Off','PreHeating','Piercing','Cutting'] }") }
         };
 
         public static readonly Dictionary<SettingParamIds, (string paramType, string paramName)> NonDynSettingParamTypeAndName = new()
