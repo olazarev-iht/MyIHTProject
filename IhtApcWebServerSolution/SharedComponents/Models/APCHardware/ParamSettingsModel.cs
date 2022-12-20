@@ -91,7 +91,7 @@ namespace SharedComponents.Models.APCHardware
         public string? ParamViewGroupId { get; set; }
         public ParamViewGroupModel? ParamViewGroup { get; set; }
         public int ParamOrder { get; set; }
-
+        public bool ReadOnly { get; set; } = false;
         private IAPCWorker? _apcWorker { get; set; }
 
         public ParamSettingsModel()
@@ -116,6 +116,7 @@ namespace SharedComponents.Models.APCHardware
                     Unit = formatDetails?.Unit != null ? formatDetails.Unit : false,
                 };
             }
+            set { }
         }
 
         public async Task<bool> WriteAsync(IhtDevices ihtDevices, int SlaveId, ushort u16Data, bool updateRegister = true)
@@ -131,6 +132,7 @@ namespace SharedComponents.Models.APCHardware
                     var paramStartAddress = await ihtDevices.ihtModbusCommunic.ihtModbusCmdParam.WriteAsync(SlaveId, (dynamic?)eIdx, u16Data, updateRegister);
                     if (_apcWorker != null)
                     {
+                        // if dynamic paramiters (stored in the DB)
                         if (paramStartAddress != null && paramStartAddress != 0)
                         {
                             //It might make sense to move the database update out of this method.

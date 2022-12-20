@@ -499,7 +499,7 @@ input#password-input:focus {
     <RowTemplate>
         <MudTd DataLabel="Name">@(!string.IsNullOrWhiteSpace(context.ParamSettings.DisplayName) 
             ? context.ParamSettings.DisplayName : context.ParamSettings.ViewParameter.Name)</MudTd>
-        <MudTd DataLabel="Value">
+        <MudTd DataLabel="Value" >
             @if(@context.ParamName == IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString()){
                 <MudSlider @bind-Value="@preflowActiveValue" Disabled="@preflowActiveDisabled" Min="0" Max="5" Step="1" Color="Color.Info">
                     @preflowActiveValue.ToString() s
@@ -513,9 +513,9 @@ input#password-input:focus {
                     @context?.ParamSettings?.ViewParameter?.Values[0])
                 </MudSwitch>
             }
-            else if(@context?.ParamSettings?.ParamId == SettingParamIds.RetractPosAtProcessEnd.ToString())
+            else if(@context?.ParamSettings?.ViewParameter?.Mode == "Switch")
             {
-                <MudSwitch T="bool" @bind-Checked="@RetractPosAtProcessEndValue" Color="Color.Secondary">
+                <MudSwitch Disabled="@( context?.ParamSettings?.ViewParameter?.ReadOnly ?? false )" T="bool" @bind-Checked="@this[@context?.ParamSettings?.SettingParam ?? 0]" Color="Color.Secondary">
                     @(@context.DynParams.Value == 1 ? 
                     @context?.ParamSettings?.ViewParameter?.Values[1] : 
                     @context?.ParamSettings?.ViewParameter?.Values[0])
@@ -542,7 +542,10 @@ input#password-input:focus {
                 @context.Sign;
             }*@
             else {
-                @context.DynParams.Value
+                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                <MudOverlay Visible="@( context?.ParamSettings?.ReadOnly ?? false )" LightBackground="true" Absolute="true" />
+                    @context.DynParams.Value             
+                </MudPaper>
             }
             </MudTd>
        @* <MudTd DataLabel="Position">
@@ -1217,7 +1220,7 @@ input#password-input:focus {
 
         if (ihtModbusCommunic.GetConnectedModbusDatas().Count == 0)
         {
-            await Connection(false);
+            await Connection(manual: false);
         }
     }
 
@@ -1601,8 +1604,7 @@ input#password-input:focus {
 
     private async void ParameterValueChanged(ushort? paramValue = null)
     {
-        // Save data in to the DB
-
+        // Save data in to the DB or Device properties
         if(paramValue == null)
         {
             paramValue = (ushort)(dynParamDataModel?.DynParams?.Value ?? 0);
@@ -1612,6 +1614,8 @@ input#password-input:focus {
         {
             var result = await dynParamDataModel.ParamSettings.WriteAsync(ihtDevices, CurrentSlaveId, (ushort)(paramValue));
         }
+
+        await GetSetupParametersAsync(refreshAll: true);
     }
 
     private void SelectedListItemParamChanged(MudListItem mudListItem)
@@ -1700,17 +1704,16 @@ input#password-input:focus {
         }
     }
 
-
-    bool RetractPosAtProcessEndValue
+    public bool this[SettingParamIds settingParamId]
     {
         get
         {
-            var param = Elements.FirstOrDefault(p => p.ParamSettings != null && p.ParamSettings.SettingParam == SettingParamIds.RetractPosAtProcessEnd);
+            var param = Elements.FirstOrDefault(p => p.ParamSettings != null && p.ParamSettings.SettingParam == settingParamId);
 
             return (param?.DynParams?.Value ?? 0) == 0 ? false : true;
         }
-        set 
-        {            
+        set
+        {
             var paramValue = value == false ? 0 : 1;
 
             ParameterValueChanged((ushort)paramValue);

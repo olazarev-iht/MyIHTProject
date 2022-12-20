@@ -173,9 +173,51 @@ namespace SharedComponents.APCHardwareManagers
                     }
                 }
             });
-            
+
+            //deviceParams.Where(p => p.ParamSettings != null).ToList().ForEach(p =>
+            //{
+            //    if (p.ParamSettings != null)
+            //    {
+            //        p.ParamSettings.ReadOnly = p.ParamSettings.ViewParameter.ReadOnly;
+            //    }
+            //});
+
+            //// If AutomaticHeightCalibration is true - DistanceCalibration is ReadOnly
+            //var IsAutomaticHeightCalibration = deviceParams.Any(p => p.ParamSettings?.SettingParam == SettingParamIds.TactileInitialPosFinding && p.DynParams?.Value == 1);
+            //if (IsAutomaticHeightCalibration)
+            //{
+            //    var DistanceCalibration = deviceParams.FirstOrDefault(p => p.ParamSettings?.SettingParam == SettingParamIds.DistanceCalibration);
+            //    if (DistanceCalibration != null && DistanceCalibration.ParamSettings != null)
+            //    {
+            //        DistanceCalibration.ParamSettings.ReadOnly = true;
+            //    }
+            //}
+
+            ParamsReadOnlyPropertySetUp(deviceParams);
 
             return deviceParams;
+        }
+
+        private void ParamsReadOnlyPropertySetUp(IEnumerable<ParameterDataModel> deviceParams)
+        {
+            deviceParams.Where(p => p.ParamSettings != null).ToList().ForEach(p =>
+            {
+                if (p.ParamSettings != null)
+                {
+                    p.ParamSettings.ReadOnly = p.ParamSettings.ViewParameter.ReadOnly;
+                }
+            });
+
+            // If AutomaticHeightCalibration is true - DistanceCalibration is ReadOnly
+            var IsAutomaticHeightCalibration = deviceParams.Any(p => p.ParamSettings?.SettingParam == SettingParamIds.TactileInitialPosFinding && p.DynParams?.Value == 1);
+            if (IsAutomaticHeightCalibration)
+            {
+                var DistanceCalibration = deviceParams.FirstOrDefault(p => p.ParamSettings?.SettingParam == SettingParamIds.DistanceCalibration);
+                if (DistanceCalibration != null && DistanceCalibration.ParamSettings != null)
+                {
+                    DistanceCalibration.ParamSettings.ReadOnly = true;
+                }
+            }
         }
 
         public async Task<int> GetAPCDevicesNumber(CancellationToken cancellationToken)
