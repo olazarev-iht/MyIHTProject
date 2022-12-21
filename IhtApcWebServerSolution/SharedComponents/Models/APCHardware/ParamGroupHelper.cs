@@ -144,7 +144,7 @@ namespace SharedComponents.Models.APCHardware
             { SettingParamIds.RetractPosAtProcessEnd, (IhtModbusCmdExecSwitch.eCmdBit.RetractPosAtProcessEnd, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },
             { SettingParamIds.SlagSensitivity, (IhtModbusParamDyn.eIdxProcess.SlagSensitivity, @"{ 'Mode':'Select', 'Values': ['Off','Low','Default','High'] }") },
             { SettingParamIds.SlagPostTime, (IhtModbusParamDyn.eIdxProcess.SlagPostTime, @"{ 'Mode':'Slider' }") },
-            { SettingParamIds.SlagCuttingSpeedReduction, (IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },
+            { SettingParamIds.SlagCuttingSpeedReduction, (IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction, @"{ 'Mode':'Slider' }") },
             { SettingParamIds.CutO2Blowout, (IhtModbusCmdExecTactile.eCmdBit.CutO2Blowout, @"{ 'Mode':'Button', 'Values': ['Start'] }") },
             { SettingParamIds.CutO2BlowoutBreak, (IhtModbusCmdExecTactile.eCmdBit.CutO2BlowoutBreak, @"{ 'Mode':'Button', 'Values': ['Break'] }") },
             { SettingParamIds.CutO2BlowoutActive, (null, @"{ 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }") },
@@ -155,7 +155,7 @@ namespace SharedComponents.Models.APCHardware
             { SettingParamIds.PiercingSensorMode, (IhtModbusParamDyn.eIdxProcess.PiercingSensorMode, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },            
             { SettingParamIds.Dynamic, (IhtModbusParamDyn.eIdxConfig.Dynamic, @"{ 'Mode':'Slider' }") },
             { SettingParamIds.HeightControlActive, (null, @"{ 'Mode':'NoYes', 'Values': ['No','Yes'], 'ReadOnly':true }") },
-            { SettingParamIds.StatusHeightControl, (IhtModbusParamDyn.eIdxProcessInfo.StatusHeightControl, @"{ 'Mode':'Select', 'Values': ['Off','PreHeating','Piercing','Cutting'] }") }
+            { SettingParamIds.StatusHeightControl, (IhtModbusParamDyn.eIdxProcessInfo.StatusHeightControl, @"{ 'Mode':'Select', 'Values': ['Off','PreHeating','Piercing','Cutting'], 'ReadOnly':true }") }
         };
 
         public static readonly Dictionary<SettingParamIds, (string paramType, string paramName)> NonDynSettingParamTypeAndName = new()

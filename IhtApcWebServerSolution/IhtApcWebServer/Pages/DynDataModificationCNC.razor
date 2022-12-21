@@ -373,6 +373,15 @@ input#password-input:focus {
     .mud-progress-circular.mud-progress-indeterminate {
         animation: none;
     }
+
+    .mud-table-sticky-header .mud-table-container {
+        overflow-x: clip !important;
+    }
+
+    .mud-table-container {
+        width: 100%;
+        overflow-y: clip !important;
+    }
 </style>
 
 @if (dynDataModificationCNCDataProvider != null)
@@ -411,7 +420,7 @@ input#password-input:focus {
             <MudSlider @onchange="@( () => ParameterValueChanged() )" @bind-Value="@dynParamDataModel.DynParams.Value" 
                 Min="@dynParamDataModel.DynParams.ConstParams.Min" Max="@dynParamDataModel.DynParams.ConstParams.Max" 
                 Step="@dynParamDataModel.DynParams.ConstParams.Step" 
-                Color="Color.Info">@dynParamDataModel.ParamName: @dynParamDataModel.DynParams.Value.ToString()
+                Color="Color.Info">@(dynParamDataModel.ParamSettings?.DisplayName ?? ""): @dynParamDataModel.DynParams.Value.ToString()
             </MudSlider>            
         </MudForm>      
     </DialogContent>
@@ -468,10 +477,10 @@ input#password-input:focus {
     </DialogContent>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_setupParamsDialogVisible" Style="min-width: 500px; zoom: 0.75; top: 90px !important">
+<MudDialog @bind-IsVisible="_setupParamsDialogVisible" Style="min-width: 500px; max-height: 500px; overflow-y: hidden; zoom: 0.75; top: 90px !important">
     <DialogContent>
     <MudButton OnClick="CloseSetupParamsDialog">&#8592; Go Back</MudButton>
-    <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Style="min-height: 440px" FixedHeader="true"
+    <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Style="min-height: 440px; max-height: 400px; overflow-y: scroll;" FixedHeader="true"
           Items="@Elements"
           GroupBy="@_groupDefinition"
           GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
@@ -497,8 +506,8 @@ input#password-input:focus {
         <MudTh Class="mud-table-cell-custom-group" colspan="5">@($"{context.Key}")</MudTh>
     </GroupHeaderTemplate>
     <RowTemplate>
-        <MudTd DataLabel="Name">@(!string.IsNullOrWhiteSpace(context.ParamSettings.DisplayName) 
-            ? context.ParamSettings.DisplayName : context.ParamSettings.ViewParameter.Name)</MudTd>
+        <MudTd DataLabel="Name">@(!string.IsNullOrWhiteSpace(context.ParamSettings?.DisplayName) 
+            ? context.ParamSettings.DisplayName : context.ParamSettings?.ViewParameter.Name ?? "")</MudTd>
         <MudTd DataLabel="Value" >
             @if(@context.ParamName == IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString()){
                 <MudSlider @bind-Value="@preflowActiveValue" Disabled="@preflowActiveDisabled" Min="0" Max="5" Step="1" Color="Color.Info">
@@ -515,7 +524,8 @@ input#password-input:focus {
             }
             else if(@context?.ParamSettings?.ViewParameter?.Mode == "Switch")
             {
-                <MudSwitch Disabled="@( context?.ParamSettings?.ViewParameter?.ReadOnly ?? false )" T="bool" @bind-Checked="@this[@context?.ParamSettings?.SettingParam ?? 0]" Color="Color.Secondary">
+                <MudSwitch Disabled="@( context?.ParamSettings?.ViewParameter?.ReadOnly ?? false )" 
+                T="bool" @bind-Checked="@this[@context?.ParamSettings?.SettingParam ?? 0]" Color="Color.Primary">
                     @(@context.DynParams.Value == 1 ? 
                     @context?.ParamSettings?.ViewParameter?.Values[1] : 
                     @context?.ParamSettings?.ViewParameter?.Values[0])
@@ -542,10 +552,10 @@ input#password-input:focus {
                 @context.Sign;
             }*@
             else {
-                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                <MudOverlay Visible="@( context?.ParamSettings?.ReadOnly ?? false )" LightBackground="true" Absolute="true" />
-                    @context.DynParams.Value             
-                </MudPaper>
+                @*<MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                <MudOverlay Visible="@( context?.ParamSettings?.ReadOnly ?? false )" LightBackground="true" Absolute="true" />*@
+                    <font style="@( context?.ParamSettings?.ReadOnly ?? false ? "opacity:0.5" : "opacity:1" )">@context.DynParams.Value</font>             
+                @*</MudPaper>*@
             }
             </MudTd>
        @* <MudTd DataLabel="Position">
@@ -1591,6 +1601,8 @@ input#password-input:focus {
 
         GetParamDataModel(id);
 
+        if (dynParamDataModel.ParamSettings?.ReadOnly ?? false) return;
+
         if (editMode == "Slider")
         {
             OpenEditParamDialog();
@@ -1599,7 +1611,6 @@ input#password-input:focus {
         {
             OpenParamsListDialog();
         }
-
     }
 
     private async void ParameterValueChanged(ushort? paramValue = null)
@@ -1622,7 +1633,7 @@ input#password-input:focus {
     {
         if (mudListItem != null)
         {
-            dynParamDataModel.DynParams.Value = (int)mudListItem.Value;
+            ParameterValueChanged((ushort)((int)mudListItem.Value));
         }
     }
 
