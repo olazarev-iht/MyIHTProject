@@ -639,7 +639,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// ProcessInfo-Daten vom sichtbarem Gerät in Abhängigkeit der Slave-Id abfragen
         /// </summary>
-        public DataProcessInfo GetDataProcessInfo(int slaveId)
+        public DataProcessInfo? GetDataProcessInfo(int slaveId)
         {
             IhtDevice _ihtDevice = GetVisibleDevice(slaveId);
             if (_ihtDevice != null)

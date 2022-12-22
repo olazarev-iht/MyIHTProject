@@ -38,6 +38,7 @@ namespace SharedComponents.Models.APCHardware
             }
             set { }
         }
+        // Property value type (to read the value of parameter)
         public string ParamType
         {
             get
@@ -54,6 +55,7 @@ namespace SharedComponents.Models.APCHardware
             }
             set { }
         }
+        // Property value name (to read the value of parameter)
         public string ParamName
         {
             get

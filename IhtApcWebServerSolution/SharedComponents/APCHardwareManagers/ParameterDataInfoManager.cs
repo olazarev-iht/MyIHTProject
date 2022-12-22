@@ -147,7 +147,7 @@ namespace SharedComponents.APCHardwareManagers
 
             deviceParams.ToList().ForEach(p => {
 
-                // The parameter is not dynamic
+                // If the parameter is not dynamic - take the value from Modbus 
                 if (p.DynParams != null && p.DynParams.Address == 0) 
                 {
                     if (p.ParamSettings != null)
@@ -173,25 +173,6 @@ namespace SharedComponents.APCHardwareManagers
                     }
                 }
             });
-
-            //deviceParams.Where(p => p.ParamSettings != null).ToList().ForEach(p =>
-            //{
-            //    if (p.ParamSettings != null)
-            //    {
-            //        p.ParamSettings.ReadOnly = p.ParamSettings.ViewParameter.ReadOnly;
-            //    }
-            //});
-
-            //// If AutomaticHeightCalibration is true - DistanceCalibration is ReadOnly
-            //var IsAutomaticHeightCalibration = deviceParams.Any(p => p.ParamSettings?.SettingParam == SettingParamIds.TactileInitialPosFinding && p.DynParams?.Value == 1);
-            //if (IsAutomaticHeightCalibration)
-            //{
-            //    var DistanceCalibration = deviceParams.FirstOrDefault(p => p.ParamSettings?.SettingParam == SettingParamIds.DistanceCalibration);
-            //    if (DistanceCalibration != null && DistanceCalibration.ParamSettings != null)
-            //    {
-            //        DistanceCalibration.ParamSettings.ReadOnly = true;
-            //    }
-            //}
 
             ParamsReadOnlyPropertySetUp(deviceParams);
 
