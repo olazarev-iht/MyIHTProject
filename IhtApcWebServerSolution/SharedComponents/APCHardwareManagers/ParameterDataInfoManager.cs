@@ -181,6 +181,7 @@ namespace SharedComponents.APCHardwareManagers
 
         private void ParamsReadOnlyPropertySetUp(IEnumerable<ParameterDataModel> deviceParams)
         {
+            //Setup default values
             deviceParams.Where(p => p.ParamSettings != null).ToList().ForEach(p =>
             {
                 if (p.ParamSettings != null)
@@ -197,6 +198,35 @@ namespace SharedComponents.APCHardwareManagers
                 if (DistanceCalibration != null && DistanceCalibration.ParamSettings != null)
                 {
                     DistanceCalibration.ParamSettings.ReadOnly = true;
+                }
+            }
+
+            var IsCutO2BlowoutActive = deviceParams.Any(p => p.ParamSettings?.SettingParam == SettingParamIds.CutO2BlowoutActive && p.DynParams?.Value == 1);
+            var CutO2Blowout = deviceParams.FirstOrDefault(p => p.ParamSettings?.SettingParam == SettingParamIds.CutO2Blowout);
+            var CutO2BlowoutBreak = deviceParams.FirstOrDefault(p => p.ParamSettings?.SettingParam == SettingParamIds.CutO2BlowoutBreak);
+
+            if (IsCutO2BlowoutActive)
+            {
+                if (CutO2Blowout != null && CutO2Blowout.ParamSettings != null)
+                {
+                    CutO2Blowout.ParamSettings.ReadOnly = true;
+                }
+
+                if (CutO2BlowoutBreak != null && CutO2BlowoutBreak.ParamSettings != null)
+                {
+                    CutO2BlowoutBreak.ParamSettings.ReadOnly = false;
+                }
+            }
+            else
+            {
+                if (CutO2Blowout != null && CutO2Blowout.ParamSettings != null)
+                {
+                    CutO2Blowout.ParamSettings.ReadOnly = false;
+                }
+
+                if (CutO2BlowoutBreak != null && CutO2BlowoutBreak.ParamSettings != null)
+                {
+                    CutO2BlowoutBreak.ParamSettings.ReadOnly = true;
                 }
             }
         }

@@ -524,7 +524,7 @@ input#password-input:focus {
             }
             else if(@context?.ParamSettings?.ViewParameter?.Mode == "Switch")
             {
-                <MudSwitch Disabled="@( context?.ParamSettings?.ViewParameter?.ReadOnly ?? false )" 
+                <MudSwitch Disabled="@( context?.ParamSettings?.ReadOnly ?? false )" 
                 T="bool" @bind-Checked="@this[@context?.ParamSettings?.SettingParam ?? 0]" Color="Color.Primary">
                     @(@context.DynParams.Value == 1 ? 
                     @context?.ParamSettings?.ViewParameter?.Values[1] : 
@@ -536,6 +536,13 @@ input#password-input:focus {
 
                         @context?.ParamSettings?.ViewParameter?.Values[@context?.DynParams?.Value ?? 0]
 
+            }
+            else if(@context?.ParamSettings?.ViewParameter?.Mode == "Button"){
+                <MudButton Disabled="@( context?.ParamSettings?.ReadOnly ?? false )" 
+                    OnClick="@( () => ClickedParamButton(@context?.ParamSettings?.SettingParam ?? 0))" Variant="Variant.Filled" Color="Color.Primary">
+                    <MudText>@context?.ParamSettings?.ViewParameter?.Values[0]</MudText>
+                </MudButton>
+                        //@context?.ParamSettings?.ViewParameter?.Values[@context?.DynParams?.Value ?? 0]
             }
             @*else if(@context.DynParams?.ParameterDataInfo?.ViewParameter?.Mode == "Select")
             { int i = 0; 
@@ -1149,7 +1156,7 @@ input#password-input:focus {
     private bool _menuExpanded = false;
 
     private bool _setupParamsDialogVisible = false;
-    private ParameterDataModel dynParamDataModel = new ParameterDataModel();
+    private ParameterDataModel? dynParamDataModel = new ParameterDataModel();
     private bool _editParamDialogVisible = false;
     private int _sliderDynParamValue;
     private bool _isOpenParamsListDialog = false;
@@ -1673,7 +1680,7 @@ input#password-input:focus {
     }
 
     ///// ---- end preFlowActive indicator ----
-    
+
     private double reloadProgressValue
     {
         get
@@ -1729,6 +1736,16 @@ input#password-input:focus {
             var paramValue = value == false ? 0 : 1;
 
             ParameterValueChanged((ushort)paramValue);
+        }
+    }
+
+    void ClickedParamButton(SettingParamIds settingParamId)
+    {
+        dynParamDataModel = Elements.FirstOrDefault(p => p.ParamSettings != null && p.ParamSettings.SettingParam == settingParamId);
+
+        if (dynParamDataModel?.ParamSettings != null)
+        {
+            ParameterValueChanged();
         }
     }
 

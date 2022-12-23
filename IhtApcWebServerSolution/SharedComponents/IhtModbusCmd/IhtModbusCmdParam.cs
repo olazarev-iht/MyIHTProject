@@ -220,34 +220,36 @@ namespace SharedComponents.IhtModbusCmd
 
         internal async Task<int> WriteAsync(int slaveId, IhtModbusCmdExecTactile.eCmdBit eIdx, UInt16 u16Data, bool updateRegister = true)
         {
-            // original code chkButRetractPosEnable_Clicked(object sender, RoutedEventArgs e) 
-            // TODO: check variable blIgnoreIsChecked if needed
-            //if (blIgnoreIsChecked == false)
-            //{
-
             var ihtDevices = IhtDevices.GetIhtDevices();
+            IhtModbusCmdExecTactile ihtModbusCmdExecTactile = ihtDevices.ihtModbusCommunic.ihtModbusCmdExecTactile;
+
+            Func<int, Task> cmdExecTactile; // = null;
+
+            switch (eIdx)
+            {
+                case IhtModbusCmdExecTactile.eCmdBit.CutO2Blowout:
+                    cmdExecTactile = ihtModbusCmdExecTactile.StartCutO2BlowoutAsync;
+                    break;
+                case IhtModbusCmdExecTactile.eCmdBit.CutO2BlowoutBreak:
+                    cmdExecTactile = ihtModbusCmdExecTactile.BreakCutO2BlowoutAsync;
+                    break;
+                default:
+                    return 0;
+            }
+
+            
 
             if (ihtDevices != null && ihtDevices.ihtModbusCommunic != null)
             {
                 IhtModbusData modbusData = ihtDevices.GetModbusData(slaveId);
                 if (modbusData != null)
                 {
-                    IhtModbusCmdExecTactile ihtModbusCmdExecTactile = ihtDevices.ihtModbusCommunic.ihtModbusCmdExecTactile;
-                    if (u16Data == 1)
-                    {
-                        await ihtModbusCmdExecTactile.StartCutO2BlowoutAsync(slaveId);
-                    }
-                    else
-                    {
-                        await ihtModbusCmdExecTactile.BreakCutO2BlowoutAsync(slaveId);
-                    }
+                    await cmdExecTactile(slaveId);
 
-                    ihtDevices.UpdateCmdExec(modbusData);
+                    //ihtDevices.UpdateCmdExec(modbusData);
                 }
             }
             return 0;
-            //}
-            //blIgnoreIsChecked = false;
         }
 
         /// <summary>
