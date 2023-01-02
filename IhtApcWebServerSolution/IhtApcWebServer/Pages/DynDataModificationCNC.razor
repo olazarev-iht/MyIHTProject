@@ -571,9 +571,6 @@ input#password-input:focus {
                                 <MudProgressCircular Value="@GetProgressCircularValue(@context?.ParamSettings?.SettingParam ?? 0)" 
                                 Style="height: 40px; width: 40px; position: relative; left: 20px;" Color="Color.Primary" Class="@progressCircularDisplay" />
                             }
-                            @*else{
-                                <div style="height: 40px; width: 40px; position: relative;">&nbsp;</div>
-                            }*@
                         </td>
                     </tr>
                 </table>
@@ -1696,7 +1693,7 @@ input#password-input:focus {
 
     ///// ---- end preFlowActive indicator ----
 
-    private int? _maxProgressCircularValue = null;
+    private int _maxProgressCircularValue;
     private int _curProgressCircularValue;
 
     private double GetProgressCircularValue(SettingParamIds settingParamId)
@@ -1705,7 +1702,7 @@ input#password-input:focus {
 
         var paramValue = param?.DynParams?.Value ?? 0;
 
-        if(_maxProgressCircularValue == null || _maxProgressCircularValue == 0)
+        if(_maxProgressCircularValue == 0)
         {
             _maxProgressCircularValue = paramValue;
         }
@@ -1714,9 +1711,9 @@ input#password-input:focus {
 
         double returnValue = 100;
 
-        if (_maxProgressCircularValue != null && _maxProgressCircularValue != 0)
+        if (_maxProgressCircularValue != 0)
         {
-            returnValue = (double)(_curProgressCircularValue * 100.0 / _maxProgressCircularValue);
+            returnValue = _curProgressCircularValue * 100.0 / _maxProgressCircularValue;
         }
 
         return returnValue;
