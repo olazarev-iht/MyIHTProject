@@ -561,7 +561,22 @@ input#password-input:focus {
             else {
                 @*<MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                 <MudOverlay Visible="@( context?.ParamSettings?.ReadOnly ?? false )" LightBackground="true" Absolute="true" />*@
-                    <font style="@( context?.ParamSettings?.ReadOnly ?? false ? "opacity:0.5" : "opacity:1" )">@context.DynParams.Value</font>             
+                <table>
+                    <tr>
+                        <td>
+                            <font style="@( context?.ParamSettings?.ReadOnly ?? false ? "opacity:0.5" : "opacity:1" )">@context.DynParams.Value</font>
+                        </td>
+                        <td>
+                            @if(@context?.ParamSettings?.ViewParameter?.Mode == "ProgressCircular"){
+                                <MudProgressCircular Value="@GetProgressCircularValue(@context?.ParamSettings?.SettingParam ?? 0)" 
+                                Style="height: 40px; width: 40px; position: relative; left: 20px;" Color="Color.Primary" Class="@progressCircularDisplay" />
+                            }
+                            @*else{
+                                <div style="height: 40px; width: 40px; position: relative;">&nbsp;</div>
+                            }*@
+                        </td>
+                    </tr>
+                </table>
                 @*</MudPaper>*@
             }
             </MudTd>
@@ -719,7 +734,7 @@ input#password-input:focus {
 
 <MudDialog IsVisible="_initialDialogIsBlocked" Class=@($"{@_connectVisible} scaled") Style="height:400px;width:500px;background-color:transparent">
     <DialogContent>
-         <MudText Typo="Typo.h6" Class="centered" Style="top:120px">Connecting to the device...</MudText>
+        <MudText Typo="Typo.h6" Class="centered" Style="top:120px">Connecting to the device...</MudText>
         <MudProgressCircular Style="height:100px;width:100px;color:#585656 !important" Color="Color.Primary" Indeterminate="true" Class=@($"{_connectVisible} centered")/>
     </DialogContent>
 </MudDialog>
@@ -1681,6 +1696,43 @@ input#password-input:focus {
 
     ///// ---- end preFlowActive indicator ----
 
+    private int? _maxProgressCircularValue = null;
+    private int _curProgressCircularValue;
+
+    private double GetProgressCircularValue(SettingParamIds settingParamId)
+    {
+        var param = Elements.FirstOrDefault(p => p.ParamSettings != null && p.ParamSettings.SettingParam == settingParamId);
+
+        var paramValue = param?.DynParams?.Value ?? 0;
+
+        if(_maxProgressCircularValue == null || _maxProgressCircularValue == 0)
+        {
+            _maxProgressCircularValue = paramValue;
+        }
+
+        _curProgressCircularValue = paramValue;
+
+        double returnValue = 100;
+
+        if (_maxProgressCircularValue != null && _maxProgressCircularValue != 0)
+        {
+            returnValue = (double)(_curProgressCircularValue * 100.0 / _maxProgressCircularValue);
+        }
+
+        return returnValue;
+    }
+
+    private string progressCircularDisplay
+    {
+        get
+        {
+            // To see the indicator immediately, we need to change the condition
+            return _maxProgressCircularValue > _curProgressCircularValue ? VISIBLE_CLASS : INVISIBLE_CLASS;
+        }
+    }
+
+    
+    
     private double reloadProgressValue
     {
         get

@@ -148,7 +148,7 @@ namespace SharedComponents.Models.APCHardware
             { SettingParamIds.CutO2Blowout, (IhtModbusCmdExecTactile.eCmdBit.CutO2Blowout, @"{ 'Mode':'Button', 'Values': ['Start'] }") },
             { SettingParamIds.CutO2BlowoutBreak, (IhtModbusCmdExecTactile.eCmdBit.CutO2BlowoutBreak, @"{ 'Mode':'Button', 'Values': ['Break'] }") },
             { SettingParamIds.CutO2BlowoutActive, (null, @"{ 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }") },
-            { SettingParamIds.CurrCutO2BlowoutTime, (IhtModbusParamDyn.eIdxProcessInfo.CurrCutO2BlowoutTime, @"") },
+            { SettingParamIds.CurrCutO2BlowoutTime, (IhtModbusParamDyn.eIdxProcessInfo.CurrCutO2BlowoutTime, @"{ 'Mode':'ProgressCircular' }") },
             { SettingParamIds.CutO2BlowOutTime, (IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime, @"{ 'Mode':'Slider' }") },
             { SettingParamIds.CutO2BlowOutPressure, (IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure, @"{ 'Mode':'Slider' }") },
             { SettingParamIds.CutO2BlowOutTimeOut, (IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut, @"{ 'Mode':'Slider' }") },
