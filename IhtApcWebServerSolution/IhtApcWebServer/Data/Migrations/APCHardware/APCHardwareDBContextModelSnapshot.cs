@@ -37,61 +37,61 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                     b.HasData(
                         new
                         {
-                            Id = new Guid("37ed50aa-1727-4452-a9ba-5010ffef7022"),
+                            Id = new Guid("6f1181a0-e64e-49d1-9ed6-71f7e7b5c002"),
                             Name = "APCDevice_1",
                             Num = 1
                         },
                         new
                         {
-                            Id = new Guid("0653794a-605f-442d-806f-fd89a21e25de"),
+                            Id = new Guid("113c6f68-5ad9-4463-8371-49575265de5b"),
                             Name = "APCDevice_2",
                             Num = 2
                         },
                         new
                         {
-                            Id = new Guid("6bb6db92-1437-4589-88ec-732cfbf95d45"),
+                            Id = new Guid("6e47ecb3-17ba-4bb3-b74d-ed81d87d76e2"),
                             Name = "APCDevice_3",
                             Num = 3
                         },
                         new
                         {
-                            Id = new Guid("3d28fffe-75de-4c57-a0c7-6875bb5c194d"),
+                            Id = new Guid("ebfb9818-e2ce-4e64-8d51-9d4a898e18c1"),
                             Name = "APCDevice_4",
                             Num = 4
                         },
                         new
                         {
-                            Id = new Guid("22626995-b63b-4db1-9cf6-675d6e404ec4"),
+                            Id = new Guid("404bd864-ca6b-42cd-aee2-76987fd5c607"),
                             Name = "APCDevice_5",
                             Num = 5
                         },
                         new
                         {
-                            Id = new Guid("f50a2da8-ccb8-4c81-8b4f-50cdc77eca69"),
+                            Id = new Guid("4396b84b-6e69-4739-8a70-ff42cdd70f63"),
                             Name = "APCDevice_6",
                             Num = 6
                         },
                         new
                         {
-                            Id = new Guid("c651eb10-d55d-4d57-b988-f46b08cac2b8"),
+                            Id = new Guid("23ff68f3-9a09-4dd0-b776-9ce0ef87fd8f"),
                             Name = "APCDevice_7",
                             Num = 7
                         },
                         new
                         {
-                            Id = new Guid("2a1757ce-28f3-4e08-bd18-93d9655cde54"),
+                            Id = new Guid("fea9cdad-0306-4e56-b5e7-cc5665d976af"),
                             Name = "APCDevice_8",
                             Num = 8
                         },
                         new
                         {
-                            Id = new Guid("43705179-4ded-4e83-ab08-5b07f9be7d18"),
+                            Id = new Guid("d3b9a825-1215-4bad-abd3-4c7cf6c26352"),
                             Name = "APCDevice_9",
                             Num = 9
                         },
                         new
                         {
-                            Id = new Guid("ed4f3796-4014-4fda-9ec0-df7504211fb8"),
+                            Id = new Guid("0a0f7cbf-f83e-4a83-99d8-b415651227e2"),
                             Name = "APCDevice_10",
                             Num = 10
                         });
@@ -261,7 +261,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8faafff5-c347-4785-9d7f-e64e165ddc8b"),
+                            Id = new Guid("1029f38f-7771-494b-8465-63d3e68de0d9"),
                             ClientId = "default",
                             ParamId = "TactileInitialPosFinding",
                             ParamOrder = 1,
@@ -270,7 +270,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("8085b058-c035-44a7-b9b0-1223d37dcafb"),
+                            Id = new Guid("c9ef7363-cb2f-4a54-a693-5ee95fa0013b"),
                             ClientId = "default",
                             ParamId = "DistanceCalibration",
                             ParamOrder = 2,
@@ -279,7 +279,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("41533e36-8086-428c-8a72-8f50bed16b2a"),
+                            Id = new Guid("83dab855-7209-49ca-b558-bb25cf052d43"),
                             ClientId = "default",
                             ParamId = "LinearDrivePosition",
                             ParamOrder = 3,
@@ -288,7 +288,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("cadce021-4f0d-4a13-ab73-c80ae659ead3"),
+                            Id = new Guid("626df2a4-619d-4b49-9ba7-8d55c3eb4d13"),
                             ClientId = "default",
                             ParamId = "CalibrationValid",
                             ParamOrder = 4,
@@ -297,7 +297,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("c761a14c-d898-40d6-aefc-3af860d713c7"),
+                            Id = new Guid("836072cb-40d6-4595-b255-412638e4e3bf"),
                             ClientId = "default",
                             ParamId = "CalibrationActive",
                             ParamOrder = 5,
@@ -306,7 +306,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("4753ab56-0c52-4e01-81a1-1ffdd4182b14"),
+                            Id = new Guid("956fc22b-72bd-46ab-8ecd-2e3a8c194c64"),
                             ClientId = "default",
                             ParamId = "RetractHeight",
                             ParamOrder = 1,
@@ -315,7 +315,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("78a0b97d-4d10-49b5-8dac-b043b317049e"),
+                            Id = new Guid("a6ab13b3-ffc6-41a9-a0a6-e98e8beb8022"),
                             ClientId = "default",
                             ParamId = "RetractPosAtProcessEnd",
                             ParamOrder = 2,
@@ -324,7 +324,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("567dd708-54fb-4b85-8033-24de14ddf987"),
+                            Id = new Guid("b225b1df-3551-450a-a72d-bd1db94d40b4"),
                             ClientId = "default",
                             ParamId = "SlagSensitivity",
                             ParamOrder = 1,
@@ -333,7 +333,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("42a0a4cd-2a9e-44b7-b0fb-728c6bad9cbd"),
+                            Id = new Guid("941a33d5-0b27-480f-8a03-59a9553a720b"),
                             ClientId = "default",
                             ParamId = "SlagPostTime",
                             ParamOrder = 2,
@@ -342,7 +342,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("50a252be-f1a6-4ab0-9ed4-761b228fdaa7"),
+                            Id = new Guid("ba3bf117-f0ec-4c7e-bfb3-1701c41c138d"),
                             ClientId = "default",
                             ParamId = "SlagCuttingSpeedReduction",
                             ParamOrder = 3,
@@ -351,7 +351,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("0906f877-9585-4c15-99a5-e303c9592237"),
+                            Id = new Guid("97419eb4-f29f-4dc2-8cea-755555119ca3"),
                             ClientId = "default",
                             ParamId = "CutO2Blowout",
                             ParamOrder = 1,
@@ -360,7 +360,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("82d16433-c6fd-422b-a883-f27c03fd9c21"),
+                            Id = new Guid("72faa3f7-1221-47c5-8ebf-46632df30f8a"),
                             ClientId = "default",
                             ParamId = "CutO2BlowoutBreak",
                             ParamOrder = 2,
@@ -369,7 +369,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("cb74206e-817d-41f8-8792-7ba864150bee"),
+                            Id = new Guid("21436e4d-cc66-4e58-9642-157f7d9cf86d"),
                             ClientId = "default",
                             ParamId = "CutO2BlowoutActive",
                             ParamOrder = 3,
@@ -378,7 +378,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("016acbc3-9815-4ee7-a3bf-b58cfe7401c0"),
+                            Id = new Guid("bbfb8aad-c5aa-4c63-accf-6208e00be020"),
                             ClientId = "default",
                             ParamId = "CurrCutO2BlowoutTime",
                             ParamOrder = 4,
@@ -387,7 +387,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("7e5ff5b2-be04-4423-82bf-1fae6d8de0bf"),
+                            Id = new Guid("aabb3ff8-dfd9-40c4-9fbc-9badcbad66a0"),
                             ClientId = "default",
                             ParamId = "CutO2BlowOutTime",
                             ParamOrder = 5,
@@ -396,7 +396,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("5d27decf-299f-4eeb-971f-e7501ec3d076"),
+                            Id = new Guid("d0ea1d7c-97b5-4788-9dc7-7bbd62b48cb9"),
                             ClientId = "default",
                             ParamId = "CutO2BlowOutPressure",
                             ParamOrder = 6,
@@ -405,7 +405,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("5048591c-45b1-4416-bc10-e347600d7f92"),
+                            Id = new Guid("ccc4ca13-8bf3-4770-bde5-cf350daf7322"),
                             ClientId = "default",
                             ParamId = "CutO2BlowOutTimeOut",
                             ParamOrder = 7,
@@ -414,7 +414,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("b1000d57-8488-473b-aa00-c6ae6fcd4cf1"),
+                            Id = new Guid("a604cdd7-d0b2-488c-8215-2ee41789af6f"),
                             ClientId = "default",
                             ParamId = "PiercingSensorMode",
                             ParamOrder = 1,
@@ -423,7 +423,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("9087461b-ddf6-41d4-a9cd-70e0c9778bb3"),
+                            Id = new Guid("e2bb5b3e-a007-42ea-8ae9-7bc1f46f955f"),
                             ClientId = "default",
                             ParamId = "Dynamic",
                             ParamOrder = 1,
@@ -432,7 +432,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("904fe0da-e749-4460-81c1-cc4ee515b9e5"),
+                            Id = new Guid("8151f9ff-693a-4453-86b0-6f6a92d8571f"),
                             ClientId = "default",
                             ParamId = "HeightControlActive",
                             ParamOrder = 2,
@@ -441,7 +441,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("c5868d13-a3e4-4afc-b15c-d7d3cffb492e"),
+                            Id = new Guid("b2810981-dc37-4b91-aacc-68e504362417"),
                             ClientId = "default",
                             ParamId = "LinearDrivePosition",
                             ParamOrder = 3,
@@ -450,7 +450,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                         },
                         new
                         {
-                            Id = new Guid("7e1f3074-1bf2-4bae-b647-b4c517d3bf42"),
+                            Id = new Guid("1a1ed0fe-229e-4c2f-9402-d61773464633"),
                             ClientId = "default",
                             ParamId = "StatusHeightControl",
                             ParamOrder = 4,

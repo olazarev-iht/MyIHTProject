@@ -94,6 +94,7 @@ namespace SharedComponents.Models.APCHardware
         public ParamViewGroupModel? ParamViewGroup { get; set; }
         public int ParamOrder { get; set; }
         public bool ReadOnly { get; set; } = false;
+        public bool Visible { get; set; } = true;
         private IAPCWorker? _apcWorker { get; set; }
 
         public ParamSettingsModel()

@@ -210,11 +210,13 @@ namespace SharedComponents.APCHardwareManagers
                 if (CutO2Blowout != null && CutO2Blowout.ParamSettings != null)
                 {
                     CutO2Blowout.ParamSettings.ReadOnly = true;
+                    CutO2Blowout.ParamSettings.Visible = false;
                 }
 
                 if (CutO2BlowoutBreak != null && CutO2BlowoutBreak.ParamSettings != null)
                 {
                     CutO2BlowoutBreak.ParamSettings.ReadOnly = false;
+                    CutO2BlowoutBreak.ParamSettings.Visible = true;
                 }
             }
             else
@@ -222,11 +224,13 @@ namespace SharedComponents.APCHardwareManagers
                 if (CutO2Blowout != null && CutO2Blowout.ParamSettings != null)
                 {
                     CutO2Blowout.ParamSettings.ReadOnly = false;
+                    CutO2Blowout.ParamSettings.Visible = true;
                 }
 
                 if (CutO2BlowoutBreak != null && CutO2BlowoutBreak.ParamSettings != null)
                 {
                     CutO2BlowoutBreak.ParamSettings.ReadOnly = true;
+                    CutO2BlowoutBreak.ParamSettings.Visible = false;
                 }
             }
         }

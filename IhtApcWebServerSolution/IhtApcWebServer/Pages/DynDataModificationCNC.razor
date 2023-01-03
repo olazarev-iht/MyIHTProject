@@ -1259,7 +1259,7 @@ input#password-input:focus {
 
         if (Elements != null)
         {
-            Elements = Elements.Where(p => p.PasswordLevel <= _userPasswordLevel);
+            Elements = Elements.Where(p => p.PasswordLevel <= _userPasswordLevel && (p.ParamSettings?.Visible ?? true));
         }
     }
 
