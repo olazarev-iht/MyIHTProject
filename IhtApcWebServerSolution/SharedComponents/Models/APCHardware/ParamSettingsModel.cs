@@ -143,7 +143,7 @@ namespace SharedComponents.Models.APCHardware
                             //var modbusData = ihtDevices.ihtModbusCommunic.GetConnectedModbusData(SlaveId);
                             //ushort paramStartAddress = modbusData.GetAddrInfo((dynamic)eIdx)?.u16StartAddr ?? 0;
 
-                            await _apcWorker.RefreshDynamicDataAsync(SlaveId, paramStartAddress, false);
+                            await _apcWorker.RefreshDynamicDataAsync(SlaveId, paramStartAddress, true);
                         }
                         else
                         {

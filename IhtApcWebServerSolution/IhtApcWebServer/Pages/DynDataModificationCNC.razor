@@ -2076,7 +2076,7 @@ input#password-input:focus {
     {
         try
         {
-            await GetSetupParametersAsync(false);
+            await GetSetupParametersAsync(refreshAll: true);
 
             await InvokeAsync(StateHasChanged);
         }

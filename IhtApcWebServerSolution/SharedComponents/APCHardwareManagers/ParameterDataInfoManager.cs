@@ -141,36 +141,48 @@ namespace SharedComponents.APCHardwareManagers
 
             var currSlaveId = deviceNum + maxDevNum;
 
-            DataProcessInfo dataProcessInfo = _ihtModbusCommunic.ihtDevices.GetDataProcessInfo(currSlaveId);
-            DataCmdExecution dataCmdExecution = _ihtModbusCommunic.ihtDevices.GetDataCmdExecution(currSlaveId);
-            object dataSourceObj;
+            DataProcessInfo? dataProcessInfo = _ihtModbusCommunic.ihtDevices.GetDataProcessInfo(currSlaveId);
+            DataCmdExecution? dataCmdExecution = _ihtModbusCommunic.ihtDevices.GetDataCmdExecution(currSlaveId);
+            object? dataSourceObj = null;
 
             deviceParams.ToList().ForEach(p => {
 
-                // If the parameter is not dynamic - take the value from Modbus 
-                if (p.DynParams != null && p.DynParams.Address == 0) 
+                try
                 {
-                    if (p.ParamSettings != null)
+                    // If the parameter is not dynamic - take the value from Modbus 
+                    if (p.DynParams != null && p.DynParams.Address == 0)
                     {
-                        PropertyInfo? prop = Type.GetType(p.ParamSettings.ParamType)?.GetProperty(p.ParamSettings.ParamName, BindingFlags.Public | BindingFlags.Instance);
-
-                        if (prop != null)
+                        if (p.ParamSettings != null)
                         {
-                            if (p.ParamSettings.ParamType.Contains(dataProcessInfo.GetType().ToString()))
-                            {
-                                dataSourceObj = dataProcessInfo;
-                            }
-                            else
-                            {
-                                dataSourceObj = dataCmdExecution;
-                            }
+                            PropertyInfo? prop = Type.GetType(p.ParamSettings.ParamType)?.GetProperty(p.ParamSettings.ParamName, BindingFlags.Public | BindingFlags.Instance);
 
-                            //p.DynParams.Value = prop?.GetValue(dataSourceObj) as int? ?? -1;
-                            var propValue = prop.GetValue(dataSourceObj, null);
-                            p.DynParams.Value = Convert.ToInt32(propValue);
+                            if (prop != null)
+                            {
+                                if (dataProcessInfo != null && p.ParamSettings.ParamType.Contains(dataProcessInfo.GetType().ToString()))
+                                {
+                                    dataSourceObj = dataProcessInfo;
+                                }
+                                else if (dataCmdExecution != null && p.ParamSettings.ParamType.Contains(dataCmdExecution.GetType().ToString()))
+                                {
+                                    dataSourceObj = dataCmdExecution;
+                                }
+                                //else
+                                //{
+                                //    //throw new Exception("The param type is not implemented");
+                                //    //dataSourceObj = null;
+                                //}
 
+                                //p.DynParams.Value = prop?.GetValue(dataSourceObj, null) as int? ?? -1;
+                                var propValue = prop.GetValue(dataSourceObj, null);
+                                p.DynParams.Value = Convert.ToInt32(propValue);
+
+                            }
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    var errMessage = ex.Message;
                 }
             });
 

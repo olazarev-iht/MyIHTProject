@@ -652,7 +652,7 @@ namespace SharedComponents.IhtDev
         /// <summary>
         /// CmdExec-Daten vom sichtbarem Gerät in Abhängigkeit der Slave-Id abfragen
         /// </summary>
-        public DataCmdExecution GetDataCmdExecution(int slaveId)
+        public DataCmdExecution? GetDataCmdExecution(int slaveId)
         {
             IhtDevice _ihtDevice = GetVisibleDevice(slaveId);
             if (_ihtDevice != null)
