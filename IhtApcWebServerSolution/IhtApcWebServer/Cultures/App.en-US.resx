@@ -564,10 +564,10 @@
     <value>default</value>
   </data>
   <data name="_CultureParamDisabled" xml:space="preserve">
-    <value>disabled</value>
+    <value>Disabled</value>
   </data>
   <data name="_CultureParamEnabled" xml:space="preserve">
-    <value>enabled</value>
+    <value>Enabled</value>
   </data>
   <data name="_CultureParamFlashbackSensitivity" xml:space="preserve">
     <value>Flashback Sensitivity</value>

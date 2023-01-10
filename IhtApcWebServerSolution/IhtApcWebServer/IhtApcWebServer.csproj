@@ -37,6 +37,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
     <PackageReference Include="MudBlazor" Version="6.0.9" />
 	<PackageReference Include="AutoMapper" Version="11.0.1" />
+	<PackageReference Include="ResXResourceReader.NetStandard" Version="1.1.0" />
 	<PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
 	<PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
 	<PackageReference Include="Serilog.Sinks.SQLite" Version="5.5.0" />

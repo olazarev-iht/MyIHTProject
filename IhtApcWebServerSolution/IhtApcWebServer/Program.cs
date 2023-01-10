@@ -298,7 +298,7 @@ app.UseRouting();
 
 var supportedCultures = new[] { "en-US", "de-DE", "fr-FR", "it-IT", "hu-HU", "nl-NL", "sl-SI", "zH-Hans" };
 var localizationOptions = new RequestLocalizationOptions()
-	.SetDefaultCulture(supportedCultures[1])
+	.SetDefaultCulture(supportedCultures[0])
 	.AddSupportedCultures(supportedCultures)
 	.AddSupportedUICultures(supportedCultures);
 

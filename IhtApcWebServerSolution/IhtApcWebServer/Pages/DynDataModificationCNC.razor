@@ -641,14 +641,14 @@ input#password-input:focus {
     </TitleContent>
     <DialogContent>  
         <MudTd>Torch @CurrentDevice.DeviceNumber is:
-        <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? "Enabled" : "Disabled")</MudSwitch></MudTd>
+        <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? @LocalStr("_CultureParamEnabled") : @LocalStr("_CultureParamDisabled"))</MudSwitch></MudTd>
         <MudList Clickable="true" Style="Height:220px;" >
-            <MudListItem Icon="@Icons.Filled.Settings" Text="Settings" InitiallyExpanded="false">
+            <MudListItem Icon="@Icons.Filled.Settings" Text="@T["_CultureButSettings"]" InitiallyExpanded="false">
                 <NestedList>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenSetupParamsDialog">@T["_Setup"]</MudListItem>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenLocalizationDialog">Localization</MudListItem>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenPasswordSetupDialog">Password</MudListItem>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenTorchInstalledDialog">Torch Installed</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenSetupParamsDialog">@T["_CultureButSetup"]</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenLocalizationDialog">@T["_CultureLanguage"]</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenPasswordSetupDialog">@T["_CultureButPassword"]</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenTorchInstalledDialog">@T["_CultureButTorchInstalled"]</MudListItem>
                 </NestedList>
             </MudListItem>
         </MudList>          
