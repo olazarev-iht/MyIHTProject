@@ -1,6 +1,7 @@
 ﻿using IhtApcWebServer;
 using IhtApcWebServer.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Hosting.WindowsServices;
 using Microsoft.Extensions.Localization;
 using System.Reflection;
 using System.Resources.NetStandard;
@@ -17,32 +18,42 @@ namespace IhtApcWebServer.Shared
 		[Inject]
 		protected UnitService _unitService { get; set; }
 
-		public string LocalStr(string strToLocalize)
-		{
-			var returnStr = string.Empty;
+		[Inject]
+		protected ILogger<IhtComponentBase> _logger { get; set; }
 
+
+		private static readonly string BaseDirectory = WindowsServiceHelpers.IsWindowsService() ? AppContext.BaseDirectory : @".\";
+
+		private static readonly string defaultResxFile = @$"{BaseDirectory}Cultures\App.en-US.resx";
+
+		private static ResXResourceReader? rsxr;
+
+
+		public string? LocalStr(string strToLocalize)
+		{
 			var strLocalized = T[strToLocalize];
 
-            const string defaultResxFile = @".\Cultures\App.en-US.resx";
-
+			var returnStr = strLocalized.ToString();
+			
 			if (strLocalized.ResourceNotFound)
             {
-				var rsxr = new ResXResourceReader(defaultResxFile);
-
-				foreach (DictionaryEntry d in rsxr)
-                {
-					if (d.Key.Equals(strToLocalize)) 
+				try
+				{
+					if (rsxr == null)
 					{
-						returnStr = (string)(d.Value ?? string.Empty);
-						break;
+						rsxr = new ResXResourceReader(defaultResxFile);
 					}
+
+					returnStr = rsxr.Cast<DictionaryEntry>()
+						.FirstOrDefault( x => x.Key.Equals(strToLocalize) && x.Value != null)
+						.Value?.ToString();
+				}
+				catch (Exception ex)
+                {
+					_logger.LogError(ex, ex.Message);
                 }
 			}
-            else
-            {
-				returnStr = strLocalized;
-            }
-
+            
 			return returnStr;
 		}
 
@@ -64,6 +75,7 @@ namespace IhtApcWebServer.Shared
 
 		public virtual void Dispose()
 		{
+			rsxr?.Close();
 		}
 	}
 }
