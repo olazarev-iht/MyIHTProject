@@ -635,20 +635,20 @@ input#password-input:focus {
     <TitleContent>
         <table>
             <tr><td><MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText></td></tr>
-            <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">Cutting Data</MudButton></td></tr>
-            <tr><td><MudButton Disabled="IsOtherModeDisabled()" Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@OtherComponentMode Mode</MudButton></td></tr>
+            <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">@LocalStrByKey("_CultureCuttingData")</MudButton></td></tr>
+            <tr><td><MudButton Disabled="IsOtherModeDisabled()" Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@LocalStrByEnStr($"{@OtherComponentMode} Mode")</MudButton></td></tr>
         </table>
     </TitleContent>
     <DialogContent>  
         <MudTd>Torch @CurrentDevice.DeviceNumber is:
-        <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? @LocalStr("_CultureParamEnabled") : @LocalStr("_CultureParamDisabled"))</MudSwitch></MudTd>
+        <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? @LocalStrByKey("_CultureParamEnabled") : @LocalStrByKey("_CultureParamDisabled"))</MudSwitch></MudTd>
         <MudList Clickable="true" Style="Height:220px;" >
             <MudListItem Icon="@Icons.Filled.Settings" Text="@T["_CultureButSettings"]" InitiallyExpanded="false">
                 <NestedList>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenSetupParamsDialog">@LocalStr("_CultureButSetup")</MudListItem>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenLocalizationDialog">@LocalStr("_CultureLanguage")</MudListItem>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenPasswordSetupDialog">@LocalStr("_CultureButPassword")</MudListItem>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenTorchInstalledDialog">@LocalStr("_CultureButTorchInstalled")</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenSetupParamsDialog">@LocalStrByKey("_CultureButSetup")</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenLocalizationDialog">@LocalStrByKey("_CultureLanguage")</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenPasswordSetupDialog">@LocalStrByKey("_CultureButPassword")</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenTorchInstalledDialog">@LocalStrByKey("_CultureButTorchInstalled")</MudListItem>
                 </NestedList>
             </MudListItem>
         </MudList>          
@@ -667,8 +667,8 @@ input#password-input:focus {
         <MudForm>
             <table width="100%">
                 <tr>
-                    <MudTh><b>Torch selection</b></MudTh>
-                    <MudTh><b>Torch Type</b></MudTh>
+                    <MudTh><b>@LocalStrByEnStr("Torch selection")</b></MudTh>
+                    <MudTh><b>@LocalStrByEnStr("Torch type")</b></MudTh>
                 </tr>
                 <tr>
                     <td colspan="2">

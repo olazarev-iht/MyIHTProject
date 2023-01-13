@@ -422,6 +422,9 @@
   <data name="_CultureCounter" xml:space="preserve">
     <value>Counter</value>
   </data>
+  <data name="_CultureCuttingData" xml:space="preserve">
+    <value>Cutting Data</value>
+  </data>
   <data name="_CultureCuttingSpeed" xml:space="preserve">
     <value>Cutting speed</value>
   </data>
@@ -505,6 +508,9 @@
   </data>
   <data name="_CultureLengthUnit" xml:space="preserve">
     <value>Length unit</value>
+  </data>
+  <data name="_CultureManualMode" xml:space="preserve">
+    <value>Manual Mode</value>
   </data>
   <data name="_CultureMaterial" xml:space="preserve">
     <value>Material</value>
@@ -631,6 +637,9 @@
   </data>
   <data name="_CultureProcessInActive" xml:space="preserve">
     <value>Process is inactive</value>
+  </data>
+  <data name="_CultureProcessMode" xml:space="preserve">
+    <value>Process Mode</value>
   </data>
   <data name="_CulturePropane" xml:space="preserve">
     <value>Propane</value>

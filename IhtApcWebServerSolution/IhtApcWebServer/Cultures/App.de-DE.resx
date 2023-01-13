@@ -429,6 +429,9 @@
   <data name="_CultureLengthUnit" xml:space="preserve">
     <value>Längeneinheit</value>
   </data>
+  <data name="_CultureManualMode" xml:space="preserve">
+    <value>Manueller Modus</value>
+  </data>
   <data name="_CultureMaterial" xml:space="preserve">
     <value>Material</value>
   </data>
@@ -512,6 +515,9 @@
   </data>
   <data name="_CultureProcessInActive" xml:space="preserve">
     <value>Prozess ist inaktiv</value>
+  </data>
+  <data name="_CultureProcessMode" xml:space="preserve">
+    <value>Prozessmodus</value>
   </data>
   <data name="_CulturePropane" xml:space="preserve">
     <value>Propan</value>

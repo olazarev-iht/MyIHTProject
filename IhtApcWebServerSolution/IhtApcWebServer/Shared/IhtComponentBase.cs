@@ -26,12 +26,34 @@ namespace IhtApcWebServer.Shared
 
 		private static readonly string defaultResxFile = @$"{BaseDirectory}Cultures\App.en-US.resx";
 
-		private static ResXResourceReader? rsxr;
+		private static ResXResourceReader? _rsxr;
 
+		public static ResXResourceReader? Rsxr
+        {
+            get
+            {
+				if (_rsxr == null)
+				{
+					_rsxr = new ResXResourceReader(defaultResxFile);
+				}
 
-		public string? LocalStr(string strToLocalize)
+				return _rsxr;
+			}
+            set
+            {
+				_rsxr = value;
+            }
+        }
+
+		/// <summary>
+		/// If the local string has not been found returns keyToLocalize 
+		/// </summary>
+		/// <param name="keyToLocalize"></param>
+		/// <param name="args"></param>
+		/// <returns></returns>
+		public string? LocalStrByKey(string keyToLocalize, params object[] args)
 		{
-			var strLocalized = T[strToLocalize];
+			var strLocalized = T[keyToLocalize, args];
 
 			var returnStr = strLocalized.ToString();
 			
@@ -39,14 +61,15 @@ namespace IhtApcWebServer.Shared
             {
 				try
 				{
-					if (rsxr == null)
+					if (Rsxr != null)
 					{
-						rsxr = new ResXResourceReader(defaultResxFile);
-					}
+						returnStr = Rsxr.Cast<DictionaryEntry>()
+							.FirstOrDefault(x => x.Key.Equals(keyToLocalize) && x.Value != null)
+							.Value?.ToString();
 
-					returnStr = rsxr.Cast<DictionaryEntry>()
-						.FirstOrDefault( x => x.Key.Equals(strToLocalize) && x.Value != null)
-						.Value?.ToString();
+						if (string.IsNullOrWhiteSpace(returnStr))
+							returnStr = keyToLocalize;
+					}
 				}
 				catch (Exception ex)
                 {
@@ -55,6 +78,49 @@ namespace IhtApcWebServer.Shared
 			}
             
 			return returnStr;
+		}
+
+		/// <summary>
+		/// Returns key if translation not exists or english text if the key not exists
+		/// </summary>
+		/// <param name="strToLocalize"></param>
+		/// <returns></returns>
+		public string? LocalStrByEnStr(string strToLocalize)
+		{
+			string? localStr;
+
+			var localKey = GetKeyByEnStr(strToLocalize);
+
+			// If the key exists in the en resource file we try to get local string
+			if (!string.IsNullOrWhiteSpace(localKey))
+			{
+				localStr = LocalStrByKey(localKey);
+			}
+			else
+			{
+				localStr = strToLocalize;
+			}
+
+			return localStr;
+		}
+
+		/// <summary>
+		/// If the key has not been found returns null or string.Empty
+		/// </summary>
+		/// <param name="stringToLocalize"></param>
+		/// <returns></returns>
+		public string? GetKeyByEnStr(string stringToLocalize)
+		{
+			var returnKey = string.Empty;
+
+			if (Rsxr != null)
+			{
+				returnKey = Rsxr.Cast<DictionaryEntry>()
+					.FirstOrDefault(x => x.Value != null && x.Value.Equals(stringToLocalize))
+					.Key?.ToString();
+			}
+
+			return returnKey;
 		}
 
 		public string P(double pressureInBar)
@@ -75,7 +141,7 @@ namespace IhtApcWebServer.Shared
 
 		public virtual void Dispose()
 		{
-			rsxr?.Close();
+			Rsxr?.Close();
 		}
 	}
 }
