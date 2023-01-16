@@ -1,7 +1,8 @@
-﻿using SharedComponents.Services.APCWorkerService;
-using SharedComponents.IhtDev;
+﻿using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
 using SharedComponents.IhtModbusTable;
+using SharedComponents.Helpers;
+using SharedComponents.Services.APCWorkerService;
 using SharedComponents.Models;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services;
@@ -78,7 +79,7 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 			}
 		}
 
-		public string CurrentParamsType { get; set; } = "Ignition";
+		public string CurrentParamsType { get; set; } = CommonConstants.IGNITION;
 
 		public int APCDevicesCount 
 		{ 
@@ -497,7 +498,7 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 		public async Task<(ParameterDataModel HeatO2, ParameterDataModel FuelGas, ParameterDataModel CutO2, ParameterDataModel FlameAdjust)> 
 			GetDynParamsFromDBAsync(int currentDeviceNumber, string currentParamsType)
         {
-			if (currentParamsType == "Heat") currentParamsType = "Cut";
+			if (currentParamsType == CommonConstants.HEATTING) currentParamsType = CommonConstants.CUTTING;
 
 			var apcDynamicParamsFromDB = await _parameterDataInfoManager.GetParamsByDeviceIdAndParamsTypeAsync(
 				currentDeviceNumber, currentParamsType, CancellationToken.None);

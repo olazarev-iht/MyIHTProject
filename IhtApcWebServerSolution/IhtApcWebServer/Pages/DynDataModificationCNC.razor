@@ -614,7 +614,7 @@ input#password-input:focus {
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseParamsListDialog">Close</MudButton>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseParamsListDialog">@LocalStrByKey("_CultureButClose")</MudButton>
         @*<MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
     </DialogActions>
 </MudDialog>
@@ -627,20 +627,20 @@ input#password-input:focus {
         <CultureSelector></CultureSelector>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseLocalizationDialog">Close</MudButton>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseLocalizationDialog">@LocalStrByKey("_CultureButClose")</MudButton>
     </DialogActions>
 </MudDialog>
 
 <MudDialog @bind-IsVisible="_menuExpanded" Class="scaled">
     <TitleContent>
         <table>
-            <tr><td><MudText Typo="Typo.h6">Level @((int)_userPasswordLevel)</MudText></td></tr>
+            <tr><td><MudText Typo="Typo.h6">@LocalStrByKey("Level") @((int)_userPasswordLevel)</MudText></td></tr>
             <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">@LocalStrByKey("_CultureCuttingData")</MudButton></td></tr>
             <tr><td><MudButton Disabled="IsOtherModeDisabled()" Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@LocalStrByEnStr($"{@OtherComponentMode} Mode")</MudButton></td></tr>
         </table>
     </TitleContent>
     <DialogContent>  
-        <MudTd>Torch @CurrentDevice.DeviceNumber is:
+        <MudTd>@LocalStrByKey("_CultureTorch") @CurrentDevice.DeviceNumber:
         <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? @LocalStrByKey("_CultureParamEnabled") : @LocalStrByKey("_CultureParamDisabled"))</MudSwitch></MudTd>
         <MudList Clickable="true" Style="Height:220px;" >
             <MudListItem Icon="@Icons.Filled.Settings" Text="@T["_CultureButSettings"]" InitiallyExpanded="false">
@@ -1042,12 +1042,12 @@ input#password-input:focus {
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="_isHCOnOffActive" LightBackground="true" Absolute="true" />
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(IGNITION)"
-                                    @onclick="@(()=>SetParamsType(IGNITION))">Ignition</MudTd>
+                                    @onclick="@(()=>SetParamsType(IGNITION))">@LocalStrByKey("_CultureButIgnition")</MudTd>
                                 </MudPaper>
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(PRE_HEAT)"
-                                    @onclick="@(()=>SetParamsType(PRE_HEAT))">Preheat</MudTd>
+                                    @onclick="@(()=>SetParamsType(PRE_HEAT))">@LocalStrByKey(PRE_HEAT)</MudTd>
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(PIERCING)"
-                                    @onclick="@(()=>SetParamsType(PIERCING))">Piercing</MudTd>
+                                    @onclick="@(()=>SetParamsType(PIERCING))">@LocalStrByKey("_CultureButPiercing")</MudTd>
                             }
                             else
                             {
@@ -1064,11 +1064,11 @@ input#password-input:focus {
                             @if (ComponentMode == MANUAL_MODE)
                             {
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(CUTTING)"
-                                    @onclick="@(()=>SetParamsType(CUTTING))">Cutting</MudTd>
+                                    @onclick="@(()=>SetParamsType(CUTTING))">@LocalStrByKey("_CultureButCutting")</MudTd>
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="_isHCOnOffActive" LightBackground="true" Absolute="true" />
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(HEATTING)"
-                                    @onclick="@(()=>SetParamsType(HEATTING))">Heating</MudTd>
+                                    @onclick="@(()=>SetParamsType(HEATTING))">@LocalStrByKey(HEATTING)</MudTd>
                                 </MudPaper>
                                 <td class="mud-table-cell UnselectedParamsType tabcell">@ComponentMode</td>
                             }
@@ -1155,11 +1155,11 @@ input#password-input:focus {
 
     private const string CUTTING_DB_URL = "/CuttingDB";
 
-    private const string IGNITION = "Ignition";
-    private const string PRE_HEAT = "PreHeat";
-    private const string PIERCING = "Pierce";
-    private const string CUTTING = "Cut";
-    private const string HEATTING = "Heat";
+    private const string IGNITION = CommonConstants.IGNITION;
+    private const string PRE_HEAT = CommonConstants.PRE_HEAT;
+    private const string PIERCING = CommonConstants.PIERCING;
+    private const string CUTTING = CommonConstants.CUTTING;
+    private const string HEATTING = CommonConstants.HEATTING;
 
     //private int spValueOriginal = 50;
     private int spValueCurrent = 50;

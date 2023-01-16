@@ -78,15 +78,15 @@ namespace SharedComponents.MqttModel.Actions
           errorDescription = Machine.ResultStatus.NoError.Descprition;
         }
         
-        Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
-        JsonSerializerSettings        jsonSerializerSettings = JsonHelper.CreateSerializerSettings(errorContext);
+        //Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
+        Helper.IhtJsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.IhtCreateSerializerSettings();
         Exec.Common.StationErrorNotification errorNotification      = new Exec.Common.StationErrorNotification(station, errorCode, errorDescription);
         // Convert C# Class typed object to JSON string
         string jsonString = JsonHelper.FromClass<Exec.Common.ErrorNotification>(errorNotification, true, jsonSerializerSettings);
 
-        if (errorContext != null && errorContext.Error != null)
+        if (jsonSerializerSettings.errorContext != null && jsonSerializerSettings.errorContext.Error != null)
         {
-          return errorContext.Error.Message;
+          return jsonSerializerSettings.errorContext.Error.Message;
         }
         else if (string.IsNullOrEmpty(jsonString))
         {
@@ -129,13 +129,13 @@ namespace SharedComponents.MqttModel.Actions
       // Station
       int.TryParse(data, out dataRecordId);
 
-      Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
-      JsonSerializerSettings jsonSerializerSettings = JsonHelper.CreateSerializerSettings(errorContext);
+      //Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
+      Helper.IhtJsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.IhtCreateSerializerSettings();
       Exec.Common.DataRecordUpdatedNotification notification = new Exec.Common.DataRecordUpdatedNotification(dataRecordId);
       // Convert C# Class typed object to JSON string
       string jsonString = JsonHelper.FromClass<Exec.Common.DataRecordUpdatedNotification>(notification, true, jsonSerializerSettings);
 
-      return DataRecordNotification(errorContext, jsonString);
+      return DataRecordNotification(jsonSerializerSettings.errorContext, jsonString);
     }
 
     /// <summary>
@@ -149,13 +149,13 @@ namespace SharedComponents.MqttModel.Actions
       // Station
       int.TryParse(data, out dataRecordId);
 
-      Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
-      JsonSerializerSettings jsonSerializerSettings = JsonHelper.CreateSerializerSettings(errorContext);
+      //Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
+      Helper.IhtJsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.IhtCreateSerializerSettings();
       Exec.Common.DataRecordCreatedNotification notification = new Exec.Common.DataRecordCreatedNotification(dataRecordId);
       // Convert C# Class typed object to JSON string
       string jsonString = JsonHelper.FromClass<Exec.Common.DataRecordCreatedNotification>(notification, true, jsonSerializerSettings);
 
-      return DataRecordNotification(errorContext, jsonString);
+      return DataRecordNotification(jsonSerializerSettings.errorContext, jsonString);
     }
 
     /// <summary>
@@ -169,13 +169,13 @@ namespace SharedComponents.MqttModel.Actions
       // Station
       int.TryParse(data, out dataRecordId);
 
-      Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
-      JsonSerializerSettings jsonSerializerSettings = JsonHelper.CreateSerializerSettings(errorContext);
+      //Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
+      Helper.IhtJsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.IhtCreateSerializerSettings();
       Exec.Common.DataRecordDeletedNotification notification = new Exec.Common.DataRecordDeletedNotification(dataRecordId);
       // Convert C# Class typed object to JSON string
       string jsonString = JsonHelper.FromClass<Exec.Common.DataRecordDeletedNotification>(notification, true, jsonSerializerSettings);
 
-      return DataRecordNotification(errorContext, jsonString);
+      return DataRecordNotification(jsonSerializerSettings.errorContext, jsonString);
     }
 
     /// <summary>
@@ -189,13 +189,13 @@ namespace SharedComponents.MqttModel.Actions
       // Station
       int.TryParse(data, out dataRecordId);
 
-      Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
-      JsonSerializerSettings jsonSerializerSettings = JsonHelper.CreateSerializerSettings(errorContext);
+      //Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
+      Helper.IhtJsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.IhtCreateSerializerSettings();
       Exec.Common.DataRecordUserLoadedNotification notification = new Exec.Common.DataRecordUserLoadedNotification(dataRecordId);
       // Convert C# Class typed object to JSON string
       string jsonString = JsonHelper.FromClass<Exec.Common.DataRecordUserLoadedNotification>(notification, true, jsonSerializerSettings);
 
-      return DataRecordNotification(errorContext, jsonString);
+      return DataRecordNotification(jsonSerializerSettings.errorContext, jsonString);
     }
     
   }

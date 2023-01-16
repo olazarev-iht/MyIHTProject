@@ -25,15 +25,15 @@ namespace SharedComponents.MqttModel.Exec.System
     /// <returns></returns>
     internal static async Task<Machine.ResultStatus> RequestAsync(MqttClientWrapper mqttClient, string payload)
     {
-      Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
-      JsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.CreateSerializerSettings(errorContext);
+      //Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
+      Helper.IhtJsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.IhtCreateSerializerSettings();
 
       // Convert to C# Class typed object
       Helper.RequestSystem request = Helper.JsonHelper.ToClass<Helper.RequestSystem>(payload, jsonSerializerSettings);
 
-      if (errorContext != null && errorContext.Error != null)
+      if (jsonSerializerSettings.errorContext != null && jsonSerializerSettings.errorContext.Error != null)
       {
-        return new Machine.ResultStatus(errorContext.Error.Message, Machine.ResultStatus.JsonError.Value);
+        return new Machine.ResultStatus(jsonSerializerSettings.errorContext.Error.Message, Machine.ResultStatus.JsonError.Value);
       }
       else if (request == null || request.RequestTag == null)
       {
@@ -69,14 +69,14 @@ namespace SharedComponents.MqttModel.Exec.System
       softwareVersion.Revision = revision;
       softwareVersion.Build    = build;
 
-      Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
-      JsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.CreateSerializerSettings(errorContext);
+      //Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
+      Helper.IhtJsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.IhtCreateSerializerSettings();
 
       var jsonString = Helper.JsonHelper.FromClass<SoftwareVersion>(softwareVersion, true, jsonSerializerSettings);
       
-      if (errorContext != null && errorContext.Error != null)
+      if (jsonSerializerSettings.errorContext != null && jsonSerializerSettings.errorContext.Error != null)
       {
-        return new Machine.ResultStatus(errorContext.Error.Message, Machine.ResultStatus.JsonError.Value);
+        return new Machine.ResultStatus(jsonSerializerSettings.errorContext.Error.Message, Machine.ResultStatus.JsonError.Value);
       }
       else if (string.IsNullOrEmpty(jsonString))
       {
@@ -97,9 +97,10 @@ namespace SharedComponents.MqttModel.Exec.System
     /// <returns></returns>
     private static async Task<Machine.ResultStatus> LoadDataRecordAsync(MqttClientWrapper mqttClient, string payload)
     {
-      Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
-      JsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.CreateSerializerSettings(errorContext);
+      //Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
+      Helper.IhtJsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.IhtCreateSerializerSettings();
 
+            //jsonSerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
       // Convert to C# Class typed object
       Common.SystemRequestLoadDataRecord requestLoadDataRecord = Helper.JsonHelper.ToClass<Exec.Common.SystemRequestLoadDataRecord>(payload, jsonSerializerSettings);
 
@@ -108,9 +109,9 @@ namespace SharedComponents.MqttModel.Exec.System
       var jsonString = string.Empty;
 
       // If the conversion went wrong
-      if (errorContext != null && errorContext.Error != null)
+      if (jsonSerializerSettings.errorContext != null && jsonSerializerSettings.errorContext.Error != null)
       {
-        resultStatus   = new Machine.ResultStatus(errorContext.Error.Message, Machine.ResultStatus.JsonError.Value);
+        resultStatus   = new Machine.ResultStatus(jsonSerializerSettings.errorContext.Error.Message, Machine.ResultStatus.JsonError.Value);
         responseStatus = new Common.ResponseStatus(Helper.RequestHelper.LoadDataRecord, resultStatus);
         jsonString = Helper.JsonHelper.FromClass<Common.ResponseStatus>(responseStatus, true, jsonSerializerSettings);
       }
@@ -153,13 +154,13 @@ namespace SharedComponents.MqttModel.Exec.System
         Machine.ResultStatus.NoError,
         cuttingDataModel);
 
-      jsonSerializerSettings = Helper.JsonHelper.CreateSerializerSettings(errorContext);
+      jsonSerializerSettings = Helper.JsonHelper.IhtCreateSerializerSettings();
       jsonString             = Helper.JsonHelper.FromClass<DataBase.ResponseDataRecord>(loadDataRecord, true, jsonSerializerSettings);
 
       // If the conversion went wrong
-      if (errorContext != null && errorContext.Error != null)
+      if (jsonSerializerSettings.errorContext != null && jsonSerializerSettings.errorContext.Error != null)
       {
-        return new Machine.ResultStatus(errorContext.Error.Message, Machine.ResultStatus.JsonError.Value);
+        return new Machine.ResultStatus(jsonSerializerSettings.errorContext.Error.Message, Machine.ResultStatus.JsonError.Value);
       }
       else if (string.IsNullOrEmpty(jsonString))
       {

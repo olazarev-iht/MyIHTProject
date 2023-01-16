@@ -3,6 +3,7 @@ using IhtApcWebServer.Data.DataMapper;
 using IhtApcWebServer.Data.Models.APCHardware;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using SharedComponents.Helpers;
 using SharedComponents.IhtModbus;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareDBServices;
@@ -51,10 +52,10 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 
 			switch (ParamsType)
 			{
-				case "Ignition": paramsArray = ignitionParamsArray; break;
-				case "PreHeat": paramsArray = preheatParamsArray; break;
-				case "Pierce": paramsArray = piercingParamsArray; break;
-				case "Cut": paramsArray = cuttingParamsArray; break;
+				case CommonConstants.IGNITION: paramsArray = ignitionParamsArray; break;
+				case CommonConstants.PRE_HEAT: paramsArray = preheatParamsArray; break;
+				case CommonConstants.PIERCING: paramsArray = piercingParamsArray; break;
+				case CommonConstants.CUTTING: paramsArray = cuttingParamsArray; break;
 			}
 
 			var entries = await dbContext.ParameterDatas

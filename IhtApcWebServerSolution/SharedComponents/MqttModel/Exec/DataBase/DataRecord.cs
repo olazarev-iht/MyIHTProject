@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using CutDataRepository.Utils;
 using SharedComponents.Models.CuttingData;
 using static IhtCommunic.SlaveInfo;
+using SharedComponents.MqttModel.Helper;
 
 namespace SharedComponents.MqttModel.Exec.DataBase
 {
@@ -76,6 +77,7 @@ namespace SharedComponents.MqttModel.Exec.DataBase
     [JsonProperty("CuttingSpeed_mm_min")]
     public double CuttingSpeed_mm_min { get; set; }
 
+    //[JsonProperty("Kerf_mm"), JsonConverter(typeof(JsonHelper.FloatFormatConverter), "{0:F3}")]
     [JsonProperty("Kerf_mm")]
     public double Kerf_mm { get; set; }
 

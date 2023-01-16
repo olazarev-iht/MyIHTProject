@@ -15,15 +15,15 @@ namespace SharedComponents.MqttModel.Exec.Station
     /// <returns></returns>
     internal static async Task<Machine.ResultStatus> CommandAsync(MqttClientWrapper mqttClient, string payload)
     {
-      Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
-      JsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.CreateSerializerSettings(errorContext);
+      //Newtonsoft.Json.Serialization.ErrorContext errorContext = null;
+      Helper.IhtJsonSerializerSettings jsonSerializerSettings = Helper.JsonHelper.IhtCreateSerializerSettings();
 
       // Convert to C# Class typed object
       Helper.CommandStation request = Helper.JsonHelper.ToClass<Helper.CommandStation>(payload, jsonSerializerSettings);
 
-      if (errorContext != null && errorContext.Error != null)
+      if (jsonSerializerSettings.errorContext != null && jsonSerializerSettings.errorContext.Error != null)
       {
-        return new Machine.ResultStatus(errorContext.Error.Message, Machine.ResultStatus.JsonError.Value);
+        return new Machine.ResultStatus(jsonSerializerSettings.errorContext.Error.Message, Machine.ResultStatus.JsonError.Value);
       }
       else if (request == null || request.Station == null || request.CommandTag == null)
       {
