@@ -78,8 +78,8 @@
     /*border-right-style: solid !important;
     border-right-width: 2px !important;*/
     overflow-wrap: break-word;
-    max-width: 83px;
-}
+    max-width: 68px;
+    box-sizing: content-box;
 }
 
 .tabcell_menu {
@@ -105,7 +105,7 @@
 
 .tabcell_status {
     background: #d7e8f9;
-    max-width: 500px;
+    max-width: 250px;
 }
 
 .divcell {
@@ -1055,7 +1055,7 @@ input#password-input:focus {
                             }
                             else
                             {
-                                <td style="border-width:0px; font-weight:normal !important;" class="tabcell tabcell_status internal_div_table">
+                                <td style="border-width:0px; font-weight:normal !important; box-sizing:border-box;" class="tabcell tabcell_status internal_div_table">
                                     CurrOutHeatO2:@dataCommon.CurrOutHeatO2 CurrOutCutO2:@dataCommon.CurrOutCutO2 CurrOutFuelGas:@dataCommon.CurrOutFuelGas
                                 </td>
                             }
@@ -1078,7 +1078,7 @@ input#password-input:focus {
                             }
                             else
                             {
-                                <td style="border-width:0px; font-weight:normal !important; display:flex; flex-direction:row; justify-content:center; align-items:center;" 
+                                <td style="border-width:0px; font-weight:normal !important; display:flex; flex-direction:row; justify-content:center; align-items:center; box-sizing:border-box;" 
                                     class="tabcell tabcell_status internal_div_table">
                                     <div>Heat Time:</div>
                                     <MudProgressCircular Value="@reloadProgressValue" Style="height:40px;width:40px; position: absolute;left: 438px" Color="Color.Primary" 
