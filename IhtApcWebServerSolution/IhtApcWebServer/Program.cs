@@ -112,6 +112,7 @@ IhtModbusCommunic.clientCode = clientCode;
 
 builder.Services.AddOptions();
 builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<UnitService>();

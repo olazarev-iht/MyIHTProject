@@ -1,6 +1,7 @@
 ﻿using IhtApcWebServer;
 using IhtApcWebServer.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Hosting.WindowsServices;
 using Microsoft.Extensions.Localization;
 using System.Reflection;
@@ -21,12 +22,21 @@ namespace IhtApcWebServer.Shared
 		[Inject]
 		protected ILogger<IhtComponentBase> _logger { get; set; }
 
+		[Inject]
+		protected IHttpContextAccessor _httpContextAccessor { get; set; }
+
+		protected static string? Cookie { get; set; }
 
 		private static readonly string BaseDirectory = WindowsServiceHelpers.IsWindowsService() ? AppContext.BaseDirectory : @".\";
 
 		private static readonly string defaultResxFile = @$"{BaseDirectory}Cultures\App.en-US.resx";
 
 		private static ResXResourceReader? _rsxr;
+
+		//public IhtComponentBase()
+  //      {
+		//	Cookie = _httpContextAccessor?.HttpContext?.Request?.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+		//}
 
 		public static ResXResourceReader? Rsxr
         {
@@ -53,6 +63,31 @@ namespace IhtApcWebServer.Shared
 		/// <returns></returns>
 		public string? LocalStrByKey(string keyToLocalize, params object[] args)
 		{
+			string? cookie = string.Empty;
+
+			try
+			{
+
+				cookie = _httpContextAccessor?.HttpContext?.Request?.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+
+				if (cookie != null)
+                {
+					Cookie = cookie;
+				}
+
+				if (string.IsNullOrWhiteSpace(cookie) && !string.IsNullOrWhiteSpace(Cookie))
+                {
+					var cultureStr = Cookie.Split("|")[0].Split("=")[1];
+					var cultureUIStr = Cookie.Split("|")[1].Split("=")[1];
+					System.Globalization.CultureInfo.CurrentCulture = new CultureInfo(cultureStr, true);
+					System.Globalization.CultureInfo.CurrentUICulture = new CultureInfo(cultureUIStr, true);
+				}
+			}
+			catch (Exception ex)
+            {
+				var message = ex.Message;
+            }
+
 			var strLocalized = T[keyToLocalize, args];
 
 			var returnStr = strLocalized.ToString();
