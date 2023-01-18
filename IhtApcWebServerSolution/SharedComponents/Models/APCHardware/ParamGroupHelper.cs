@@ -135,13 +135,13 @@ namespace SharedComponents.Models.APCHardware
 
         public static readonly Dictionary<SettingParamIds, (Enum? paramModbusEnum, string Format)> SettingParamsProperties = new()
         {
-            { SettingParamIds.TactileInitialPosFinding, (IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },
+            { SettingParamIds.TactileInitialPosFinding, (IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding, @"{ 'Mode':'Switch', 'Values': ['Disabled', 'Enabled'] }") },
             { SettingParamIds.DistanceCalibration, (IhtModbusParamDyn.eIdxConfig.DistanceCalibration, @"{ 'Mode':'Slider', 'Unit' : true }") },
             { SettingParamIds.LinearDrivePosition, (IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition, @"{ 'Unit' : true }") },
             { SettingParamIds.CalibrationValid, (null, @"{ 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }") },
             { SettingParamIds.CalibrationActive, (null, @"{ 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }") },
             { SettingParamIds.RetractHeight, (IhtModbusParamDyn.eIdxProcess.RetractHeight, @"{ 'Name':'Retract Position', 'Mode':'Slider' }") },
-            { SettingParamIds.RetractPosAtProcessEnd, (IhtModbusCmdExecSwitch.eCmdBit.RetractPosAtProcessEnd, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },
+            { SettingParamIds.RetractPosAtProcessEnd, (IhtModbusCmdExecSwitch.eCmdBit.RetractPosAtProcessEnd, @"{ 'Mode':'Switch', 'Values': ['Disabled', 'Enabled'] }") },
             { SettingParamIds.SlagSensitivity, (IhtModbusParamDyn.eIdxProcess.SlagSensitivity, @"{ 'Mode':'Select', 'Values': ['Off','Low','Default','High'] }") },
             { SettingParamIds.SlagPostTime, (IhtModbusParamDyn.eIdxProcess.SlagPostTime, @"{ 'Mode':'Slider' }") },
             { SettingParamIds.SlagCuttingSpeedReduction, (IhtModbusParamDyn.eIdxService.SlagCuttingSpeedReduction, @"{ 'Mode':'Slider' }") },
@@ -152,7 +152,7 @@ namespace SharedComponents.Models.APCHardware
             { SettingParamIds.CutO2BlowOutTime, (IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTime, @"{ 'Mode':'Slider' }") },
             { SettingParamIds.CutO2BlowOutPressure, (IhtModbusParamDyn.eIdxConfig.CutO2BlowOutPressure, @"{ 'Mode':'Slider' }") },
             { SettingParamIds.CutO2BlowOutTimeOut, (IhtModbusParamDyn.eIdxConfig.CutO2BlowOutTimeOut, @"{ 'Mode':'Slider' }") },
-            { SettingParamIds.PiercingSensorMode, (IhtModbusParamDyn.eIdxProcess.PiercingSensorMode, @"{ 'Mode':'Switch', 'Values': ['Disable', 'Enable'] }") },            
+            { SettingParamIds.PiercingSensorMode, (IhtModbusParamDyn.eIdxProcess.PiercingSensorMode, @"{ 'Mode':'Switch', 'Values': ['Disabled', 'Enabled'] }") },            
             { SettingParamIds.Dynamic, (IhtModbusParamDyn.eIdxConfig.Dynamic, @"{ 'Mode':'Slider' }") },
             { SettingParamIds.HeightControlActive, (null, @"{ 'Mode':'NoYes', 'Values': ['No','Yes'], 'ReadOnly':true }") },
             { SettingParamIds.StatusHeightControl, (IhtModbusParamDyn.eIdxProcessInfo.StatusHeightControl, @"{ 'Mode':'Select', 'Values': ['Off','PreHeating','Piercing','Cutting'], 'ReadOnly':true }") }

@@ -78,8 +78,8 @@
     /*border-right-style: solid !important;
     border-right-width: 2px !important;*/
     overflow-wrap: break-word;
-    max-width: 68px;
-    box-sizing: content-box;
+    max-width: 85px;
+    /*box-sizing: content-box;*/
 }
 
 .tabcell_menu {
@@ -507,44 +507,31 @@ input#password-input:focus {
         @*<MudTh>Molar mass</MudTh>*@
     </HeaderContent>
     <GroupHeaderTemplate>
-        <MudTh Class="mud-table-cell-custom-group" colspan="5">@($"{context.Key}")</MudTh>
+        <MudTh Class="mud-table-cell-custom-group" colspan="5">@LocalStrByEnStr($"{context.Key}")</MudTh>
     </GroupHeaderTemplate>
     <RowTemplate>
         <MudTd DataLabel="Name">@(!string.IsNullOrWhiteSpace(context.ParamSettings?.DisplayName) 
-            ? context.ParamSettings.DisplayName : context.ParamSettings?.ViewParameter.Name ?? "")</MudTd>
+            ? @LocalStrByEnStr(context?.ParamSettings?.DisplayName ?? "") : @LocalStrByEnStr(context.ParamSettings?.ViewParameter.Name ?? "") ?? "")</MudTd>
         <MudTd DataLabel="Value" >
-            @if(@context.ParamName == IhtModbusParamDyn.eIdxAdditional.PreflowActive.ToString()){
-                <MudSlider @bind-Value="@preflowActiveValue" Disabled="@preflowActiveDisabled" Min="0" Max="5" Step="1" Color="Color.Info">
-                    @preflowActiveValue.ToString() s
-                </MudSlider>
-            }
-            else if(@context.ParamName == IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString())
-            {
-                <MudSwitch @bind-Checked="@PreflowStarted" Color="Color.Secondary">
-                    @(@context.DynParams.Value == 1 ? 
-                    @context?.ParamSettings?.ViewParameter?.Values[1] : 
-                    @context?.ParamSettings?.ViewParameter?.Values[0])
-                </MudSwitch>
-            }
-            else if(@context?.ParamSettings?.ViewParameter?.Mode == "Switch")
+            @if(@context?.ParamSettings?.ViewParameter?.Mode == "Switch")
             {
                 <MudSwitch Disabled="@( context?.ParamSettings?.ReadOnly ?? false )" 
                 T="bool" @bind-Checked="@this[@context?.ParamSettings?.SettingParam ?? 0]" Color="Color.Primary">
-                    @(@context.DynParams.Value == 1 ? 
-                    @context?.ParamSettings?.ViewParameter?.Values[1] : 
-                    @context?.ParamSettings?.ViewParameter?.Values[0])
+                    @( @context.DynParams.Value == 1 ? 
+                    @LocalStrByEnStr(@context?.ParamSettings?.ViewParameter?.Values[1] ?? "") : 
+                    @LocalStrByEnStr(@context?.ParamSettings?.ViewParameter?.Values[0] ?? "") )
                 </MudSwitch>
             }
             else if(@context?.ParamSettings?.ViewParameter?.Mode == "Select" || 
                     @context?.ParamSettings?.ViewParameter?.Mode == "NoYes"){
 
-                        @context?.ParamSettings?.ViewParameter?.Values[@context?.DynParams?.Value ?? 0]
+                        @LocalStrByEnStr(@context?.ParamSettings?.ViewParameter?.Values[@context?.DynParams?.Value ?? 0] ?? "");
 
             }
             else if(@context?.ParamSettings?.ViewParameter?.Mode == "Button"){
                 <MudButton Disabled="@( context?.ParamSettings?.ReadOnly ?? false )" 
                     OnClick="@( () => ClickedParamButton(@context?.ParamSettings?.SettingParam ?? 0))" Variant="Variant.Filled" Color="Color.Primary">
-                    <MudText>@context?.ParamSettings?.ViewParameter?.Values[0]</MudText>
+                    <MudText>@LocalStrByEnStr(@context?.ParamSettings?.ViewParameter?.Values[0] ?? "")</MudText>
                 </MudButton>
                         //@context?.ParamSettings?.ViewParameter?.Values[@context?.DynParams?.Value ?? 0]
             }
@@ -644,7 +631,7 @@ input#password-input:focus {
         </table>
     </TitleContent>
     <DialogContent>  
-        <MudTd>@LocalStrByKey("_CultureTorch") @CurrentDevice.DeviceNumber:
+        <MudTd>@LocalStrByKey("_CultureButTorch") @CurrentDevice.DeviceNumber:
         <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? @LocalStrByKey("_CultureParamEnabled") : @LocalStrByKey("_CultureParamDisabled"))</MudSwitch></MudTd>
         <MudList Clickable="true" Style="Height:220px;" >
             <MudListItem Icon="@Icons.Filled.Settings" Text="@T["_CultureButSettings"]" InitiallyExpanded="false">
@@ -690,7 +677,7 @@ input#password-input:focus {
             <MudItem xs="6">
                     @*<input type="checkbox" @bind="@device.IsVisible" /> @:@device.DeviceNumber.ToString();*@
                     <MudCheckBox @bind-Checked="@ihtDevice.IsVisible" Dense="false" Color="Color.Primary" Disabled="@IsDeviceDisabled(ihtDevice.IsEnabledChbx)">
-                        <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Torch @ihtDevice.DeviceNumber</MudText>
+                        <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">@LocalStrByKey("_CultureButTorch") @ihtDevice.DeviceNumber</MudText>
                     </MudCheckBox>
             </MudItem>
         }  
@@ -698,9 +685,9 @@ input#password-input:focus {
                     </td>
                     <td width="50%" valign="top" style="border-width: 0 0 0 1px;border-color: #e0e0e0">
                         <MudSelect T="IhtDevices.TorchType" @bind-Value="@ihtDevices.TorchTypeSetup" Class="myselect" Style="margin-top: 0px;">             
-                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.Propane)">Propane</MudSelectItem>
-                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.Acetylane)">Acetylene</MudSelectItem>
-                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.NaturalGas)">Natural Gas</MudSelectItem>
+                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.Propane)">@LocalStrByKey("_CulturePropane")</MudSelectItem>
+                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.Acetylane)">@LocalStrByKey("_CultureAcetylane")</MudSelectItem>
+                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.NaturalGas)">@LocalStrByKey("_CultureNaturalGas")</MudSelectItem>
                         </MudSelect>
 
                         <br />
@@ -729,7 +716,7 @@ input#password-input:focus {
     </DialogContent>
     <DialogActions>
         <MudButton Color="MudBlazor.Color.Secondary" 
-            OnClick="CloseTorchInstalledDialog" onmousedown="return false">Close</MudButton>
+            OnClick="CloseTorchInstalledDialog" onmousedown="return false">@LocalStrByKey("_CultureButClose")</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -1049,7 +1036,7 @@ input#password-input:focus {
                                     @onclick="@(()=>SetParamsType(IGNITION))">@LocalStrByKey("_CultureButIgnition")</MudTd>
                                 </MudPaper>
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(PRE_HEAT)"
-                                    @onclick="@(()=>SetParamsType(PRE_HEAT))">@LocalStrByKey(PRE_HEAT)</MudTd>
+                                    @onclick="@(()=>SetParamsType(PRE_HEAT))">@LocalStrByKey("_CultureButPreHeating")</MudTd>
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(PIERCING)"
                                     @onclick="@(()=>SetParamsType(PIERCING))">@LocalStrByKey("_CultureButPiercing")</MudTd>
                             }
@@ -1072,7 +1059,7 @@ input#password-input:focus {
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="_isHCOnOffActive" LightBackground="true" Absolute="true" />
                                 <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(HEATTING)"
-                                    @onclick="@(()=>SetParamsType(HEATTING))">@LocalStrByKey(HEATTING)</MudTd>
+                                    @onclick="@(()=>SetParamsType(HEATTING))">@LocalStrByKey("_CultureButHeating")</MudTd>
                                 </MudPaper>
                                 <td class="mud-table-cell UnselectedParamsType tabcell">@ComponentMode</td>
                             }

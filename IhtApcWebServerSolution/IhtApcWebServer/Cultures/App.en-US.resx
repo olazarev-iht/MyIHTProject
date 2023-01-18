@@ -285,7 +285,7 @@
     <value>Heating</value>
   </data>
   <data name="_CultureButHeightControl" xml:space="preserve">
-    <value>Height control</value>
+    <value>Height Control</value>
   </data>
   <data name="_CultureButHelp" xml:space="preserve">
     <value>Help</value>
@@ -339,13 +339,13 @@
     <value>Pre Flow</value>
   </data>
   <data name="_CultureButPreFlowBreak" xml:space="preserve">
-    <value>Break preflow</value>
+    <value>Break Preflow</value>
   </data>
   <data name="_CultureButPreFlowStart" xml:space="preserve">
-    <value>Start preflow</value>
+    <value>Start Preflow</value>
   </data>
   <data name="_CultureButPreHeating" xml:space="preserve">
-    <value>PreHeating</value>
+    <value>PreHeat</value>
   </data>
   <data name="_CultureButPrevious" xml:space="preserve">
     <value>Previous</value>
@@ -354,7 +354,7 @@
     <value>Read</value>
   </data>
   <data name="_CultureButRetract" xml:space="preserve">
-    <value>Retract position</value>
+    <value>Retract Position</value>
   </data>
   <data name="_CultureButSave" xml:space="preserve">
     <value>Save</value>
@@ -399,13 +399,13 @@
     <value>Yes</value>
   </data>
   <data name="_CultureCalibrationActive" xml:space="preserve">
-    <value>Height Calibration active</value>
+    <value>Height Calibration Active</value>
   </data>
   <data name="_CultureCalibrationInvalid" xml:space="preserve">
-    <value>Height Calibration invalid</value>
+    <value>Height Calibration Invalid</value>
   </data>
   <data name="_CultureCalibrationValid" xml:space="preserve">
-    <value>Height Calibration valid</value>
+    <value>Height Calibration Valid</value>
   </data>
   <data name="_CultureCapSetpoint" xml:space="preserve">
     <value>Torch Height</value>
@@ -438,7 +438,7 @@
     <value>Disable</value>
   </data>
   <data name="_CultureDistanceCalibration" xml:space="preserve">
-    <value>Manual Height calibration</value>
+    <value>Manual Height Calibration</value>
   </data>
   <data name="_CultureDynamic" xml:space="preserve">
     <value>Dynamic</value>
@@ -477,7 +477,7 @@
     <value>FW-Update</value>
   </data>
   <data name="_CultureHeightControlActive" xml:space="preserve">
-    <value>Height control active</value>
+    <value>Height Control Active</value>
   </data>
   <data name="_CultureHelp" xml:space="preserve">
     <value>Help</value>
