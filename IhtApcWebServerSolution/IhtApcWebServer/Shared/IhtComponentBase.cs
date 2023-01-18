@@ -55,6 +55,10 @@ namespace IhtApcWebServer.Shared
             }
         }
 
+
+		public CultureInfo CurrentCulture { get; set; }
+		public CultureInfo CurrentUICulture { get; set; }
+
 		/// <summary>
 		/// If the local string has not been found returns keyToLocalize 
 		/// </summary>
@@ -70,17 +74,19 @@ namespace IhtApcWebServer.Shared
 
 				cookie = _httpContextAccessor?.HttpContext?.Request?.Cookies[CookieRequestCultureProvider.DefaultCookieName];
 
-				if (cookie != null)
-                {
+				if (!string.IsNullOrWhiteSpace(cookie))
+				{
 					Cookie = cookie;
+					CurrentCulture = System.Globalization.CultureInfo.CurrentCulture;
+					CurrentUICulture = System.Globalization.CultureInfo.CurrentUICulture;
 				}
 
 				if (string.IsNullOrWhiteSpace(cookie) && !string.IsNullOrWhiteSpace(Cookie))
                 {
-					var cultureStr = Cookie.Split("|")[0].Split("=")[1];
-					var cultureUIStr = Cookie.Split("|")[1].Split("=")[1];
-					System.Globalization.CultureInfo.CurrentCulture = new CultureInfo(cultureStr, true);
-					System.Globalization.CultureInfo.CurrentUICulture = new CultureInfo(cultureUIStr, true);
+					//var cultureStr = Cookie.Split("|")[0].Split("=")[1];
+					//var cultureUIStr = Cookie.Split("|")[1].Split("=")[1];
+					System.Globalization.CultureInfo.CurrentCulture = CurrentCulture;
+					System.Globalization.CultureInfo.CurrentUICulture = CurrentUICulture;
 				}
 			}
 			catch (Exception ex)

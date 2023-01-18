@@ -62,7 +62,7 @@ namespace SharedComponents.Models.APCHardware
         CalibrationActive,
         [Description("Retract Position")]
         RetractHeight,
-        [Description("Retract Position enable")]
+        [Description("Retract Position Enable")]
         RetractPosAtProcessEnd,
         [Description("Slag Sensitivity")]
         SlagSensitivity,
@@ -84,7 +84,7 @@ namespace SharedComponents.Models.APCHardware
         CutO2BlowOutPressure,
         [Description("PreFlow Timeout")]
         CutO2BlowOutTimeOut,
-        [Description("Piercing with Height Control")]
+        [Description("Piercing Height Control")]
         PiercingSensorMode,
         [Description("Dynamic")]
         Dynamic,
