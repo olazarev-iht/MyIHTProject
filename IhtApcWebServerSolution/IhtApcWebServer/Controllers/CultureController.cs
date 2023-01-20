@@ -7,14 +7,16 @@ namespace IhtApcWebServer.Controllers;
 [Route("[controller]/[action]")]
 public class CultureController : Controller
 {
-	public IActionResult Set(string culture, string redirectUri)
+	public IActionResult Set(string newCulture, string redirectUri)
 	{
-		if (culture != null)
+		if (!string.IsNullOrWhiteSpace(newCulture))
 		{
+			var strDefaultCulture = "en-US";
+
 			HttpContext.Response.Cookies.Append(
 				CookieRequestCultureProvider.DefaultCookieName,
 				CookieRequestCultureProvider.MakeCookieValue(
-					new RequestCulture(culture, culture)));
+					new RequestCulture(strDefaultCulture, newCulture)));
 		}
 
 		return LocalRedirect(redirectUri);

@@ -13,7 +13,8 @@
 @using SharedComponents.Services.APCHardwareMockDBServices
 @using SharedComponents.IhtData
 @using MudBlazor.Examples.Data.Models
-@using System.IO.Ports					  
+@using System.Globalization
+@using System.IO.Ports				  
 
 @inject NavigationManager navigationManager
 @inject HttpClient httpClient
@@ -583,7 +584,7 @@ input#password-input:focus {
 
 <MudDialog @bind-IsVisible="_isOpenParamsListDialog" Class="SelectDialog Scaled">
     <TitleContent>
-        <MudText Typo="Typo.h6">@dynParamDataModel.ParamSettings.DisplayName</MudText>
+        <MudText Typo="Typo.h6">@LocalStrByEnStr(@dynParamDataModel.ParamSettings.DisplayName)</MudText>
     </TitleContent>
     <DialogContent>
         <MudForm Model="@dynParamDataModel" @ref="_editParamListFormDialog">
@@ -595,9 +596,9 @@ input#password-input:focus {
             </MudChip>
             </MudListSubheader>*@
             @{ int i = 0; }
-            @foreach (var paramText in @dynParamDataModel.ParamSettings.ViewParameter?.Values)
-            {
-                <MudListItem T="int" Value="@i">@paramText</MudListItem>
+                    @foreach (var paramText in @dynParamDataModel?.ParamSettings?.ViewParameter?.Values ?? new string[0])
+                    {
+                <MudListItem T="int" Value="@i">@LocalStrByEnStr(@paramText)</MudListItem>
                 i = i + 1;
             }
 
@@ -637,7 +638,9 @@ input#password-input:focus {
             <MudListItem Icon="@Icons.Filled.Settings" Text="@T["_CultureButSettings"]" InitiallyExpanded="false">
                 <NestedList>
                     <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenSetupParamsDialog">@LocalStrByKey("_CultureButSetup")</MudListItem>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenLocalizationDialog">@LocalStrByKey("_CultureLanguage")</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenLocalizationDialog">@LocalStrByKey("_CultureLanguage") &nbsp;
+                        <img src="@($"Images/Culture/{CultureInfo.CurrentUICulture.EnglishName.Split()[0]}.gif")" style="mix-blend-mode: normal; width: 35px; height: 20px; vertical-align: middle;" />
+                    </MudListItem>
                     <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenPasswordSetupDialog">@LocalStrByKey("_CultureButPassword")</MudListItem>
                     <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenTorchInstalledDialog">@LocalStrByKey("_CultureButTorchInstalled")</MudListItem>
                 </NestedList>

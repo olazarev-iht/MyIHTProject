@@ -567,7 +567,7 @@
     <value>Origin</value>
   </data>
   <data name="_CultureParamDefault" xml:space="preserve">
-    <value>default</value>
+    <value>Default</value>
   </data>
   <data name="_CultureParamDisabled" xml:space="preserve">
     <value>Disabled</value>
@@ -579,19 +579,19 @@
     <value>Flashback Sensitivity</value>
   </data>
   <data name="_CultureParamHigh" xml:space="preserve">
-    <value>high</value>
+    <value>High</value>
   </data>
   <data name="_CultureParamIgnitionDetection" xml:space="preserve">
     <value>Ignition Detection</value>
   </data>
   <data name="_CultureParamLow" xml:space="preserve">
-    <value>low</value>
+    <value>Low</value>
   </data>
   <data name="_CultureParamOff" xml:space="preserve">
-    <value>off</value>
+    <value>Off</value>
   </data>
   <data name="_CultureParamOn" xml:space="preserve">
-    <value>on</value>
+    <value>On</value>
   </data>
   <data name="_CultureParamPiercingHeightControl" xml:space="preserve">
     <value>Piercing Height Control</value>

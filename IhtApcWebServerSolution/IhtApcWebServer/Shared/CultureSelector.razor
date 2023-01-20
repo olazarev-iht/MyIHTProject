@@ -22,7 +22,7 @@
 </p>*@
 
 
-<MudSelect @bind-Value="@Culture" Label="Language" Variant="Variant.Outlined">
+<MudSelect @bind-Value="@CurrUICulture" Label="Language" Variant="Variant.Outlined">
     @foreach (var culture in supportedCultures)
     {
         var languageName = @culture.EnglishName.Split()[0];
@@ -50,15 +50,15 @@
 
     protected override void OnInitialized()
     {
-        Culture = CultureInfo.CurrentCulture;
+        CurrUICulture = CultureInfo.CurrentUICulture;
     }
 
-    private CultureInfo Culture
+    private CultureInfo CurrUICulture
     {
-        get => CultureInfo.CurrentCulture;
+        get => CultureInfo.CurrentUICulture;
         set
         {
-            if (CultureInfo.CurrentCulture != value)
+            if (CultureInfo.CurrentUICulture != value)
             {
                 var uri = new Uri(Nav.Uri)
                     .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
@@ -66,7 +66,7 @@
                 var uriEscaped = Uri.EscapeDataString(uri);
 
                 Nav.NavigateTo(
-                    $"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
+                    $"Culture/Set?newCulture={cultureEscaped}&redirectUri={uriEscaped}",
                     forceLoad: true);
             }
         }
