@@ -65,6 +65,24 @@ namespace SharedComponents.IhtDev
             Level_3
         }
 
+        public enum PressureUnit
+        {
+            IsPressureBar,
+            IsPressurePsi
+        }
+
+        public enum LengthUnit
+        {
+            IsUnitMm,
+            IsUnitInch,
+            IsUnitInchFractional
+        }
+
+        public enum UnitType
+        {
+            none, bar, psi, mm, inch
+        }
+
         public enum TorchType
         {
             Invalid = -1,
@@ -203,6 +221,11 @@ namespace SharedComponents.IhtDev
                 RaisePropertyChanged("IsUnitInch");
             }
         }
+
+        //private PressureUnit _currPressureUnit;
+        public PressureUnit CurrPressureUnit { get; set; } = PressureUnit.IsPressureBar;
+
+        public LengthUnit CurrLengthUnit { get; set; } = LengthUnit.IsUnitMm;
 
         private TorchType _torchTypeSetup;
         public TorchType TorchTypeSetup

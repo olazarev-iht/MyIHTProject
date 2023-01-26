@@ -80,7 +80,7 @@ namespace SharedComponents.Models.APCHardware
         CurrCutO2BlowoutTime,
         [Description("PreFlow Time")]
         CutO2BlowOutTime,
-        [Description("SPreFlow Pressure")]
+        [Description("PreFlow Pressure")]
         CutO2BlowOutPressure,
         [Description("PreFlow Timeout")]
         CutO2BlowOutTimeOut,

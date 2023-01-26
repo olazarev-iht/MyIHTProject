@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using SharedComponents.IhtDev;
 
 namespace IhtApcWebServer.Services
 {
@@ -6,15 +7,23 @@ namespace IhtApcWebServer.Services
 	{
 		private bool _isInitialized = false;
 		private bool _isInitializing = false;
+
+		private IhtDevices _ihtDevices;
+
 		private readonly ILocalStorageService _localStorage;
 		private readonly ILogger<UnitService> _logger;
-		public bool IsPressureBar { get; private set; }
-		public bool IsDistanceMetric { get; private set; }
+		public IhtDevices.PressureUnit PressureUnit { get; private set; }
+		public IhtDevices.LengthUnit LengthUnit { get; private set; }
 
-		public UnitService(ILocalStorageService localStorage, IHttpContextAccessor accessor, ILogger<UnitService> logger)
+		public UnitService(
+			ILocalStorageService localStorage, 
+			IHttpContextAccessor accessor, 
+			ILogger<UnitService> logger)
 		{
 			_localStorage = localStorage ?? throw new ArgumentNullException(nameof(localStorage));
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+			_ihtDevices = IhtDevices.GetIhtDevices();
 		}
 
 		public async Task EnsureInitializedAsync()
@@ -35,22 +44,22 @@ namespace IhtApcWebServer.Services
 
 			try
 			{
-				if (await _localStorage.ContainKeyAsync(nameof(IsPressureBar)))
+				if (await _localStorage.ContainKeyAsync(nameof(PressureUnit)))
 				{
-					IsPressureBar = await _localStorage.GetItemAsync<bool>(nameof(IsPressureBar));
+					PressureUnit = await _localStorage.GetItemAsync<IhtDevices.PressureUnit>(nameof(PressureUnit));
 				}
 				else
 				{
-					await SetPressureUnitAsync(true);
+					await SetPressureUnitAsync(IhtDevices.PressureUnit.IsPressureBar);
 				}
 
-				if (await _localStorage.ContainKeyAsync(nameof(IsDistanceMetric)))
+				if (await _localStorage.ContainKeyAsync(nameof(LengthUnit)))
 				{
-					IsDistanceMetric = await _localStorage.GetItemAsync<bool>(nameof(IsDistanceMetric));
+					LengthUnit = await _localStorage.GetItemAsync<IhtDevices.LengthUnit>(nameof(LengthUnit));
 				}
 				else
 				{
-					await SetDistanceUnitAsync(true);
+					await SetDistanceUnitAsync(IhtDevices.LengthUnit.IsUnitMm);
 				}
 			}
 			catch (Exception ex)
@@ -61,16 +70,22 @@ namespace IhtApcWebServer.Services
 			_isInitialized = true;
 		}
 
-		public async Task SetPressureUnitAsync(bool isBar)
+		public async Task SetPressureUnitAsync(IhtDevices.PressureUnit pressureUnit)
 		{
-			await _localStorage.SetItemAsync(nameof(IsPressureBar), isBar);
-			IsPressureBar = isBar;
+			await _localStorage.SetItemAsync(nameof(PressureUnit), pressureUnit);
+
+			PressureUnit = pressureUnit;
+
+			_ihtDevices.CurrPressureUnit = pressureUnit;
 		}
 
-		public async Task SetDistanceUnitAsync(bool isMetric)
+		public async Task SetDistanceUnitAsync(IhtDevices.LengthUnit lengthUnit)
 		{
-			await _localStorage.SetItemAsync(nameof(IsDistanceMetric), isMetric);
-			IsDistanceMetric = isMetric;
+			await _localStorage.SetItemAsync(nameof(LengthUnit), lengthUnit);
+
+			LengthUnit = lengthUnit;
+
+			_ihtDevices.CurrLengthUnit = lengthUnit;
 		}
 	}
 }

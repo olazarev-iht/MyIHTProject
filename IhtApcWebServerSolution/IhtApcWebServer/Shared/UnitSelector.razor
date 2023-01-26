@@ -1,19 +1,23 @@
 ﻿@using IhtApcWebServer.Services
+@using SharedComponents.IhtDev
 @inject UnitService UnitService
 
 
 @if (UnitService != null)
 {
-    <MudText Typo="Typo.h5">UnitSelector</MudText>
+    <MudText Typo="Typo.h5">Pressure unit</MudText>
 
-    <MudRadioGroup T="bool" SelectedOption="@UnitService.IsPressureBar" SelectedOptionChanged="@PressureUnitChanged">
-        <MudRadio Option="true" Color="Color.Primary" >Pressure in BAR</MudRadio>
-        <MudRadio Option="false" Color="Color.Secondary">Pressure in PSI</MudRadio>
+    <MudRadioGroup T="IhtDevices.PressureUnit" SelectedOption="@UnitService.PressureUnit" SelectedOptionChanged="@PressureUnitChanged">
+        <MudRadio Option="IhtDevices.PressureUnit.IsPressureBar" Color="Color.Primary" >bar</MudRadio>
+        <MudRadio Option="IhtDevices.PressureUnit.IsPressurePsi" Color="Color.Secondary">psi</MudRadio>
     </MudRadioGroup>
 
-    <MudRadioGroup T="bool" SelectedOption="@UnitService.IsDistanceMetric" SelectedOptionChanged="@DistanceUnitChanged">
-        <MudRadio Option="true" Color="Color.Primary" >Distance in metric</MudRadio>
-        <MudRadio Option="false" Color="Color.Secondary">Distance in imperial</MudRadio>
+    <MudText Typo="Typo.h5">Length unit</MudText>
+
+    <MudRadioGroup T="IhtDevices.LengthUnit" SelectedOption="@UnitService.LengthUnit" SelectedOptionChanged="@DistanceUnitChanged">
+        <MudRadio Option="IhtDevices.LengthUnit.IsUnitMm" Color="Color.Primary" >mm</MudRadio>
+        <MudRadio Option="IhtDevices.LengthUnit.IsUnitInch" Color="Color.Secondary">inch 0.125</MudRadio>
+        <MudRadio Option="IhtDevices.LengthUnit.IsUnitInchFractional" Color="Color.Secondary">inch 1/8</MudRadio>
     </MudRadioGroup>
 }
 
@@ -25,19 +29,19 @@
         await base.OnInitializedAsync();
     }
 
-    protected async Task PressureUnitChanged(bool isBar)
+    protected async Task PressureUnitChanged(IhtDevices.PressureUnit pressureUnit)
     {
-        if (isBar == UnitService.IsPressureBar)
+        if (pressureUnit == UnitService.PressureUnit)
             return;
 
-        await UnitService.SetPressureUnitAsync(isBar);
+        await UnitService.SetPressureUnitAsync(pressureUnit);
     }
 
-    protected async Task DistanceUnitChanged(bool isMetric)
+    protected async Task DistanceUnitChanged(IhtDevices.LengthUnit lengthUnit)
     {
-        if (isMetric == UnitService.IsDistanceMetric)
+        if (lengthUnit == UnitService.LengthUnit)
             return;
 
-        await UnitService.SetDistanceUnitAsync(isMetric);
+        await UnitService.SetDistanceUnitAsync(lengthUnit);
     }
 }

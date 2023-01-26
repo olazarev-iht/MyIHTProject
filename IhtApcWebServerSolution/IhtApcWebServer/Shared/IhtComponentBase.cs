@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Hosting.WindowsServices;
 using Microsoft.Extensions.Localization;
+using SharedComponents.Helpers;
+using SharedComponents.IhtDev;
+using SharedComponents.Models.APCHardware;
 using System.Reflection;
 using System.Resources.NetStandard;
 using System.Globalization;
@@ -164,14 +167,72 @@ namespace IhtApcWebServer.Shared
 			return returnKey;
 		}
 
-		public string P(double pressureInBar)
-		{
-			return (_unitService.IsPressureBar) ? $"{pressureInBar} Bar" : $"{pressureInBar * 14.5037738} psi";
+		public string DisplayParamValue(ParameterDataModel parameterDataModel, string parameterFormat = "")
+        {
+			var returnStr = string.Empty;
+			//double resultValue = 0d;
+
+			var paramUnit = parameterDataModel?.DynParams?.ParameterDataInfo?.Unit;
+			var paramValue = parameterDataModel?.DynParams?.Value;
+			var paramMultiplier = parameterDataModel?.DynParams?.ParameterDataInfo?.Multiplier ?? 1;
+			var displayValue = (paramValue ?? 0) * paramMultiplier;
+
+			if (!string.IsNullOrWhiteSpace(paramUnit) && paramValue != null)
+            {
+				if(paramUnit == Units.txtBar || paramUnit == Units.txtPsi)
+                {
+					returnStr = GetFormatedPressureValue(displayValue, parameterFormat);
+				}
+				else if(paramUnit == Units.txtMm || paramUnit == Units.txtInch || paramUnit == Units.txtInch_min)
+                {
+					returnStr = GetFormatedLengthValue(displayValue, parameterFormat);
+				}
+                else
+                {
+					returnStr = $"{string.Format(parameterFormat, displayValue)} {paramUnit}";
+				}
+            }
+
+			return returnStr;
 		}
 
-		public string D(double distanceInMetric)
+		public string GetFormatedPressureValue(double pressureValue, string parameterFormat = "")
 		{
-			return (_unitService.IsDistanceMetric) ? $"{distanceInMetric}" : $"{distanceInMetric / 25.4}\"";
+			string? returnStr;
+
+			if (_unitService.PressureUnit == IhtDevices.PressureUnit.IsPressurePsi)
+            {
+				double pressurePsiValue = pressureValue * Units.psiMultiplier;
+				returnStr = $"{Units.GetFormattedPressurePsi(pressurePsiValue)} {Units.txtPsi}";
+			}
+            else
+            {
+				returnStr = $"{string.Format(parameterFormat, pressureValue)} {Units.txtBar}";
+			}
+
+			return returnStr;
+		}
+
+		public string GetFormatedLengthValue(double lengthValue, string parameterFormat = "")
+		{
+			string? returnStr;
+			double lengthInchValue = lengthValue * Units.inchMultiplier;
+			
+			if (_unitService.LengthUnit == IhtDevices.LengthUnit.IsUnitInch)
+			{
+				string formatedInchValue = Units.GetFormattedUnitInch(lengthInchValue);
+				returnStr = $"{formatedInchValue} {Units.txtInch}";
+			}
+			else if (_unitService.LengthUnit == IhtDevices.LengthUnit.IsUnitInchFractional)
+			{
+				returnStr = $"{Units.mmToinchFractions[(int)lengthValue]} {Units.txtInch}";
+			}
+			else
+			{
+				returnStr = $"{string.Format(parameterFormat, lengthValue)} {Units.txtMm}";
+			}
+
+			return returnStr;
 		}
 
 		protected override async Task OnInitializedAsync()

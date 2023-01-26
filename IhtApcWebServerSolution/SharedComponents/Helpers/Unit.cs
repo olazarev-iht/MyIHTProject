@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharedComponents.Helpers
 {
-    class Units
+    public class Units
     {
         public static readonly string txtMm = "mm";
         public static readonly string txtInch = "inch";
@@ -23,7 +23,7 @@ namespace SharedComponents.Helpers
         public static readonly double psiMultiplier = 14.50377438972831;
         public static readonly double inchMultiplier = 1.0 / 25.4;
 
-        private static readonly Dictionary<double, string> mmToinchFractions = new Dictionary<double, string>();
+        public static readonly Dictionary<int, string> mmToinchFractions = new Dictionary<int, string>();
 
         /// <summary>
         /// 
@@ -92,7 +92,7 @@ namespace SharedComponents.Helpers
             string inchData;
             if (blFraction)
             {
-                mmToinchFractions.TryGetValue(thickness, out inchData);
+                mmToinchFractions.TryGetValue((int)thickness, out inchData);
                 if (inchData == null)
                 {
                     inchData = Units.GetFormattedUnitInch(thickness * Units.inchMultiplier);
@@ -158,7 +158,7 @@ namespace SharedComponents.Helpers
         /// <summary>
         /// http://www.csharp-examples.net/string-format-double/
         /// </summary>
-        internal static string GetFormattedUnitInch(double valueInch, bool with4Digits = true)
+        static public string GetFormattedUnitInch(double valueInch, bool with4Digits = true)
         {
             string result = String.Empty;
             //      result = (valueInch > 10.0 && with4Digits) ? String.Format("{0,2:0.00}", valueInch) : String.Format("{0,3:0.000}", valueInch);
