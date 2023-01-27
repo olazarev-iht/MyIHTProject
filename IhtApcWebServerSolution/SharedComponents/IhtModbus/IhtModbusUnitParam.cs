@@ -62,13 +62,15 @@ namespace SharedComponents.IhtModbus
                 case IhtModbusParamDyn.eIdxTechnology.PreHeatHeight: return IsUnitInch ? txtInch : txtMm;
                 case IhtModbusParamDyn.eIdxTechnology.PierceHeight: return IsUnitInch ? txtInch : txtMm;
                 case IhtModbusParamDyn.eIdxTechnology.CutHeight: return IsUnitInch ? txtInch : txtMm;
-                case IhtModbusParamDyn.eIdxTechnology.HeatO2Ignition: return IsPasswordLevel_SwLevel_1 ? (IsPressurePsi ? txtPsi : txtBar) : " ";
+                //case IhtModbusParamDyn.eIdxTechnology.HeatO2Ignition: return IsPasswordLevel_SwLevel_1 ? (IsPressurePsi ? txtPsi : txtBar) : " ";
+                case IhtModbusParamDyn.eIdxTechnology.HeatO2Ignition: return IsPressurePsi ? txtPsi : txtBar;
                 case IhtModbusParamDyn.eIdxTechnology.HeatO2PreHeat: return IsPressurePsi ? txtPsi : txtBar;
                 case IhtModbusParamDyn.eIdxTechnology.HeatO2Pierce: return IsPressurePsi ? txtPsi : txtBar;
                 case IhtModbusParamDyn.eIdxTechnology.HeatO2Cut: return IsPressurePsi ? txtPsi : txtBar;
                 case IhtModbusParamDyn.eIdxTechnology.CutO2Pierce: return IsPressurePsi ? txtPsi : txtBar;
                 case IhtModbusParamDyn.eIdxTechnology.CutO2Cut: return IsPressurePsi ? txtPsi : txtBar;
-                case IhtModbusParamDyn.eIdxTechnology.FuelGasIgnition: return IsPasswordLevel_SwLevel_1 ? (IsPressurePsi ? txtPsi : txtBar) : " ";
+                //case IhtModbusParamDyn.eIdxTechnology.FuelGasIgnition: return IsPasswordLevel_SwLevel_1 ? (IsPressurePsi ? txtPsi : txtBar) : " ";
+                case IhtModbusParamDyn.eIdxTechnology.FuelGasIgnition: return IsPressurePsi ? txtPsi : txtBar;
                 case IhtModbusParamDyn.eIdxTechnology.FuelGasPreHeat: return IsPressurePsi ? txtPsi : txtBar;
                 case IhtModbusParamDyn.eIdxTechnology.FuelGasPierce: return IsPressurePsi ? txtPsi : txtBar;
                 case IhtModbusParamDyn.eIdxTechnology.FuelGasCut: return IsPressurePsi ? txtPsi : txtBar;

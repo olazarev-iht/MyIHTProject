@@ -1,4 +1,4 @@
-﻿@page "/cuttingParameters"
+﻿@*@page "/cuttingParameters"
 
 @inherits IhtComponentBase
 @using SharedComponents.Models
@@ -34,4 +34,4 @@
     {
         parameters = await parametersService.GetEntriesAsync(0, 20, CancellationToken.None);
     }
-}
+}*@

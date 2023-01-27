@@ -835,7 +835,7 @@ input#password-input:focus {
                             Min="@paramHeatO2.DynParams.ConstParams.Min" 
                             Max="@paramHeatO2.DynParams.ConstParams.Max"
                             Step="@paramHeatO2.DynParams.ConstParams.Step" 
-                            Color="Color.Info"><table><tr><td style="text-align:left;">Flame (H-O):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramHeatO2, "0.0"))&nbsp;&nbsp;</td><td style="text-align:right; width:10%">Bar</td></tr></table>
+                            Color="Color.Info"><table><tr><td style="text-align:left;">Flame (H-O):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramHeatO2, "{0,1:0.0}"))&nbsp;&nbsp;</td><td style="text-align:right; width:10%"></td></tr></table>
                             </MudSlider>                           
                         </td> 
                         <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramHeatO2, 10))">
@@ -1504,6 +1504,8 @@ input#password-input:focus {
     private void CloseLocalizationDialog()
     {
         _cultureSelectorVisible = false;
+
+        navigationManager.NavigateTo(navigationManager.Uri, true);
     }
 
     private void RestoreIsVisibleAndTorchType()
