@@ -170,6 +170,44 @@ namespace IhtApcWebServer.Shared
 		public string DisplayParamValue(ParameterDataModel parameterDataModel, string parameterFormat = "")
         {
 			var returnStr = string.Empty;
+
+			var displayParamValueAndUnit = DisplayParamValueAndUnit(parameterDataModel, parameterFormat);
+
+			if(!string.IsNullOrWhiteSpace(displayParamValueAndUnit))
+            {
+				var arrValueAndUnit = displayParamValueAndUnit.Split(" ");
+
+				if(arrValueAndUnit.Length > 0)
+                {
+					returnStr = arrValueAndUnit[0];
+				}
+			}
+
+			return returnStr;
+		}
+
+		public string DisplayParamUnit(ParameterDataModel parameterDataModel, string parameterFormat = "")
+		{
+			var returnStr = string.Empty;
+
+			var displayParamValueAndUnit = DisplayParamValueAndUnit(parameterDataModel, parameterFormat);
+
+			if (!string.IsNullOrWhiteSpace(displayParamValueAndUnit))
+			{
+				var arrValueAndUnit = displayParamValueAndUnit.Split(" ");
+
+				if (arrValueAndUnit.Length > 1)
+				{
+					returnStr = arrValueAndUnit[1];
+				}
+			}
+
+			return returnStr;
+		}
+
+		public string DisplayParamValueAndUnit(ParameterDataModel parameterDataModel, string parameterFormat = "")
+        {
+			var returnStr = string.Empty;
 			//double resultValue = 0d;
 
 			var paramUnit = parameterDataModel?.DynParams?.ParameterDataInfo?.Unit;
@@ -200,7 +238,7 @@ namespace IhtApcWebServer.Shared
 		{
 			string? returnStr;
 
-			if (_unitService.PressureUnit == IhtDevices.PressureUnit.IsPressurePsi)
+			if (UnitService.PressureUnit == IhtDevices.PressureUnit.IsPressurePsi)
             {
 				double pressurePsiValue = pressureValue * Units.psiMultiplier;
 				returnStr = $"{Units.GetFormattedPressurePsi(pressurePsiValue)} {Units.txtPsi}";
@@ -218,12 +256,12 @@ namespace IhtApcWebServer.Shared
 			string? returnStr;
 			double lengthInchValue = lengthValue * Units.inchMultiplier;
 			
-			if (_unitService.LengthUnit == IhtDevices.LengthUnit.IsUnitInch)
+			if (UnitService.LengthUnit == IhtDevices.LengthUnit.IsUnitInch)
 			{
 				string formatedInchValue = Units.GetFormattedUnitInch(lengthInchValue);
 				returnStr = $"{formatedInchValue} {Units.txtInch}";
 			}
-			else if (_unitService.LengthUnit == IhtDevices.LengthUnit.IsUnitInchFractional)
+			else if (UnitService.LengthUnit == IhtDevices.LengthUnit.IsUnitInchFractional)
 			{
 				returnStr = $"{Units.mmToinchFractions[(int)lengthValue]} {Units.txtInch}";
 			}

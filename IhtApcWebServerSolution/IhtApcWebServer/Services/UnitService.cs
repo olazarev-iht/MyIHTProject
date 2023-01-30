@@ -12,8 +12,8 @@ namespace IhtApcWebServer.Services
 
 		private readonly ILocalStorageService _localStorage;
 		private readonly ILogger<UnitService> _logger;
-		public IhtDevices.PressureUnit PressureUnit { get; private set; }
-		public IhtDevices.LengthUnit LengthUnit { get; private set; }
+		public static IhtDevices.PressureUnit PressureUnit { get; private set; }
+		public static IhtDevices.LengthUnit LengthUnit { get; private set; }
 
 		public UnitService(
 			ILocalStorageService localStorage, 
