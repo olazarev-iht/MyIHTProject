@@ -212,31 +212,50 @@ namespace IhtApcWebServer.Shared
 
 			var paramUnit = parameterDataModel?.DynParams?.ParameterDataInfo?.Unit;
 			var paramValue = parameterDataModel?.DynParams?.Value;
-			var paramMultiplier = parameterDataModel?.DynParams?.ParameterDataInfo?.Multiplier ?? 1;
+			var paramMultiplier = parameterDataModel?.DynParams?.ParameterDataInfo?.Multiplier ?? 0;
 			var paramMaxValue = (double)(parameterDataModel?.DynParams?.ConstParams?.Max ?? 0);
 
-			if (paramMultiplier == 0d) paramMultiplier = 1d;
+			double displayValue;
 
-			var displayValue = (paramValue ?? 0) * paramMultiplier;
-			
+			//if (paramMultiplier == 0d) paramMultiplier = 1d;
+
+			//var displayValue = (paramValue ?? 0) * paramMultiplier;
+
 
 			if (!string.IsNullOrWhiteSpace(paramUnit) && paramValue != null)
             {
 				if(paramUnit == Units.txtBar || paramUnit == Units.txtPsi)
                 {
+					if (paramMultiplier == 0) paramMultiplier = 0.001;
+
+					displayValue = GetValueToDisplay(paramValue, paramMultiplier);
+
 					returnStr = GetFormatedPressureValue(displayValue, paramMaxValue, parameterFormat);
 				}
 				else if(paramUnit == Units.txtMm || paramUnit == Units.txtInch || paramUnit == Units.txtInch_min)
                 {
+					if (paramMultiplier == 0) paramMultiplier = 0.1;
+
+					displayValue = GetValueToDisplay(paramValue, paramMultiplier);
+
 					returnStr = GetFormatedLengthValue(displayValue, parameterFormat);
 				}
                 else
                 {
+					if (paramMultiplier == 0) paramMultiplier = 1;
+
+					displayValue = GetValueToDisplay(paramValue, paramMultiplier);
+
 					returnStr = $"{string.Format(parameterFormat, displayValue)} {paramUnit}";
 				}
             }
 
 			return returnStr;
+		}
+
+		private double GetValueToDisplay(int? value, double multiplier)
+        {
+			return (value ?? 0) * multiplier;
 		}
 
 		public string GetFormatedPressureValue(double pressureValue, double maxValue = 0, string parameterFormat = "")
@@ -260,7 +279,7 @@ namespace IhtApcWebServer.Shared
 		{
 			string? returnStr;
 
-			var strFormat = !string.IsNullOrWhiteSpace(parameterFormat) ? parameterFormat : "{0,0:0}";
+			var strFormat = !string.IsNullOrWhiteSpace(parameterFormat) ? parameterFormat : "{0,1:0.0}";
 
 			double lengthInchValue = lengthValue * Units.inchMultiplier;
 			

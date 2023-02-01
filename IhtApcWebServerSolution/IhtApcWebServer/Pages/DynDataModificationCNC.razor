@@ -1509,6 +1509,8 @@ input#password-input:focus {
 
         _menuExpanded = false;
         //navigationManager.NavigateTo(navigationManager.Uri, true);
+
+        ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
     }
 
     private void RestoreIsVisibleAndTorchType()
