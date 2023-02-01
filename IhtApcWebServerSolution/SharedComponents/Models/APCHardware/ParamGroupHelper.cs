@@ -136,8 +136,8 @@ namespace SharedComponents.Models.APCHardware
         public static readonly Dictionary<SettingParamIds, (Enum? paramModbusEnum, string Format)> SettingParamsProperties = new()
         {
             { SettingParamIds.TactileInitialPosFinding, (IhtModbusParamDyn.eIdxConfig.TactileInitialPosFinding, @"{ 'Mode':'Switch', 'Values': ['Disabled', 'Enabled'] }") },
-            { SettingParamIds.DistanceCalibration, (IhtModbusParamDyn.eIdxConfig.DistanceCalibration, @"{ 'Mode':'Slider', 'Unit' : true }") },
-            { SettingParamIds.LinearDrivePosition, (IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition, @"{ 'Unit' : true }") },
+            { SettingParamIds.DistanceCalibration, (IhtModbusParamDyn.eIdxConfig.DistanceCalibration, @"{ 'Mode':'Slider' }") },
+            { SettingParamIds.LinearDrivePosition, (IhtModbusParamDyn.eIdxProcessInfo.LinearDrivePosition, @"{ 'Unit' : 'mm' }") },
             { SettingParamIds.CalibrationValid, (null, @"{ 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }") },
             { SettingParamIds.CalibrationActive, (null, @"{ 'Mode':'NoYes', 'Values':['No','Yes'],'ReadOnly':true }") },
             { SettingParamIds.RetractHeight, (IhtModbusParamDyn.eIdxProcess.RetractHeight, @"{ 'Name':'Retract Position', 'Mode':'Slider' }") },

@@ -169,6 +169,58 @@ namespace SharedComponents.Helpers
         /// <summary>
         /// http://www.csharp-examples.net/string-format-double/
         /// </summary>
+        static public string GetFormattedPressurePsi(double valuePsi, double maxValue = 0d, string parameterFormat = "")
+        {
+            string result = String.Empty;
+
+            if (string.IsNullOrWhiteSpace(parameterFormat))
+            {
+                if (maxValue >= 5000)
+                {
+                    result = String.Format("{0,0:0}", valuePsi);
+                }
+                else if (maxValue >= 1000)
+                {
+                    result = String.Format("{0,1:0.0}", valuePsi);
+                }
+                else
+                {
+                    result = String.Format("{0,2:0.00}", valuePsi);
+                }
+            }
+            else
+            {
+                result = String.Format(parameterFormat, valuePsi);
+            }
+            return result;
+        }
+
+        static public string GetFormattedPressureBar(double valuePsi, double maxValue = 0d, string parameterFormat = "")
+        {
+            string result = String.Empty;
+
+            if (string.IsNullOrWhiteSpace(parameterFormat))
+            {
+                if (maxValue >= 5000)
+                {
+                    result = String.Format("{0,1:0.0}", valuePsi);
+                }
+                else if (maxValue >= 1000)
+                {
+                    result = String.Format("{0,2:0.00}", valuePsi);
+                }
+                else
+                {
+                    result = String.Format("{0,3:0.000}", valuePsi);
+                }
+            }
+            else
+            {
+                result = String.Format(parameterFormat, valuePsi);
+            }
+            return result;
+        }
+
         static public string GetFormattedPressurePsi(double valuePsi, bool with4Digits = true)
         {
             string result = String.Empty;

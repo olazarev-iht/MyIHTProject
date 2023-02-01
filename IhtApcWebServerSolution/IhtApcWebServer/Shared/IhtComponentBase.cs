@@ -213,13 +213,18 @@ namespace IhtApcWebServer.Shared
 			var paramUnit = parameterDataModel?.DynParams?.ParameterDataInfo?.Unit;
 			var paramValue = parameterDataModel?.DynParams?.Value;
 			var paramMultiplier = parameterDataModel?.DynParams?.ParameterDataInfo?.Multiplier ?? 1;
+			var paramMaxValue = (double)(parameterDataModel?.DynParams?.ConstParams?.Max ?? 0);
+
+			if (paramMultiplier == 0d) paramMultiplier = 1d;
+
 			var displayValue = (paramValue ?? 0) * paramMultiplier;
+			
 
 			if (!string.IsNullOrWhiteSpace(paramUnit) && paramValue != null)
             {
 				if(paramUnit == Units.txtBar || paramUnit == Units.txtPsi)
                 {
-					returnStr = GetFormatedPressureValue(displayValue, parameterFormat);
+					returnStr = GetFormatedPressureValue(displayValue, paramMaxValue, parameterFormat);
 				}
 				else if(paramUnit == Units.txtMm || paramUnit == Units.txtInch || paramUnit == Units.txtInch_min)
                 {
@@ -234,18 +239,18 @@ namespace IhtApcWebServer.Shared
 			return returnStr;
 		}
 
-		public string GetFormatedPressureValue(double pressureValue, string parameterFormat = "")
+		public string GetFormatedPressureValue(double pressureValue, double maxValue = 0, string parameterFormat = "")
 		{
 			string? returnStr;
 
-			if (UnitService.PressureUnit == IhtDevices.PressureUnit.IsPressurePsi)
+			if (UnitService.PressureUnit == IhtDevices.PressureUnit.IsPressurePsi) //for psi
             {
 				double pressurePsiValue = pressureValue * Units.psiMultiplier;
-				returnStr = $"{Units.GetFormattedPressurePsi(pressurePsiValue)} {Units.txtPsi}";
+				returnStr = $"{Units.GetFormattedPressurePsi(pressurePsiValue, maxValue, parameterFormat:parameterFormat)} {Units.txtPsi}";
 			}
-            else
+            else // for bar
             {
-				returnStr = $"{string.Format(parameterFormat, pressureValue)} {Units.txtBar}";
+				returnStr = $"{Units.GetFormattedPressureBar(pressureValue, maxValue, parameterFormat: parameterFormat)} {Units.txtBar}";
 			}
 
 			return returnStr;
@@ -254,6 +259,9 @@ namespace IhtApcWebServer.Shared
 		public string GetFormatedLengthValue(double lengthValue, string parameterFormat = "")
 		{
 			string? returnStr;
+
+			var strFormat = !string.IsNullOrWhiteSpace(parameterFormat) ? parameterFormat : "{0,0:0}";
+
 			double lengthInchValue = lengthValue * Units.inchMultiplier;
 			
 			if (UnitService.LengthUnit == IhtDevices.LengthUnit.IsUnitInch)
@@ -267,7 +275,7 @@ namespace IhtApcWebServer.Shared
 			}
 			else
 			{
-				returnStr = $"{string.Format(parameterFormat, lengthValue)} {Units.txtMm}";
+				returnStr = $"{string.Format(strFormat, lengthValue)} {Units.txtMm}";
 			}
 
 			return returnStr;

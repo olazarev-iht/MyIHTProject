@@ -68,6 +68,7 @@ namespace SharedComponents.IhtModbus
         }
 
         public static string clientCode = string.Empty;
+        public static string installationMode = string.Empty;
 
         // Declare a delegate
         public delegate IhtModbusAddrInfo GetAddrInfoDelegate();

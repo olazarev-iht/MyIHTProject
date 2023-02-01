@@ -116,7 +116,7 @@ namespace SharedComponents.Models.APCHardware
                     Mode = formatDetails?.Mode != null ? formatDetails.Mode : string.Empty,
                     Values = formatDetails?.Values != null ? formatDetails.Values : Array.Empty<string>(),
                     ReadOnly = formatDetails?.ReadOnly != null ? formatDetails.ReadOnly : false,
-                    Unit = formatDetails?.Unit != null ? formatDetails.Unit : false,
+                    Unit = formatDetails?.Unit != null ? formatDetails.Unit : "",
                 };
             }
             set { }

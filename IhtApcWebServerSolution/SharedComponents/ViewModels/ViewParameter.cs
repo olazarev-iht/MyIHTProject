@@ -12,6 +12,6 @@ namespace SharedComponents.ViewModels
         public string Mode { get; set; } = string.Empty;
         public string[] Values { get; set; } = Array.Empty<string>();
         public bool ReadOnly { get; set; }
-        public bool? Unit { get; set; }
+        public string? Unit { get; set; }
     }
 }

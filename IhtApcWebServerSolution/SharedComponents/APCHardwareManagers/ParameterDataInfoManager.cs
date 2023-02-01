@@ -199,6 +199,14 @@ namespace SharedComponents.APCHardwareManagers
                 if (p.ParamSettings != null)
                 {
                     p.ParamSettings.ReadOnly = p.ParamSettings.ViewParameter.ReadOnly;
+
+                    if (p.DynParams != null && p.DynParams.ParameterDataInfo != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(p?.ParamSettings?.ViewParameter?.Unit))
+                        {
+                            p.DynParams.ParameterDataInfo.Unit = p.ParamSettings.ViewParameter.Unit;
+                        }
+                    }
                 }
             });
 

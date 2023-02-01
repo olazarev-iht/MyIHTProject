@@ -81,7 +81,9 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 
 string clientCode = "default";
 
-string cmdLineClientCode = builder.Configuration["client"];
+string cmdLineClientCode = builder.Configuration["client"]; //--client
+
+string cmdInstallationMode = builder.Configuration["m"]; //--m (mode)
 
 if (!string.IsNullOrWhiteSpace(cmdLineClientCode))
 {
@@ -89,6 +91,7 @@ if (!string.IsNullOrWhiteSpace(cmdLineClientCode))
 }
 
 IhtModbusCommunic.clientCode = clientCode;
+IhtModbusCommunic.installationMode = cmdInstallationMode;
 
 #endregion // Service, CommandLineParams
 
