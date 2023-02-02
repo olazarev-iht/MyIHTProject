@@ -556,7 +556,7 @@ input#password-input:focus {
                 <table>
                     <tr>
                         <td>
-                            <font style="@( context?.ParamSettings?.ReadOnly ?? false ? "opacity:0.5" : "opacity:1" )">@(DisplayParamValueAndUnit(@context)) : @context.DynParams.Value</font>
+                            <font style="@( context?.ParamSettings?.ReadOnly ?? false ? "opacity:0.5" : "opacity:1" )">@(DisplayParamValueAndUnit(@context))</font>
                         </td>
                         <td>
                             @if(@context?.ParamSettings?.ViewParameter?.Mode == "ProgressCircular"){

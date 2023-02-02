@@ -207,8 +207,11 @@ namespace IhtApcWebServer.Shared
 
 		public string DisplayParamValueAndUnit(ParameterDataModel parameterDataModel, string parameterFormat = "")
         {
+			if(parameterDataModel == null) 
+				throw new ArgumentNullException($"{nameof(parameterDataModel)} param is null");
+
 			var returnStr = string.Empty;
-			//double resultValue = 0d;
+			var defaultFormat = !string.IsNullOrWhiteSpace(parameterFormat) ? parameterFormat : "{0}"; 
 
 			var paramUnit = parameterDataModel?.DynParams?.ParameterDataInfo?.Unit;
 			var paramValue = parameterDataModel?.DynParams?.Value;
@@ -217,12 +220,8 @@ namespace IhtApcWebServer.Shared
 
 			double displayValue;
 
-			//if (paramMultiplier == 0d) paramMultiplier = 1d;
 
-			//var displayValue = (paramValue ?? 0) * paramMultiplier;
-
-
-			if (!string.IsNullOrWhiteSpace(paramUnit) && paramValue != null)
+			if (paramValue != null)
             {
 				if(paramUnit == Units.txtBar || paramUnit == Units.txtPsi)
                 {
@@ -246,7 +245,7 @@ namespace IhtApcWebServer.Shared
 
 					displayValue = GetValueToDisplay(paramValue, paramMultiplier);
 
-					returnStr = $"{string.Format(parameterFormat, displayValue)} {paramUnit}";
+					returnStr = $"{string.Format(defaultFormat, displayValue)} {paramUnit}";
 				}
             }
 
