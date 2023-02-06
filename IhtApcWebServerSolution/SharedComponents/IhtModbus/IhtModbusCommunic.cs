@@ -550,12 +550,19 @@ namespace SharedComponents.IhtModbus
             {
                 if (!IsSimulation)
                 {
-                    datas = modbusMaster.ReadHoldingRegisters(slaveAddress, startAddress, numRegisters);
+                    if (modbusMaster != null)
+                    {
+                        datas = modbusMaster.ReadHoldingRegisters(slaveAddress, startAddress, numRegisters);
+                    }
                 }
                 else
                 {
-                    datas = await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(slaveAddress, startAddress, numRegisters);
+                    if (_apcSimulationDataMockDBService != null)
+                    {
+                        datas = await _apcSimulationDataMockDBService.ReadHoldingRegistersAsync(slaveAddress, startAddress, numRegisters);
+                    }
                 }
+
                 ihtModbusResult.Result = true;
                 ihtDevices.ClrCommunicError((int)slaveAddress);
             }

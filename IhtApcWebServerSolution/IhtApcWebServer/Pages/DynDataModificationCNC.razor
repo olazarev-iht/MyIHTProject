@@ -851,8 +851,8 @@ input#password-input:focus {
                         <td>
                             <MudSlider @ontouchend="@(()=>UpdateDynParam(@paramFuelGas))" @onmouseup="@(()=>UpdateDynParam(@paramFuelGas))"
                             @bind-Value="@paramFuelGas.DynParams.Value" 
-                            Min="@(GetValueForPressure(@paramFuelGas, "Min"))" 
-                            Max="@(GetValueForPressure(@paramFuelGas, "Max"))"
+                            Min="@paramFuelGas.DynParams.ConstParams.Min" 
+                            Max="@paramFuelGas.DynParams.ConstParams.Max"
                             Step="@(GetValueForPressure(@paramFuelGas, "Step"))" 
                             Color="Color.Info"><table><tr><td style="text-align:left;width:60%">Flame (F-G):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramFuelGas))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramFuelGas))</td></tr></table>
                             </MudSlider>
@@ -2070,7 +2070,7 @@ input#password-input:focus {
         }
     }
 
-    private void UpdateDynParam(ParameterDataModel parameterData)
+    public override void UpdateDynParam(ParameterDataModel parameterData)
     {
         OnParamChanged(parameterData);
     }

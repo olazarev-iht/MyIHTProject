@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Resources.NetStandard;
 using System.Globalization;
 using System.Collections;
+using SharedComponents.Services.APCCommunicServices;
 
 namespace IhtApcWebServer.Shared
 {
@@ -205,10 +206,37 @@ namespace IhtApcWebServer.Shared
 			return returnStr;
 		}
 
+		public int CorrectTheCurrentValue(ParameterDataModel parameterDataModel, int currentValue)
+        {
+			var curStep = GetValueForPressure(parameterDataModel, "Step");
+			var minValue = GetValueForPressure(parameterDataModel, "Min");
+			var maxValue = GetValueForPressure(parameterDataModel, "Max");
+
+			var index = ((double)currentValue) / curStep;
+
+			var roundedIndex = (int)Math.Round(index, MidpointRounding.AwayFromZero);
+
+			var newValue = curStep * roundedIndex;
+
+			if(newValue < minValue)
+            {
+				newValue = minValue;
+            }
+
+			if(newValue > maxValue)
+            {
+				newValue = maxValue;
+            }
+
+			return newValue;
+        }
+
 		public string DisplayParamValueAndUnit(ParameterDataModel parameterDataModel, string parameterFormat = "")
 		{
 			if (parameterDataModel == null)
 				throw new ArgumentNullException($"{nameof(parameterDataModel)} param is null");
+
+			CheckAndUpdateValueIfNotValid(parameterDataModel);
 
 			var returnStr = string.Empty;
 			var defaultFormat = !string.IsNullOrWhiteSpace(parameterFormat) ? parameterFormat : "{0}";
@@ -225,6 +253,8 @@ namespace IhtApcWebServer.Shared
 			{
 				if (paramUnit == Units.txtBar || paramUnit == Units.txtPsi)
 				{
+					paramValue = CorrectTheCurrentValue(parameterDataModel, (int)paramValue);
+
 					if (paramMultiplier == 0) paramMultiplier = 0.001;
 
 					displayValue = GetValueToDisplay(paramValue, paramMultiplier);
@@ -250,6 +280,30 @@ namespace IhtApcWebServer.Shared
 			}
 
 			return returnStr;
+		}
+
+		public void CheckAndUpdateValueIfNotValid(ParameterDataModel parameterDataModel)
+		{
+			if (parameterDataModel == null) return;
+
+			var paramValue = parameterDataModel?.DynParams?.Value;
+			var paramMaxValue = parameterDataModel?.DynParams?.ConstParams?.Max ?? 0;
+			var paramMinValue = parameterDataModel?.DynParams?.ConstParams?.Min ?? 0;
+
+
+			if (parameterDataModel != null && parameterDataModel.DynParams != null && parameterDataModel.DynParams.ConstParams != null && paramMaxValue > 0)
+			{
+				if (paramValue < paramMinValue)
+				{
+					parameterDataModel.DynParams.Value = paramMinValue;
+					UpdateDynParam(parameterDataModel);
+				}
+				else if (paramValue > paramMaxValue)
+				{
+					parameterDataModel.DynParams.Value = paramMaxValue;
+					UpdateDynParam(parameterDataModel);
+				}
+			}
 		}
 
 		public int GetValueForPressure(ParameterDataModel parameterDataModel, string valueName)
@@ -392,5 +446,10 @@ namespace IhtApcWebServer.Shared
 		{
 			Rsxr?.Close();
 		}
-	}
+
+		public virtual void UpdateDynParam(ParameterDataModel parameterData)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
