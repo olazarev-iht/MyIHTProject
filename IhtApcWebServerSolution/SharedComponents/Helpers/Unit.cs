@@ -21,6 +21,7 @@ namespace SharedComponents.Helpers
         public static bool IsUnitInchFractional { get; set; }
 
         public static readonly double psiMultiplier = 14.50377438972831;
+        public static readonly double psiToIntValueMultiplier = 1.0 / 0.01450377438972831;
         public static readonly double inchMultiplier = 1.0 / 25.4;
 
         public static readonly Dictionary<int, string> mmToinchFractions = new Dictionary<int, string>();

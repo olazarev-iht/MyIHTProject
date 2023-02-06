@@ -37,14 +37,14 @@ namespace IhtApcWebServer.Shared
 		private static ResXResourceReader? _rsxr;
 
 		//public IhtComponentBase()
-  //      {
+		//      {
 		//	Cookie = _httpContextAccessor?.HttpContext?.Request?.Cookies[CookieRequestCultureProvider.DefaultCookieName];
 		//}
 
 		public static ResXResourceReader? Rsxr
-        {
-            get
-            {
+		{
+			get
+			{
 				if (_rsxr == null)
 				{
 					_rsxr = new ResXResourceReader(defaultResxFile);
@@ -52,11 +52,11 @@ namespace IhtApcWebServer.Shared
 
 				return _rsxr;
 			}
-            set
-            {
+			set
+			{
 				_rsxr = value;
-            }
-        }
+			}
+		}
 
 
 		public CultureInfo CurrentCulture { get; set; }
@@ -85,7 +85,7 @@ namespace IhtApcWebServer.Shared
 				}
 
 				if (string.IsNullOrWhiteSpace(cookie) && !string.IsNullOrWhiteSpace(Cookie))
-                {
+				{
 					//var cultureStr = Cookie.Split("|")[0].Split("=")[1];
 					//var cultureUIStr = Cookie.Split("|")[1].Split("=")[1];
 					System.Globalization.CultureInfo.CurrentCulture = CurrentCulture;
@@ -93,16 +93,16 @@ namespace IhtApcWebServer.Shared
 				}
 			}
 			catch (Exception ex)
-            {
+			{
 				var message = ex.Message;
-            }
+			}
 
 			var strLocalized = T[keyToLocalize, args];
 
 			var returnStr = strLocalized.ToString();
-			
+
 			if (strLocalized.ResourceNotFound)
-            {
+			{
 				try
 				{
 					if (Rsxr != null)
@@ -116,11 +116,11 @@ namespace IhtApcWebServer.Shared
 					}
 				}
 				catch (Exception ex)
-                {
+				{
 					_logger.LogError(ex, ex.Message);
-                }
+				}
 			}
-            
+
 			return returnStr;
 		}
 
@@ -168,17 +168,17 @@ namespace IhtApcWebServer.Shared
 		}
 
 		public string DisplayParamValue(ParameterDataModel parameterDataModel, string parameterFormat = "")
-        {
+		{
 			var returnStr = string.Empty;
 
 			var displayParamValueAndUnit = DisplayParamValueAndUnit(parameterDataModel, parameterFormat);
 
-			if(!string.IsNullOrWhiteSpace(displayParamValueAndUnit))
-            {
+			if (!string.IsNullOrWhiteSpace(displayParamValueAndUnit))
+			{
 				var arrValueAndUnit = displayParamValueAndUnit.Split(" ");
 
-				if(arrValueAndUnit.Length > 0)
-                {
+				if (arrValueAndUnit.Length > 0)
+				{
 					returnStr = arrValueAndUnit[0];
 				}
 			}
@@ -206,12 +206,12 @@ namespace IhtApcWebServer.Shared
 		}
 
 		public string DisplayParamValueAndUnit(ParameterDataModel parameterDataModel, string parameterFormat = "")
-        {
-			if(parameterDataModel == null) 
+		{
+			if (parameterDataModel == null)
 				throw new ArgumentNullException($"{nameof(parameterDataModel)} param is null");
 
 			var returnStr = string.Empty;
-			var defaultFormat = !string.IsNullOrWhiteSpace(parameterFormat) ? parameterFormat : "{0}"; 
+			var defaultFormat = !string.IsNullOrWhiteSpace(parameterFormat) ? parameterFormat : "{0}";
 
 			var paramUnit = parameterDataModel?.DynParams?.ParameterDataInfo?.Unit;
 			var paramValue = parameterDataModel?.DynParams?.Value;
@@ -222,35 +222,118 @@ namespace IhtApcWebServer.Shared
 
 
 			if (paramValue != null)
-            {
-				if(paramUnit == Units.txtBar || paramUnit == Units.txtPsi)
-                {
+			{
+				if (paramUnit == Units.txtBar || paramUnit == Units.txtPsi)
+				{
 					if (paramMultiplier == 0) paramMultiplier = 0.001;
 
 					displayValue = GetValueToDisplay(paramValue, paramMultiplier);
 
 					returnStr = GetFormatedPressureValue(displayValue, paramMaxValue, parameterFormat);
 				}
-				else if(paramUnit == Units.txtMm || paramUnit == Units.txtInch || paramUnit == Units.txtInch_min)
-                {
+				else if (paramUnit == Units.txtMm || paramUnit == Units.txtInch || paramUnit == Units.txtInch_min)
+				{
 					if (paramMultiplier == 0) paramMultiplier = 0.1;
 
 					displayValue = GetValueToDisplay(paramValue, paramMultiplier);
 
 					returnStr = GetFormatedLengthValue(displayValue, parameterFormat);
 				}
-                else
-                {
+				else
+				{
 					if (paramMultiplier == 0) paramMultiplier = 1;
 
 					displayValue = GetValueToDisplay(paramValue, paramMultiplier);
 
 					returnStr = $"{string.Format(defaultFormat, displayValue)} {paramUnit}";
 				}
-            }
+			}
 
 			return returnStr;
 		}
+
+		public int GetValueForPressure(ParameterDataModel parameterDataModel, string valueName)
+		{
+			var paramUnit = parameterDataModel?.DynParams?.ParameterDataInfo?.Unit;
+			var paramMultiplier = parameterDataModel?.DynParams?.ParameterDataInfo?.Multiplier ?? 0;
+			var paramMinValue = parameterDataModel?.DynParams?.ConstParams?.Min ?? 0;
+			var paramMaxValue = parameterDataModel?.DynParams?.ConstParams?.Max ?? 0;
+			var paramStepValue = parameterDataModel?.DynParams?.ConstParams?.Step ?? 0;
+			var paramValue = parameterDataModel?.DynParams?.Value;
+
+			int returnValue;
+
+			if (valueName.ToLower() == "min")
+			{				
+				returnValue = paramMinValue;
+			}
+			else if (valueName.ToLower() == "max")
+			{
+				returnValue = paramMaxValue;
+			}
+			else if (valueName.ToLower() == "step")
+			{
+				returnValue = paramStepValue;
+			}
+			else
+			{
+				throw new ArgumentOutOfRangeException(nameof(valueName));
+			}
+
+			if (paramUnit == Units.txtBar || paramUnit == Units.txtPsi)
+			{
+				if (UnitService.PressureUnit == IhtDevices.PressureUnit.IsPressurePsi) //for psi only
+				{
+					if (paramMultiplier == 0) paramMultiplier = 0.001;
+
+					double minBarValue = GetValueToDisplay(paramMinValue, paramMultiplier);
+					double minPsiValue = minBarValue * Units.psiMultiplier;
+					double minPsiValueRounded = Math.Ceiling(minPsiValue);
+
+					double maxBarValue = GetValueToDisplay(paramMaxValue, paramMultiplier);
+					double maxPsiValue = maxBarValue * Units.psiMultiplier;
+					double maxPsiValueRounded = Math.Floor(maxPsiValue);
+
+					/* real values of step and param 
+					//double paramBarValue = GetValueToDisplay(paramValue, paramMultiplier);
+					//double paramPsiValue = paramBarValue * Units.psiMultiplier;
+
+					//double stepValue = GetValueToDisplay(paramStepValue, paramMultiplier);
+					//double stepPsiValue = stepValue * Units.psiMultiplier;
+					*/
+
+					// we can calculate stepPsiValue
+					//var stepIndex = (paramMaxValue - paramMinValue) / paramStepValue;
+					//double stepPsiValue = (maxPsiValueRounded - minPsiValueRounded) / stepIndex;
+					//double stepPsiValueRounded = Math.Floor(stepPsiValue);
+					// but now we take 1
+					double stepPsiValueRounded = 1;
+
+                    if (valueName.ToLower() == "min")
+                    {
+						double newMinBarValue = minPsiValueRounded * Units.psiToIntValueMultiplier;
+						returnValue = (int)Math.Floor(newMinBarValue);
+                    }
+                    else if (valueName.ToLower() == "max")
+                    {
+						double newMaxBarValue = maxPsiValueRounded * Units.psiToIntValueMultiplier;
+						returnValue = (int)Math.Floor(newMaxBarValue);
+					}
+                    else if (valueName.ToLower() == "step")
+                    {
+						double newBarStepValue = stepPsiValueRounded * Units.psiToIntValueMultiplier;
+						returnValue = (int)Math.Ceiling(newBarStepValue);
+					}
+                    else
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(valueName));
+                    }
+                }
+			}
+
+			return returnValue;
+		}
+		
 
 		private double GetValueToDisplay(int? value, double multiplier)
         {
