@@ -21,8 +21,9 @@ namespace SharedComponents.Helpers
         public static bool IsUnitInchFractional { get; set; }
 
         public static readonly double psiMultiplier = 14.50377438972831;
-        public static readonly double psiToIntValueMultiplier = 1.0 / 0.01450377438972831;
+        public static readonly double psiToBarMultiplier = 1.0 / 14.50377438972831;
         public static readonly double inchMultiplier = 1.0 / 25.4;
+        public static readonly double inchToMmMultiplier = 25.4;
 
         public static readonly Dictionary<int, string> mmToinchFractions = new Dictionary<int, string>();
 
@@ -159,11 +160,20 @@ namespace SharedComponents.Helpers
         /// <summary>
         /// http://www.csharp-examples.net/string-format-double/
         /// </summary>
-        static public string GetFormattedUnitInch(double valueInch, bool with4Digits = true)
+        static public string GetFormattedUnitInch(double valueInch, bool with4Digits = true, string paramName = "")
         {
             string result = String.Empty;
             //      result = (valueInch > 10.0 && with4Digits) ? String.Format("{0,2:0.00}", valueInch) : String.Format("{0,3:0.000}", valueInch);
-            result = (with4Digits) ? String.Format("{0,2:0.00}", valueInch) : String.Format("{0,3:0.000}", valueInch);
+
+            if (paramName.ToLower() == "retractheight")
+            {
+                result = String.Format("{0,1:0}", valueInch);
+            }
+            else
+            {
+                result = (with4Digits) ? String.Format("{0,2:0.00}", valueInch) : String.Format("{0,3:0.000}", valueInch);
+            }
+
             return result;
         }
 

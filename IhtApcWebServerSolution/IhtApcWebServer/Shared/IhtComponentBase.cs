@@ -251,13 +251,13 @@ namespace IhtApcWebServer.Shared
 
 			if (paramValue != null)
 			{
+				var correctedParamValue = CorrectTheCurrentValue(parameterDataModel, (int)paramValue);
+
 				if (paramUnit == Units.txtBar || paramUnit == Units.txtPsi)
 				{
-					paramValue = CorrectTheCurrentValue(parameterDataModel, (int)paramValue);
-
 					if (paramMultiplier == 0) paramMultiplier = 0.001;
 
-					displayValue = GetValueToDisplay(paramValue, paramMultiplier);
+					displayValue = GetValueToDisplay(correctedParamValue, paramMultiplier);
 
 					returnStr = GetFormatedPressureValue(displayValue, paramMaxValue, parameterFormat);
 				}
@@ -265,9 +265,9 @@ namespace IhtApcWebServer.Shared
 				{
 					if (paramMultiplier == 0) paramMultiplier = 0.1;
 
-					displayValue = GetValueToDisplay(paramValue, paramMultiplier);
+					displayValue = GetValueToDisplay(correctedParamValue, paramMultiplier);
 
-					returnStr = GetFormatedLengthValue(displayValue, parameterFormat);
+					returnStr = GetFormatedLengthValue(displayValue, parameterFormat, parameterDataModel);
 				}
 				else
 				{
@@ -306,7 +306,103 @@ namespace IhtApcWebServer.Shared
 			}
 		}
 
-		public int GetValueForPressure(ParameterDataModel parameterDataModel, string valueName)
+        private int GetParamConstPropForPsi(int paramMinValue, int paramMaxValue, double paramMultiplier, string propertyName)
+        {
+			int returnValue;
+
+			if (paramMultiplier == 0) paramMultiplier = 0.001;
+
+            double minBarValue = GetValueToDisplay(paramMinValue, paramMultiplier);
+            double minPsiValue = minBarValue * Units.psiMultiplier;
+            double minPsiValueRounded = Math.Ceiling(minPsiValue);
+
+            double maxBarValue = GetValueToDisplay(paramMaxValue, paramMultiplier);
+            double maxPsiValue = maxBarValue * Units.psiMultiplier;
+            double maxPsiValueRounded = Math.Floor(maxPsiValue);
+
+            /* real values of step and param 
+			//double paramBarValue = GetValueToDisplay(paramValue, paramMultiplier);
+			//double paramPsiValue = paramBarValue * Units.psiMultiplier;
+
+			//double stepValue = GetValueToDisplay(paramStepValue, paramMultiplier);
+			//double stepPsiValue = stepValue * Units.psiMultiplier;
+			*/
+
+            // we can calculate stepPsiValue
+            //var stepIndex = (paramMaxValue - paramMinValue) / paramStepValue;
+            //double stepPsiValue = (maxPsiValueRounded - minPsiValueRounded) / stepIndex;
+            //double stepPsiValueRounded = Math.Floor(stepPsiValue);
+            // but now we take 1
+            double stepPsiValueRounded = 1;
+
+			var psiToIntMultiplier = Units.psiToBarMultiplier / paramMultiplier;
+
+			if (propertyName.ToLower() == "min")
+            {
+                double newMinBarValue = minPsiValueRounded * psiToIntMultiplier;
+                returnValue = (int)Math.Floor(newMinBarValue);
+            }
+            else if (propertyName.ToLower() == "max")
+            {
+                double newMaxBarValue = maxPsiValueRounded * psiToIntMultiplier;
+                returnValue = (int)Math.Floor(newMaxBarValue);
+            }
+            else if (propertyName.ToLower() == "step")
+            {
+                double newBarStepValue = stepPsiValueRounded * psiToIntMultiplier;
+                returnValue = (int)Math.Ceiling(newBarStepValue);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(propertyName));
+            }
+
+			return returnValue;
+        }
+
+		private int GetParamConstPropForInch(int paramMinIntValue, int paramMaxIntValue, int paramStepIntValue, double paramMultiplier, string propertyName)
+		{
+			int returnValue;
+
+			if (paramMultiplier == 0) paramMultiplier = 0.1;
+
+			double minMmValue = GetValueToDisplay(paramMinIntValue, paramMultiplier);
+			double minInchValue = minMmValue * Units.inchMultiplier;
+			double minInchValueRounded = Math.Ceiling(minInchValue);
+
+			double maxMmValue = GetValueToDisplay(paramMaxIntValue, paramMultiplier);
+			double maxInchValue = maxMmValue * Units.inchMultiplier;
+			double maxInchValueRounded = Math.Round(maxInchValue, 3, MidpointRounding.ToZero);
+
+			double stepInchValueRounded = paramStepIntValue >= 25 ? 1.0 : 0.03937;
+
+			var inchToIntMultiplier = Units.inchToMmMultiplier / paramMultiplier;
+
+			if (propertyName.ToLower() == "min")
+			{
+				double newMinMmValue = minInchValueRounded * inchToIntMultiplier;
+				returnValue = (int)Math.Floor(newMinMmValue);
+			}
+			else if (propertyName.ToLower() == "max")
+			{
+				double newMaxMmValue = maxInchValueRounded * inchToIntMultiplier;
+				returnValue = (int)Math.Floor(newMaxMmValue);
+			}
+			else if (propertyName.ToLower() == "step")
+			{
+				double newMmStepValue = stepInchValueRounded * inchToIntMultiplier;
+				//returnValue = (int)Math.Round(newMmStepValue, MidpointRounding.AwayFromZero);
+				returnValue = (int)Math.Round(newMmStepValue, MidpointRounding.AwayFromZero);
+			}
+			else
+			{
+				throw new ArgumentOutOfRangeException(nameof(propertyName));
+			}
+
+			return returnValue;
+		}
+
+		public int GetValueForPressure(ParameterDataModel parameterDataModel, string propertyName)
 		{
 			var paramUnit = parameterDataModel?.DynParams?.ParameterDataInfo?.Unit;
 			var paramMultiplier = parameterDataModel?.DynParams?.ParameterDataInfo?.Multiplier ?? 0;
@@ -317,72 +413,36 @@ namespace IhtApcWebServer.Shared
 
 			int returnValue;
 
-			if (valueName.ToLower() == "min")
+			if (propertyName.ToLower() == "min")
 			{				
 				returnValue = paramMinValue;
 			}
-			else if (valueName.ToLower() == "max")
+			else if (propertyName.ToLower() == "max")
 			{
 				returnValue = paramMaxValue;
 			}
-			else if (valueName.ToLower() == "step")
+			else if (propertyName.ToLower() == "step")
 			{
 				returnValue = paramStepValue;
 			}
 			else
 			{
-				throw new ArgumentOutOfRangeException(nameof(valueName));
+				throw new ArgumentOutOfRangeException(nameof(propertyName));
 			}
 
 			if (paramUnit == Units.txtBar || paramUnit == Units.txtPsi)
 			{
 				if (UnitService.PressureUnit == IhtDevices.PressureUnit.IsPressurePsi) //for psi only
 				{
-					if (paramMultiplier == 0) paramMultiplier = 0.001;
-
-					double minBarValue = GetValueToDisplay(paramMinValue, paramMultiplier);
-					double minPsiValue = minBarValue * Units.psiMultiplier;
-					double minPsiValueRounded = Math.Ceiling(minPsiValue);
-
-					double maxBarValue = GetValueToDisplay(paramMaxValue, paramMultiplier);
-					double maxPsiValue = maxBarValue * Units.psiMultiplier;
-					double maxPsiValueRounded = Math.Floor(maxPsiValue);
-
-					/* real values of step and param 
-					//double paramBarValue = GetValueToDisplay(paramValue, paramMultiplier);
-					//double paramPsiValue = paramBarValue * Units.psiMultiplier;
-
-					//double stepValue = GetValueToDisplay(paramStepValue, paramMultiplier);
-					//double stepPsiValue = stepValue * Units.psiMultiplier;
-					*/
-
-					// we can calculate stepPsiValue
-					//var stepIndex = (paramMaxValue - paramMinValue) / paramStepValue;
-					//double stepPsiValue = (maxPsiValueRounded - minPsiValueRounded) / stepIndex;
-					//double stepPsiValueRounded = Math.Floor(stepPsiValue);
-					// but now we take 1
-					double stepPsiValueRounded = 1;
-
-                    if (valueName.ToLower() == "min")
-                    {
-						double newMinBarValue = minPsiValueRounded * Units.psiToIntValueMultiplier;
-						returnValue = (int)Math.Floor(newMinBarValue);
-                    }
-                    else if (valueName.ToLower() == "max")
-                    {
-						double newMaxBarValue = maxPsiValueRounded * Units.psiToIntValueMultiplier;
-						returnValue = (int)Math.Floor(newMaxBarValue);
-					}
-                    else if (valueName.ToLower() == "step")
-                    {
-						double newBarStepValue = stepPsiValueRounded * Units.psiToIntValueMultiplier;
-						returnValue = (int)Math.Ceiling(newBarStepValue);
-					}
-                    else
-                    {
-                        throw new ArgumentOutOfRangeException(nameof(valueName));
-                    }
-                }
+					returnValue = GetParamConstPropForPsi(paramMinValue, paramMaxValue, paramMultiplier, propertyName);
+				}
+			}
+			else if (paramUnit == Units.txtMm || paramUnit == Units.txtInch)
+			{
+				if (UnitService.LengthUnit == IhtDevices.LengthUnit.IsUnitInch || UnitService.LengthUnit == IhtDevices.LengthUnit.IsUnitInchFractional) //for inch
+				{
+					returnValue = GetParamConstPropForInch(paramMinValue, paramMaxValue, paramStepValue, paramMultiplier, propertyName);
+				}
 			}
 
 			return returnValue;
@@ -411,7 +471,7 @@ namespace IhtApcWebServer.Shared
 			return returnStr;
 		}
 
-		public string GetFormatedLengthValue(double lengthValue, string parameterFormat = "")
+		public string GetFormatedLengthValue(double lengthValue, string parameterFormat = "", ParameterDataModel? parameterDataModel = null)
 		{
 			string? returnStr;
 
@@ -421,7 +481,7 @@ namespace IhtApcWebServer.Shared
 			
 			if (UnitService.LengthUnit == IhtDevices.LengthUnit.IsUnitInch)
 			{
-				string formatedInchValue = Units.GetFormattedUnitInch(lengthInchValue);
+				string formatedInchValue = Units.GetFormattedUnitInch(lengthInchValue, true, parameterDataModel?.ParamName ?? "");
 				returnStr = $"{formatedInchValue} {Units.txtInch}";
 			}
 			else if (UnitService.LengthUnit == IhtDevices.LengthUnit.IsUnitInchFractional)

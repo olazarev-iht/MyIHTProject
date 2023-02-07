@@ -423,9 +423,10 @@ input#password-input:focus {
                 For=@(() => dynParamDataModel.Sign) Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>*@
 
             <MudSlider @onchange="@( () => ParameterValueChanged() )" @bind-Value="@dynParamDataModel.DynParams.Value" 
-                Min="@dynParamDataModel.DynParams.ConstParams.Min" Max="@dynParamDataModel.DynParams.ConstParams.Max" 
-                Step="@dynParamDataModel.DynParams.ConstParams.Step" 
-                Color="Color.Info">@(dynParamDataModel.ParamSettings?.DisplayName ?? ""): @dynParamDataModel.DynParams.Value.ToString()
+                Min="@dynParamDataModel.DynParams.ConstParams.Min" 
+                Max="@dynParamDataModel.DynParams.ConstParams.Max" 
+                Step="@(GetValueForPressure(@dynParamDataModel, "Step"))" 
+                Color="Color.Info">@(dynParamDataModel.ParamSettings?.DisplayName ?? ""): @DisplayParamValueAndUnit(@dynParamDataModel)
             </MudSlider>            
         </MudForm>      
     </DialogContent>
@@ -832,8 +833,8 @@ input#password-input:focus {
                         <td>
                             <MudSlider Style="margin-bottom:0px" @ontouchend="@(()=>UpdateDynParam(@paramHeatO2))" @onmouseup="@(()=>UpdateDynParam(@paramHeatO2))"
                             @bind-Value="@paramHeatO2.DynParams.Value" 
-                            Min="@(GetValueForPressure(@paramHeatO2, "Min"))" 
-                            Max="@(GetValueForPressure(@paramHeatO2, "Max"))"
+                            Min="paramHeatO2.DynParams.ConstParams.Min" 
+                            Max="paramHeatO2.DynParams.ConstParams.Max"
                             Step="@(GetValueForPressure(@paramHeatO2, "Step"))" 
                             Color="Color.Info"><table><tr><td style="text-align:left;width:60%">Flame (H-O):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramHeatO2))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramHeatO2))</td></tr></table>
                             </MudSlider>                           
@@ -872,7 +873,7 @@ input#password-input:focus {
                             @bind-Value="@paramCutO2.DynParams.Value" 
                             Min="@paramCutO2.DynParams.ConstParams.Min" 
                             Max="@paramCutO2.DynParams.ConstParams.Max"
-                            Step="@paramCutO2.DynParams.ConstParams.Step" 
+                            Step="@(GetValueForPressure(@paramCutO2, "Step"))" 
                             Color="Color.Info"><table><tr><td style="text-align:left;width:60%">C - O:</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramCutO2))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramCutO2))</td></tr></table>
                             </MudSlider>                        
                         </td>
