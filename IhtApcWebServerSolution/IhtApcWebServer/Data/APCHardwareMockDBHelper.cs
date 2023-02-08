@@ -76,75 +76,99 @@ namespace IhtApcWebServer.Data
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4200, Value = 20 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4201, Value = 200 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4202, Value = 5 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4203, Value = 20 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4204, Value = 500 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4205, Value = 5 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4206, Value = 20 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4207, Value = 200 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4208, Value = 5 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4209, Value = 500 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4210, Value = 5000 });
-            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4211, Value = 10 });
+            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4211, Value = 100 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4212, Value = 500 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4213, Value = 5000 });
-            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4214, Value = 10 });
+            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4214, Value = 100 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4215, Value = 500 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4216, Value = 5000 });
-            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4217, Value = 10 });
+            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4217, Value = 100 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4218, Value = 500 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4219, Value = 5000 });
-            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4220, Value = 10 });
+            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4220, Value = 100 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4221, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4222, Value = 10000 });
-            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4223, Value = 10 });
+            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4223, Value = 100 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4224, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4225, Value = 10000 });
-            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4226, Value = 10 });
+            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4226, Value = 100 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4227, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4228, Value = 1000 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4229, Value = 10 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4230, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4231, Value = 1000 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4232, Value = 10 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4233, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4234, Value = 1000 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4235, Value = 10 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4236, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4237, Value = 1000 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4238, Value = 10 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4239, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4240, Value = 3000 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4241, Value = 10 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4242, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4243, Value = 100 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4244, Value = 1 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4245, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4246, Value = 100 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4247, Value = 1 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4248, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4249, Value = 100 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4250, Value = 1 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4251, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4252, Value = 30 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4253, Value = 1 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4254, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4255, Value = 30 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4256, Value = 1 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4257, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4258, Value = 1 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4259, Value = 1 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4260, Value = 200 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4261, Value = 1000 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4262, Value = 1 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4263, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4264, Value = 1 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4265, Value = 1 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4266, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4267, Value = 2000 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4268, Value = 1 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4269, Value = 50 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4270, Value = 150 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4271, Value = 1 });
+
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4272, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4273, Value = 65535 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4274, Value = 1 });
@@ -310,7 +334,7 @@ namespace IhtApcWebServer.Data
 
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4536, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4537, Value = 5000 });
-            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4538, Value = 10 });
+            APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4538, Value = 100 });
 
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4539, Value = 0 });
             APCDefaultDataList.Add(new APCDefaultData { Id = Guid.NewGuid(), Device = apcDevice, Address = 4540, Value = 240 });
