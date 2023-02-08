@@ -387,6 +387,11 @@ input#password-input:focus {
         width: 100%;
         overflow-y: clip !important;
     }
+
+     .ErrorDevice {
+        animation: blink-animation 1s steps(5, start) infinite;
+        -webkit-animation: blink-animation 1s steps(5, start) infinite;
+      }
 </style>
 
 @if (dynDataModificationCNCDataProvider != null)
@@ -1050,6 +1055,8 @@ input#password-input:focus {
                             {
                                 <td style="border-width:0px; font-weight:normal !important; box-sizing:border-box;" class="tabcell tabcell_status internal_div_table">
                                     CurrOutHeatO2:@dataCommon.CurrOutHeatO2 CurrOutCutO2:@dataCommon.CurrOutCutO2 CurrOutFuelGas:@dataCommon.CurrOutFuelGas
+                                    @( (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0) > 0 ? $"Error: { @ihtDevices.GetErrorCodeLabel((CurrentDevice?.SlaveId ?? 0), (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0))}" : string.Empty )
+                                    
                                 </td>
                             }
                         </tr>
@@ -2017,6 +2024,11 @@ input#password-input:focus {
                     else
                     {
                         cssClass = "ConnectedDeviceNum device_tabcell";
+                    }
+
+                    if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
+                    {
+                        cssClass = "ErrorDevice ErrorConnectionDevice device_tabcell";           
                     }
                 }
                 else

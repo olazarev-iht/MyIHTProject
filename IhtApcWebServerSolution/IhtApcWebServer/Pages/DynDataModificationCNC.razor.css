@@ -28,6 +28,18 @@
     }
 }
 
+@keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
+@-webkit-keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
 /* Responsive layout - makes a one column-layout instead of two-column layout */
 /*@media (max-width: 570px) {
     .flex-container {
