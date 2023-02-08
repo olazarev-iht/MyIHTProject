@@ -245,13 +245,14 @@ namespace IhtApcWebServer.Shared
 			var paramValue = parameterDataModel?.DynParams?.Value;
 			var paramMultiplier = parameterDataModel?.DynParams?.ParameterDataInfo?.Multiplier ?? 0;
 			var paramMaxValue = (double)(parameterDataModel?.DynParams?.ConstParams?.Max ?? 0);
+			var paramStepValue = (double)(parameterDataModel?.DynParams?.ConstParams?.Step ?? 0);
 
 			double displayValue;
 
 
 			if (paramValue != null)
 			{
-				var correctedParamValue = CorrectTheCurrentValue(parameterDataModel, (int)paramValue);
+				var correctedParamValue = (paramMaxValue > 0 && paramStepValue > 0) ? CorrectTheCurrentValue(parameterDataModel, (int)paramValue) : paramValue;
 
 				if (paramUnit == Units.txtBar || paramUnit == Units.txtPsi)
 				{
