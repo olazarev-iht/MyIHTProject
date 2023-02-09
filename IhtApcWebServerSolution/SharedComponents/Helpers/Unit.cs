@@ -186,18 +186,20 @@ namespace SharedComponents.Helpers
 
             if (string.IsNullOrWhiteSpace(parameterFormat))
             {
-                if (maxValue >= 5000)
-                {
-                    result = String.Format("{0,0:0}", valuePsi);
-                }
-                else if (maxValue >= 1000)
-                {
-                    result = String.Format("{0,1:0.0}", valuePsi);
-                }
-                else
-                {
-                    result = String.Format("{0,2:0.00}", valuePsi);
-                }
+                result = String.Format("{0,0:0}", valuePsi);
+
+                //if (maxValue >= 5000)
+                //{
+                //    result = String.Format("{0,0:0}", valuePsi);
+                //}
+                //else if (maxValue >= 1000)
+                //{
+                //    result = String.Format("{0,1:0.0}", valuePsi);
+                //}
+                //else
+                //{
+                //    result = String.Format("{0,2:0.00}", valuePsi);
+                //}
             }
             else
             {

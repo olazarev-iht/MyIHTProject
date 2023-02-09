@@ -430,7 +430,7 @@ input#password-input:focus {
             <MudSlider @onchange="@( () => ParameterValueChanged() )" @bind-Value="@dynParamDataModel.DynParams.Value" 
                 Min="@dynParamDataModel.DynParams.ConstParams.Min" 
                 Max="@dynParamDataModel.DynParams.ConstParams.Max" 
-                Step="@(GetValueForPressure(@dynParamDataModel, "Step"))" 
+                Step="@(GetParameterProperty(@dynParamDataModel, "Step"))" 
                 Color="Color.Info">@(dynParamDataModel.ParamSettings?.DisplayName ?? ""): @DisplayParamValueAndUnit(@dynParamDataModel)
             </MudSlider>            
         </MudForm>      
@@ -830,21 +830,21 @@ input#password-input:focus {
                 <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
                 <table class="internal_div_table">
                     <tr>
-                        <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramHeatO2, 10))">
+                        <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramHeatO2))">
                             @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
                             @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
                              <img draggable="false" src="Images/minus1.png" class="img_minus1" />
                         </MudTd>
                         <td>
                             <MudSlider Style="margin-bottom:0px" @ontouchend="@(()=>UpdateDynParam(@paramHeatO2))" @onmouseup="@(()=>UpdateDynParam(@paramHeatO2))"
-                            @bind-Value="@paramHeatO2.DynParams.Value" 
+                            @bind-Value="@this[@paramHeatO2]" 
                             Min="paramHeatO2.DynParams.ConstParams.Min" 
                             Max="paramHeatO2.DynParams.ConstParams.Max"
-                            Step="@(GetValueForPressure(@paramHeatO2, "Step"))" 
+                            Step="@(GetParameterProperty(@paramHeatO2, "Step"))" 
                             Color="Color.Info"><table><tr><td style="text-align:left;width:60%">Flame (H-O):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramHeatO2))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramHeatO2))</td></tr></table>
                             </MudSlider>                           
                         </td> 
-                        <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramHeatO2, 10))">
+                        <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramHeatO2))">
                              <img draggable="false" src="Images/plus1.png" class="img_plus1" />
                         </MudTd>
                     </tr>
@@ -856,10 +856,10 @@ input#password-input:focus {
                         </MudTd>
                         <td>
                             <MudSlider @ontouchend="@(()=>UpdateDynParam(@paramFuelGas))" @onmouseup="@(()=>UpdateDynParam(@paramFuelGas))"
-                            @bind-Value="@paramFuelGas.DynParams.Value" 
+                            @bind-Value="@this[@paramFuelGas]" 
                             Min="@paramFuelGas.DynParams.ConstParams.Min" 
                             Max="@paramFuelGas.DynParams.ConstParams.Max"
-                            Step="@(GetValueForPressure(@paramFuelGas, "Step"))" 
+                            Step="@(GetParameterProperty(@paramFuelGas, "Step"))" 
                             Color="Color.Info"><table><tr><td style="text-align:left;width:60%">Flame (F-G):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramFuelGas))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramFuelGas))</td></tr></table>
                             </MudSlider>
                         </td>  
@@ -870,19 +870,19 @@ input#password-input:focus {
                         </MudTd>
                     </tr>
                     <tr>
-                        <MudTd Class="@($"td_minus1 {@_cutO2Visible}")" @onclick="@(() => ReduceParamValue(@paramCutO2, 10))">
+                        <MudTd Class="@($"td_minus1 {@_cutO2Visible}")" @onclick="@(() => ReduceParamValue(@paramCutO2))">
                              <img draggable="false" src="Images/minus1.png" class="img_minus1" />
                         </MudTd>
                         <td>
                             <MudSlider Class="@_cutO2Visible" @ontouchend="@(()=>UpdateDynParam(@paramCutO2))" @onmouseup="@(()=>UpdateDynParam(@paramCutO2))"                
-                            @bind-Value="@paramCutO2.DynParams.Value" 
+                            @bind-Value="@this[@paramCutO2]" 
                             Min="@paramCutO2.DynParams.ConstParams.Min" 
                             Max="@paramCutO2.DynParams.ConstParams.Max"
-                            Step="@(GetValueForPressure(@paramCutO2, "Step"))" 
+                            Step="@(GetParameterProperty(@paramCutO2, "Step"))" 
                             Color="Color.Info"><table><tr><td style="text-align:left;width:60%">C - O:</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramCutO2))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramCutO2))</td></tr></table>
                             </MudSlider>                        
                         </td>
-                        <MudTd Class="@($"td_plus1 {@_cutO2Visible}")" @onclick="@(() => IncreaseParamValue(@paramCutO2, 10))">
+                        <MudTd Class="@($"td_plus1 {@_cutO2Visible}")" @onclick="@(() => IncreaseParamValue(@paramCutO2))">
                              <img draggable="false" src="Images/plus1.png" class="img_plus1" />
                         </MudTd>                       
                     </tr>
@@ -1357,8 +1357,48 @@ input#password-input:focus {
                 Console.WriteLine($"MQTT: {ex.InnerException?.Message}");
             }
         }
-
     }
+
+    public int this[ParameterDataModel parameterDataModel]
+    {
+        get
+        {
+            if (parameterDataModel != null && parameterDataModel.DynParams != null)
+            {
+                var paramValue = CorrectTheCurrentValue(parameterDataModel, parameterDataModel.DynParams.Value);
+
+                return paramValue;
+            }
+            else
+            {
+                throw new Exception($"The parameter {nameof(parameterDataModel)} is not correct");
+            }
+        }
+
+        set
+        {
+            if (parameterDataModel != null && parameterDataModel.DynParams != null)
+            {
+                parameterDataModel.DynParams.Value = value;
+            }
+        }
+    }
+
+    private int ParamHeatO2DynParamsValue 
+    {
+        get
+        {
+            var paramValue = CorrectTheCurrentValue(paramHeatO2, paramHeatO2.DynParams.Value);
+
+            return paramValue;
+        }
+
+        set
+        {
+            paramHeatO2.DynParams.Value = value;
+        }
+    }
+
     private void GoToPage(string pageUrl)
     {
         navigationManager.NavigateTo(pageUrl, true);
@@ -1374,30 +1414,38 @@ input#password-input:focus {
         return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl;
     }
 
-    private void IncreaseParamValue(ParameterDataModel parameterData, int stepMultiplayer = 1)
+    private void IncreaseParamValue(ParameterDataModel parameterData)
     {
         if(parameterData != null && parameterData.DynParams != null && parameterData.DynParams.ConstParams != null)
         {
-            parameterData.DynParams.Value = parameterData.DynParams.Value + parameterData.DynParams.ConstParams.Step * stepMultiplayer;
+            var stepValue = GetParameterProperty(@parameterData, "Step");
+            var maxValue = GetParameterProperty(@parameterData, "Max");
+            var curValue = parameterData.DynParams.Value;
 
-            if (parameterData.DynParams.Value > parameterData.DynParams.ConstParams.Max)
+            parameterData.DynParams.Value = CorrectTheCurrentValue(parameterData, curValue) + stepValue;
+
+            if (parameterData.DynParams.Value > maxValue)
             {
-                parameterData.DynParams.Value = parameterData.DynParams.ConstParams.Max;
+                parameterData.DynParams.Value = maxValue;
             }
 
             UpdateDynParam(parameterData);
         }
     }
 
-    private void ReduceParamValue(ParameterDataModel parameterData, int stepMultiplayer = 1)
+    private void ReduceParamValue(ParameterDataModel parameterData)
     {
         if(parameterData != null && parameterData.DynParams != null && parameterData.DynParams.ConstParams != null)
         {
-            parameterData.DynParams.Value = parameterData.DynParams.Value - parameterData.DynParams.ConstParams.Step * stepMultiplayer;
+            var stepValue = GetParameterProperty(@parameterData, "Step");
+            var minValue = GetParameterProperty(@parameterData, "Min");
+            var curValue = parameterData.DynParams.Value;
 
-            if (parameterData.DynParams.Value < parameterData.DynParams.ConstParams.Min)
+            parameterData.DynParams.Value = CorrectTheCurrentValue(parameterData, curValue) - stepValue;
+
+            if (parameterData.DynParams.Value < minValue)
             {
-                parameterData.DynParams.Value = parameterData.DynParams.ConstParams.Min;
+                parameterData.DynParams.Value = minValue;
             }
 
             UpdateDynParam(parameterData);

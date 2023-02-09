@@ -208,9 +208,9 @@ namespace IhtApcWebServer.Shared
 
 		public int CorrectTheCurrentValue(ParameterDataModel parameterDataModel, int currentValue)
         {
-			var curStep = GetValueForPressure(parameterDataModel, "Step");
-			var minValue = GetValueForPressure(parameterDataModel, "Min");
-			var maxValue = GetValueForPressure(parameterDataModel, "Max");
+			var curStep = GetParameterProperty(parameterDataModel, "Step");
+			var minValue = GetParameterProperty(parameterDataModel, "Min");
+			var maxValue = GetParameterProperty(parameterDataModel, "Max");
 
 			var index = ((double)currentValue) / curStep;
 
@@ -234,9 +234,9 @@ namespace IhtApcWebServer.Shared
 		public string DisplayParamValueAndUnit(ParameterDataModel parameterDataModel, string parameterFormat = "")
 		{
 			if (parameterDataModel == null)
-				throw new ArgumentNullException($"{nameof(parameterDataModel)} param is null");
+				throw new ArgumentNullException($"{nameof(parameterDataModel)}", "Param is null in method DisplayParamValueAndUnit");
 
-			CheckAndUpdateValueIfNotValid(parameterDataModel);
+			CheckForMinMaxAndUpdateValueIfNotValid(parameterDataModel);
 
 			var returnStr = string.Empty;
 			var defaultFormat = !string.IsNullOrWhiteSpace(parameterFormat) ? parameterFormat : "{0}";
@@ -250,7 +250,7 @@ namespace IhtApcWebServer.Shared
 			double displayValue;
 
 
-			if (paramValue != null)
+			if (paramValue != null && parameterDataModel != null)
 			{
 				var correctedParamValue = (paramMaxValue > 0 && paramStepValue > 0) ? CorrectTheCurrentValue(parameterDataModel, (int)paramValue) : paramValue;
 
@@ -283,7 +283,7 @@ namespace IhtApcWebServer.Shared
 			return returnStr;
 		}
 
-		public void CheckAndUpdateValueIfNotValid(ParameterDataModel parameterDataModel)
+		public void CheckForMinMaxAndUpdateValueIfNotValid(ParameterDataModel parameterDataModel)
 		{
 			if (parameterDataModel == null) return;
 
@@ -403,7 +403,7 @@ namespace IhtApcWebServer.Shared
 			return returnValue;
 		}
 
-		public int GetValueForPressure(ParameterDataModel parameterDataModel, string propertyName)
+		public int GetParameterProperty(ParameterDataModel parameterDataModel, string propertyName)
 		{
 			var paramUnit = parameterDataModel?.DynParams?.ParameterDataInfo?.Unit;
 			var paramMultiplier = parameterDataModel?.DynParams?.ParameterDataInfo?.Multiplier ?? 0;
