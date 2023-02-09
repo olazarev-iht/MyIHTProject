@@ -427,7 +427,7 @@ input#password-input:focus {
             @*<MudTextField @bind-Value="@dynParamDataModel.Sign" Label="Sign" 
                 For=@(() => dynParamDataModel.Sign) Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>*@
 
-            <MudSlider @onchange="@( () => ParameterValueChanged() )" @bind-Value="@dynParamDataModel.DynParams.Value" 
+            <MudSlider @onchange="@( () => ParameterValueChanged() )" @bind-Value="@this[@dynParamDataModel]" 
                 Min="@dynParamDataModel.DynParams.ConstParams.Min" 
                 Max="@dynParamDataModel.DynParams.ConstParams.Max" 
                 Step="@(GetParameterProperty(@dynParamDataModel, "Step"))" 
