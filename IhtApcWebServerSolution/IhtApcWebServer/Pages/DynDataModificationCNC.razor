@@ -285,6 +285,36 @@ input#password-input:focus {
         border-radius: var(--mud-default-borderradius);
         transition: box-shadow 300ms cubic-bezier(.4,0,.2,1) 0ms;
 }*/
+
+.ErrorDeviceBlink {
+    animation: blink-animation 1s steps(5, start) infinite;
+    -webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
+
+.ErrorDevice {
+    background-color:#d56565;
+    box-shadow: inset 150px 150px 0px 0px #e5d7d7bf;
+    color: #eaeaeb !important;
+    border: 0px !important;
+}
+
+.ErrorDevice>div {
+    display: block !important;
+    font-size: 10.5px;
+    color: #616161;
+}
+
+.errorbackground {
+    margin: 3rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    transform: rotate(300deg);
+    -webkit-transform: rotate(300deg);
+    color: #c6afaf;
+}
 </style>
 
 <style>
@@ -387,11 +417,6 @@ input#password-input:focus {
         width: 100%;
         overflow-y: clip !important;
     }
-
-     .ErrorDevice {
-        animation: blink-animation 1s steps(5, start) infinite;
-        -webkit-animation: blink-animation 1s steps(5, start) infinite;
-      }
 </style>
 
 @if (dynDataModificationCNCDataProvider != null)
@@ -749,9 +774,9 @@ input#password-input:focus {
                     <table class="internal_div_table">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(1)"
-            @onclick="@(()=>SetDeviceNum(1))">1</MudTd>
+            @onclick="@(()=>SetDeviceNum(1))">1<div style="display:none">Er. code: @GetDeviceErrorCode(1)</div></MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(2)"
-            @onclick="@(()=>SetDeviceNum(2))">2</MudTd>
+            @onclick="@(()=>SetDeviceNum(2))">2<div style="display:none">Er. code: @GetDeviceErrorCode(2)</div></MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(3)"
             @onclick="@(()=>SetDeviceNum(3))">3</MudTd>
                         </tr>
@@ -765,7 +790,7 @@ input#password-input:focus {
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)"
             @onclick="@(()=>SetDeviceNum(5))">5</MudTd>            
             <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-            <MudOverlay Visible="_isProcessBtnActive" LightBackground="true" Absolute="true" />
+            <MudOverlay Visible="_isProcessBtnActive || ErrorCode > 0" LightBackground="true" Absolute="true" />
             <MudTd Style="padding:0px;" Class="device_lastcell">
                 <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())" />           
             </MudTd>
@@ -934,7 +959,7 @@ input#password-input:focus {
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsMoveUpButtonDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
-                                    <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")"
+                                    <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")  @((CurrentDevice?.dataProcessInfo?.IsAckErrorActive ?? false) ? "ErrorDeviceBlink" : "")"
                                         @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
                                         @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
                                         @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">
@@ -1356,6 +1381,14 @@ input#password-input:focus {
             {
                 Console.WriteLine($"MQTT: {ex.InnerException?.Message}");
             }
+        }
+    }
+
+    private int ErrorCode
+    {
+        get
+        {
+            return CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0;
         }
     }
 
@@ -1787,8 +1820,8 @@ input#password-input:focus {
         }
     }
 
-    
-    
+
+
     private double reloadProgressValue
     {
         get
@@ -2058,7 +2091,7 @@ input#password-input:focus {
 
         if (device != null)
         {
-            if(device.dataProcessInfo != null)
+            if (device.dataProcessInfo != null)
                 device.IsTorchDisabled = device.dataProcessInfo.IsInpTorchDisabled;
 
             if (device.IsConnected)
@@ -2068,6 +2101,11 @@ input#password-input:focus {
                     if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
                     {
                         cssClass = "SelectedDeviceNum device_tabcell";
+
+                        //if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
+                        //{
+                        //    cssClass = "ErrorDevice ErrorDeviceBlink device_tabcell";
+                        //}
                     }
                     else
                     {
@@ -2076,7 +2114,7 @@ input#password-input:focus {
 
                     if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
                     {
-                        cssClass = "ErrorDevice ErrorConnectionDevice device_tabcell";           
+                        cssClass = "ErrorDevice device_tabcell";
                     }
                 }
                 else
@@ -2105,6 +2143,20 @@ input#password-input:focus {
         }
 
         return cssClass;
+    }
+
+    private int GetDeviceErrorCode(int devNum)
+    {
+        var errorCode = 0;
+
+        var device = GetDeviceByDeviceNumber(devNum);
+
+        if(device != null)
+        {
+            errorCode = device?.dataProcessInfo?.ErrorCode ?? 0;
+        }
+
+        return errorCode;
     }
 
     private void StopTorchMoving()
