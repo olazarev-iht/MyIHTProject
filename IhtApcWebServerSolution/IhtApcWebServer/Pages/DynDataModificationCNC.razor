@@ -295,14 +295,20 @@ input#password-input:focus {
     background-color:#d56565;
     box-shadow: inset 150px 150px 0px 0px #e5d7d7bf;
     color: #eaeaeb !important;
-    border: 0px !important;
+    /*border: 1px solid !important;*/
+    text-align: center;
 }
 
-.ErrorDevice>div {
-    display: block !important;
-    font-size: 10.5px;
-    color: #616161;
-}
+    .ErrorDevice.Selected {
+        border: 2px solid #0057ab63 !important;
+    }
+
+    .ErrorDevice>div {
+        display: block !important;
+        font-size: 10.5px;
+        color: #616161;
+    }
+
 
 .errorbackground {
     margin: 3rem;
@@ -2102,19 +2108,19 @@ input#password-input:focus {
                     {
                         cssClass = "SelectedDeviceNum device_tabcell";
 
-                        //if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
-                        //{
-                        //    cssClass = "ErrorDevice ErrorDeviceBlink device_tabcell";
-                        //}
+                        if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
+                        {
+                            cssClass = " ErrorDevice Selected";
+                        }
                     }
                     else
                     {
                         cssClass = "ConnectedDeviceNum device_tabcell";
-                    }
 
-                    if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
-                    {
-                        cssClass = "ErrorDevice device_tabcell";
+                        if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
+                        {
+                            cssClass += " ErrorDevice";
+                        }
                     }
                 }
                 else
@@ -2122,10 +2128,20 @@ input#password-input:focus {
                     if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
                     {
                         cssClass = "DisabledDeviceSelected  device_tabcell";
+
+                        if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
+                        {
+                            cssClass = " ErrorDevice Selected";
+                        }
                     }
                     else
                     {
                         cssClass = "DisabledDeviceNum device_tabcell";
+
+                        if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
+                        {
+                            cssClass += " ErrorDevice";
+                        }
                     }
                 }
             }
