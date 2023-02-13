@@ -196,6 +196,9 @@
     border-radius: 3px;
     border-bottom-width: 2px;
     border-bottom-color: white;
+    margin: 2px;
+    padding-bottom: 1px;
+    box-sizing: content-box;
 }
 
 .process_btn {

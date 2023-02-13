@@ -168,21 +168,26 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 			var parameter = sender as ParameterDataModel;
 			if (parameter == null || parameter.DynParams == null) return;
 
+			var paramValue = parameter.DynParams.Value;
+			var paramAddress = parameter.DynParams.Address;
+
 			// Update prameter value in the APC Device (Mock DB)
 
 			var connectedDevices = _ihtModbusCommunic.GetConnectedModbusDatas();
 
-			foreach(IhtModbusData ihtModbusData in connectedDevices)
+			// Update current device
+			await UpdateDynParamInAPCDeviceOrMockDBAsync(CurrentDeviceNumber, paramAddress, paramValue);
+			await _apcWorker.RefreshDynamicDataAsync(CurrentSlaveId, paramAddress, false);
+
+			// Update other devices
+			foreach (IhtModbusData ihtModbusData in connectedDevices)
             {
 				int deviceNo = ihtModbusData.SlaveId - (int)IhtModbusCommunic.SlaveId.Id_Default;
-				await UpdateDynParamInAPCDeviceOrMockDBAsync(deviceNo, ihtModbusData.SlaveId, parameter.DynParams.Address, parameter.DynParams.Value);
+				
 				if (CurrentSlaveId != ihtModbusData.SlaveId)
                 {
-					await _apcWorker.RefreshDynamicDataAsync(ihtModbusData.SlaveId, parameter.DynParams.Address, true);
-				}
-				else
-                {
-					await _apcWorker.RefreshDynamicDataAsync(ihtModbusData.SlaveId, parameter.DynParams.Address, false);
+					await UpdateDynParamInAPCDeviceOrMockDBAsync(deviceNo, ihtModbusData.SlaveId, paramAddress, paramValue);
+					await _apcWorker.RefreshDynamicDataAsync(ihtModbusData.SlaveId, paramAddress, false);
 				}
 			}
 
