@@ -155,7 +155,7 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 			if (parameter == null || parameter.DynParams == null) return;
 
 			// Update prameter value in the APC Device (Mock DB)
-			await UpdateDynParamInAPCDeviceOrMockDBAsync(CurrentDeviceNumber, parameter.DynParams.Address, parameter.DynParams.Value);
+			await UpdateDynParamInAPCDeviceOrMockDBAsync(CurrentSlaveId, parameter.DynParams.Address, parameter.DynParams.Value);
 
 			// Only to show the flow
 			//await Task.Delay(TimeSpan.FromSeconds(5));
@@ -176,27 +176,20 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 			var connectedDevices = _ihtModbusCommunic.GetConnectedModbusDatas();
 
 			// Update current device
-			await UpdateDynParamInAPCDeviceOrMockDBAsync(CurrentDeviceNumber, paramAddress, paramValue);
+			await UpdateDynParamInAPCDeviceOrMockDBAsync(CurrentSlaveId, paramAddress, paramValue);
 			await _apcWorker.RefreshDynamicDataAsync(CurrentSlaveId, paramAddress, false);
 
 			// Update other devices
 			foreach (IhtModbusData ihtModbusData in connectedDevices)
             {
-				int deviceNo = ihtModbusData.SlaveId - (int)IhtModbusCommunic.SlaveId.Id_Default;
+				int slaveId = ihtModbusData.SlaveId;
 				
-				if (CurrentSlaveId != ihtModbusData.SlaveId)
+				if (CurrentSlaveId != slaveId)
                 {
-					await UpdateDynParamInAPCDeviceOrMockDBAsync(deviceNo, ihtModbusData.SlaveId, paramAddress, paramValue);
-					await _apcWorker.RefreshDynamicDataAsync(ihtModbusData.SlaveId, paramAddress, false);
+					await UpdateDynParamInAPCDeviceOrMockDBAsync(slaveId, paramAddress, paramValue);
+					await _apcWorker.RefreshDynamicDataAsync(slaveId, paramAddress, false);
 				}
 			}
-
-			//await UpdateDynParamInAPCDeviceOrMockDBAsync(CurrentDeviceNumber, parameter.DynParams.Address, parameter.DynParams.Value);
-
-			// Only to show the flow
-			//await Task.Delay(TimeSpan.FromSeconds(5));
-
-			//await _apcWorker.RefreshDynamicDataAsync(CurrentSlaveId, parameter.DynParams.Address);
 		}
 
 		private bool IsAnOtherUserWorkingWithDeviceNow()
@@ -418,22 +411,11 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 			_logger.LogDebug($"\nSent HC Command - Move Torch Down. Device {CurrentDeviceNumber}. User: {_userId}");
 		}
 
-		private async Task UpdateDynParamInAPCDeviceOrMockDBAsync(int deviceNum, int paramAddress, int paramValue, IhtModbusResult? ihtModbusResult = null)
-        {
-			if (IsSimulation)
-			{
-				await _parameterDataInfoManager.WriteHoldingRegistersAsync(deviceNum, paramAddress, paramValue, ihtModbusResult);
-			}
-            else
-            {
-				await _ihtModbusCommunic.WriteAsync(CurrentSlaveId, (ushort)paramAddress, (ushort)paramValue).ConfigureAwait(false);
-			}
-		}
-		private async Task UpdateDynParamInAPCDeviceOrMockDBAsync(int deviceNum, int slaveId, int paramAddress, int paramValue, IhtModbusResult? ihtModbusResult = null)
+		private async Task UpdateDynParamInAPCDeviceOrMockDBAsync(int slaveId, int paramAddress, int paramValue, IhtModbusResult? ihtModbusResult = null)
 		{
 			if (IsSimulation)
 			{
-				await _parameterDataInfoManager.WriteHoldingRegistersAsync(deviceNum, paramAddress, paramValue, ihtModbusResult);
+				await _parameterDataInfoManager.WriteHoldingRegistersAsync(slaveId, paramAddress, paramValue, ihtModbusResult);
 			}
 			else
 			{

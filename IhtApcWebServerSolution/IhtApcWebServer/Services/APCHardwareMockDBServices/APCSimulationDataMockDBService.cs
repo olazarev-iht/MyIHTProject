@@ -14,11 +14,15 @@ namespace IhtApcWebServer.Services.APCHardwareMockDBServices
 
 		private readonly DbModelMapper _mapper;
 
+		private readonly int _idDefault; 
+
 		public APCSimulationDataMockDBService(IDbContextFactory<APCHardwareMockDBContext> dbContextFactory, DbModelMapper mapper)
 		{
 			_dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
 
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+
+			_idDefault = (int)IhtModbusCommunic.SlaveId.Id_Default;
 		}
 
 		public async Task<IEnumerable<APCSimulationDataModel>> GetEntriesAsync(CancellationToken cancellationToken)
@@ -50,19 +54,18 @@ namespace IhtApcWebServer.Services.APCHardwareMockDBServices
 
 		public async Task<UInt16[]> ReadHoldingRegistersAsync(byte slaveId, ushort startAddress, ushort numRegisters, IhtModbusResult? ihtModbusResult = null)
 		{
-			var deviceId = slaveId > 10 ? slaveId - 10 : slaveId;
+			var deviceId = slaveId > _idDefault ? slaveId - _idDefault : slaveId;
 
 			var simulationData = await GetApcSimulationDataSetByAddressAndNumber(deviceId, startAddress, numRegisters, CancellationToken.None);
 
 			return simulationData.Select(x => (ushort)x.Value).ToArray();
 		}
 
-		public async Task WriteHoldingRegistersAsync(byte slaveAddress, ushort address, int value, IhtModbusResult? ihtModbusResult = null)
+		public async Task WriteHoldingRegistersAsync(byte slaveId, ushort address, int value, IhtModbusResult? ihtModbusResult = null)
 		{
-			var deviceId = slaveAddress > 10 ? slaveAddress - 10 : slaveAddress;
+			var deviceId = slaveId > _idDefault ? slaveId - _idDefault : slaveId;
 
 			await UpdateEntryByDeviceNumAndAddressAsync(deviceId, address, value, CancellationToken.None);
-
 		}
 
 		public async Task UpdateEntryByDeviceNumAndAddressAsync(int deviceNumber, ushort paramAddress, int paramValue, CancellationToken cancellationToken)
@@ -79,9 +82,9 @@ namespace IhtApcWebServer.Services.APCHardwareMockDBServices
 			}
 		}
 
-		public async Task WriteHoldingRegistersRangeAsync(byte slaveAddress, ushort address, ushort[] values, IhtModbusResult? ihtModbusResult = null)
+		public async Task WriteHoldingRegistersRangeAsync(byte slaveId, ushort address, ushort[] values, IhtModbusResult? ihtModbusResult = null)
 		{
-			var deviceId = slaveAddress > 10 ? slaveAddress - 10 : slaveAddress;
+			var deviceId = slaveId > _idDefault ? slaveId - _idDefault : slaveId;
 
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(CancellationToken.None);
 
@@ -106,9 +109,9 @@ namespace IhtApcWebServer.Services.APCHardwareMockDBServices
 			}
 		}
 
-		public async Task<(ushort Address, ushort Value)[]> GetHoldingRegistersWithAddressAsync(byte slaveAddress, ushort startAddress, ushort numRegisters, IhtModbusResult? ihtModbusResult = null)
+		public async Task<(ushort Address, ushort Value)[]> GetHoldingRegistersWithAddressAsync(byte slaveId, ushort startAddress, ushort numRegisters, IhtModbusResult? ihtModbusResult = null)
 		{
-			var deviceId = slaveAddress > 10 ? slaveAddress - 10 : slaveAddress;
+			var deviceId = slaveId > _idDefault ? slaveId - _idDefault : slaveId;
 
 			var simulationData = await GetApcSimulationDataSetByAddressAndNumber(deviceId, startAddress, numRegisters, CancellationToken.None);
 
