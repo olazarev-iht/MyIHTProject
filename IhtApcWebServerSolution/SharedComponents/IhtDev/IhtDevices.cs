@@ -313,18 +313,24 @@ namespace SharedComponents.IhtDev
 
         private ErrorCodeLablesDevices errorCodeLablesDevices = new ErrorCodeLablesDevices();
 
+        public SystemSettings _systemSettings;
+
         /// <summary>
         /// Konstruktor
         /// </summary>
         public IhtDevices(
             IServiceProvider provider,
-            IhtModbusCommunic ihtModbusCommunic)
+            IhtModbusCommunic ihtModbusCommunic,
+            SystemSettings systemSettings)
         {
             _provider = provider ??
                throw new ArgumentNullException($"{nameof(provider)}");
 
             this.ihtModbusCommunic = ihtModbusCommunic ??
                throw new ArgumentNullException($"{nameof(ihtModbusCommunic)}");
+
+            _systemSettings = systemSettings ??
+               throw new ArgumentNullException($"{nameof(systemSettings)}");
         }
 
         /// <summary>
@@ -334,6 +340,7 @@ namespace SharedComponents.IhtDev
         {
             _ihtDevicesDictionary_ = new Dictionary<int, IhtDevice>();
             var _ihtDevice = _provider?.GetService<IhtDevice>();
+            var systemSettings = _provider?.GetService<SystemSettings>();
             //MainWindow _mainWindow = MainWindow.GetMainWindow();
             // Device 1
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_01; //_mainWindow.FindResource("ihtDevice_1") as IhtDevice;
@@ -378,7 +385,10 @@ namespace SharedComponents.IhtDev
                                //(DataCmdExecution)GetIhtDeviceDataModelByName("dataCmdExecution_2")
                               );
             _ihtDevicesDictionary_.Add(_ihtDevice.SlaveId /*_mainWindow.mainCtrl_1.SlaveId*/, _ihtDevice);
-            _ihtDevice.IsEnabledChbx = true;
+            _ihtDevice.IsVisible = systemSettings?.TorchInstalled_02 ?? false;
+            _ihtDevice.IsOn = systemSettings?.TorchEnabled_02 ?? false && _ihtDevice.IsVisible;
+            _ihtDevice.IsEnabledMainControl = _ihtDevice.IsVisible && _ihtDevice.IsOn;
+            //_ihtDevice.IsEnabledChbx = true;
             // Device 3
             _ihtDevice = _provider?.GetService<IhtDevice>();
             _ihtDevice.DeviceNumber = (int)DeviceNumber.Device_03;

@@ -27,6 +27,8 @@ namespace IhtApcWebServer.Data
 
 		public DbSet<ParamSettings> ParamSettings { get; set; } = null!;
 
+		public DbSet<ConfigSettings> ConfigSettings { get; set; } = null!;
+
 		public APCHardwareDBContext(DbContextOptions<APCHardwareDBContext> options)
 			: base(options)
 		{
@@ -49,14 +51,18 @@ namespace IhtApcWebServer.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-            //modelBuilder.Entity<DynParams>()
-            //.HasOne(s => s.ConstParams)
-            //.WithMany(p => p.DynParams)
-            //.HasForeignKey(t => t.ConstParamsId)
-            //.OnDelete(DeleteBehavior.ClientCascade);
+			//modelBuilder.Entity<DynParams>()
+			//.HasOne(s => s.ConstParams)
+			//.WithMany(p => p.DynParams)
+			//.HasForeignKey(t => t.ConstParamsId)
+			//.OnDelete(DeleteBehavior.ClientCascade);
 
-            //Seed Departments Table
-            var APCDeviceId1 = Guid.NewGuid();
+			var ConfigSetting = new ConfigSettings { Id = Guid.NewGuid() };
+
+			modelBuilder.Entity<ConfigSettings>().HasData(ConfigSetting);
+
+			//Seed Departments Table
+			var APCDeviceId1 = Guid.NewGuid();
 			var APCDeviceId2 = Guid.NewGuid();
 			var APCDeviceId3 = Guid.NewGuid();
 			var APCDeviceId4 = Guid.NewGuid();

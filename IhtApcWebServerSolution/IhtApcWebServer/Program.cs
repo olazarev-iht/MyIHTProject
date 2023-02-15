@@ -178,6 +178,7 @@ builder.Services.AddSingleton<ILiveParamsDBService, LiveParamsDBService>();
 builder.Services.AddSingleton<IParameterDataDBService, ParameterDataDBService>();
 builder.Services.AddSingleton<IParameterDataInfoDBService, ParameterDataInfoDBService>();
 builder.Services.AddSingleton<IAPCDefaultDataMockDBService, APCDefaultDataMockDBService>();
+builder.Services.AddSingleton<IConfigSettingsDBService, ConfigSettingsDBService>();
 
 
 // APC Mock DB
@@ -196,6 +197,7 @@ builder.Services.AddSingleton<IhtDevices>();
 builder.Services.AddTransient<IhtDevice>(); 
 builder.Services.AddTransient<DataProcessInfo>();
 
+builder.Services.AddSingleton<SystemSettings>();
 builder.Services.AddSingleton<IhtModbusCommunic>();
 builder.Services.AddSingleton<IhtModbusCommunicData>(); 
 builder.Services.AddSingleton<APCCommunicManager>();
