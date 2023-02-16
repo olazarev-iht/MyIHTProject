@@ -26,6 +26,7 @@
 @inject IAPCSimulationDataMockDBService apcSimulationDataMockDBService
 @inject APCCommunicManager apcCommunicManager
 @inject IhtModbusCommunic ihtModbusCommunic
+@inject IhtModbusCommunicData ihtModbusCommunicData
 @inject APCWorkerBackgroundService _apcWorkerBackgroundService
 @inherits IhtComponentBase
 @implements IDisposable
@@ -1316,7 +1317,7 @@ input#password-input:focus {
         // Connection to the APC devices
         _nameComPort = string.IsNullOrWhiteSpace(_nameComPort) ? DEFAULT_COM_PORT : _nameComPort;
 
-        await apcCommunicManager.Init(_nameComPort, _isSimulation, _performResetDevices);
+        await apcCommunicManager.Init(_nameComPort, _isSimulation, _performResetDevices, manual);
 
         ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
 
@@ -2244,6 +2245,20 @@ input#password-input:focus {
         ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
 
         ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded -= DynamicAPCParamsOnConnectedTorchesInstalled;
+
+        //TODO: Check the function !!!
+        //SaveSystemSettings(); 
+    }
+
+    private void SaveSystemSettings()
+    {
+        var systemSettings = IhtDevices.GetIhtDevices()._systemSettings;
+
+        if(systemSettings != null)
+        {
+            //TODO: Check the function !!!
+            IhtSettings.LoadSettings(systemSettings, ihtModbusCommunicData);
+        }
     }
 
     private void ParamSelected1(ChangeEventArgs args)

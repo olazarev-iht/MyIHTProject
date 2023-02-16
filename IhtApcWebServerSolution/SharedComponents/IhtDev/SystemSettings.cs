@@ -11,6 +11,8 @@ namespace SharedComponents.IhtDev
 {
     public class SystemSettings
     {
+        static bool initialSettings = true;
+
         private int? _mode;
         public int? Mode 
         {
@@ -21,9 +23,8 @@ namespace SharedComponents.IhtDev
                 _mode = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if(configSettings != null)
+                if(configSettings != null && !initialSettings)
                 {
-                    configSettings.Mode = _mode;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -39,9 +40,8 @@ namespace SharedComponents.IhtDev
                 _tcpPort = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TcpPort = _tcpPort;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -57,9 +57,8 @@ namespace SharedComponents.IhtDev
                 _ipAddr = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.IpAddr = _ipAddr;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -75,9 +74,8 @@ namespace SharedComponents.IhtDev
                 _comPort = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.ComPort = _comPort;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -93,9 +91,8 @@ namespace SharedComponents.IhtDev
                 _baudrate = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.Baudrate = _baudrate;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -111,9 +108,8 @@ namespace SharedComponents.IhtDev
                 _dataBits = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.DataBits = _dataBits;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -129,9 +125,8 @@ namespace SharedComponents.IhtDev
                 _stopBits = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.StopBits = _stopBits;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -147,9 +142,8 @@ namespace SharedComponents.IhtDev
                 _parity = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.Parity = _parity;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -165,9 +159,8 @@ namespace SharedComponents.IhtDev
                 _identifier = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.Identifier = _identifier;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -183,9 +176,8 @@ namespace SharedComponents.IhtDev
                 _torchEnabled_01 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchEnabled_01 = _torchEnabled_01;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -201,9 +193,8 @@ namespace SharedComponents.IhtDev
                 _torchEnabled_02 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchEnabled_02 = _torchEnabled_02;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -219,9 +210,8 @@ namespace SharedComponents.IhtDev
                 _torchEnabled_03 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchEnabled_03 = _torchEnabled_03;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -237,9 +227,8 @@ namespace SharedComponents.IhtDev
                 _torchEnabled_04 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchEnabled_04 = _torchEnabled_04;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -255,9 +244,8 @@ namespace SharedComponents.IhtDev
                 _torchEnabled_05 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchEnabled_05 = _torchEnabled_05;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -273,9 +261,8 @@ namespace SharedComponents.IhtDev
                 _torchEnabled_06 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchEnabled_06 = _torchEnabled_06;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -291,9 +278,8 @@ namespace SharedComponents.IhtDev
                 _torchEnabled_07 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchEnabled_07 = _torchEnabled_07;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -309,9 +295,8 @@ namespace SharedComponents.IhtDev
                 _torchEnabled_08 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchEnabled_08 = _torchEnabled_08;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -327,9 +312,8 @@ namespace SharedComponents.IhtDev
                 _torchEnabled_09 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchEnabled_09 = _torchEnabled_09;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -345,9 +329,8 @@ namespace SharedComponents.IhtDev
                 _torchEnabled_10 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchEnabled_10 = _torchEnabled_10;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -363,9 +346,8 @@ namespace SharedComponents.IhtDev
                 _torchInstalled_01 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchInstalled_01 = _torchInstalled_01;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -381,9 +363,8 @@ namespace SharedComponents.IhtDev
                 _torchInstalled_02 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchInstalled_02 = _torchInstalled_02;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -399,9 +380,8 @@ namespace SharedComponents.IhtDev
                 _torchInstalled_03 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchInstalled_03 = _torchInstalled_03;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -417,9 +397,8 @@ namespace SharedComponents.IhtDev
                 _torchInstalled_04 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchInstalled_04 = _torchInstalled_04;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -435,9 +414,8 @@ namespace SharedComponents.IhtDev
                 _torchInstalled_05 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchInstalled_05 = _torchInstalled_05;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -453,9 +431,8 @@ namespace SharedComponents.IhtDev
                 _torchInstalled_06 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchInstalled_06 = _torchInstalled_06;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -471,9 +448,8 @@ namespace SharedComponents.IhtDev
                 _torchInstalled_07 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchInstalled_07 = _torchInstalled_07;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -489,9 +465,8 @@ namespace SharedComponents.IhtDev
                 _torchInstalled_08 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchInstalled_08 = _torchInstalled_08;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -507,9 +482,8 @@ namespace SharedComponents.IhtDev
                 _torchInstalled_09 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchInstalled_09 = _torchInstalled_09;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -525,9 +499,8 @@ namespace SharedComponents.IhtDev
                 _torchInstalled_10 = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchInstalled_10 = _torchInstalled_10;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -543,9 +516,8 @@ namespace SharedComponents.IhtDev
                 _dataBaseMaterialSelectedIndex = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.DataBaseMaterialSelectedIndex = _dataBaseMaterialSelectedIndex;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -561,9 +533,8 @@ namespace SharedComponents.IhtDev
                 _dataBaseThicknessSelectedIndex = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.DataBaseThicknessSelectedIndex = _dataBaseThicknessSelectedIndex;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -579,9 +550,8 @@ namespace SharedComponents.IhtDev
                 _dataBaseNozzleSelectedIndex = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.DataBaseNozzleSelectedIndex = _dataBaseNozzleSelectedIndex;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -597,9 +567,8 @@ namespace SharedComponents.IhtDev
                 _dataBaseGuid = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.DataBaseGuid = _dataBaseGuid;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -615,9 +584,8 @@ namespace SharedComponents.IhtDev
                 _torchType = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.TorchType = _torchType;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -633,9 +601,8 @@ namespace SharedComponents.IhtDev
                 _pressureUnit = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.PressureUnit = _pressureUnit;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -651,9 +618,8 @@ namespace SharedComponents.IhtDev
                 _lengthUnit = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.LengthUnit = _lengthUnit;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -669,9 +635,8 @@ namespace SharedComponents.IhtDev
                 _cultureStr = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.CultureStr = _cultureStr;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -687,9 +652,8 @@ namespace SharedComponents.IhtDev
                 _comPortLast = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.ComPortLast = _comPortLast;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -705,9 +669,8 @@ namespace SharedComponents.IhtDev
                 _execReset = value;
 
                 var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
-                if (configSettings != null)
+                if (configSettings != null && !initialSettings)
                 {
-                    configSettings.ExecReset = _execReset;
                     _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
                 }
             }
@@ -772,6 +735,8 @@ namespace SharedComponents.IhtDev
             CultureStr = configSettings?.CultureStr ?? _settings.CultureStr;
             ComPortLast = configSettings?.ComPortLast ?? _settings.ComPortLast;
             ExecReset = configSettings?.ExecReset ?? _settings.ExecReset;
+
+            initialSettings = false;
         }
     }
 }

@@ -10,9 +10,8 @@ using System.IO.Ports;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Win32;
-using SharedComponents.Properties;
+using SharedComponents.IhtDev;
 using SharedComponents.Models;
-
 
 namespace SharedComponents.IhtModbus
 {
@@ -53,6 +52,38 @@ namespace SharedComponents.IhtModbus
         }
 
         internal void UpdateSettings(Settings settings)
+        {
+            settings.Mode = (IsTcp == true) ? 0 : 1;
+            settings.TcpPort = IpPort.ToString();
+            settings.IpAddr = IpAddress;
+            settings.ComPort = ComPort;
+            settings.ComPortLast = ComPortLast;
+            settings.Baudrate = Baudrate.ToString();
+            settings.DataBits = DataBits.ToString();
+            settings.Parity = Parity.ToString();
+            settings.StopBits = StopBits.ToString();
+            settings.Identifier = SlaveId.ToString();
+            settings.ExecReset = IsExecReset;
+        }
+
+        internal void LoadSettings(SystemSettings settings)
+        {
+            IsTcp = settings.Mode == 1;
+            IpPort = int.Parse(settings.TcpPort ?? "");
+            IpAddress = settings.IpAddr ?? "";
+            ComPort = settings.ComPort ?? "";
+            ComPortLast = settings.ComPortLast ?? "";
+            Baudrate = int.Parse(settings.Baudrate ?? "");
+            DataBits = int.Parse(settings.DataBits ?? "");
+            Parity = (Parity)Enum.Parse(typeof(Parity), settings.Parity 
+                ?? throw new Exception("Parity setting value is empty when getting settings"));
+            StopBits = (StopBits)Enum.Parse(typeof(StopBits), settings.StopBits
+                ?? throw new Exception("StopBits setting value is empty when getting settings"));
+            SlaveId = int.Parse(settings.Identifier ?? "");
+            IsExecReset = settings.ExecReset ?? false;
+        }
+
+        internal void UpdateSettings(SystemSettings settings)
         {
             settings.Mode = (IsTcp == true) ? 0 : 1;
             settings.TcpPort = IpPort.ToString();

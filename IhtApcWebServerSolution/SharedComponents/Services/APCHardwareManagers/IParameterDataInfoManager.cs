@@ -30,5 +30,6 @@ namespace SharedComponents.Services.APCHardwareManagers
         public Task WriteHoldingRegistersRangeAsync(int apcDeviceNum, int paramAddress, ushort[] paramValues, IhtModbusResult? ihtModbusResult = null);
         public Task<ushort?> ReadOneHoldingRegisterAsync(byte slaveAddress, ushort startAddress);
         public Task DeleteAllEntriesFromCutingDataSequenceTableAsync(CancellationToken cancellationToken);
+        public Task<bool> IsSystemHasSavedSettings(CancellationToken cancellationToken);
     }
 }

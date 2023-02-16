@@ -29,6 +29,7 @@ namespace SharedComponents.APCHardwareManagers
         protected readonly IParameterDataDBService _parameterDataDBService;
         protected readonly IParameterDataInfoDBService _parameterDataInfoDBService;
         protected readonly ICuttingDataDBService _cuttingDataDBService;
+        protected readonly IConfigSettingsDBService _configSettingsDBService;
 
         protected readonly IAPCDeviceMockDBService _apcDeviceMockDBService;
         protected readonly IConstParamsMockDBService _constParamsMockDBService;
@@ -56,6 +57,7 @@ namespace SharedComponents.APCHardwareManagers
             IAPCDefaultDataMockDBService apcDefaultDataMockDBService,
             IhtModbusCommunic ihtModbusCommunic,
             IhtCutDataAddressMap ihtCutDataAddressMap,
+            IConfigSettingsDBService configSettingsDBService,
             IOptions<Settings> settings
             )
         {
@@ -100,6 +102,9 @@ namespace SharedComponents.APCHardwareManagers
 
             _ihtCutDataAddressMap = ihtCutDataAddressMap ??
                throw new ArgumentNullException($"{nameof(ihtCutDataAddressMap)}");
+
+            _configSettingsDBService = configSettingsDBService ??
+              throw new ArgumentNullException($"{nameof(configSettingsDBService)}");
 
             _settings = settings != null ? settings.Value : 
                 throw new ArgumentNullException($"{nameof(settings)}");
@@ -702,6 +707,20 @@ namespace SharedComponents.APCHardwareManagers
             }
 
             return Guid.Empty;
+        }
+
+        public async Task<bool> IsSystemHasSavedSettings(CancellationToken cancellationToken)
+        {
+            bool returnValue = false;
+
+            var configSettings = await _configSettingsDBService.GetEntryAsync(cancellationToken);
+
+            if(configSettings != null)
+            {
+                returnValue = !string.IsNullOrWhiteSpace(configSettings.ComPort);
+            }
+
+            return returnValue;
         }
     }
 }

@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 using SharedComponents.Services.APCCommunicServices;
 using SharedComponents.Services.APCHardwareManagers;
 using IhtApcWebServer.Services.APCWorkerService;
-using SharedComponents.IhtModbus;
+using SharedComponents.Helpers;
 using SharedComponents.IhtDev;
+using SharedComponents.IhtModbus;
 using SharedComponents.IhtMsg;
 
 namespace IhtApcWebServer.Services.APCCommunic
@@ -20,6 +21,8 @@ namespace IhtApcWebServer.Services.APCCommunic
         IhtModbusCommunicData _ihtModbusCommunicData;
         IParameterDataInfoManager _parameterDataInfoManager;
         APCWorkerBackgroundService _apcWorkerBackgroundService;
+
+        private readonly ILogger<APCCommunicManager> _logger;
 
         private int _isRobot = 0;
         //TODO: implement with command line
@@ -42,7 +45,8 @@ namespace IhtApcWebServer.Services.APCCommunic
             IhtModbusCommunic ihtModbusCommunic, 
             IhtModbusCommunicData ihtModbusCommunicData,
             IParameterDataInfoManager parameterDataInfoManager,
-            APCWorkerBackgroundService apcWorkerBackgroundService)
+            APCWorkerBackgroundService apcWorkerBackgroundService,
+            ILogger<APCCommunicManager> logger)
         {
             _ihtDevices = ihtDevices ??
                throw new ArgumentNullException($"{nameof(ihtDevices)}");
@@ -59,16 +63,43 @@ namespace IhtApcWebServer.Services.APCCommunic
             _apcWorkerBackgroundService = apcWorkerBackgroundService ??
                throw new ArgumentNullException($"{nameof(apcWorkerBackgroundService)}");
 
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         //TODO: Temp Init() func - delete when config settings will be implemented
-        public async Task Init(string nameComPort, bool isSimulation, bool performResetDevices)
+        public async Task Init(string nameComPort, bool isSimulation, bool performResetDevices, bool isManualInit)
         {
-            _ihtModbusCommunicData.ComPort = nameComPort;
-            _ihtModbusCommunicData.IsExecReset = performResetDevices;
-            _ihtModbusCommunic.Init(isSimulation, _ihtModbusCommunicData);
+            var isSystemHasSavedSettings = await _parameterDataInfoManager.IsSystemHasSavedSettings(CancellationToken.None);
 
-            await ConnectAsync();
+            try
+            {
+                if (isManualInit || !isSystemHasSavedSettings)
+                {
+                    _ihtModbusCommunicData.ComPort = nameComPort;
+                    _ihtModbusCommunicData.IsExecReset = performResetDevices;
+                }
+                else
+                {
+                    //_ihtModbusCommunicData.ComPort = _ihtDevices?._systemSettings?.ComPort
+                    //    ?? throw new Exception("The ComPort is empty when auto-connection");
+
+                    //_ihtModbusCommunicData.IsExecReset = _ihtDevices?._systemSettings?.ExecReset
+                    //    ?? throw new Exception("The ExecReset is empty when auto-connection");
+
+                    if (_ihtDevices._systemSettings != null)
+                    {
+                        IhtSettings.LoadSettings(_ihtDevices._systemSettings, _ihtModbusCommunicData);
+                    }
+                }
+
+                _ihtModbusCommunic.Init(isSimulation, _ihtModbusCommunicData);
+
+                await ConnectAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         //TODO: call ConnectAsync() func directly

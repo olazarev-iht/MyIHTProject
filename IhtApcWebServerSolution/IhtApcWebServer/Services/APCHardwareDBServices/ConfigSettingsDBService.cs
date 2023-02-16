@@ -27,7 +27,7 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entry = await dbContext.ConfigSettings.SingleAsync(cancellationToken);
+			var entry = await dbContext.ConfigSettings.AsNoTracking().SingleAsync(cancellationToken);
 
 			return _mapper.Map<ConfigSettings, ConfigSettingsModel>(entry);
 		}
