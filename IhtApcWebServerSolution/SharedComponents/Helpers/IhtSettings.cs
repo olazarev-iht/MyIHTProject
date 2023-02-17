@@ -34,7 +34,7 @@ namespace SharedComponents.Helpers
             //LoadLanguage(settings);
         }
 
-        internal void UpdateSettings(SystemSettings settings, IhtModbusCommunicData ihtModbusCommunicData)
+        public static void UpdateSettings(SystemSettings settings, IhtModbusCommunicData ihtModbusCommunicData)
         {
             settings = settings ?? throw new ArgumentNullException(nameof(settings), $"Param is empty when func {nameof(UpdateSettings)} is running.");
 
@@ -44,7 +44,7 @@ namespace SharedComponents.Helpers
             //communicData.UpdateSettings(settings);
 
             //Update communication data
-            if(ihtModbusCommunicData != null)
+            if (ihtModbusCommunicData != null)
             {
                 ihtModbusCommunicData.UpdateSettings(settings);
             }
@@ -157,7 +157,7 @@ namespace SharedComponents.Helpers
             }
         }
 
-        private void UpdateDevices(SystemSettings settings)
+        private static void UpdateDevices(SystemSettings settings)
         {
             var _ihtDevices = IhtDevices.GetIhtDevices().GetDevices();
             if (_ihtDevices == null)

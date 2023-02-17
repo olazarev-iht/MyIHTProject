@@ -73,10 +73,12 @@ namespace IhtApcWebServer.Services.APCCommunic
 
             try
             {
-                if (isManualInit || !isSystemHasSavedSettings)
+                if (isManualInit)
                 {
                     _ihtModbusCommunicData.ComPort = nameComPort;
                     _ihtModbusCommunicData.IsExecReset = performResetDevices;
+
+                    SaveSystemSettings(_ihtDevices._systemSettings, _ihtModbusCommunicData);
                 }
                 else
                 {
@@ -86,10 +88,7 @@ namespace IhtApcWebServer.Services.APCCommunic
                     //_ihtModbusCommunicData.IsExecReset = _ihtDevices?._systemSettings?.ExecReset
                     //    ?? throw new Exception("The ExecReset is empty when auto-connection");
 
-                    if (_ihtDevices._systemSettings != null)
-                    {
-                        IhtSettings.LoadSettings(_ihtDevices._systemSettings, _ihtModbusCommunicData);
-                    }
+                    LoadSystemSettings(_ihtDevices._systemSettings, _ihtModbusCommunicData);
                 }
 
                 _ihtModbusCommunic.Init(isSimulation, _ihtModbusCommunicData);
@@ -99,6 +98,34 @@ namespace IhtApcWebServer.Services.APCCommunic
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
+            }
+        }
+
+        private void SaveSystemSettings(SystemSettings systemSettings, IhtModbusCommunicData ihtModbusCommunicData)
+        {
+            systemSettings = systemSettings 
+                ?? throw new ArgumentNullException(nameof(systemSettings));
+
+            ihtModbusCommunicData = ihtModbusCommunicData 
+                ?? throw new ArgumentNullException(nameof(ihtModbusCommunicData));
+
+            if (systemSettings != null && ihtModbusCommunicData != null)
+            {
+                IhtSettings.UpdateSettings(systemSettings, ihtModbusCommunicData);
+            }
+        }
+
+        private void LoadSystemSettings(SystemSettings systemSettings, IhtModbusCommunicData ihtModbusCommunicData)
+        {
+            systemSettings = systemSettings
+                ?? throw new ArgumentNullException(nameof(systemSettings));
+
+            ihtModbusCommunicData = ihtModbusCommunicData
+                ?? throw new ArgumentNullException(nameof(ihtModbusCommunicData));
+
+            if (systemSettings != null && ihtModbusCommunicData != null)
+            {
+                IhtSettings.LoadSettings(systemSettings, ihtModbusCommunicData);
             }
         }
 

@@ -68,7 +68,8 @@ namespace SharedComponents.IhtModbus
 
         internal void LoadSettings(SystemSettings settings)
         {
-            IsTcp = settings.Mode == 1;
+            IsTcp = settings.Mode == 0;
+            IsRtu = !IsTcp;
             IpPort = int.Parse(settings.TcpPort ?? "");
             IpAddress = settings.IpAddr ?? "";
             ComPort = settings.ComPort ?? "";

@@ -152,7 +152,7 @@ table#controlPanel td  {
     background-color:#d56565;
     box-shadow: inset 150px 150px 0px 0px #e5d7d7bf;
     color: #eaeaeb !important;
-    border: 0px !important;
+    /*border: 0px !important;*/
 }
 
 .DisabledDeviceNum {
@@ -308,6 +308,7 @@ input#password-input:focus {
         display: block !important;
         font-size: 10.5px;
         color: #616161;
+        position: absolute;
     }
 
 
@@ -781,11 +782,11 @@ input#password-input:focus {
                     <table class="internal_div_table">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(1)"
-            @onclick="@(()=>SetDeviceNum(1))">1<div style="display:none">Er. code: @GetDeviceErrorCode(1)</div></MudTd>
+            @onclick="@(()=>SetDeviceNum(1))">1<div style="display:none">&nbsp; Er. code: @GetDeviceErrorCode(1)</div></MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(2)"
-            @onclick="@(()=>SetDeviceNum(2))">2<div style="display:none">Er. code: @GetDeviceErrorCode(2)</div></MudTd>
+            @onclick="@(()=>SetDeviceNum(2))">2<div style="display:none">&nbsp; Er. code: @GetDeviceErrorCode(2)</div></MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(3)"
-            @onclick="@(()=>SetDeviceNum(3))">3</MudTd>
+            @onclick="@(()=>SetDeviceNum(3))">3<div style="display:none">&nbsp; Er. code: @GetDeviceErrorCode(3)</div></MudTd>
                         </tr>
                     </table>
                  </div>
@@ -793,9 +794,9 @@ input#password-input:focus {
                     <table class="internal_div_table">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(4)"
-            @onclick="@(()=>SetDeviceNum(4))">4</MudTd>
+            @onclick="@(()=>SetDeviceNum(4))">4<div style="display:none">&nbsp; Er. code: @GetDeviceErrorCode(4)</div></MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)"
-            @onclick="@(()=>SetDeviceNum(5))">5</MudTd>            
+            @onclick="@(()=>SetDeviceNum(5))">5<div style="display:none">&nbsp; Er. code: @GetDeviceErrorCode(5)</div></MudTd>            
             <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
             <MudOverlay Visible="_isProcessBtnActive || ErrorCode > 0" LightBackground="true" Absolute="true" />
             <MudTd Style="padding:0px;" Class="device_lastcell">
@@ -813,11 +814,11 @@ input#password-input:focus {
                     <table class="internal_div_table">
                         <tr>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(6)"
-            @onclick="@(()=>SetDeviceNum(6))">6</MudTd>
+            @onclick="@(()=>SetDeviceNum(6))">6<div style="display:none">&nbsp; Er. code: @GetDeviceErrorCode(6)</div></MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(7)"
-            @onclick="@(()=>SetDeviceNum(7))">7</MudTd>
+            @onclick="@(()=>SetDeviceNum(7))">7<div style="display:none">&nbsp; Er. code: @GetDeviceErrorCode(7)</div></MudTd>
             <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(8)"
-            @onclick="@(()=>SetDeviceNum(8))">8</MudTd>
+            @onclick="@(()=>SetDeviceNum(8))">8<div style="display:none">&nbsp; Er. code: @GetDeviceErrorCode(8)</div></MudTd>
                         </tr>
                     </table>
                 </div>
@@ -840,10 +841,10 @@ input#password-input:focus {
             }
             else{
                 <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(9)"
-                @onclick="@(()=>SetDeviceNum(9))">9</MudTd>
+                @onclick="@(()=>SetDeviceNum(9))">9<div style="display:none">&nbsp; Er. code: @GetDeviceErrorCode(9)</div></MudTd>
 
                 <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
-                @onclick="@(()=>SetDeviceNum(10))">10</MudTd>
+                @onclick="@(()=>SetDeviceNum(10))">10<div style="display:none">&nbsp; Er. code: @GetDeviceErrorCode(10)</div></MudTd>
             }
                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                 <MudOverlay Visible="IsSumDisabled()" LightBackground="true" Absolute="true" />
@@ -2248,17 +2249,6 @@ input#password-input:focus {
 
         //TODO: Check the function !!!
         //SaveSystemSettings(); 
-    }
-
-    private void SaveSystemSettings()
-    {
-        var systemSettings = IhtDevices.GetIhtDevices()._systemSettings;
-
-        if(systemSettings != null)
-        {
-            //TODO: Check the function !!!
-            IhtSettings.LoadSettings(systemSettings, ihtModbusCommunicData);
-        }
     }
 
     private void ParamSelected1(ChangeEventArgs args)

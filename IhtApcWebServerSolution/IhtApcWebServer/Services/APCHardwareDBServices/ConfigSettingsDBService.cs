@@ -27,7 +27,7 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var entry = await dbContext.ConfigSettings.AsNoTracking().SingleAsync(cancellationToken);
+			var entry = await dbContext.ConfigSettings.SingleAsync(cancellationToken);
 
 			return _mapper.Map<ConfigSettings, ConfigSettingsModel>(entry);
 		}
@@ -61,7 +61,8 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 			if (entry != null)
 			{
 				newData.Id = entry.Id;
-				entry = _mapper.Map<ConfigSettingsModel, ConfigSettings>(newData);
+				//entry = _mapper.Map<ConfigSettingsModel, ConfigSettings>(newData);
+				dbContext.Entry(entry).CurrentValues.SetValues(newData);
 				await dbContext.SaveChangesAsync(cancellationToken);
 			}
 		}
