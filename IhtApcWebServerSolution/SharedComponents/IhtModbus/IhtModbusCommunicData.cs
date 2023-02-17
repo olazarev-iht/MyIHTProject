@@ -35,36 +35,38 @@ namespace SharedComponents.IhtModbus
 
         public IhtModbusCommunicData()
         {
-            _isTcp = false;
-            _isRtu = true;
-            _ipAddress = "10.0.0.21";
-            _ipPort = 502;
-            _comPort = "COM1";
-            _comPortLast = "COM1";
-            _baudrate = 57600;
-            _dataBits = 8;
-            _parity = Parity.Even;
-            _stopBits = StopBits.One;
+            //_isTcp = false;
+            //_isRtu = true;
+            //_ipAddress = "127.0.0.1";
+            //_ipPort = 502;
+            //_comPort = "COM3";
+            //_comPortLast = "COM3";
+            //_baudrate = 57600;
+            //_dataBits = 8;
+            //_parity = Parity.Even;
+            //_stopBits = StopBits.One;
             _writeTimeout_ms = 1000;
             _readTimeout_ms = 1000;
-            _slaveId = 11;
-            _isExecReset = false;
+            //_slaveId = 11;
+            //_isExecReset = false;
+
+            LoadSettings(IhtDevices.GetIhtDevices()._systemSettings);
         }
 
-        internal void UpdateSettings(Settings settings)
-        {
-            settings.Mode = (IsTcp == true) ? 0 : 1;
-            settings.TcpPort = IpPort.ToString();
-            settings.IpAddr = IpAddress;
-            settings.ComPort = ComPort;
-            settings.ComPortLast = ComPortLast;
-            settings.Baudrate = Baudrate.ToString();
-            settings.DataBits = DataBits.ToString();
-            settings.Parity = Parity.ToString();
-            settings.StopBits = StopBits.ToString();
-            settings.Identifier = SlaveId.ToString();
-            settings.ExecReset = IsExecReset;
-        }
+        //internal void UpdateSettings(Settings settings)
+        //{
+        //    settings.Mode = (IsTcp == true) ? 0 : 1;
+        //    settings.TcpPort = IpPort.ToString();
+        //    settings.IpAddr = IpAddress;
+        //    settings.ComPort = ComPort;
+        //    settings.ComPortLast = ComPortLast;
+        //    settings.Baudrate = Baudrate.ToString();
+        //    settings.DataBits = DataBits.ToString();
+        //    settings.Parity = Parity.ToString();
+        //    settings.StopBits = StopBits.ToString();
+        //    settings.Identifier = SlaveId.ToString();
+        //    settings.ExecReset = IsExecReset;
+        //}
 
         internal void LoadSettings(SystemSettings settings)
         {

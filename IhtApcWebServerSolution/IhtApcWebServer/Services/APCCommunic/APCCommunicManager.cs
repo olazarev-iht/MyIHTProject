@@ -78,7 +78,7 @@ namespace IhtApcWebServer.Services.APCCommunic
                     _ihtModbusCommunicData.ComPort = nameComPort;
                     _ihtModbusCommunicData.IsExecReset = performResetDevices;
 
-                    SaveSystemSettings(_ihtDevices._systemSettings, _ihtModbusCommunicData);
+                    //SaveSystemSettings(_ihtDevices._systemSettings, _ihtModbusCommunicData);
                 }
                 else
                 {
@@ -94,6 +94,8 @@ namespace IhtApcWebServer.Services.APCCommunic
                 _ihtModbusCommunic.Init(isSimulation, _ihtModbusCommunicData);
 
                 await ConnectAsync();
+
+                SaveSystemSettings(_ihtDevices._systemSettings, _ihtModbusCommunicData);
             }
             catch (Exception ex)
             {
