@@ -1273,6 +1273,7 @@ input#password-input:focus {
     private bool _torchInstalledDialogIsBlocked = false;
     private bool _initialDialogIsBlocked = false;
     private int _currentVisibleTorchesNum = 0;
+    private string? _currentComPort;
     private IhtDevices.TorchType _currentTorchTypeSetup;
     private bool _isControlPanelDisabled = false;
 
@@ -1636,11 +1637,14 @@ input#password-input:focus {
 
     private void RestoreIsVisibleAndTorchType()
     {
+        //restore torch type
         ihtDevices.TorchTypeSetup = _currentTorchTypeSetup;
 
-        var device = GetDeviceByDeviceNumber(_currentVisibleTorchesNum);
-        device.IsVisible = false;
-        device.IsVisible = true;
+        //restore devices visibility
+        IhtDevices.ihtDevices.ToList().Where(d => d.Value.DeviceNumber <= _currentVisibleTorchesNum).ToList().ForEach(d => d.Value.IsVisible = true);
+
+        //restore com port
+        _nameComPort = _currentComPort ?? string.Empty;
     }
 
     private void SaveCurrentIsVisibleAndTorchType()
@@ -1648,6 +1652,8 @@ input#password-input:focus {
         _currentVisibleTorchesNum = ihtDevices.GetDevices().Where(x => x.IsVisible).Max(x => x.DeviceNumber);
 
         _currentTorchTypeSetup = ihtDevices.TorchTypeSetup;
+
+        _currentComPort = _nameComPort;
     }
 
     private bool IsEnabledOnDisabled()
@@ -2125,6 +2131,11 @@ input#password-input:focus {
         {
             if (device.dataProcessInfo != null)
                 device.IsTorchDisabled = device.dataProcessInfo.IsInpTorchDisabled;
+
+            if(!device.IsVisible)
+            {
+                return cssClass;
+            }
 
             if (device.IsConnected)
             {

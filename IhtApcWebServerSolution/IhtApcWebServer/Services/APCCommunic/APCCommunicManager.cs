@@ -137,6 +137,19 @@ namespace IhtApcWebServer.Services.APCCommunic
             await CmdConnectExecAsync();
         }
 
+        private void SetDefaultsForNotVisible()
+        {
+            IhtDevices.ihtDevices.ToList().ForEach(kvp =>
+            {
+                if (!kvp.Value.IsVisible)
+                {
+                    kvp.Value.IsConnected = false;
+                    kvp.Value.IsOn = false;
+                    kvp.Value.IsEnabledOn = false;
+                    kvp.Value.IsEnabledMainControl = false;
+                }
+            });
+        }
         private async Task CmdConnectExecAsync()
         {
             //TODO: implement ?
@@ -160,8 +173,11 @@ namespace IhtApcWebServer.Services.APCCommunic
             // Eingeschaltete Geräte merken
             UInt16 u16OnSlaveIdBits = (UInt16)IhtModbusCommunic.CurrOnSlaveBits;
 
-            // Alle Geräte in den Default-Zustand versetzen
+            // Alle Geräte in den Default-Zustand versetzen (Set default settings for visible devices)
             _ihtDevices.SetDefaults();
+
+            // Set default settings for invisible devices
+            //SetDefaultsForNotVisible();
 
             //SetStatusMsg(IhtMsgLog.Info.Info, AssemblyInfo.AssemblyTitle);
             //SetStatusMsg(IhtMsgLog.Info.Info, $"Version: {AssemblyInfo.AssemblyVersion}");

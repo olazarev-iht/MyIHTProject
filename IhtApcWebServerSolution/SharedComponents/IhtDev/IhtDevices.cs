@@ -798,8 +798,8 @@ namespace SharedComponents.IhtDev
         public void Disables()
         {
             // Alle sichtbaren Geräte abfragen
-            ArrayList _ihtDevices = GetVisibleDevices();
-            foreach (IhtDevice _ihtDevice in _ihtDevices)
+            //ArrayList _ihtDevices = GetVisibleDevices();
+            foreach (IhtDevice _ihtDevice in ihtDevices.ToList().Select(x => x.Value).ToList())
             {
                 _ihtDevice.IsEnabledMainControl = false;
                 _ihtDevice.IsEnabledOn = false;
@@ -839,8 +839,8 @@ namespace SharedComponents.IhtDev
         public void SetUnconnecteds()
         {
             // Alle sichtbaren Geräte abfragen
-            ArrayList _ihtDevices = GetVisibleDevices();
-            foreach (IhtDevice _ihtDevice in _ihtDevices)
+            //ArrayList _ihtDevices = GetVisibleDevices();
+            foreach (IhtDevice _ihtDevice in ihtDevices.ToList().Select(x => x.Value).ToList())
             {
                 _ihtDevice.IsConnected = false;
             }
@@ -939,8 +939,8 @@ namespace SharedComponents.IhtDev
         /// </summary>
         public void ClrStatusBackgrounds()
         {
-            ArrayList _ihtDevices = GetVisibleDevices();
-            foreach (IhtDevice _ihtDevice in _ihtDevices)
+            //ArrayList _ihtDevices = GetVisibleDevices();
+            foreach (IhtDevice _ihtDevice in ihtDevices.ToList().Select(x => x.Value).ToList())
             {
                 _ihtDevice.ClrStatusBackground();
             }
@@ -1012,8 +1012,8 @@ namespace SharedComponents.IhtDev
         public void SetOffs()
         {
             // Alle sichtbaren Geräte abfragen
-            ArrayList _ihtDevices = GetVisibleDevices();
-            foreach (IhtDevice _ihtDevice in _ihtDevices)
+            //ArrayList _ihtDevices = GetVisibleDevices();
+            foreach (IhtDevice _ihtDevice in ihtDevices.ToList().Select(x => x.Value).ToList())
             {
                 _ihtDevice.IsOn = false;
             }
