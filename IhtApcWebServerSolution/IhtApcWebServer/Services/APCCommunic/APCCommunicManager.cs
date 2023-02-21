@@ -77,17 +77,9 @@ namespace IhtApcWebServer.Services.APCCommunic
                 {
                     _ihtModbusCommunicData.ComPort = nameComPort;
                     _ihtModbusCommunicData.IsExecReset = performResetDevices;
-
-                    //SaveSystemSettings(_ihtDevices._systemSettings, _ihtModbusCommunicData);
                 }
                 else
                 {
-                    //_ihtModbusCommunicData.ComPort = _ihtDevices?._systemSettings?.ComPort
-                    //    ?? throw new Exception("The ComPort is empty when auto-connection");
-
-                    //_ihtModbusCommunicData.IsExecReset = _ihtDevices?._systemSettings?.ExecReset
-                    //    ?? throw new Exception("The ExecReset is empty when auto-connection");
-
                     LoadSystemSettings(_ihtDevices._systemSettings, _ihtModbusCommunicData);
                 }
 
@@ -135,6 +127,24 @@ namespace IhtApcWebServer.Services.APCCommunic
         public async Task ConnectAsync()
         {
             await CmdConnectExecAsync();
+        }
+
+        public async Task DisconnectAsync()
+        {
+
+            var tcpClient = _ihtModbusCommunic.Client;
+            var comPort = _ihtModbusCommunic.Port;
+
+            if (tcpClient != null)
+            {
+                await Task.Run(() => { tcpClient.Close(); });
+            }
+
+            if (comPort != null)
+            {
+                await Task.Run(() => { comPort.Close(); });
+            }
+
         }
 
         private void SetDefaultsForNotVisible()

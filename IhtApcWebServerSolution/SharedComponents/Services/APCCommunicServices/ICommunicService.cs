@@ -9,5 +9,6 @@ namespace SharedComponents.Services.APCCommunicServices
     public interface ICommunicService
     {
         public Task ConnectAsync();
+        public Task DisconnectAsync();
     }
 }

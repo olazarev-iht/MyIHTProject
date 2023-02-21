@@ -83,7 +83,17 @@ namespace SharedComponents.IhtModbus
         private MainWndHelper mainWndHlp { get { return MainWndHelper.GetMainWndHelper(); } }
 
         private SerialPort port = null;
+        public SerialPort Port
+        {
+            get { return port; }
+        }
+
         private TcpClient client = null;
+        public TcpClient Client
+        {
+            get { return client; }
+        }
+
         private IModbusMaster modbusMaster = null;
 
         private IhtModbusCommunicData communicData = null;

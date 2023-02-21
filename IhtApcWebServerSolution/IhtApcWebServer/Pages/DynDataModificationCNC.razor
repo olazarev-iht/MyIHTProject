@@ -759,6 +759,8 @@ input#password-input:focus {
         </MudForm>
     </DialogContent>
     <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" Disabled="@(!IsConnected)"
+            OnClick="@(async () => { await DisconnectAsync(); })" onmousedown="return false">Disconnect</MudButton>
         <MudButton Color="MudBlazor.Color.Secondary" 
             OnClick="CloseTorchInstalledDialog" onmousedown="return false">@LocalStrByKey("_CultureButClose")</MudButton>
     </DialogActions>
@@ -1324,6 +1326,23 @@ input#password-input:focus {
         if (Elements != null)
         {
             Elements = Elements.Where(p => p.PasswordLevel <= _userPasswordLevel && (p.ParamSettings?.Visible ?? true));
+        }
+    }
+
+
+    private bool IsConnected
+    {
+        get
+        {
+            return  ihtModbusCommunic.GetConnectedModbusDatas().Count > 0;
+        }
+    }
+
+    private async Task DisconnectAsync()
+    {
+        if (IsConnected)
+        {
+            await apcCommunicManager.DisconnectAsync();
         }
     }
 
