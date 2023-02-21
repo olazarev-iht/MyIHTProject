@@ -26,6 +26,17 @@
 @implements IDisposable
 
 <style>
+    .mud-main-content{
+        -webkit-user-select: none !important; /* Safari */
+        -ms-user-select: none !important; /* IE 10 and IE 11 */
+        user-select: none !important; /* Standard syntax */
+    }
+
+    .nouserselect{
+        -webkit-user-select: none !important; /* Safari */
+        -ms-user-select: none !important; /* IE 10 and IE 11 */
+        user-select: none !important; /* Standard syntax */
+    }
     .center-mud-text input {
         text-align: center;
         cursor: default;
@@ -111,6 +122,18 @@ VisibleField {
 }
 
     /*--mud-palette-table-striped: #bdbdbd;*/
+
+table.readonly_table .mud-input.mud-input-outlined .mud-input-outlined-border {
+    border-width: 0px !important;
+    /*background-color: #fff !important;*/
+}
+
+table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined{
+    /*background-color: #fff;*/
+    pointer-events:none !important;
+    cursor:default !important;
+}
+
 </style>
 
 <PageTitle>Cutting Data</PageTitle>
@@ -122,7 +145,7 @@ VisibleField {
         <MudText Typo="Typo.h6">Load Confirmation</MudText>
     </TitleContent>
     <DialogContent>
-        <MudForm Model="@cuttingDataModel" @ref="_deleteForm">
+        <MudForm Model="@cuttingDataModel" @ref="_loadForm">
             <MudTextField ReadOnly Value="@cuttingDataModel.Material.Name" Label="Material" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
             <MudTextField ReadOnly Value="@cuttingDataModel.Thickness" Label="Thickness" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
             <MudTextField ReadOnly Value="@cuttingDataModel.Remark" Label="Remark" Variant="Variant.Text" Margin="Margin.Normal"
@@ -209,8 +232,7 @@ VisibleField {
         <MudText Typo="Typo.h6"></MudText>
     </TitleContent>
     <DialogContent>
-        <MudForm Model="@cuttingDataModel"
-                 @ref="_editForm">
+        <MudForm Model="@cuttingDataModel" @ref="_editForm">
         <table class="center-mud-text">
             <tr>
                 <MudTh Style="width:24%; border: 0px solid;">&nbsp;</MudTh>
@@ -356,30 +378,106 @@ VisibleField {
     </DialogActions>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_paramPopUpDialogVisible" Class="MyMudDialog scaled" Style="width: 550px !important;">
+<MudDialog @bind-IsVisible="_paramPopUpDialogVisible" Class="MyMudDialog scaled nouserselect" Style="width1: 550px !important1;">
     <TitleContent>
         <MudText Typo="Typo.h6"></MudText>
     </TitleContent>
     <DialogContent>
-        <MudForm Model="@cuttingDataModel" @ref="_deleteForm">
-            <table>
-                @*<thead style="background-color:gray">
-                <MudTh Style="text-align: center;">ID</MudTh>
-                <MudTh Style="text-align: center;">Materi-<br/>al</MudTh>
-                <MudTh Style="text-align: center;">Remark</MudTh>
-                <MudTh Style="text-align: center;">Thick<br/>[mm]</MudTh>
-                <MudTh Style="width:80px;text-align: center;">Nozzle</MudTh>
-                <MudTh Style="text-align: center;">Speed<br/>[mm/<br/>min]</MudTh>
-                </thead>*@
-                <tr>
-                    <MudTd DataLabel="Id" Style="text-align: center;">@cuttingDataModel.Id</MudTd>
-                    <MudTd DataLabel="Material" Style="text-align: center;">@cuttingDataModel.Material?.Name</MudTd>
-                    <MudTd DataLabel="Remark" Style="text-align: center;">@cuttingDataModel.Remark</MudTd>
-                    <MudTd DataLabel="Thickness" Style="text-align: center;">@cuttingDataModel.Thickness</MudTd>
-                    <MudTd DataLabel="Nozzle" Style="text-align: center;">@cuttingDataModel.Nozzle?.Name1<br/>@cuttingDataModel.Nozzle?.Name2</MudTd>
-                    <MudTd DataLabel="Cutting speed" Style="text-align: center;">@cuttingDataModel.CuttingSpeed</MudTd>
-                </tr>
-            </table>
+        <MudForm Model="@cuttingDataModel" @ref="_selectedForm">
+            <table class="center-mud-text readonly_table">
+            <tr>
+                <MudTh Style="width:24%; border: 0px solid;">&nbsp;</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Ignition</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">PreHeating</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Piercing</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Cutting</MudTh>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">H-O [bar]</MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined" Class="nouserselect"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PI0"/>
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  Class="nouserselect" ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PreHeatHeatingOxygenPressure"/>
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  Class="nouserselect" ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PierceHeatingOxygenPressure"/>
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  Class="nouserselect" ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.CutHeatingOxygenPressure" />
+                </MudTh>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">C-O [bar]</MudTh>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PierceCuttingOxygenPressure" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.CutCuttingOxygenPressure" />
+                </MudTh>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">F-G [bar]</MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PI1" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PreHeatFuelGasPressure" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PierceFuelGasPressure" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.CutFuelGasPressure" />
+                </MudTh>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">Clearance [mm]</MudTh>
+                <MudTh></MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PreHeatHeight" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PierceHeight" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.CutHeight" />
+                </MudTh>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">Time [s]</MudTh>
+                <MudTh></MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PreHeatTime" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PierceTime" />
+                </MudTh>
+                <MudTh></MudTh>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">Ignition flame<br />
+                    ajust [%]</MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.IgnitionFlameAdjustment" />
+                </MudTh>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">Cutting Speed<br />
+                    [mm/min]</MudTh>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.CuttingSpeed" />
+                </MudTh>
+            </tr>
+        </table>
         </MudForm>      
     </DialogContent>
     <DialogActions>
@@ -477,6 +575,8 @@ VisibleField {
     private MudForm _createForm;
     private MudForm _editForm;
     private MudForm _deleteForm;
+    private MudForm _loadForm;
+    private MudForm _selectedForm;
 
     private string searchMaterial = "";
     private float searchThickness = 0;
