@@ -145,6 +145,7 @@ namespace IhtApcWebServer.Services.APCCommunic
                 await Task.Run(() => { comPort.Close(); });
             }
 
+            _ihtDevices.GetDevices().ForEach(d => d.IsConnected = false);
         }
 
         private void SetDefaultsForNotVisible()
