@@ -1184,7 +1184,16 @@ input#password-input:focus {
     {
         get
         {
-            return ihtModbusCommunicData.ComPort;
+            var availablePorts = SerialPort.GetPortNames();
+            var currentPort = string.Empty;
+
+            if(availablePorts.Any(p => p == ihtModbusCommunicData.ComPort))
+            {
+                currentPort = ihtModbusCommunicData.ComPort;
+            }
+
+            return currentPort;
+
         }
 
         set

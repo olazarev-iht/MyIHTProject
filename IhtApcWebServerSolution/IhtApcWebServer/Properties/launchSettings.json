@@ -10,7 +10,7 @@
   "profiles": {
     "IhtApcWebServer": {
       "commandName": "Project",
-      "commandLineArgs": "--m messe1111 --client default",
+      "commandLineArgs": "--m messe --client default",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
