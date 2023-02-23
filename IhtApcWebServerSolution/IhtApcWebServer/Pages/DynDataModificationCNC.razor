@@ -934,10 +934,10 @@ input#password-input:focus {
                                     <div class="up_btn" style="background-color:#ffff"></div>
                                 </div>
                                 <div class="button_container">
-                                    <div id="ManHeight" class="@(_isManHeightActive ? "central_ch_btn active" : "central_ch_btn")"
+                                            <div id="ManHeight" class="@(_isManHeightActive ? "central_ch_btn active_manual_height" : "central_ch_btn")"
                                          @onclick="@(async () => await ToggleManHeightAsync())">
-                                                <img draggable="false" src="@(_isManHeightActive ? "Images/button_clearance_control_on_new.png" : "Images/button_clearance_control_off_w.png")"
-                                                     style="mix-blend-mode: normal; vertical-align: middle; @(_isManHeightActive ? "width: 25px; height: 35px;" : "width: 45px; height: 40px;")" />
+                                                <img draggable="false" src="@(_isManHeightActive ? "Images/button_manual_clearance_control.png" : "Images/button_manual_clearance_control.png")"
+                                                     style="mix-blend-mode: normal; vertical-align: middle; @(_isManHeightActive ? "width: 45px; height: 40px;" : "width: 45px; height: 40px;")" />
                                     </div>
                                 </div>
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
