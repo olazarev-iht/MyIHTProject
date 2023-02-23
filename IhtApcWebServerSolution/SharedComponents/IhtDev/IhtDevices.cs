@@ -311,6 +311,9 @@ namespace SharedComponents.IhtDev
             }
         }
 
+        public bool IsManHeightActive { get; set; }
+        public bool IsPreheatHeightActive { get; set; }
+
         private ErrorCodeLablesDevices errorCodeLablesDevices = new ErrorCodeLablesDevices();
 
         public SystemSettings _systemSettings;

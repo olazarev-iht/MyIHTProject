@@ -99,7 +99,18 @@ namespace IhtApcWebServer.Pages
             set => ihtDevices.GetDataCmdExecution(CurrentSlaveId).IsHCOnOffActive = value;
         }
 
-        
+        private bool _isManHeightActive
+        {
+            get => ihtDevices.IsManHeightActive;
+            set => ihtDevices.IsManHeightActive = value;
+        }
+
+        private bool _isPreheatHeightActive
+        {
+            get => ihtDevices.IsPreheatHeightActive;
+            set => ihtDevices.IsPreheatHeightActive = value;
+        }
+
         private Stopwatch stopwatch = new Stopwatch();
 
         [JSInvokable]
@@ -160,6 +171,16 @@ namespace IhtApcWebServer.Pages
             }
         }
 
+        private async Task GoPreheatHeightAsync()
+        {
+            if (_isManHeightActive)
+            {
+                _isPreheatHeightActive = true;
+
+                await ihtDevices.SetClearenceCtrlManualHeightCommonAsync();
+            }
+        }
+
         private async Task TurnHCOnOffAsync()
         {
             if (!_isHCOnOffActive)
@@ -169,6 +190,22 @@ namespace IhtApcWebServer.Pages
             else
             {
                 await TurnHCOffAsync();
+            }
+        }
+
+        private async Task ToggleManHeightAsync()
+        {
+            if (!_isManHeightActive)
+            {
+                _isManHeightActive = true;
+                _isPreheatHeightActive = false;
+
+                await ihtDevices.SetClearenceCtrlManualCommonAsync();
+            }
+            else
+            {
+                _isManHeightActive = false;
+                await ihtDevices.ClrClearenceCtrlManualCommonAsync();
             }
         }
 
@@ -259,6 +296,11 @@ namespace IhtApcWebServer.Pages
                 _isHCTorchDownActive = false;
                 await StopTorchMovingAndRefreshAsync(eventName);
             }
+            //else if (eventName == "GoPreheatHeight" && _isPreheatHeightActive)
+            //{
+            //    _isPreheatHeightActive = false;
+            //    //await StopTorchMovingAndRefreshAsync(eventName);
+            //}
             else if (eventName == "StartPiercing" && _isStartPiercingActive)
             {
                 _isStartPiercingActive = false;

@@ -745,7 +745,7 @@ input#password-input:focus {
 
                         <br/>
                         <MudTh><b>Device Connection</b></MudTh>
-                        <MudButton Variant="Variant.Filled" Style="align-content" OnClick="@(async () => { await Connection(); })" Disabled="@IsDeviceConnectionDisabled()">Connection</MudButton>
+                        <MudButton Variant="Variant.Filled" OnClick="@(async () => { await Connection(); })" Disabled="@IsDeviceConnectionDisabled()">Connection</MudButton>
                         <MudCheckBox @bind-Checked="@_performResetDevices" Dense="false" Color="Color.Primary">
                             <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Perform a reset for all devices</MudText>
                         </MudCheckBox>																										
@@ -928,6 +928,29 @@ input#password-input:focus {
                     <table class="internal_div_table">
                         <tr>
                             <td class="button_tabcell">
+                            @if(ComponentMode != MANUAL_MODE && !_isProcessBtnActive)
+                            {
+                                <div class="button_container">
+                                    <div class="up_btn" style="background-color:#ffff"></div>
+                                </div>
+                                <div class="button_container">
+                                    <div id="ManHeight" class="@(_isManHeightActive ? "central_ch_btn active" : "central_ch_btn")"
+                                         @onclick="@(async () => await ToggleManHeightAsync())">
+                                                <img draggable="false" src="@(_isManHeightActive ? "Images/button_clearance_control_on_new.png" : "Images/button_clearance_control_off_w.png")"
+                                                     style="mix-blend-mode: normal; vertical-align: middle; @(_isManHeightActive ? "width: 25px; height: 35px;" : "width: 45px; height: 40px;")" />
+                                    </div>
+                                </div>
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="@(_isPreheatHeightActive || !_isManHeightActive)" LightBackground="true" Absolute="true" />
+                                <div class="button_container">
+                                    <div id="PreheatHeight" class="@(_isPreheatHeightActive ? "down_btn active" : "down_btn")"
+                                         @onclick="@(async () => await GoPreheatHeightAsync())"> 8 mm
+                                    </div>
+                                </div>
+                                </MudPaper>
+                            }
+                            else
+                            {                           
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsHCButtonsDisabled() || ComponentMode == MANUAL_MODE" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
@@ -963,8 +986,8 @@ input#password-input:focus {
                                     </div>
                                </div>
                               </MudPaper>
+                            }
                             </td>
-                            
                             <td class="button_tabcell">
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsMoveUpButtonDisabled()" LightBackground="true" Absolute="true"/>

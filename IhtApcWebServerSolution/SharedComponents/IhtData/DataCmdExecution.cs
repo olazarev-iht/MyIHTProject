@@ -87,6 +87,8 @@ namespace SharedComponents.IhtData
         public bool IsFlameOn { get; set; }
         public bool IsLedPreHeating { get; set; }
         public bool IsHCOnOffActive { get; set; }
+        public bool IsManHeightActive { get; set; }
+        public bool IsPreheatHeightActive { get; set; }
         #endregion // Switch
 
         // Helper-Methode, um nicht in jedem Set-Accessor zu prüfen, ob PropertyRaisePropertyChanged!=null
