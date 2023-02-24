@@ -9,7 +9,8 @@ namespace SharedComponents.Services.APCHardwareDBServices
 		public Task<ParameterDataModel?> GetEntryByAPCDeviceAndParamIdAsync(APCDeviceModel apcDevice, ParamGroup paramGroup, int paramId, CancellationToken cancellationToken);
 		public Task<ParameterDataModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken);
 		public Task<IEnumerable<ParameterDataModel>> GetDeviceSetupParamsAsync(int apcDeviceNum, CancellationToken cancellationToken);
-		public Task<Guid> AddEntryAsync(ParameterDataModel model, CancellationToken cancellationToken);
+		public Task<ParameterDataModel> GetDeviceParamByParamGroupAndParamIdAsync(int DeviceId, ParamGroup paramGroup, int paramId, CancellationToken cancellationToken);
+        public Task<Guid> AddEntryAsync(ParameterDataModel model, CancellationToken cancellationToken);
 		public Task<IEnumerable<ParameterDataModel>> AddRangeAsync(IEnumerable<ParameterDataModel> entities, CancellationToken cancellationToken);
 		public Task UpdateEntryAsync(Guid id, ParameterDataModel newData, CancellationToken cancellationToken);
 		public Task DeleteEntryAsync(Guid id, CancellationToken cancellationToken);

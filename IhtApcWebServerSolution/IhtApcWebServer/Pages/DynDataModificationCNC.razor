@@ -429,6 +429,8 @@ input#password-input:focus {
 
 @if (dynDataModificationCNCDataProvider != null)
 {
+    manualPreheatHeight = dynDataModificationCNCDataProvider.ManualPreheatHeight;
+
     paramHeatO2 = dynDataModificationCNCDataProvider._paramHeatO2;
     paramFuelGas = dynDataModificationCNCDataProvider._paramFuelGas;
 
@@ -944,7 +946,7 @@ input#password-input:focus {
                                 <MudOverlay Visible="@(_isPreheatHeightActive || !_isManHeightActive)" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
                                     <div id="PreheatHeight" class="@(_isPreheatHeightActive ? "down_btn active" : "down_btn")"
-                                         @onclick="@(async () => await GoPreheatHeightAsync())"> 8 mm
+                                             @onclick="@(async () => await GoPreheatHeightAsync())"> @DisplayParamValueAndUnit(@manualPreheatHeight)
                                     </div>
                                 </div>
                                 </MudPaper>
@@ -1251,6 +1253,8 @@ input#password-input:focus {
     private ParameterDataModel paramFuelGas = new();
     private ParameterDataModel paramCutO2 = new();
     private ParameterDataModel paramFlameAdjust = new();
+
+    private ParameterDataModel manualPreheatHeight = new();
 
     private string _cutO2Visible;
     private string _flameAdjustVisible;

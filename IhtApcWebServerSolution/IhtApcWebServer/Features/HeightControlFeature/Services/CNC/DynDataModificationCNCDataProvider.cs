@@ -46,11 +46,12 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 
 				_currentDeviceNumber = value;
 
-				var currentDevice = IhtDevices.GetIhtDevices().GetDevice(_currentDeviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default);
+				//var currentDevice = CurrentDevice;
 
 				// To have abillity to set up not enabled device as current
-				if (currentDevice != null)
-					if (!currentDevice.IsEnabledMainControl)
+				if (CurrentDevice != null)
+				{
+					if (!CurrentDevice.IsEnabledMainControl)
 					{
 						ManualySelectedDeviceIsDisabled = true;
 					}
@@ -58,6 +59,7 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 					{
 						ManualySelectedDeviceIsDisabled = false;
 					}
+				}
 			}
 		}
 
@@ -68,7 +70,15 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 			}
         }
 
-		public int CurrentBroadCastId
+        public IhtDevice CurrentDevice
+        {
+            get
+            {
+                return IhtDevices.GetIhtDevices().GetDevice(CurrentSlaveId);
+            }
+        }
+
+        public int CurrentBroadCastId
 		{
 			get
 			{
@@ -79,7 +89,18 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 			}
 		}
 
-		public string CurrentParamsType { get; set; } = CommonConstants.IGNITION;
+        public ParameterDataModel ManualPreheatHeight
+		{
+			get
+			{
+				var param = _parameterDataInfoManager.GetDeviceParamByParamGroupAndParamIdAsync(CurrentDeviceNumber, ParamGroup.Technology, 
+					(int)IhtModbusParamDyn.eIdxTechnology.PreHeatHeight, CancellationToken.None).Result;
+
+				return param;
+            }
+		}
+
+        public string CurrentParamsType { get; set; } = CommonConstants.IGNITION;
 
 		public int APCDevicesCount 
 		{ 

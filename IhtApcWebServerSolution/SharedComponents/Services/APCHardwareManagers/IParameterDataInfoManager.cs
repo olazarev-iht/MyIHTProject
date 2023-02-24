@@ -31,5 +31,6 @@ namespace SharedComponents.Services.APCHardwareManagers
         public Task<ushort?> ReadOneHoldingRegisterAsync(byte slaveAddress, ushort startAddress);
         public Task DeleteAllEntriesFromCutingDataSequenceTableAsync(CancellationToken cancellationToken);
         public Task<bool> IsSystemHasSavedSettings(CancellationToken cancellationToken);
+        public Task<ParameterDataModel> GetDeviceParamByParamGroupAndParamIdAsync(int DeviceId, ParamGroup paramGroup, int paramId, CancellationToken cancellationToken);
     }
 }

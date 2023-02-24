@@ -90,7 +90,27 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 			return entries;
 		}
 
-		public async Task<ParameterDataModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<ParameterDataModel> GetDeviceParamByParamGroupAndParamIdAsync(int deviceId, ParamGroup paramGroup, int paramId, CancellationToken cancellationToken)
+        {
+            await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+            var entries = await dbContext.ParameterDatas
+                .AsNoTracking()
+                .Include(p => p.APCDevice)
+                .Include(p => p.DynParams)
+                    .ThenInclude(dp => dp.ConstParams)
+                .Include(p => p.DynParams)
+                    .ThenInclude(dp => dp.ParameterDataInfo)
+                .Where(p => p.APCDevice != null && p.APCDevice.Num == deviceId)
+                .Where(p => p.ParamGroupId == paramGroup)
+				.Where(p => p.DynParams != null && p.DynParams.ParamId == paramId)
+                .Select(p => _mapper.Map<ParameterData, ParameterDataModel>(p))
+                .SingleAsync(cancellationToken);
+
+            return entries;
+        }
+
+        public async Task<ParameterDataModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 			var entry = await dbContext.ParameterDatas

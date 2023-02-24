@@ -356,6 +356,13 @@ namespace SharedComponents.APCHardwareManagers
             await _apcSimulationDataMockDBService.UpdateFromDefaultDataAsync(cancellationToken);
         }
 
+        public async Task<ParameterDataModel> GetDeviceParamByParamGroupAndParamIdAsync(int deviceId, ParamGroup paramGroup, int paramId, CancellationToken cancellationToken)
+        {
+            var param = await _parameterDataDBService.GetDeviceParamByParamGroupAndParamIdAsync(deviceId, paramGroup, paramId, cancellationToken);
+
+            return param;
+        }
+
         public async Task LoadCuttingDataParamsFromDBAsync(ArrayList _modbusDatas, CuttingDataModel cuttingDataModel)
         {
             foreach (IhtModbusData modbusData in _modbusDatas)
