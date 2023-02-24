@@ -945,8 +945,8 @@ input#password-input:focus {
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="@(_isPreheatHeightActive || !_isManHeightActive)" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
-                                    <div id="PreheatHeight" class="@(_isPreheatHeightActive ? "down_btn active" : "down_btn")"
-                                             @onclick="@(async () => await GoPreheatHeightAsync())"> @DisplayParamValueAndUnit(@manualPreheatHeight)
+                                    <div id="PreheatHeight" class="@(_isPreheatHeightActive ? "down_btn" : "down_btn")"
+                                             @onclick="@(async () => await GoPreheatHeightAsync())">@DisplayParamValueAndUnit(@manualPreheatHeight)
                                     </div>
                                 </div>
                                 </MudPaper>
