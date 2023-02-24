@@ -46,12 +46,12 @@ namespace IhtApcWebServer.Features.HeightControlFeature.Services.CNC
 
 				_currentDeviceNumber = value;
 
-				//var currentDevice = CurrentDevice;
+                var currentDevice = IhtDevices.GetIhtDevices().GetDevice(_currentDeviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default);
 
-				// To have abillity to set up not enabled device as current
-				if (CurrentDevice != null)
+                // To have abillity to set up not enabled device as current
+                if (currentDevice != null)
 				{
-					if (!CurrentDevice.IsEnabledMainControl)
+					if (!currentDevice.IsEnabledMainControl)
 					{
 						ManualySelectedDeviceIsDisabled = true;
 					}
