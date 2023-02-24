@@ -71,10 +71,10 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-			var stub = new ConstParams() { Id = id, };
+			var stub = new ConfigSettings() { Id = id, };
 
-			dbContext.ConstParams.Attach(stub);
-			dbContext.ConstParams.Remove(stub);
+			dbContext.ConfigSettings.Attach(stub);
+			dbContext.ConfigSettings.Remove(stub);
 
 			await dbContext.SaveChangesAsync(cancellationToken);
 		}

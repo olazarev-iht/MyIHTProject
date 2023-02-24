@@ -29,7 +29,9 @@ namespace IhtApcWebServer.Data
 
 		public DbSet<ConfigSettings> ConfigSettings { get; set; } = null!;
 
-		public APCHardwareDBContext(DbContextOptions<APCHardwareDBContext> options)
+        public DbSet<ErrorLog> ErrorLogs { get; set; } = null!;
+
+        public APCHardwareDBContext(DbContextOptions<APCHardwareDBContext> options)
 			: base(options)
 		{
 		}
