@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using SharedComponents.Services.APCHardwareDBServices;
+using SharedComponents.Models.APCHardware;
 
 namespace SharedComponents.IhtData
 {
@@ -248,11 +250,47 @@ namespace SharedComponents.IhtData
                     _IAPCWorker._apcWorkerService_LiveDataChanged(eventArgs.PropertyName);
                 }
             }
+        }
 
+        private void SaveRowInToErrorLog(object oldValue, object newValue)
+        {
+            var oldValueInt = oldValue as int?;
+
+            var newValueInt = newValue as int?;
+
+            if ((oldValueInt ?? 0) == 0 && (newValueInt ?? 0) != 0)
+            {
+                var errorLogDBService = _provider?.GetService<IErrorLogDBService>();
+
+                var ErrorCode = newValueInt ?? 0;
+                var Descritpion = IhtDevices.GetIhtDevices().GetErrorCodeLabel(this.SlaveId, ErrorCode);
+
+                if (errorLogDBService != null)
+                {
+                    var errorLog = new ErrorLogModel()
+                    {
+                        Id = Guid.NewGuid(),
+                        SlaveId = this.SlaveId,
+                        ErrorCode = String.Format("Er.{0,2:00}", ErrorCode),
+                        Descritpion = ErrorCode == IhtDevice.ErrorCodeCommunic ? "Communication Error" : Descritpion,
+                        TimeStamp = DateTime.Now
+                    };
+
+                    errorLogDBService.AddEntryAsync(errorLog, CancellationToken.None);
+                }
+            }
         }
 
         private void RaisePropertyChanged<T>(ref T oldValue, T newValue, [CallerMemberName] string propertyName = "")
         {
+            // Process ErrorCode to save to the Error Log table
+            if (propertyName == "ErrorCode" && oldValue != null && newValue != null) {
+
+                //var oldValInt = oldValue as int?;
+
+                SaveRowInToErrorLog(oldValue, newValue);
+            }
+
             if (oldValue != null && !oldValue.Equals(newValue))
             {
                 oldValue = newValue;

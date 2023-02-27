@@ -84,7 +84,7 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
         {
             await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-            //dbContext.RemoveRange(dbContext.ConstParams);
+            //dbContext.RemoveRange(dbContext.ErrorLogs);
 
             //await dbContext.SaveChangesAsync(cancellationToken);
 

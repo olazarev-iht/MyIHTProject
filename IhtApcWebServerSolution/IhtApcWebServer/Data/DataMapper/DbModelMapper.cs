@@ -95,6 +95,7 @@ namespace IhtApcWebServer.Data.DataMapper
                 cfg.CreateMap<ParamViewGroupModel, ParamViewGroup>().ReverseMap();
                 cfg.CreateMap<ParamSettingsModel, ParamSettings>().ReverseMap();
                 cfg.CreateMap<ConfigSettingsModel, ConfigSettings>().ReverseMap();
+                cfg.CreateMap<ErrorLogModel, ErrorLog>().ReverseMap();
             });
 
             return configuration.CreateMapper();

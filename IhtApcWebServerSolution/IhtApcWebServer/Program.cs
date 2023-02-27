@@ -179,7 +179,7 @@ builder.Services.AddSingleton<IParameterDataDBService, ParameterDataDBService>()
 builder.Services.AddSingleton<IParameterDataInfoDBService, ParameterDataInfoDBService>();
 builder.Services.AddSingleton<IAPCDefaultDataMockDBService, APCDefaultDataMockDBService>();
 builder.Services.AddSingleton<IConfigSettingsDBService, ConfigSettingsDBService>();
-
+builder.Services.AddSingleton<IErrorLogDBService, ErrorLogDBService>();
 
 // APC Mock DB
 builder.Services.AddSingleton<IAPCDeviceMockDBService, APCDeviceMockDBService>();

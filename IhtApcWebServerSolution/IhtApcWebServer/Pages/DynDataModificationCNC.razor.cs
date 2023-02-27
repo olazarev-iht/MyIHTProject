@@ -372,6 +372,10 @@ namespace IhtApcWebServer.Pages
         {
             if (!_isCalibrationActive)
             {
+                await TurnHCOffAsync();
+
+                _isHCOnOffActive = false;
+
                 await Calibration_StartCalibration();
             }
             else
