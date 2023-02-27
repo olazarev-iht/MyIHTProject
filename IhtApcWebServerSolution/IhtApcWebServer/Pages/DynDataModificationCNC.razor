@@ -9,6 +9,7 @@
 @using IhtApcWebServer.Services.APCCommunic
 @using IhtApcWebServer.Services.APCWorkerService;
 @using SharedComponents.Models.APCHardware
+@using SharedComponents.Services.APCHardwareDBServices
 @using SharedComponents.Services.APCHardwareManagers
 @using SharedComponents.Services.APCHardwareMockDBServices
 @using SharedComponents.IhtData
@@ -28,6 +29,7 @@
 @inject IhtModbusCommunic ihtModbusCommunic
 @inject IhtModbusCommunicData ihtModbusCommunicData
 @inject APCWorkerBackgroundService _apcWorkerBackgroundService
+@inject IErrorLogDBService _errorLogDBService
 @inherits IhtComponentBase
 @implements IDisposable
 
@@ -696,6 +698,30 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
+    <MudDialog @bind-IsVisible="_errorLogDialogVisible" Class="scaled">
+    <TitleContent>
+        <table>
+            <tr><td><MudText Typo="Typo.h6">@LocalStrByKey("Level") @((int)_userPasswordLevel)</MudText></td></tr>
+            <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">@LocalStrByKey("_CultureCuttingData")</MudButton></td></tr>
+            <tr><td><MudButton Disabled="IsOtherModeDisabled()" Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@LocalStrByEnStr($"{@OtherComponentMode} Mode")</MudButton></td></tr>
+        </table>
+    </TitleContent>
+    <DialogContent>  
+        <MudTd>@LocalStrByKey("_CultureButTorch") @CurrentDevice.DeviceNumber:
+        <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? @LocalStrByKey("_CultureParamEnabled") : @LocalStrByKey("_CultureParamDisabled"))</MudSwitch></MudTd>
+        <MudList Clickable="true" Style="Height:220px;" >
+            @foreach(var row in ErrorLog) 
+            {
+                <MudListItem Icon="@Icons.Filled.Settings" Text="@LocalStrByKey("_CultureButSettings")" InitiallyExpanded="false"></MudListItem>
+            }
+        </MudList>          
+    </DialogContent>
+    <DialogActions>
+        @*<MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
+    </DialogActions>
+</MudDialog>
+
 <MudDialog @bind-IsVisible="@TorchInstalledDialogVisible" Class="my-install-toarch" Style="width:440px;">
     @*<TitleContent>
         <MudText Typo="Typo.h6" Style="text-align: center;">Torch Installed</MudText>
@@ -1319,6 +1345,8 @@ input#password-input:focus {
         }
     }
 
+    private bool _errorLogDialogVisible = true;
+
     private bool _torchInstalledDialogIsBlocked = false;
     private bool _initialDialogIsBlocked = false;
     private int _currentVisibleTorchesNum = 0;
@@ -1345,6 +1373,7 @@ input#password-input:focus {
     };
 
     private IEnumerable<ParameterDataModel> Elements = new List<ParameterDataModel>();
+    private IEnumerable<ErrorLogModel> ErrorLog = new List<ErrorLogModel>();
 
     private Dictionary<string, IhtDevices.PasswordLevel_SW> _passwordToLevelDictionary = new Dictionary<string, IhtDevices.PasswordLevel_SW>()
     {
@@ -1374,6 +1403,8 @@ input#password-input:focus {
         {
             Elements = Elements.Where(p => p.PasswordLevel <= _userPasswordLevel && (p.ParamSettings?.Visible ?? true));
         }
+
+        ErrorLog = await _errorLogDBService.GetEntriesAsync(CancellationToken.None);
     }
 
 

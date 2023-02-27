@@ -24,13 +24,16 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<ErrorLogModel> GetEntryAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<ErrorLogModel>> GetEntriesAsync(CancellationToken cancellationToken)
         {
             await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-            var entry = await dbContext.ErrorLogs.SingleAsync(cancellationToken);
+            var entries = await dbContext.ErrorLogs
+                .AsNoTracking()
+                .Select(p => _mapper.Map<ErrorLog, ErrorLogModel > (p))
+                .ToArrayAsync(cancellationToken);
 
-            return _mapper.Map<ErrorLog, ErrorLogModel>(entry);
+            return entries;
         }
 
         public async Task<ErrorLogModel?> GetEntryByIdAsync(Guid id, CancellationToken cancellationToken)
