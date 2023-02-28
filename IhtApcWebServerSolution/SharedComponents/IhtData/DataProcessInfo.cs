@@ -263,7 +263,7 @@ namespace SharedComponents.IhtData
                 var errorLogDBService = _provider?.GetService<IErrorLogDBService>();
 
                 var ErrorCode = newValueInt ?? 0;
-                var Descritpion = IhtDevices.GetIhtDevices().GetErrorCodeLabel(this.SlaveId, ErrorCode);
+                var Description = IhtDevices.GetIhtDevices().GetErrorCodeLabel(this.SlaveId, ErrorCode);
 
                 if (errorLogDBService != null)
                 {
@@ -272,7 +272,7 @@ namespace SharedComponents.IhtData
                         Id = Guid.NewGuid(),
                         SlaveId = this.SlaveId,
                         ErrorCode = String.Format("Er.{0,2:00}", ErrorCode),
-                        Descritpion = ErrorCode == IhtDevice.ErrorCodeCommunic ? "Communication Error" : Descritpion,
+                        Description = ErrorCode == IhtDevice.ErrorCodeCommunic ? "Communication Error" : Description,
                         TimeStamp = DateTime.Now
                     };
 

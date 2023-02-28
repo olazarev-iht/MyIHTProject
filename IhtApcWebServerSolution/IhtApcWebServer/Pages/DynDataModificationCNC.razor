@@ -698,27 +698,47 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
-    <MudDialog @bind-IsVisible="_errorLogDialogVisible" Class="scaled">
+<MudDialog @bind-IsVisible="@_errorLogDialogVisible" Class="scaled">
     <TitleContent>
-        <table>
+        @*<table>
             <tr><td><MudText Typo="Typo.h6">@LocalStrByKey("Level") @((int)_userPasswordLevel)</MudText></td></tr>
             <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">@LocalStrByKey("_CultureCuttingData")</MudButton></td></tr>
             <tr><td><MudButton Disabled="IsOtherModeDisabled()" Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@LocalStrByEnStr($"{@OtherComponentMode} Mode")</MudButton></td></tr>
-        </table>
+        </table>*@
     </TitleContent>
-    <DialogContent>  
-        <MudTd>@LocalStrByKey("_CultureButTorch") @CurrentDevice.DeviceNumber:
-        <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? @LocalStrByKey("_CultureParamEnabled") : @LocalStrByKey("_CultureParamDisabled"))</MudSwitch></MudTd>
-        <MudList Clickable="true" Style="Height:220px;" >
-            @foreach(var row in ErrorLog) 
-            {
-                <MudListItem Icon="@Icons.Filled.Settings" Text="@LocalStrByKey("_CultureButSettings")" InitiallyExpanded="false"></MudListItem>
-            }
-        </MudList>          
+    <DialogContent>
+    <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Style="min-height: 440px; max-height: 400px; overflow-y: scroll;" FixedHeader="true"
+          Items="@ErrorLogs"
+          GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
+          GroupFooterClass="mb-4" Dense="false" ReadOnly="false" OnRowClick="@(() => {})" T="ErrorLogModel">
+    <ColGroup>
+        <col style="width: 60px;" />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+    </ColGroup>
+    <HeaderContent>
+        @*<MudTh Style="font-weight:bold;">Nr</MudTh>*@
+        <MudTh Style="font-weight:bold;">@LocalStrByKey("_CultureErrorCode")</MudTh>
+        <MudTh Style="font-weight:bold;">@LocalStrByEnStr("Description")</MudTh>
+        <MudTh Style="font-weight:bold;width:35%">@LocalStrByKey("_CultureTime")</MudTh>
+        @*<MudTh>Molar mass</MudTh>*@
+    </HeaderContent>
+    <GroupHeaderTemplate>
+        <MudTh Class="mud-table-cell-custom-group" colspan="5">@LocalStrByEnStr($"{context.Key}")</MudTh>
+    </GroupHeaderTemplate>
+    <RowTemplate>
+                    <MudTd DataLabel="ErrorCode">@(@LocalStrByEnStr(context.ErrorCode ?? ""))<br />@String.Format("St.{0,2:00}", context.SlaveId - (int)IhtModbusCommunic.SlaveId.Id_Default)</MudTd>
+        <MudTd DataLabel="Description">@(@LocalStrByEnStr(context.Description ?? ""))</MudTd>
+        <MudTd DataLabel="Time">@(((DateTime)(context.TimeStamp ?? DateTime.MinValue)).ToString("yyyy-MM-dd HH:mm:ss") ?? "")</MudTd>
+    </RowTemplate>
+    </MudTable>
     </DialogContent>
     <DialogActions>
-        @*<MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Cancel</MudButton>
-        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseErrorLogDialog">Close</MudButton>
+        @*<MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
     </DialogActions>
 </MudDialog>
 
@@ -1020,7 +1040,7 @@ input#password-input:focus {
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsMoveUpButtonDisabled()" LightBackground="true" Absolute="true"/>
                                 <div class="button_container">
-                                    <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")  @((CurrentDevice?.dataProcessInfo?.IsAckErrorActive ?? false) ? "ErrorDeviceBlink" : "")"
+                                    <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")"
                                         @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
                                         @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
                                         @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">
@@ -1140,9 +1160,10 @@ input#password-input:focus {
                             else
                             {
                                 <td style="border-width:0px; font-weight:normal !important; box-sizing:border-box;" class="tabcell tabcell_status internal_div_table">
+                                    <MudIcon Icon="@Icons.Material.Filled.Warning" style="color:#0061A1" Title="Warnings" Size="Size.Large"
+                                    Class="@(IsAcknowledgeNeeded ? "ErrorDeviceBlink" : "")" onclick="@(async () => await OpenErrorLogDialog())" />
                                     CurrOutHeatO2:@dataCommon.CurrOutHeatO2 CurrOutCutO2:@dataCommon.CurrOutCutO2 CurrOutFuelGas:@dataCommon.CurrOutFuelGas
-                                    @( (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0) > 0 ? $"Error: { @ihtDevices.GetErrorCodeLabel((CurrentDevice?.SlaveId ?? 0), (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0))}" : string.Empty )
-                                    
+                                    @( (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0) > 0 ? $"Error: { @ihtDevices.GetErrorCodeLabel((CurrentDevice?.SlaveId ?? 0), (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0))}" : string.Empty )                                  
                                 </td>
                             }
                         </tr>
@@ -1345,7 +1366,31 @@ input#password-input:focus {
         }
     }
 
-    private bool _errorLogDialogVisible = true;
+
+    private bool _errorLogDialogVisible = false;
+
+    private async Task OpenErrorLogDialog()
+    {
+        if (IsAcknowledgeNeeded)
+        {
+            await ihtDevices.ClrErrorCodeCommonAsync();
+        }
+
+        _errorLogDialogVisible = true;
+    }
+
+    private void CloseErrorLogDialog()
+    {
+        _errorLogDialogVisible = false;
+    }
+
+    private bool IsAcknowledgeNeeded 
+    {
+        get
+        {
+            return ihtDevices.GetDevices().Where(x => x.IsVisible).Any(x => (x.dataProcessInfo?.IsAckErrorActive ?? false));
+        }
+    }
 
     private bool _torchInstalledDialogIsBlocked = false;
     private bool _initialDialogIsBlocked = false;
@@ -1373,7 +1418,7 @@ input#password-input:focus {
     };
 
     private IEnumerable<ParameterDataModel> Elements = new List<ParameterDataModel>();
-    private IEnumerable<ErrorLogModel> ErrorLog = new List<ErrorLogModel>();
+    private IEnumerable<ErrorLogModel> ErrorLogs = new List<ErrorLogModel>();
 
     private Dictionary<string, IhtDevices.PasswordLevel_SW> _passwordToLevelDictionary = new Dictionary<string, IhtDevices.PasswordLevel_SW>()
     {
@@ -1404,7 +1449,7 @@ input#password-input:focus {
             Elements = Elements.Where(p => p.PasswordLevel <= _userPasswordLevel && (p.ParamSettings?.Visible ?? true));
         }
 
-        ErrorLog = await _errorLogDBService.GetEntriesAsync(CancellationToken.None);
+        ErrorLogs = await _errorLogDBService.GetEntriesAsync(CancellationToken.None);
     }
 
 

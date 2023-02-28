@@ -66,7 +66,7 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     SlaveId = table.Column<int>(type: "INTEGER", nullable: true),
                     ErrorCode = table.Column<string>(type: "TEXT", nullable: true),
-                    Descritpion = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
                     TimeStamp = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -111,57 +111,57 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("4a51f634-c0ca-403c-a5dd-aeb6e91127cc"), "APCDevice_1", 1 });
+                values: new object[] { new Guid("36eacfb6-4c78-4526-ace5-9b737a666f7b"), "APCDevice_2", 2 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("5173aead-908c-4a37-a657-0a152eee03c0"), "APCDevice_6", 6 });
+                values: new object[] { new Guid("3ef3736e-043c-4f2a-8bbb-b4e14d40834b"), "APCDevice_9", 9 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("5c557b78-3819-4a79-894a-a521933eecf0"), "APCDevice_5", 5 });
+                values: new object[] { new Guid("5882e015-0e00-4886-bbd7-14409179be72"), "APCDevice_4", 4 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("6a8ee60d-c93b-4328-a005-2eb4c729f277"), "APCDevice_9", 9 });
+                values: new object[] { new Guid("642fb882-0c86-4a4a-944d-ffd5834c3086"), "APCDevice_3", 3 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("9ebd6178-83f1-41c2-af83-e823296cf082"), "APCDevice_2", 2 });
+                values: new object[] { new Guid("92f25aea-1fb7-42ed-9fe1-b6b9d507c6d2"), "APCDevice_6", 6 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("a16e83c2-a5d0-4105-8470-e44692e4e0b9"), "APCDevice_3", 3 });
+                values: new object[] { new Guid("9a0f66a9-cc37-4f5b-9260-afa01f9dc15a"), "APCDevice_5", 5 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("a6175539-dd66-4fc2-9e94-2e5224b3113d"), "APCDevice_4", 4 });
+                values: new object[] { new Guid("c97a004a-0ed2-44d3-8508-8d4bde2e82ff"), "APCDevice_7", 7 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("bb6f7249-7496-488a-9bcc-c07855856583"), "APCDevice_8", 8 });
+                values: new object[] { new Guid("d6ff3b4f-90bc-4ba4-a7c9-9e6386e0c0f1"), "APCDevice_1", 1 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("c1c34d26-e850-4c9f-b59c-a60a71518b3b"), "APCDevice_7", 7 });
+                values: new object[] { new Guid("df240c04-f835-4c40-bf90-0015e5b800ac"), "APCDevice_8", 8 });
 
             migrationBuilder.InsertData(
                 table: "APCDevices",
                 columns: new[] { "Id", "Name", "Num" },
-                values: new object[] { new Guid("c26ba7d2-c55d-4ae0-9555-e6caa4935421"), "APCDevice_10", 10 });
+                values: new object[] { new Guid("e96a0b60-7208-4a96-89f9-ec593e348dde"), "APCDevice_10", 10 });
 
             migrationBuilder.InsertData(
                 table: "ConfigSettings",
                 columns: new[] { "Id", "Baudrate", "ComPort", "ComPortLast", "CultureStr", "DataBaseGuid", "DataBaseMaterialSelectedIndex", "DataBaseNozzleSelectedIndex", "DataBaseThicknessSelectedIndex", "DataBits", "ExecReset", "Identifier", "IpAddr", "LengthUnit", "Mode", "Parity", "PressureUnit", "StopBits", "TcpPort", "TorchEnabled_01", "TorchEnabled_02", "TorchEnabled_03", "TorchEnabled_04", "TorchEnabled_05", "TorchEnabled_06", "TorchEnabled_07", "TorchEnabled_08", "TorchEnabled_09", "TorchEnabled_10", "TorchInstalled_01", "TorchInstalled_02", "TorchInstalled_03", "TorchInstalled_04", "TorchInstalled_05", "TorchInstalled_06", "TorchInstalled_07", "TorchInstalled_08", "TorchInstalled_09", "TorchInstalled_10", "TorchType" },
-                values: new object[] { new Guid("4639e49e-a4ee-4a05-82ce-c7de620d5a19"), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null });
+                values: new object[] { new Guid("9284ceac-cd85-4e17-ac8c-9afa89b2c7aa"), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null });
 
             migrationBuilder.InsertData(
                 table: "ParamViewGroups",
@@ -226,112 +226,112 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("2413adb7-eb0f-4d69-a80c-9050c4640c8f"), "default", "CalibrationActive", 5, "HeightCalibration", 0 });
+                values: new object[] { new Guid("116f5aab-e152-40b4-b788-efd95bee8ecd"), "default", "TactileInitialPosFinding", 1, "HeightCalibration", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("3aed02df-b189-4a64-b559-6f707b3fd15d"), "default", "DistanceCalibration", 2, "HeightCalibration", 0 });
+                values: new object[] { new Guid("25aacfa8-896a-401a-b589-a25cbae11bd0"), "default", "CutO2BlowoutActive", 3, "PreFlow", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("3f1a09a1-dda3-4f38-8e23-6cf34464c7ad"), "default", "CutO2BlowoutBreak", 2, "PreFlow", 0 });
+                values: new object[] { new Guid("289c483a-bfd2-4d9a-b8a7-cc9c80658ef0"), "default", "CalibrationActive", 5, "HeightCalibration", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("40b62111-cb5d-4a4b-a941-625b6c8c0be3"), "default", "RetractHeight", 1, "RetractPosition", 0 });
+                values: new object[] { new Guid("36486215-7551-4fef-82cd-5563de1d4256"), "default", "SlagCuttingSpeedReduction", 3, "Slag", 2 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("4518498a-39a3-4b60-8295-910e86811794"), "default", "CutO2BlowOutPressure", 6, "PreFlow", 1 });
+                values: new object[] { new Guid("3cd0b84e-425a-4eaa-bf2f-0590d9f8ed8e"), "default", "CutO2BlowOutPressure", 6, "PreFlow", 1 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("4d845ea8-f35e-4a34-ac9a-fde03dbde40a"), "default", "HeightControlActive", 2, "HeightControl", 0 });
+                values: new object[] { new Guid("411f5c68-8d0b-4a96-87e1-9644b3f387be"), "default", "StatusHeightControl", 4, "HeightControl", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("6079dfcb-a9e1-4257-90ec-5e3aafc81b1c"), "default", "CutO2BlowoutActive", 3, "PreFlow", 0 });
+                values: new object[] { new Guid("44b4d814-f712-48da-930a-ba8a8635bcb8"), "default", "SlagSensitivity", 1, "Slag", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("6bfb70f3-9a15-4a12-8842-786322949fd1"), "default", "PiercingSensorMode", 1, "Piercing", 0 });
+                values: new object[] { new Guid("44cbb3e9-c857-44be-9457-1d592d816f51"), "default", "Dynamic", 1, "HeightControl", 1 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("71537cd2-fdd9-464e-83cd-bcdf55366c48"), "default", "LinearDrivePosition", 3, "HeightControl", 0 });
+                values: new object[] { new Guid("44d559c5-293f-4657-86e7-3726b28c638c"), "default", "CurrCutO2BlowoutTime", 4, "PreFlow", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("79650d85-cc84-4181-9943-71c819290cf4"), "default", "RetractPosAtProcessEnd", 2, "RetractPosition", 0 });
+                values: new object[] { new Guid("5bb4942b-4c11-4a8a-8515-7a6d82bacdfb"), "default", "LinearDrivePosition", 3, "HeightCalibration", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("8200a742-41af-4711-9129-b338f639a8ac"), "default", "SlagPostTime", 2, "Slag", 1 });
+                values: new object[] { new Guid("61b9ff05-3d50-48e1-832c-ccae45a6393a"), "default", "RetractHeight", 1, "RetractPosition", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("8f1be1af-03c7-4711-96eb-06ff260c659b"), "default", "LinearDrivePosition", 3, "HeightCalibration", 0 });
+                values: new object[] { new Guid("696b6887-5b82-4f4e-8af0-4769a9b97a39"), "default", "CutO2Blowout", 1, "PreFlow", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("9080daa6-5857-4a73-a72e-ae669ff65751"), "default", "CutO2Blowout", 1, "PreFlow", 0 });
+                values: new object[] { new Guid("7e8e6531-8765-4086-bf24-3bc5da617890"), "default", "DistanceCalibration", 2, "HeightCalibration", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("b3fd7726-87e3-4cbe-9871-1b971caac13f"), "default", "TactileInitialPosFinding", 1, "HeightCalibration", 0 });
+                values: new object[] { new Guid("8badad1e-0973-48a7-bb27-37bfb6161cb8"), "default", "CutO2BlowoutBreak", 2, "PreFlow", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("b810546d-abfb-4918-8872-40d4731aa3e1"), "default", "SlagSensitivity", 1, "Slag", 0 });
+                values: new object[] { new Guid("955a49fe-2dae-455d-bb9f-a015e5f5993a"), "default", "LinearDrivePosition", 3, "HeightControl", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("b9c4db38-0f85-4163-84e4-008a50dea3a5"), "default", "CalibrationValid", 4, "HeightCalibration", 0 });
+                values: new object[] { new Guid("b1f91122-40c6-4197-aaa8-4c3fe67f63d2"), "default", "CutO2BlowOutTime", 5, "PreFlow", 1 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("c74494c0-2624-4d3a-92ab-48d47ed0db57"), "default", "CurrCutO2BlowoutTime", 4, "PreFlow", 0 });
+                values: new object[] { new Guid("bc048a9f-2026-46df-99f3-24b99c5207a4"), "default", "PiercingSensorMode", 1, "Piercing", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("dfe0aa68-e923-41ef-a0a4-0825dd120105"), "default", "CutO2BlowOutTime", 5, "PreFlow", 1 });
+                values: new object[] { new Guid("c9fa3db4-71cd-4e55-901e-aa9a902878ef"), "default", "RetractPosAtProcessEnd", 2, "RetractPosition", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("e1209413-22d3-4c22-bd26-990d8e188a12"), "default", "SlagCuttingSpeedReduction", 3, "Slag", 2 });
+                values: new object[] { new Guid("dae757c8-e72d-477c-bae5-629c31b0a546"), "default", "SlagPostTime", 2, "Slag", 1 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("e940891a-da1c-4c0a-939e-0f8ec9934c1b"), "default", "Dynamic", 1, "HeightControl", 1 });
+                values: new object[] { new Guid("e0b8203e-771f-4998-98d9-191f5692293a"), "default", "CutO2BlowOutTimeOut", 7, "PreFlow", 1 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("f652db60-b994-4e76-b837-5fa965e35cf4"), "default", "CutO2BlowOutTimeOut", 7, "PreFlow", 1 });
+                values: new object[] { new Guid("e3686cd0-e089-4dc4-8f43-9405bccbabfc"), "default", "HeightControlActive", 2, "HeightControl", 0 });
 
             migrationBuilder.InsertData(
                 table: "ParamSettings",
                 columns: new[] { "Id", "ClientId", "ParamId", "ParamOrder", "ParamViewGroupId", "PasswordLevel" },
-                values: new object[] { new Guid("fc0ac9a0-58d6-43e0-91e4-982b430b67e8"), "default", "StatusHeightControl", 4, "HeightControl", 0 });
+                values: new object[] { new Guid("f64816bf-1bbb-4f4c-98f5-2cb6f83abd6b"), "default", "CalibrationValid", 4, "HeightCalibration", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ParamSettings_ParamViewGroupId",
@@ -356,52 +356,52 @@ namespace IhtApcWebServer.Data.Migrations.APCHardware
             migrationBuilder.DeleteData(
                 table: "APCDevices",
                 keyColumn: "Id",
-                keyValue: new Guid("4a51f634-c0ca-403c-a5dd-aeb6e91127cc"));
+                keyValue: new Guid("36eacfb6-4c78-4526-ace5-9b737a666f7b"));
 
             migrationBuilder.DeleteData(
                 table: "APCDevices",
                 keyColumn: "Id",
-                keyValue: new Guid("5173aead-908c-4a37-a657-0a152eee03c0"));
+                keyValue: new Guid("3ef3736e-043c-4f2a-8bbb-b4e14d40834b"));
 
             migrationBuilder.DeleteData(
                 table: "APCDevices",
                 keyColumn: "Id",
-                keyValue: new Guid("5c557b78-3819-4a79-894a-a521933eecf0"));
+                keyValue: new Guid("5882e015-0e00-4886-bbd7-14409179be72"));
 
             migrationBuilder.DeleteData(
                 table: "APCDevices",
                 keyColumn: "Id",
-                keyValue: new Guid("6a8ee60d-c93b-4328-a005-2eb4c729f277"));
+                keyValue: new Guid("642fb882-0c86-4a4a-944d-ffd5834c3086"));
 
             migrationBuilder.DeleteData(
                 table: "APCDevices",
                 keyColumn: "Id",
-                keyValue: new Guid("9ebd6178-83f1-41c2-af83-e823296cf082"));
+                keyValue: new Guid("92f25aea-1fb7-42ed-9fe1-b6b9d507c6d2"));
 
             migrationBuilder.DeleteData(
                 table: "APCDevices",
                 keyColumn: "Id",
-                keyValue: new Guid("a16e83c2-a5d0-4105-8470-e44692e4e0b9"));
+                keyValue: new Guid("9a0f66a9-cc37-4f5b-9260-afa01f9dc15a"));
 
             migrationBuilder.DeleteData(
                 table: "APCDevices",
                 keyColumn: "Id",
-                keyValue: new Guid("a6175539-dd66-4fc2-9e94-2e5224b3113d"));
+                keyValue: new Guid("c97a004a-0ed2-44d3-8508-8d4bde2e82ff"));
 
             migrationBuilder.DeleteData(
                 table: "APCDevices",
                 keyColumn: "Id",
-                keyValue: new Guid("bb6f7249-7496-488a-9bcc-c07855856583"));
+                keyValue: new Guid("d6ff3b4f-90bc-4ba4-a7c9-9e6386e0c0f1"));
 
             migrationBuilder.DeleteData(
                 table: "APCDevices",
                 keyColumn: "Id",
-                keyValue: new Guid("c1c34d26-e850-4c9f-b59c-a60a71518b3b"));
+                keyValue: new Guid("df240c04-f835-4c40-bf90-0015e5b800ac"));
 
             migrationBuilder.DeleteData(
                 table: "APCDevices",
                 keyColumn: "Id",
-                keyValue: new Guid("c26ba7d2-c55d-4ae0-9555-e6caa4935421"));
+                keyValue: new Guid("e96a0b60-7208-4a96-89f9-ec593e348dde"));
         }
     }
 }

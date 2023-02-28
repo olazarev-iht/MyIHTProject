@@ -33,6 +33,8 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
                 .Select(p => _mapper.Map<ErrorLog, ErrorLogModel > (p))
                 .ToArrayAsync(cancellationToken);
 
+            entries = entries.OrderByDescending(p => p.TimeStamp).ToArray();
+
             return entries;
         }
 
