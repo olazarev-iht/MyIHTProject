@@ -730,7 +730,7 @@ input#password-input:focus {
         <MudTh Class="mud-table-cell-custom-group" colspan="5">@LocalStrByEnStr($"{context.Key}")</MudTh>
     </GroupHeaderTemplate>
     <RowTemplate>
-                    <MudTd DataLabel="ErrorCode">@(@LocalStrByEnStr(context.ErrorCode ?? ""))<br />@String.Format("St.{0,2:00}", context.SlaveId - (int)IhtModbusCommunic.SlaveId.Id_Default)</MudTd>
+        <MudTd DataLabel="ErrorCode">@(@LocalStrByEnStr(context.ErrorCode ?? ""))<br />@String.Format("St.{0,2:00}", context.SlaveId - (int)IhtModbusCommunic.SlaveId.Id_Default)</MudTd>
         <MudTd DataLabel="Description">@(@LocalStrByEnStr(context.Description ?? ""))</MudTd>
         <MudTd DataLabel="Time">@(((DateTime)(context.TimeStamp ?? DateTime.MinValue)).ToString("yyyy-MM-dd HH:mm:ss") ?? "")</MudTd>
     </RowTemplate>
