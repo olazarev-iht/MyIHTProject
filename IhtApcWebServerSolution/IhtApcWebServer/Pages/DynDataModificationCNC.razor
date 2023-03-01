@@ -920,11 +920,15 @@ input#password-input:focus {
                         </MudTd>
                         <td>
                             <MudSlider Style="margin-bottom:0px" @ontouchend="@(()=>UpdateDynParam(@paramHeatO2))" @onmouseup="@(()=>UpdateDynParam(@paramHeatO2))"
-                            @bind-Value="@this[@paramHeatO2]" 
-                            Min="paramHeatO2.DynParams.ConstParams.Min" 
-                            Max="paramHeatO2.DynParams.ConstParams.Max"
+                            @bind-Value="@this[@paramHeatO2]"
+                            Min="paramHeatO2.DynParams.MinForSlider" 
+                            Max="paramHeatO2.DynParams.MaxForSlider"
                             Step="@(GetParameterProperty(@paramHeatO2, "Step"))" 
-                            Color="Color.Info"><table><tr><td style="text-align:left;width:60%">Flame (H-O):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramHeatO2))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramHeatO2))</td></tr></table>
+                            Color="Color.Info"><table><tr><td style="text-align:left;width:60%">
+                                min=@paramHeatO2.DynParams.MinForSlider
+                                max=@paramHeatO2.DynParams.MaxForSlider
+                                val=@this[@paramHeatO2]
+                                Flame (H-O):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramHeatO2))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramHeatO2))</td></tr></table>
                             </MudSlider>                           
                         </td> 
                         <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramHeatO2))">
@@ -940,10 +944,14 @@ input#password-input:focus {
                         <td>
                             <MudSlider @ontouchend="@(()=>UpdateDynParam(@paramFuelGas))" @onmouseup="@(()=>UpdateDynParam(@paramFuelGas))"
                             @bind-Value="@this[@paramFuelGas]" 
-                            Min="@paramFuelGas.DynParams.ConstParams.Min" 
-                            Max="@paramFuelGas.DynParams.ConstParams.Max"
+                            Min="@paramFuelGas.DynParams.MinForSlider"
+                            Max="@paramFuelGas.DynParams.MaxForSlider"
                             Step="@(GetParameterProperty(@paramFuelGas, "Step"))" 
-                            Color="Color.Info"><table><tr><td style="text-align:left;width:60%">Flame (F-G):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramFuelGas))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramFuelGas))</td></tr></table>
+                            Color="Color.Info"><table><tr><td style="text-align:left;width:60%">
+                                min=@paramFuelGas.DynParams.MinForSlider
+                                max=@paramFuelGas.DynParams.MaxForSlider
+                                val=@this[@paramFuelGas]
+                                Flame (F-G):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramFuelGas))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramFuelGas))</td></tr></table>
                             </MudSlider>
                         </td>  
                         <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramFuelGas))">
@@ -959,10 +967,14 @@ input#password-input:focus {
                         <td>
                             <MudSlider Class="@_cutO2Visible" @ontouchend="@(()=>UpdateDynParam(@paramCutO2))" @onmouseup="@(()=>UpdateDynParam(@paramCutO2))"                
                             @bind-Value="@this[@paramCutO2]" 
-                            Min="@paramCutO2.DynParams.ConstParams.Min" 
-                            Max="@paramCutO2.DynParams.ConstParams.Max"
+                            Min="@paramCutO2.DynParams.MinForSlider"
+							Max="@paramCutO2.DynParams.MaxForSlider"
                             Step="@(GetParameterProperty(@paramCutO2, "Step"))" 
-                            Color="Color.Info"><table><tr><td style="text-align:left;width:60%">C - O:</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramCutO2))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramCutO2))</td></tr></table>
+                            Color="Color.Info"><table><tr><td style="text-align:left;width:60%">
+                                min=@paramCutO2.DynParams.MinForSlider
+                                max=@paramCutO2.DynParams.MaxForSlider
+                                val=@this[@paramCutO2]
+                                C - O:</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramCutO2))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramCutO2))</td></tr></table>
                             </MudSlider>                        
                         </td>
                         <MudTd Class="@($"td_plus1 {@_cutO2Visible}")" @onclick="@(() => IncreaseParamValue(@paramCutO2))">
