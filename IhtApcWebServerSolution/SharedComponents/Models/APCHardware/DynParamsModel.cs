@@ -1,4 +1,5 @@
 ﻿using SharedComponents.Helpers;
+using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
 using SharedComponents.IhtModbusCmd;
 using System;
@@ -21,23 +22,25 @@ namespace SharedComponents.Models.APCHardware
         public ParameterDataInfoModel? ParameterDataInfo { get; set; } = new();
         public int Value { get; set; }
 
-		//public ParameterDataModel parameterDataModel { get; set; } = new();
 		public ICollection<ParameterDataModel> ParameterDatas { get; set; } = new List<ParameterDataModel>();
 
-		public static Dictionary<IhtModbusParamDyn.eIdxTechnology, (int? min, int? max)> ConstParamsSettings = new()
+
+		private Dictionary<IhtModbusParamDyn.eIdxTechnology, (int? min, int? max)>? ConstParamsSettings
 		{
-			{ IhtModbusParamDyn.eIdxTechnology.HeatO2Ignition, (null, null) },
-			{ IhtModbusParamDyn.eIdxTechnology.FuelGasIgnition, (null, null) },
-			{ IhtModbusParamDyn.eIdxTechnology.IgnitionFlameAdjust, (null, null) },
-			{ IhtModbusParamDyn.eIdxTechnology.HeatO2PreHeat, (null, null) },
-			{ IhtModbusParamDyn.eIdxTechnology.FuelGasPreHeat, (null, null) },
-			{ IhtModbusParamDyn.eIdxTechnology.HeatO2Pierce, (null, null) },
-			{ IhtModbusParamDyn.eIdxTechnology.FuelGasPierce, (null, null) },
-			{ IhtModbusParamDyn.eIdxTechnology.CutO2Pierce, (null, null) },
-			{ IhtModbusParamDyn.eIdxTechnology.HeatO2Cut, (null, null) },
-			{ IhtModbusParamDyn.eIdxTechnology.FuelGasCut, (null, null) },
-			{ IhtModbusParamDyn.eIdxTechnology.CutO2Cut, (null, null) }
-		};
+			get
+			{
+				var currDeviceNum = ParameterDatas?.SingleOrDefault()?.APCDevice?.Num;
+
+				if (currDeviceNum != null)
+				{
+					var ihtDevice = IhtDevices.GetIhtDevices().GetDevice((int)currDeviceNum + (int)IhtModbusCommunic.SlaveId.Id_Default);
+
+					return ihtDevice?.ConstParamsSettings;
+				}
+
+				return null;
+			}
+		}
 
 		private IhtModbusParamDyn.eIdxTechnology eIdxTechnology
 		{
@@ -51,7 +54,7 @@ namespace SharedComponents.Models.APCHardware
 		{
 			get
 			{
-				return ConstParamsSettings.ContainsKey(eIdxTechnology);
+				return ConstParamsSettings?.ContainsKey(eIdxTechnology) ?? false;
 			}
 		}
 
@@ -62,7 +65,7 @@ namespace SharedComponents.Models.APCHardware
 			{
 				if (IsParamForSlider)
 				{
-					return ConstParamsSettings[eIdxTechnology].min;
+					return ConstParamsSettings?[eIdxTechnology].min;
 				}
 				else 
 				{ 
@@ -74,8 +77,11 @@ namespace SharedComponents.Models.APCHardware
 			{
 				if (IsParamForSlider)
 				{
-					var max = ConstParamsSettings[eIdxTechnology].max;
-					ConstParamsSettings[eIdxTechnology] = (value, max);
+					if (ConstParamsSettings != null)
+					{
+						var max = ConstParamsSettings?[eIdxTechnology].max;
+						ConstParamsSettings[eIdxTechnology] = (value, max);
+					}
 				}
 			}
 		}
@@ -102,7 +108,7 @@ namespace SharedComponents.Models.APCHardware
 			{
 				if (IsParamForSlider)
 				{
-					return ConstParamsSettings[eIdxTechnology].max;
+					return ConstParamsSettings?[eIdxTechnology].max;
 				}
 				else
 				{
@@ -114,8 +120,11 @@ namespace SharedComponents.Models.APCHardware
 			{
 				if (IsParamForSlider)
 				{
-					var min = ConstParamsSettings[(IhtModbusParamDyn.eIdxTechnology)ParamId].min;
-					ConstParamsSettings[(IhtModbusParamDyn.eIdxTechnology)ParamId] = (min, value);
+					if (ConstParamsSettings != null)
+					{
+						var min = ConstParamsSettings?[eIdxTechnology].min;
+						ConstParamsSettings[eIdxTechnology] = (min, value);
+					}
 				}
 			}
 		}
@@ -155,9 +164,6 @@ namespace SharedComponents.Models.APCHardware
 				if (_maxForSlider > ConstParams.Max) _maxForSlider = ConstParams.Max;
 			}
 		}
-
-
-
 	}
 }
 

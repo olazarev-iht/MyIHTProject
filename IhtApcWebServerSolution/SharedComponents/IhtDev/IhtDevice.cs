@@ -307,21 +307,22 @@ namespace SharedComponents.IhtDev
             }
         }
 
-        //private IhtModbusCommunic? _ihtModbusCommunic = null;
-        //public IhtModbusCommunic? ihtModbusCommunic
-        //{
+		public Dictionary<IhtModbusParamDyn.eIdxTechnology, (int? min, int? max)> ConstParamsSettings = new()
+		{
+			{ IhtModbusParamDyn.eIdxTechnology.HeatO2Ignition, (null, null) },
+			{ IhtModbusParamDyn.eIdxTechnology.FuelGasIgnition, (null, null) },
+			{ IhtModbusParamDyn.eIdxTechnology.IgnitionFlameAdjust, (null, null) },
+			{ IhtModbusParamDyn.eIdxTechnology.HeatO2PreHeat, (null, null) },
+			{ IhtModbusParamDyn.eIdxTechnology.FuelGasPreHeat, (null, null) },
+			{ IhtModbusParamDyn.eIdxTechnology.HeatO2Pierce, (null, null) },
+			{ IhtModbusParamDyn.eIdxTechnology.FuelGasPierce, (null, null) },
+			{ IhtModbusParamDyn.eIdxTechnology.CutO2Pierce, (null, null) },
+			{ IhtModbusParamDyn.eIdxTechnology.HeatO2Cut, (null, null) },
+			{ IhtModbusParamDyn.eIdxTechnology.FuelGasCut, (null, null) },
+			{ IhtModbusParamDyn.eIdxTechnology.CutO2Cut, (null, null) }
+		};
 
-        //    get
-        //    {
-        //        if (_ihtModbusCommunic == null)
-        //            _ihtModbusCommunic = _provider?.GetService<IhtModbusCommunic>();
-        //        return _ihtModbusCommunic;
-        //    }
-
-        //    private set => _ihtModbusCommunic = value;
-        //}
-
-        private DataProcessInfo? _dataProcessInfo = null;
+		private DataProcessInfo? _dataProcessInfo = null;
         public DataProcessInfo? dataProcessInfo {
 
             get {
