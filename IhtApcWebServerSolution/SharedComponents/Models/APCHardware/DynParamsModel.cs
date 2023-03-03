@@ -59,6 +59,10 @@ namespace SharedComponents.Models.APCHardware
 		}
 
 		private int stepsNum = 5;
+
+		/// <summary>
+		/// To get/set min value of the ConstParamsSettings Dictionary
+		/// </summary>
 		private int? _minForSlider 
 		{
 			get
@@ -102,6 +106,9 @@ namespace SharedComponents.Models.APCHardware
             }
         }
 
+		/// <summary>
+		/// To get/set max value of the ConstParamsSettings Dictionary
+		/// </summary>
 		private int? _maxForSlider
 		{
 			get
