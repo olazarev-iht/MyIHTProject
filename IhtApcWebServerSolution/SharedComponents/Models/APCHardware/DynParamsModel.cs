@@ -21,6 +21,8 @@ namespace SharedComponents.Models.APCHardware
         public ParameterDataInfoModel? ParameterDataInfo { get; set; } = new();
         public int Value { get; set; }
 
+		//public ParameterDataModel parameterDataModel { get; set; } = new();
+		public ICollection<ParameterDataModel> ParameterDatas { get; set; } = new List<ParameterDataModel>();
 
 		public static Dictionary<IhtModbusParamDyn.eIdxTechnology, (int? min, int? max)> ConstParamsSettings = new()
 		{
@@ -37,18 +39,44 @@ namespace SharedComponents.Models.APCHardware
 			{ IhtModbusParamDyn.eIdxTechnology.CutO2Cut, (null, null) }
 		};
 
+		private IhtModbusParamDyn.eIdxTechnology eIdxTechnology
+		{
+			get
+			{
+				return (IhtModbusParamDyn.eIdxTechnology)ParamId;
+			}
+		}
+
+		private bool IsParamForSlider
+		{
+			get
+			{
+				return ConstParamsSettings.ContainsKey(eIdxTechnology);
+			}
+		}
+
 		private int stepsNum = 5;
 		private int? _minForSlider 
 		{
 			get
 			{
-				return ConstParamsSettings[(IhtModbusParamDyn.eIdxTechnology)ParamId].min;
+				if (IsParamForSlider)
+				{
+					return ConstParamsSettings[eIdxTechnology].min;
+				}
+				else 
+				{ 
+					return null;
+				}
 			}
 			
 			set 
 			{
-				var max = ConstParamsSettings[(IhtModbusParamDyn.eIdxTechnology)ParamId].max;
-				ConstParamsSettings[(IhtModbusParamDyn.eIdxTechnology)ParamId] = (value, max);
+				if (IsParamForSlider)
+				{
+					var max = ConstParamsSettings[eIdxTechnology].max;
+					ConstParamsSettings[eIdxTechnology] = (value, max);
+				}
 			}
 		}
 
@@ -56,14 +84,15 @@ namespace SharedComponents.Models.APCHardware
         {
             get
             {
-                if (ConstParams != null && this.IsBarUnits && _minForSlider == null)
-                {
-                    _minForSlider = Value - ConstParams.Step * stepsNum;
+				if (IsParamForSlider)
+				{
+					if (_minForSlider == null)
+					{
+						SetMinForSlider();
+					}
+				}
 
-                    if (_minForSlider < ConstParams.Min) _minForSlider = ConstParams.Min;
-                }
-
-                return _minForSlider ?? 0;
+				return _minForSlider ?? 0;
             }
         }
 
@@ -71,77 +100,64 @@ namespace SharedComponents.Models.APCHardware
 		{
 			get
 			{
-				return ConstParamsSettings[(IhtModbusParamDyn.eIdxTechnology)ParamId].max;
+				if (IsParamForSlider)
+				{
+					return ConstParamsSettings[eIdxTechnology].max;
+				}
+				else
+				{
+					return null;
+				}
 			}
 
 			set
 			{
-				var min = ConstParamsSettings[(IhtModbusParamDyn.eIdxTechnology)ParamId].min;
-				ConstParamsSettings[(IhtModbusParamDyn.eIdxTechnology)ParamId] = (min, value);
+				if (IsParamForSlider)
+				{
+					var min = ConstParamsSettings[(IhtModbusParamDyn.eIdxTechnology)ParamId].min;
+					ConstParamsSettings[(IhtModbusParamDyn.eIdxTechnology)ParamId] = (min, value);
+				}
 			}
 		}
+
 		public int MaxForSlider
         {
             get
             {
-                if (ConstParams != null && this.IsBarUnits && _maxForSlider == null)
-                {
-                    _maxForSlider = Value + ConstParams.Step * stepsNum;
+				if (IsParamForSlider)
+				{
+					if (_maxForSlider == null)
+					{
+						SetMaxForSlider();
+					}
+				}
 
-                    if (_maxForSlider > ConstParams.Max) _maxForSlider = ConstParams.Max;
-                }
-
-                return _maxForSlider ?? 0;
+				return _maxForSlider ?? 0;
             }
         }
 
-        private bool IsBarUnits
-        {
-            get
-            {
-                return (ParameterDataInfo?.Unit ?? "").Equals(Units.txtBar, StringComparison.OrdinalIgnoreCase);
-            }
-        }
+		public void SetMinForSlider()
+		{
+			if (ConstParams != null && IsParamForSlider)
+			{
+				_minForSlider = Value - ConstParams.Step * stepsNum;
 
+				if (_minForSlider < ConstParams.Min) _minForSlider = ConstParams.Min;
+			}
+		}
 
-        //public DynParamsModel()
-        //{
-        //    if (MinForSlider == null && MaxForSlider == null)
-        //    {
-        //        MinForSlider = GetMinForSlider();
+		public void SetMaxForSlider()
+		{
+			if (ConstParams != null && IsParamForSlider)
+			{
+				_maxForSlider = Value + ConstParams.Step * stepsNum;
 
-        //        MaxForSlider = GetMaxForSlider();
-        //    }
-        //}
-
-        //private int GetMinForSlider()
-        //{
-        //    var returnValue = 0;
-
-        //    if (ConstParams != null && this.IsBarUnits)
-        //    {
-        //        returnValue = Value - ConstParams.Step * stepsNum;
-
-        //        if (returnValue < 0) returnValue = 0;
-        //    }
-
-        //    return returnValue;
-        //}
-
-        //private int GetMaxForSlider()
-        //{
-        //    var returnValue = 0;
-
-        //    if (ConstParams != null && this.IsBarUnits)
-        //    {
-        //        returnValue = Value + ConstParams.Step * stepsNum;
-        //    }
-
-        //    return returnValue;
-        //}
+				if (_maxForSlider > ConstParams.Max) _maxForSlider = ConstParams.Max;
+			}
+		}
 
 
 
-    }
+	}
 }
 
