@@ -4,10 +4,12 @@ using IhtApcWebServer.Data.DataMapper;
 using IhtApcWebServer.Data.Models.APCHardware;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using SharedComponents.Helpers;
 using SharedComponents.Models.APCHardware;
 using SharedComponents.Services.APCHardwareDBServices;
 using System.Data;
 using System.Text;
+
 
 namespace IhtApcWebServer.Services.APCHardwareDBServices
 {
@@ -27,13 +29,14 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
         public async Task<IEnumerable<ErrorLogModel>> GetEntriesAsync(CancellationToken cancellationToken)
         {
             await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+			var rowsNumToShow = CommonConstants.MaxErrolLogRowsToShow;
 
-            var entries = await dbContext.ErrorLogs
+			var entries = await dbContext.ErrorLogs
                 .AsNoTracking()
                 .Select(p => _mapper.Map<ErrorLog, ErrorLogModel > (p))
                 .ToArrayAsync(cancellationToken);
 
-            entries = entries.OrderByDescending(p => p.TimeStamp).ToArray();
+            entries = entries.OrderByDescending(p => p.TimeStamp).Take(rowsNumToShow).ToArray();
 
             return entries;
         }
@@ -55,7 +58,19 @@ namespace IhtApcWebServer.Services.APCHardwareDBServices
             await dbContext.ErrorLogs.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
 
-            return entity.Id;
+			// Delete old rows if count > max allowed
+			var query = dbContext.ErrorLogs;
+			var count = query.Count();
+			var maxRowsNum = CommonConstants.MaxErrolLogRowsNum;
+
+			if(count > maxRowsNum) 
+			{ 
+				var setToDelete = await query.OrderBy(e => e.TimeStamp).Take(count - maxRowsNum).ToListAsync(cancellationToken);
+				dbContext.RemoveRange(setToDelete);
+				await dbContext.SaveChangesAsync(cancellationToken);
+			}
+
+			return entity.Id;
         }
 
         public async Task UpdateEntryAsync(ErrorLogModel newData, CancellationToken cancellationToken)

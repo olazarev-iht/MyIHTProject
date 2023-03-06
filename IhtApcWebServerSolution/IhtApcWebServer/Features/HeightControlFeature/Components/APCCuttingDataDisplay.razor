@@ -563,180 +563,185 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
 </MudTable>
 
 
-@code {
-    private bool _createParamsDialogVisible;
-    private bool _editParamsDialogVisible;
-    private bool _deleteParamsDialogVisible;
-    private bool _loadParamsDialogVisible;
-    private bool _editOneParamDialogVisible;
-    private bool _paramPopUpDialogVisible;
-    private ArrayList _modbusDatas = new();
+		@code {
+	private bool _createParamsDialogVisible;
+	private bool _editParamsDialogVisible;
+	private bool _deleteParamsDialogVisible;
+	private bool _loadParamsDialogVisible;
+	private bool _editOneParamDialogVisible;
+	private bool _paramPopUpDialogVisible;
+	private ArrayList _modbusDatas = new();
 
-    private MudForm _createForm;
-    private MudForm _editForm;
-    private MudForm _deleteForm;
-    private MudForm _loadForm;
-    private MudForm _selectedForm;
+	private MudForm _createForm;
+	private MudForm _editForm;
+	private MudForm _deleteForm;
+	private MudForm _loadForm;
+	private MudForm _selectedForm;
 
-    private string searchMaterial = "";
-    private float searchThickness = 0;
-    private string searchNozzle = "";
+	private string searchMaterial = "";
+	private float searchThickness = 0;
+	private string searchNozzle = "";
 
-    private string _sliderVarName = "";
-    private float _sliderVarValue = 0;
-    private float _sliderMinValue = 0;
-    private float _sliderMaxValue = 0;
-    private float _sliderDeltaValue = 0;
-    private string[] _sliderArrValues = null;
+	private string _sliderVarName = "";
+	private float _sliderVarValue = 0;
+	private float _sliderMinValue = 0;
+	private float _sliderMaxValue = 0;
+	private float _sliderDeltaValue = 0;
+	private string[] _sliderArrValues = null;
 
-    private const string PROCESS_MODE = "Process";
-    private const string MANUAL_MODE = "Manual";
+	private const string PROCESS_MODE = "Process";
+	private const string MANUAL_MODE = "Manual";
 
-    private bool _menuExpanded = false;
+	private bool _menuExpanded = false;
 
-    private bool _enableToLoadData
-    {
-        get
-        {
-            _modbusDatas = IhtModbusCommunic.GetConnectedModbusDatas();
-            return _modbusDatas.Count > 0;
-        }
-    }
-    //private bool _forMenuFieldDisplay = false;
+	private bool _enableToLoadData
+	{
+		get
+		{
+			_modbusDatas = IhtModbusCommunic.GetConnectedModbusDatas();
+			return _modbusDatas.Count > 0;
+		}
+	}
+	//private bool _forMenuFieldDisplay = false;
 
-    private float[] arrThicknesses = { 3, 4, 5, 6, 7, 8, 10, 12, 15, 20, 25, 30, 40, 50, 70, 80, 90, 100, 120, 130, 150, 200, 230, 250, 300 };
-    private CuttingDataModel cuttingDataModel = new CuttingDataModel();
-    private CuttingDataModel selectedDataModel = new CuttingDataModel();
-    //private NozzleModel nozzle = new NozzleModel();
-    private static List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
-    private IEnumerable<NozzleModel> nozzleModelList = new List<NozzleModel>();
-    private IEnumerable<MaterialModel> materialModelList = new List<MaterialModel>();
+	private float[] arrThicknesses = { 3, 4, 5, 6, 7, 8, 10, 12, 15, 20, 25, 30, 40, 50, 70, 80, 90, 100, 120, 130, 150, 200, 230, 250, 300 };
+	private CuttingDataModel cuttingDataModel = new CuttingDataModel();
+	private CuttingDataModel selectedDataModel = new CuttingDataModel();
+	//private NozzleModel nozzle = new NozzleModel();
+	private static List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
+	private IEnumerable<NozzleModel> nozzleModelList = new List<NozzleModel>();
+	private IEnumerable<MaterialModel> materialModelList = new List<MaterialModel>();
 
-    private IhtModbusCommunic IhtModbusCommunic => ihtDevices.ihtModbusCommunic;
+	private IhtModbusCommunic IhtModbusCommunic => ihtDevices.ihtModbusCommunic;
 
-    public static event EventHandler? StaticParamsClientChanged;
+	public static event EventHandler? StaticParamsClientChanged;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await GetEntriesAsync();
-        await GetNozzlesAsync();
-        await GetMaterialsAsync();
+	protected override async Task OnInitializedAsync()
+	{
+		await GetEntriesAsync();
+		await GetNozzlesAsync();
+		await GetMaterialsAsync();
 
-        APCCuttingDataDisplay.StaticParamsClientChanged += StaticAPCParamsOnStaticAPCParamsDataChanged;
-    }
+		APCCuttingDataDisplay.StaticParamsClientChanged += StaticAPCParamsOnStaticAPCParamsDataChanged;
+	}
 
-    private void GoOperatorScreen(string screenMode)
-    {
-        navigationManager.NavigateTo($"{screenMode}", true);
-    }
+	private void GoOperatorScreen(string screenMode)
+	{
+		navigationManager.NavigateTo($"{screenMode}", true);
+	}
 
-    private void ToggleMenu()
-    {
-        _menuExpanded = !_menuExpanded;
-    }
+	private void ToggleMenu()
+	{
+		_menuExpanded = !_menuExpanded;
+	}
 
-    //private void ForMenuMouseOver()
-    //{
-    //    _forMenuFieldDisplay = true;
-    //}
+	//private void ForMenuMouseOver()
+	//{
+	//    _forMenuFieldDisplay = true;
+	//}
 
-    //private void ForMenuMouseOut()
-    //{
-    //    _forMenuFieldDisplay = false;
-    //}
+	//private void ForMenuMouseOut()
+	//{
+	//    _forMenuFieldDisplay = false;
+	//}
 
-    private async Task<List<CuttingDataModel>> GetEntriesAsync()
-    {
-        cuttingDataModelList = await cuttingDataDBService.GetEntriesByGasTypeAsync((int)ihtDevices.TorchTypeSetup, CancellationToken.None);
-        //cuttingDataModelList = cuttingDataModelList.Where(d => d.Gas.GasId == (int)ihtDevices.TorchTypeSetup).ToList();
-        
-        return cuttingDataModelList;
-    }
+	private async Task<List<CuttingDataModel>> GetEntriesAsync()
+	{
+		cuttingDataModelList = await cuttingDataDBService.GetEntriesByGasTypeAsync((int)ihtDevices.TorchTypeSetup, CancellationToken.None);
+		//cuttingDataModelList = cuttingDataModelList.Where(d => d.Gas.GasId == (int)ihtDevices.TorchTypeSetup).ToList();
+
+		return cuttingDataModelList;
+	}
 
 
-    private async Task GetNozzlesAsync()
-    {
-        nozzleModelList = await nozzleDBService.GetEntriesAsync(CancellationToken.None);
-    }
+	private async Task GetNozzlesAsync()
+	{
+		nozzleModelList = await nozzleDBService.GetEntriesAsync(CancellationToken.None);
+	}
 
-    private async Task GetMaterialsAsync()
-    {
-        materialModelList = await materialDBService.GetEntriesAsync(CancellationToken.None);
-    }
+	private async Task GetMaterialsAsync()
+	{
+		materialModelList = await materialDBService.GetEntriesAsync(CancellationToken.None);
+	}
 
-    private bool Search(CuttingDataModel cuttingDataModel)
-    {
-        if (string.IsNullOrWhiteSpace(searchMaterial + searchThickness + searchNozzle)) return true;
-        if (((cuttingDataModel.Material?.Id.ToString().Contains(searchMaterial, StringComparison.OrdinalIgnoreCase) ?? false) || string.IsNullOrWhiteSpace(searchMaterial))
-            && (cuttingDataModel.Thickness == searchThickness || searchThickness == 0)
-            && ((cuttingDataModel.Nozzle?.Id.ToString().Contains(searchNozzle, StringComparison.OrdinalIgnoreCase) ?? false) || string.IsNullOrWhiteSpace(searchNozzle)))
-        {
-            return true;
-        }
-        return false;
-    }
+	private bool Search(CuttingDataModel cuttingDataModel)
+	{
+		if (string.IsNullOrWhiteSpace(searchMaterial + searchThickness + searchNozzle)) return true;
+		if (((cuttingDataModel.Material?.Id.ToString().Contains(searchMaterial, StringComparison.OrdinalIgnoreCase) ?? false) || string.IsNullOrWhiteSpace(searchMaterial))
+			&& (cuttingDataModel.Thickness == searchThickness || searchThickness == 0)
+			&& ((cuttingDataModel.Nozzle?.Id.ToString().Contains(searchNozzle, StringComparison.OrdinalIgnoreCase) ?? false) || string.IsNullOrWhiteSpace(searchNozzle)))
+		{
+			return true;
+		}
+		return false;
+	}
 
-    private void RowClickEvent(TableRowClickEventArgs<CuttingDataModel> tableRowClickEventArgs)
-    {
-        var id = tableRowClickEventArgs.Item.Id;
-        SetUpCuttingDataModel(id);
-        OpenParamPopUpDialog();
-    }
+	private void RowClickEvent(TableRowClickEventArgs<CuttingDataModel> tableRowClickEventArgs)
+	{
+		var id = tableRowClickEventArgs.Item.Id;
+		SetUpCuttingDataModel(id);
+		OpenParamPopUpDialog();
+	}
 
-    private void OpenParamPopUpDialog()
-    {
-        _paramPopUpDialogVisible = true;
-    }
+	private void OpenParamPopUpDialog()
+	{
+		_paramPopUpDialogVisible = true;
+	}
 
-    private async Task UpdateParamsAsync()
-    {
-        if (_editForm.IsValid)
-        {
-            await cuttingDataDBService.UpdateEntryAsync(cuttingDataModel.Id, cuttingDataModel, CancellationToken.None);
-            _editParamsDialogVisible = false;
-            await GetEntriesAsync();
+	private async Task UpdateParamsAsync()
+	{
+		if (_editForm.IsValid)
+		{
+			await cuttingDataDBService.UpdateEntryAsync(cuttingDataModel.Id, cuttingDataModel, CancellationToken.None);
+			_editParamsDialogVisible = false;
+			await GetEntriesAsync();
 
-            OnStaticParamChanged();
-        }
-    }
+			OnStaticParamChanged();
+		}
+	}
 
-    private async Task CreateParamsAsync()
-    {
-        if (_createForm.IsValid)
-        {
-            await cuttingDataDBService.AddEntryAsync(cuttingDataModel, CancellationToken.None);
-            cuttingDataModel = new CuttingDataModel();
-            _createParamsDialogVisible = false;
-            //snackBar.Add("Parameter Saved.", Severity.Success);
-            await GetEntriesAsync();
+	private async Task CreateParamsAsync()
+	{
+		if (_createForm.IsValid)
+		{
+			await cuttingDataDBService.AddEntryAsync(cuttingDataModel, CancellationToken.None);
+			cuttingDataModel = new CuttingDataModel();
+			_createParamsDialogVisible = false;
+			//snackBar.Add("Parameter Saved.", Severity.Success);
+			await GetEntriesAsync();
 
-            OnStaticParamChanged();
-        }
-    }
+			OnStaticParamChanged();
+		}
+	}
 
-    private async Task DeleteParamsAsync()
-    {
-        await cuttingDataDBService.DeleteEntryAsync(cuttingDataModel.Id, CancellationToken.None);
-        cuttingDataModel = new CuttingDataModel();
-        _deleteParamsDialogVisible = false;
-        //snackBar.Add("Parameter Deleted.", Severity.Success);
-        await GetEntriesAsync();
+	private async Task DeleteParamsAsync()
+	{
+		await cuttingDataDBService.DeleteEntryAsync(cuttingDataModel.Id, CancellationToken.None);
+		cuttingDataModel = new CuttingDataModel();
+		_deleteParamsDialogVisible = false;
+		//snackBar.Add("Parameter Deleted.", Severity.Success);
+		await GetEntriesAsync();
 
-        OnStaticParamChanged();
-    }
+		OnStaticParamChanged();
+	}
 
-    private async Task LoadParamsAsync()
-    {
-        await parameterDataInfoManager.LoadCuttingDataParamsFromDBAsync(_modbusDatas, cuttingDataModel);
-
-		// Update ConstParamsSettings Dictionary of each device after loading the Cutting Data
-		// to enable reset of the min and max values for Constant Params in DynParamsModel class
+	private void ResetConstParamsSettingsDictionaryToNull()
+	{
 		IhtDevices.GetIhtDevices().GetDevices()
 		.ForEach(
 			d => d.ConstParamsSettings.ToList().ForEach(
 				kvp => d.ConstParamsSettings[kvp.Key] = (min: null, max: null)
 			)
 		);
+	}
+
+	private async Task LoadParamsAsync()
+	{
+		await parameterDataInfoManager.LoadCuttingDataParamsFromDBAsync(_modbusDatas, cuttingDataModel);
+
+		// Reset ConstParamsSettings Dictionary of each device after loading the Cutting Data
+		// to enable reset of the min and max values for Constant Params in DynParamsModel class
+		ResetConstParamsSettingsDictionaryToNull();
 
         apcWorker._apcWorkerService_DynDataLoaded();
 
