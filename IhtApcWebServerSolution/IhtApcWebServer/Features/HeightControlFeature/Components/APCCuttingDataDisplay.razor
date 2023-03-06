@@ -740,7 +740,7 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
 		await parameterDataInfoManager.LoadCuttingDataParamsFromDBAsync(_modbusDatas, cuttingDataModel);
 
 		// Reset ConstParamsSettings Dictionary of each device after loading the Cutting Data
-		// to enable reset of the min and max values for Constant Params in DynParamsModel class
+		// to enable an update of the min and max values for Constant Params in DynParamsModel class
 		ResetConstParamsSettingsDictionaryToNull();
 
         apcWorker._apcWorkerService_DynDataLoaded();
