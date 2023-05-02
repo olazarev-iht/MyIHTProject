@@ -1,0 +1,609 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="_CultureAcetylane" xml:space="preserve">
+    <value>Acetilen</value>
+  </data>
+  <data name="_CultureAddress" xml:space="preserve">
+    <value>Adresa</value>
+  </data>
+  <data name="_CultureButAllParameter" xml:space="preserve">
+    <value>Vsi parametri</value>
+  </data>
+  <data name="_CultureButBack" xml:space="preserve">
+    <value>Najaz</value>
+  </data>
+  <data name="_CultureButCalibration" xml:space="preserve">
+    <value>Kalibracija višine</value>
+  </data>
+  <data name="_CultureButCancel" xml:space="preserve">
+    <value>Prekini</value>
+  </data>
+  <data name="_CultureButClear" xml:space="preserve">
+    <value>Brisanje</value>
+  </data>
+  <data name="_CultureButClose" xml:space="preserve">
+    <value>Zapri</value>
+  </data>
+  <data name="_CultureButCommunication" xml:space="preserve">
+    <value>Komunikacija</value>
+  </data>
+  <data name="_CultureButConfiguration" xml:space="preserve">
+    <value>Konfiguracija</value>
+  </data>
+  <data name="_CultureButConnection" xml:space="preserve">
+    <value>Poveži</value>
+  </data>
+  <data name="_CultureButCurrent" xml:space="preserve">
+    <value>Trenutno</value>
+  </data>
+  <data name="_CultureButCutCycleHistory" xml:space="preserve">
+    <value>Zgodovina rezanja</value>
+  </data>
+  <data name="_CultureButCutting" xml:space="preserve">
+    <value>Rezanje</value>
+  </data>
+  <data name="_CultureButData" xml:space="preserve">
+    <value>Podatki</value>
+  </data>
+  <data name="_CultureButDelete" xml:space="preserve">
+    <value>Izbriši</value>
+  </data>
+  <data name="_CultureButDeviceInfo" xml:space="preserve">
+    <value>Podatki naprave</value>
+  </data>
+  <data name="_CultureButDuplicate" xml:space="preserve">
+    <value>Duplikat</value>
+  </data>
+  <data name="_CultureButEnablePressureCO2" xml:space="preserve">
+    <value>Vklop plina R-K</value>
+  </data>
+  <data name="_CultureButEnablePressureFG" xml:space="preserve">
+    <value>Vklop plina S-P</value>
+  </data>
+  <data name="_CultureButEnablePressureHO2" xml:space="preserve">
+    <value>Vklop plina S-K</value>
+  </data>
+  <data name="_CultureButEnter" xml:space="preserve">
+    <value>Potrdi</value>
+  </data>
+  <data name="_CultureButErrorCounts" xml:space="preserve">
+    <value>Števec napak</value>
+  </data>
+  <data name="_CultureButErrorLog" xml:space="preserve">
+    <value>Zgodovina napak</value>
+  </data>
+  <data name="_CultureButFactoryReset" xml:space="preserve">
+    <value>Povrni tovarniške nastavitve</value>
+  </data>
+  <data name="_CultureButFwUpdate" xml:space="preserve">
+    <value>Firmware update</value>
+  </data>
+  <data name="_CultureButGeneral" xml:space="preserve">
+    <value>Splošno</value>
+  </data>
+  <data name="_CultureButHeating" xml:space="preserve">
+    <value>Segrevalni</value>
+  </data>
+  <data name="_CultureButHeightControl" xml:space="preserve">
+    <value>Višinska kontrola</value>
+  </data>
+  <data name="_CultureButHelp" xml:space="preserve">
+    <value>Pomoč</value>
+  </data>
+  <data name="_CultureButHistory" xml:space="preserve">
+    <value>Zgodovina</value>
+  </data>
+  <data name="_CultureButIgnite" xml:space="preserve">
+    <value>Vžig</value>
+  </data>
+  <data name="_CultureButIgnition" xml:space="preserve">
+    <value>Vžiganje</value>
+  </data>
+  <data name="_CultureButIhtService" xml:space="preserve">
+    <value>IhtService</value>
+  </data>
+  <data name="_CultureButInformation" xml:space="preserve">
+    <value>Informacije</value>
+  </data>
+  <data name="_CultureButLinearDrive" xml:space="preserve">
+    <value>Linearno vodilo</value>
+  </data>
+  <data name="_CultureButLoad" xml:space="preserve">
+    <value>Naloži</value>
+  </data>
+  <data name="_CultureButManually" xml:space="preserve">
+    <value>Ročno</value>
+  </data>
+  <data name="_CultureButModify" xml:space="preserve">
+    <value>Uredi</value>
+  </data>
+  <data name="_CultureButNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="_CultureButNumbers" xml:space="preserve">
+    <value>Število</value>
+  </data>
+  <data name="_CultureButOff" xml:space="preserve">
+    <value>Izklopi</value>
+  </data>
+  <data name="_CultureButOk" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="_CultureButPassword" xml:space="preserve">
+    <value>Geslo</value>
+  </data>
+  <data name="_CultureButPiercing" xml:space="preserve">
+    <value>Prebijanje</value>
+  </data>
+  <data name="_CultureButPreFlow" xml:space="preserve">
+    <value>Predpihovanje</value>
+  </data>
+  <data name="_CultureButPreFlowBreak" xml:space="preserve">
+    <value>Prekini predpihovanje</value>
+  </data>
+  <data name="_CultureButPreFlowStart" xml:space="preserve">
+    <value>Vklopi predpihovanje</value>
+  </data>
+  <data name="_CultureButPreHeating" xml:space="preserve">
+    <value>Segrevanje</value>
+  </data>
+  <data name="_CultureButPrevious" xml:space="preserve">
+    <value>Prejšnji</value>
+  </data>
+  <data name="_CultureButRead" xml:space="preserve">
+    <value>Beri</value>
+  </data>
+  <data name="_CultureButRetract" xml:space="preserve">
+    <value>Vračalna razdalja</value>
+  </data>
+  <data name="_CultureButSave" xml:space="preserve">
+    <value>Shrani</value>
+  </data>
+  <data name="_CultureButService" xml:space="preserve">
+    <value>Servis</value>
+  </data>
+  <data name="_CultureButSet" xml:space="preserve">
+    <value>Postavi</value>
+  </data>
+  <data name="_CultureButSettings" xml:space="preserve">
+    <value>Nastavitve</value>
+  </data>
+  <data name="_CultureButSetup" xml:space="preserve">
+    <value>Nastavi</value>
+  </data>
+  <data name="_CultureButSlag" xml:space="preserve">
+    <value>Žlindra</value>
+  </data>
+  <data name="_CultureButStartPiercing" xml:space="preserve">
+    <value>Začni prebijanje</value>
+  </data>
+  <data name="_CultureButStateMessages" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="_CultureButTemper" xml:space="preserve">
+    <value>Temper</value>
+  </data>
+  <data name="_CultureButTestPressureOutputs" xml:space="preserve">
+    <value>Test plinov</value>
+  </data>
+  <data name="_CultureButTorch" xml:space="preserve">
+    <value>Gorilnik</value>
+  </data>
+  <data name="_CultureButTorchInstalled" xml:space="preserve">
+    <value>Gorilnik naložen</value>
+  </data>
+  <data name="_CultureButUpdate" xml:space="preserve">
+    <value>Posodobi</value>
+  </data>
+  <data name="_CultureButYes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="_CultureCalibrationActive" xml:space="preserve">
+    <value>Kalibracija višine aktivna</value>
+  </data>
+  <data name="_CultureCalibrationInvalid" xml:space="preserve">
+    <value>Kalibracija neuspešna</value>
+  </data>
+  <data name="_CultureCalibrationValid" xml:space="preserve">
+    <value>Kalibracija uspešna</value>
+  </data>
+  <data name="_CultureCapSetpoint" xml:space="preserve">
+    <value>Višina gorilnika</value>
+  </data>
+  <data name="_CultureClearance" xml:space="preserve">
+    <value>Razdalja</value>
+  </data>
+  <data name="_CultureCommand" xml:space="preserve">
+    <value>Ukaz</value>
+  </data>
+  <data name="_CultureConnected" xml:space="preserve">
+    <value>Povezan</value>
+  </data>
+  <data name="_CultureCounter" xml:space="preserve">
+    <value>Števec</value>
+  </data>
+  <data name="_CultureCuttingSpeed" xml:space="preserve">
+    <value>Rezalna hitrost</value>
+  </data>
+  <data name="_CultureDataBaseRemarkExist" xml:space="preserve">
+    <value>Ta pripomba že velja!</value>
+  </data>
+  <data name="_CultureDescription" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="_CultureDisable" xml:space="preserve">
+    <value>Onemogoči</value>
+  </data>
+  <data name="_CultureDistanceCalibration" xml:space="preserve">
+    <value>Ročna kalibracija višine</value>
+  </data>
+  <data name="_CultureDynamic" xml:space="preserve">
+    <value>Dinamika</value>
+  </data>
+  <data name="_CultureEnable" xml:space="preserve">
+    <value>Omogoči</value>
+  </data>
+  <data name="_CultureErrorCode" xml:space="preserve">
+    <value>Koda napake</value>
+  </data>
+  <data name="_CultureExecuteDeviceReset" xml:space="preserve">
+    <value>Ponastavitev vseh komponent</value>
+  </data>
+  <data name="_CultureExitProgram" xml:space="preserve">
+    <value>Dokončati program?</value>
+  </data>
+  <data name="_CultureFit3TorchControllerNotConnected" xml:space="preserve">
+    <value>Krmilnik (Torch-Controller) gorilnika ni priključen</value>
+  </data>
+  <data name="_CultureFit3TorchTypeCodeFault" xml:space="preserve">
+    <value>Gorilnika napaka kode</value>
+  </data>
+  <data name="_CultureFit3TorchTypeUndefined" xml:space="preserve">
+    <value>Gorilnika ni opredeljen</value>
+  </data>
+  <data name="_CultureFlameAdjust" xml:space="preserve">
+    <value>Nastavitev plamena-vžig</value>
+  </data>
+  <data name="_CultureFlameoffsetEnable" xml:space="preserve">
+    <value>Vklopi dodatek plamena</value>
+  </data>
+  <data name="_CultureFwSpecial" xml:space="preserve">
+    <value>FW-Special: 9x.xx.xx</value>
+  </data>
+  <data name="_CultureFwUpdate" xml:space="preserve">
+    <value>FW-Update</value>
+  </data>
+  <data name="_CultureHeightControlActive" xml:space="preserve">
+    <value>Aktivna regulacija višine</value>
+  </data>
+  <data name="_CultureHelp" xml:space="preserve">
+    <value>Pomoč</value>
+  </data>
+  <data name="_CultureIgnitionData" xml:space="preserve">
+    <value>Parametri vžiga</value>
+  </data>
+  <data name="_CultureInfoPressureOutputsLocked" xml:space="preserve">
+    <value>Izhodni plini blokirani</value>
+  </data>
+  <data name="_CultureInvalid" xml:space="preserve">
+    <value>nepravilno</value>
+  </data>
+  <data name="_CultureKerfWidth" xml:space="preserve">
+    <value>Dolžina dostopa</value>
+  </data>
+  <data name="_CultureLanguage" xml:space="preserve">
+    <value>Jeziki</value>
+  </data>
+  <data name="_CultureLanguageImage" xml:space="preserve">
+    <value>IhtImages/LanguageSlovenia.gif</value>
+  </data>
+  <data name="_CultureLeadInLength" xml:space="preserve">
+    <value>Dolžina dostopa</value>
+  </data>
+  <data name="_CultureLengthUnit" xml:space="preserve">
+    <value>Enota dolžine</value>
+  </data>
+  <data name="_CultureMaterial" xml:space="preserve">
+    <value>Materijal</value>
+  </data>
+  <data name="_CultureMsgBoxInstallDownloadTool" xml:space="preserve">
+    <value>Nameščanje Download Tool</value>
+  </data>
+  <data name="_CultureMsgBoxInstallDownloadToolQuestion" xml:space="preserve">
+    <value>Želite namestitev Download Tool?</value>
+  </data>
+  <data name="_CultureMsgBoxInstallFdtiUsbDriver" xml:space="preserve">
+    <value>Nameščanje gonilnika FDTI USB Converterer</value>
+  </data>
+  <data name="_CultureMsgBoxInstallFdtiUsbDriverQuestion" xml:space="preserve">
+    <value>Želite namestitev gonilnika FDTI USB Converter?</value>
+  </data>
+  <data name="_CultureMsgLogAppStarted" xml:space="preserve">
+    <value>Nalaganje aplikacije…</value>
+  </data>
+  <data name="_CultureMsgLogCommunicIsRtu" xml:space="preserve">
+    <value>Komunikacija preko RTU</value>
+  </data>
+  <data name="_CultureMsgLogCommunicIsTcp" xml:space="preserve">
+    <value>Komunikacija preko TCP</value>
+  </data>
+  <data name="_CultureMsgLogConnectingTorch" xml:space="preserve">
+    <value>Povezovanje gorilnika</value>
+  </data>
+  <data name="_CultureMsgLogFwSpecialActive" xml:space="preserve">
+    <value>FW-Special aktiven</value>
+  </data>
+  <data name="_CultureMsgLogFwUpdateRequired" xml:space="preserve">
+    <value>FW-Priporočena je posodobitev! Minimalna verzija</value>
+  </data>
+  <data name="_CultureMsgLogInvalidSelection" xml:space="preserve">
+    <value>Napačna izbira</value>
+  </data>
+  <data name="_CultureMsgLogRecognizingTorches" xml:space="preserve">
+    <value>Prepoznavanje povezanih gorilnikov…</value>
+  </data>
+  <data name="_CultureNaturalGas" xml:space="preserve">
+    <value>Zemeljski plin</value>
+  </data>
+  <data name="_CultureNo" xml:space="preserve">
+    <value>Ne.</value>
+  </data>
+  <data name="_CultureNotConnected" xml:space="preserve">
+    <value>ni povezave</value>
+  </data>
+  <data name="_CultureNozzle" xml:space="preserve">
+    <value>Šoba</value>
+  </data>
+  <data name="_CultureOrigin" xml:space="preserve">
+    <value>Original</value>
+  </data>
+  <data name="_CulturePartNumber" xml:space="preserve">
+    <value>Številka artikla</value>
+  </data>
+  <data name="_CulturePosition" xml:space="preserve">
+    <value>Pozicija</value>
+  </data>
+  <data name="_CulturePreFlowActive" xml:space="preserve">
+    <value>Predpihovanje aktivno</value>
+  </data>
+  <data name="_CulturePreHeatingTime" xml:space="preserve">
+    <value>Čas segrevanja</value>
+  </data>
+  <data name="_CulturePressureOutputsControl" xml:space="preserve">
+    <value>Izhodni tlaki</value>
+  </data>
+  <data name="_CulturePressureOutputsLocked" xml:space="preserve">
+    <value>Blokiraj izhodne tlake</value>
+  </data>
+  <data name="_CulturePressureOutputsTest" xml:space="preserve">
+    <value>Testiraj izhodne tlake</value>
+  </data>
+  <data name="_CulturePressureUnit" xml:space="preserve">
+    <value>Enota tlaki</value>
+  </data>
+  <data name="_CultureProcessActive" xml:space="preserve">
+    <value>Aktiven proces</value>
+  </data>
+  <data name="_CultureProcessInActive" xml:space="preserve">
+    <value>Proces ni aktiven</value>
+  </data>
+  <data name="_CulturePropane" xml:space="preserve">
+    <value>Propan</value>
+  </data>
+  <data name="_CultureReconnectionRequired" xml:space="preserve">
+    <value>Ponovno povezovanje</value>
+  </data>
+  <data name="_CultureRemark" xml:space="preserve">
+    <value>Opomba</value>
+  </data>
+  <data name="_CultureResetAllDevices" xml:space="preserve">
+    <value>Ponastavitev vseh komponent. Prosimo počakajte...</value>
+  </data>
+  <data name="_CultureRetractPositionEnable" xml:space="preserve">
+    <value>Vračalna razdalja vklopljena</value>
+  </data>
+  <data name="_CultureScanAvailablePorts" xml:space="preserve">
+    <value>Preišči aktivne porte</value>
+  </data>
+  <data name="_CultureSecurityFolderProgramData" xml:space="preserve">
+    <value>Change security for Folder C:\ProgramData\IHT Automation</value>
+  </data>
+  <data name="_CultureSensorCollisionOutput" xml:space="preserve">
+    <value>Izhod kolozije senzorja</value>
+  </data>
+  <data name="_CultureSerialNumber" xml:space="preserve">
+    <value>Serijska številka</value>
+  </data>
+  <data name="_CultureSetupEndDownloadTool" xml:space="preserve">
+    <value>Nastavitev Download Tool je končana</value>
+  </data>
+  <data name="_CultureSetupEndFdtiUsbDriver" xml:space="preserve">
+    <value>Nastavitev gonilnika Fdti Usb končana</value>
+  </data>
+  <data name="_CultureSetupEndUpdateDatabase" xml:space="preserve">
+    <value>Posodobitev podatkovne zbirke končana</value>
+  </data>
+  <data name="_CultureSetupFinished" xml:space="preserve">
+    <value>Nastavitev je končana</value>
+  </data>
+  <data name="_CultureSetupNotInstalledDownloadTool" xml:space="preserve">
+    <value>Download Tool ni nameščen</value>
+  </data>
+  <data name="_CultureSetupNotInstalledFdtiUsbDriver" xml:space="preserve">
+    <value>Fdti Usb gonilnik ni nameščen</value>
+  </data>
+  <data name="_CultureSetupStartDownloadTool" xml:space="preserve">
+    <value>Začetek od nastavitve  Download Tool</value>
+  </data>
+  <data name="_CultureSetupStartFdtiUsbDriver" xml:space="preserve">
+    <value>Začetek namestitve gonilnika Fdti Usb</value>
+  </data>
+  <data name="_CultureSetupStartUpdateDatabase" xml:space="preserve">
+    <value>Posodabljanje podatkovne zbirke. Počakajte..</value>
+  </data>
+  <data name="_CultureSlaveAddress" xml:space="preserve">
+    <value>Pomožna adresa</value>
+  </data>
+  <data name="_CultureSlaveConnection" xml:space="preserve">
+    <value>Povezava naprave</value>
+  </data>
+  <data name="_CultureSlaveId" xml:space="preserve">
+    <value>Pomožni-ID</value>
+  </data>
+  <data name="_CultureState" xml:space="preserve">
+    <value>Stanje</value>
+  </data>
+  <data name="_CultureTactileInitPosFinding" xml:space="preserve">
+    <value>Automatska kalibracija višine</value>
+  </data>
+  <data name="_CultureThickness" xml:space="preserve">
+    <value>Debelina</value>
+  </data>
+  <data name="_CultureTime" xml:space="preserve">
+    <value>Čas</value>
+  </data>
+  <data name="_CultureTorch" xml:space="preserve">
+    <value>Gorilnik</value>
+  </data>
+  <data name="_CultureTorchSelection" xml:space="preserve">
+    <value>Izberi gorilnik</value>
+  </data>
+  <data name="_CultureTorchType" xml:space="preserve">
+    <value>Tip gorilnika</value>
+  </data>
+  <data name="_CultureTorchTypeWrongIdentity" xml:space="preserve">
+    <value>Napačno izbran gorilnik</value>
+  </data>
+  <data name="_CultureUnit" xml:space="preserve">
+    <value>Enota</value>
+  </data>
+  <data name="_CultureUnknown" xml:space="preserve">
+    <value>neznan</value>
+  </data>
+  <data name="_CultureValue" xml:space="preserve">
+    <value>Vrednost</value>
+  </data>
+  <data name="_CultureVersion" xml:space="preserve">
+    <value>Verzija</value>
+  </data>
+  <data name="_CultureWrongTorchType" xml:space="preserve">
+    <value>Napačno izbran gorilnik</value>
+  </data>
+</root>

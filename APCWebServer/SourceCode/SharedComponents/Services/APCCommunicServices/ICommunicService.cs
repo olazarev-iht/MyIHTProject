@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SharedComponents.Services.APCCommunicServices
+{
+    public interface ICommunicService
+    {
+        public Task ConnectAsync();
+        public Task DisconnectAsync();
+    }
+}

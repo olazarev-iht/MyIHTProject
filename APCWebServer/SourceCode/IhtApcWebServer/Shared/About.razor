@@ -1,0 +1,71 @@
+﻿@using System.Reflection
+
+
+<MudPaper Elevation="2" Class="mx-2 px-3 py-2">
+  <MudStack>
+    <MudText Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">@Title</MudText>
+    <MudText Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">@Version</MudText>
+    <MudText Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">@Company</MudText>
+    <MudText Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">Bahnhofsstrasse 63</MudText>
+    <MudText Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">D-76532 Baden-Baden</MudText>
+    <MudText Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">Germany</MudText>
+    <MudText Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">E-mail: info&commat;iht-automation.com</MudText>
+    <MudLink Href="http://www.iht-automation.com" Target="_blank">www.iht-automation.com</MudLink>
+    <MudText Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">@Copyright</MudText>
+  </MudStack>
+</MudPaper>
+
+@code {
+
+  public static string Title
+  {
+    get
+    {
+      return "APC Autogen Process Control";
+      object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+
+      if (attributes.Length > 0)
+      {
+        AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
+
+        if (titleAttribute.Title != string.Empty) return titleAttribute.Title;
+      }
+
+      return "APC Autogen Process Control";// Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+    }
+  }
+
+  //private static string Version => $"Version: {Assembly.GetEntryAssembly().GetName().Version}";
+
+  public static string Version
+  {
+    get
+    {
+      return $"Version: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+    }
+  }
+
+  public static string Company
+  {
+    get
+    {
+      object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
+
+      if (attributes.Length == 0) return string.Empty;
+
+      return ((AssemblyCompanyAttribute)attributes[0]).Company;
+    }
+  }
+
+  private string Copyright
+  {
+    get
+    {
+      object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+
+      if (attributes.Length == 0) return string.Empty;
+
+      return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
+    }
+  }
+}

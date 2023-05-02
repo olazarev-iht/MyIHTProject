@@ -1,0 +1,3286 @@
+﻿@page "/{ComponentMode?}"
+
+@using IhtApcWebServer.Features.HeightControlFeature.Services.CNC
+@using MQTTnet.Protocol
+@using SharedComponents.Helpers
+@using SharedComponents.IhtDev
+@using SharedComponents.IhtModbus
+@using SharedComponents.MqttModel
+@using IhtApcWebServer.Services.APCCommunic
+@using IhtApcWebServer.Services.APCWorkerService;
+@using SharedComponents.Models.APCHardware
+@using SharedComponents.Models.CuttingData
+@using SharedComponents.Services.APCHardwareDBServices
+@using SharedComponents.Services.APCHardwareManagers
+@using SharedComponents.Services.APCHardwareMockDBServices
+@using SharedComponents.Services.CuttingDataDBServices
+@using SharedComponents.IhtData
+@using MudBlazor.Examples.Data.Models
+@using System.Globalization
+@using System.IO.Ports				  
+
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+@inject IhtDevices ihtDevices
+@inject MqttModelFactory mqttModelFactory 
+<!--
+@inject DataCommon dataCommon
+-->
+@inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
+@inject IParameterDataInfoManager parameterDataInfoManager
+@inject IAPCSimulationDataMockDBService apcSimulationDataMockDBService
+@inject ICuttingDataDBService cuttingDataDBService
+@inject APCCommunicManager apcCommunicManager
+@inject IhtModbusCommunic ihtModbusCommunic
+@inject IhtModbusCommunicData ihtModbusCommunicData
+@inject APCWorkerBackgroundService _apcWorkerBackgroundService
+@inject IErrorLogDBService _errorLogDBService
+@inherits IhtComponentBase
+@implements IDisposable
+
+<style>
+.device_tabcell {
+    width: 83px;
+    height:55px;
+    text-align: center;
+    border: 1px solid #fff;
+
+    /*border: 1px solid #fff !important;*/
+
+    border-left-color: white !important; 
+    border-left-style: solid !important; 
+    border-left-width: 2px !important; 
+
+    border-right-color: #fff !important;
+    border-right-style: solid !important;
+    border-right-width: 2px !important;
+}
+
+.device_lastcell {
+    width: 83px;
+    height:55px;
+    text-align: center;
+    font-weight:bold;
+    background: #d7e8f9;
+    border-left-width: 2px;
+    border-left-color: white;
+
+    border-left-color: #fff !important;
+    border-left-style: solid !important;
+    border-left-width: 2px !important;
+}
+
+.button_tabcell {
+    width: 83.3px;
+    height:50px;
+    text-align: center;
+}
+
+.tabcell {
+    width: 83px;
+    height: 50px;
+    text-align: center;
+    border-left-color: white !important;
+    border-left-style: solid !important;
+    border-left-width: 2px !important;
+    border-right-color: #fff !important;
+    /*border-right-style: solid !important;
+    border-right-width: 2px !important;*/
+    overflow-wrap: break-word;
+    max-width: 85px;
+    /*box-sizing: content-box;*/
+}
+
+.tabcell_menu {
+    font-weight:bold;
+    background: #d7e8f9;
+    border-bottom-width: 3px !important;
+    border-bottom-color: white !important;
+    border-top-width: 3px !important;
+    border-top-color: white !important;
+    border-left-color: #fff !important;
+    border-left-style: solid !important;
+    border-left-width: 2px !important;
+}
+.active {
+        box-shadow: 0px 0px 0px #0065c8;
+        /*background-color: #FF584F;*/
+        background-color: #3D6FB4;
+        color: white;
+}
+
+.flame_active{
+    box-shadow: 0px 0px 0px #0065c8;
+    background-color: #8985E0;
+}
+
+.tabcell_status {
+    background: #d7e8f9;
+    max-width: 250px;
+}
+
+.divcell {
+    width: 87px;
+    height: 63px;
+    text-align: center;
+}
+
+table#controlPanel td  {
+    /*border: 0px solid #e0e0e0;*/
+}
+
+.SelectedParamsType {
+    background-color: #3D6FB4;
+    color: #ffffff;
+}
+
+.UnselectedParamsType {
+      background-color: #d7e8f9;
+      color: #3D6FB4;
+}
+
+.FlameIsOff {
+    background-color:#3D6FB4;
+}
+
+.FlameIsOn {
+    background-color:#FF584F;
+}
+
+.SelectedDeviceNum {
+    background-color:#497abf;
+    color: #ffff;
+    /*border: 1px !important;*/
+}
+
+.ConnectedDeviceNum {
+    background-color:#e1f0fd;
+    color: #0061A1;
+    /*color: #999191;*/
+    /*border: 0px !important;*/
+}
+
+.ErrorConnectionDevice {
+    background-color:#d56565;
+    box-shadow: inset 150px 150px 0px 0px #e5d7d7bf;
+    color: #eaeaeb !important;
+    /*border: 0px !important;*/
+}
+
+.DisabledDeviceNum {
+    /*background-color:#a1a1a1;*/
+    background-color:lightgrey;
+    color: #ffff;
+    /*border: 0px !important;*/
+}
+
+.DisabledDeviceSelected {
+    border: 2px solid #0057ab63 !important;
+    background-color: #d3d3d3;
+    color: #ffff;
+}
+
+.NotInUseDeviceNum {
+    background-color:#ffff;
+    color: #ffff;
+    border: 0px !important;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.scaled {
+  zoom: 0.87;
+  -moz-transform: scale(0.87);
+}
+
+.flex-item-left {
+  float:left;
+  flex: 50%;
+}
+
+.flex-item-right {
+  float:right;
+  flex: 50%;
+}
+
+.internal_div_table{
+    width:250px; 
+    /*height:197px;*/
+}
+
+.flex-container table{
+    border-spacing: 0px;
+}
+
+button .mud-nav-link-text {
+    font-size: medium;
+    font-weight: 550 !important;
+}
+
+.tablemobile
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mud-dialog-container.mud-dialog-center
+{
+    top: -65px;
+}
+
+.mud-dialog .mud-dialog-content {
+    padding: 3px 4px !important;
+}
+
+.mud-dialog-content .mud-list.mud-list-padding {
+    padding-top: 0px !important;
+}
+
+/*.mud-popover.mud-popover-relative-width {
+    width: unset;
+}*/
+
+div222[id^="popovercontent-"]{
+
+    left: 220px !important;
+    /* transform: translate(-50%, -50%); */
+    transition-duration: 251ms !important;
+    transition-delay: 0ms !important;
+    max-height: 300px !important;
+    max-width: 223.132px !important;
+    /*top: 80.3879px !important;*/
+    z-index: 1403 !important;
+    position: relative !important;
+}
+
+.password-dialog {
+    background-color:aliceblue; 
+    font-weight:bold;
+    cursor: default;
+    text-align: center;
+    width:33%;
+}
+
+th.password-dialog:hover {
+  background-color: lightgrey;
+}
+
+input#password-input {
+  font-size: 25px;
+  border: none;
+  background: transparent;
+  width: 100px;
+  text-indent: 9px;
+  letter-spacing: 5px;
+}
+
+input#password-input:focus {
+  outline: none;
+}
+
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+/*.mud-paper.mud-elevation-1 {
+        color: var(--mud-palette-text-primary);
+        background-color: transparent; 
+        border-radius: var(--mud-default-borderradius);
+        transition: box-shadow 300ms cubic-bezier(.4,0,.2,1) 0ms;
+}*/
+
+.ErrorDeviceBlink {
+    animation: blink-animation 1s steps(1, start) infinite;
+    -webkit-animation: blink-animation 1s steps(2, start) infinite;
+}
+
+.ErrorDevice {
+    background-color:#FF584F;
+    /*box-shadow: inset 150px 150px 0px 0px #e5d7d7bf;*/
+    color: #000000 !important;
+    /*border: 1px solid !important;*/
+    text-align: center;
+}
+
+    .ErrorDevice.Selected {
+        border: 4px solid #497abf !important;
+    }
+
+    .ErrorDevice>div {
+        display: block !important;
+        font-size: 10.5px;
+        color: #000000;
+        position: absolute;
+    }
+
+    .SumDevices>svg {
+        height:14px;
+        width:14px;
+        vertical-align:middle;
+        display:inline-flex !important
+    }
+
+.SumButton {
+    height:35px;
+    width:35px;
+    vertical-align:middle;
+}
+
+.SumButtonContainer{
+    color:#0061A1;
+}
+
+.errorbackground {
+    margin: 3rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    transform: rotate(300deg);
+    -webkit-transform: rotate(300deg);
+    color: #c6afaf;
+}
+
+.BigDialog {
+    min-width: 500px;
+    max-height: 500px;
+    overflow-y: hidden;
+    zoom: 0.75;
+    top: 90px !important
+}
+
+.display_inline_flex{
+    display: inline-flex;
+}
+
+.right_side_text {
+    display: inline-flex;
+    float: right;
+    margin-right: 15px;
+}
+
+.mud-icon-size-large.warning_class {
+    font-size: 3.0rem;
+    margin: 5px 0 0 15px;
+}
+
+.mud-icon-size-large.warning_class_manual {
+    font-size: 3.3rem;
+    padding: 5px 0 0 0px;
+}
+</style>
+
+<style>
+    .mud-table-cell-custom-group {
+        font-weight: 500;
+    }
+
+    .mud-table-cell-custom-group-footer {
+        /*padding-bottom: 50px;*/
+        text-align: right;
+    }
+
+    .mud-input-control.mud-select.myselect>.mud-input-control-input-container>div.mud-input.mud-input-text {
+        margin-top: 0px;
+        margin-left: 15px;
+        margin-right: 10px;
+    }
+
+    .mud-nested-list>.mud-list-item.nested_item>.mud-list-item-icon{
+        min-width: 40px;
+    }
+
+    .mud-dialog .mud-dialog-title  {
+        padding: 16px 24px 0px;
+    }
+
+    .mud-dialog.mud-dialog-width-sm {
+        position: relative !important; 
+        top: 75px !important;
+    }
+
+    .mud-table-cell  {
+        font-size: 0.98rem;
+        padding: 9px;
+        /*border-bottom: 0px solid*/
+        border: 0px
+    }
+
+    .my-install-toarch .mud-table-cell {
+        padding: 3px;
+    }
+
+    .my-install-toarch .mud-dialog-title {
+        display: none;
+    }
+
+    .my-install-toarch .mud-grid-spacing-xs-3>.mud-grid-item {
+        padding: 4px;
+    }
+
+    .my-install-toarch .mud-dialog-actions {
+        padding: 0px;
+    }
+
+    .mud-dialog .mud-dialog-actions {
+        padding: 0px;
+    }
+
+    .my-install-toarch .mud-icon-button {
+        padding: 10px;
+    }
+
+    .my-install-toarch .mud-grid-spacing-xs-3 {
+        width: calc(100% + 0px); 
+        margin: 0px;
+    }
+
+    .my-install-toarch .mud-input>input.mud-input-root, div.mud-input-slot.mud-input-root {
+        padding: 6px 0 3px; 
+    }
+
+    .mud-slider.mud-slider-small.mud-slider {
+        margin-left: 0px !important;
+        padding-right: 0px !important;
+    }
+
+    .img_plus1 {
+        mix-blend-mode: normal; width: 25px; height: 20px; vertical-align: bottom; margin-left: 10px;
+    }
+
+    .img_minus1 {
+        mix-blend-mode: normal; width: 30px; height: 16px; vertical-align: bottom;
+    }
+
+    .td_plus1 {
+        color:#2196f3ff; padding-left: 10px; padding-right: 0px; padding-bottom: 0px; vertical-align: bottom;
+    }
+
+    .td_minus1 {
+        color:#2196f3ff; padding-left: 0px; padding-right: 10px; padding-bottom: 0px; vertical-align: bottom;
+    }
+
+    .mud-popover.mud-popover-open.mud-popover-top-center.mud-popover-anchor-top-center.mud-popover-overflow-flip-onopen.mud-popover-relative-width.mud-paper.mud-elevation-8.overflow-y-auto
+    {
+        position: fixed;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%);
+    }
+
+    .mud-progress-circular.mud-progress-indeterminate {
+        animation: none;
+    }
+
+    .mud-table-sticky-header .mud-table-container {
+        overflow-x: clip !important;
+    }
+
+    .mud-table-container {
+        width: 100%;
+        overflow-y: clip !important;
+    }
+</style>
+
+@if (dynDataModificationCNCDataProvider != null)
+{
+  ++TestCounter;
+
+  manualPreheatHeight = dynDataModificationCNCDataProvider.ManualPreheatHeight;
+
+  processHeight = dynDataModificationCNCDataProvider.ProcessHeight;
+
+  var paramHeatO2_  = dynDataModificationCNCDataProvider._paramHeatO2;
+  var paramFuelGas_ = dynDataModificationCNCDataProvider._paramFuelGas;
+  var paramCutO2_   = dynDataModificationCNCDataProvider._paramCutO2;
+
+  paramHeatO2  = paramHeatO2_  != null ? paramHeatO2_  : paramHeatO2;
+  paramFuelGas = paramFuelGas_ != null ? paramFuelGas_ : paramFuelGas;
+  paramCutO2   = paramCutO2_   != null ? paramCutO2_   : paramCutO2;
+
+  if (IsProcessActivated())
+  {
+    if (ComponentMode != PROCESS_MODE)
+    {
+      ComponentMode = PROCESS_MODE;
+    }
+
+    bool isCOVisible =   paramCutO2 != null
+                      && CurrentDevice != null
+                      && CurrentDevice.dataProcessInfo != null
+                      && (CurrentDevice.dataProcessInfo.IsLedPiercing || CurrentDevice.dataProcessInfo.IsLedCutting);
+
+    _cutO2Visible = isCOVisible ? VISIBLE_CLASS : NONE_DISPLAY_CLASS;
+
+    _ = UpdateCurrentParamsTypeAsync();
+  }
+  else
+  {
+    if (dynDataModificationCNCDataProvider.CurrentParamsType == IGNITION)
+    {
+      paramFlameAdjust = dynDataModificationCNCDataProvider._paramFlameAdjust;
+      _flameAdjustVisible = VISIBLE_CLASS;
+      _cutO2Visible = NONE_DISPLAY_CLASS;
+    }
+    else if (   dynDataModificationCNCDataProvider.CurrentParamsType != PRE_HEAT
+             && dynDataModificationCNCDataProvider.CurrentParamsType != HEATTING
+            )
+    {
+      //paramCutO2 = dynDataModificationCNCDataProvider._paramCutO2;
+      _flameAdjustVisible = NONE_DISPLAY_CLASS;
+      _cutO2Visible = paramCutO2 != null ? VISIBLE_CLASS : NONE_DISPLAY_CLASS;
+    }
+    else
+    {
+      _flameAdjustVisible = NONE_DISPLAY_CLASS;
+      _cutO2Visible = paramCutO2 != null ? INVISIBLE_CLASS : NONE_DISPLAY_CLASS;
+    }
+  }
+
+<!-- Dialog-EditParam -->
+<MudDialog @bind-IsVisible="_editParamDialogVisible" Style="width: 500px;" Class="scaled">
+    <TitleContent>
+        <MudText Typo="Typo.h6"></MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@dynParamDataModel" @ref="_editParamForm">
+
+            @*<MudTextField @bind-Value="@dynParamDataModel.Sign" Label="Sign" 
+                For=@(() => dynParamDataModel.Sign) Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>*@
+
+            <MudSlider @onchange="@( () => ParameterValueChanged() )" @bind-Value="@this[@dynParamDataModel]" 
+                Min="@dynParamDataModel.DynParams.ConstParams.Min" 
+                Max="@dynParamDataModel.DynParams.ConstParams.Max" 
+                Step="@(GetParameterProperty(@dynParamDataModel, "Step"))" 
+                Color="Color.Info">@(dynParamDataModel.ParamSettings?.DisplayName ?? ""): @DisplayParamValueAndUnit(@dynParamDataModel)
+            </MudSlider>            
+        </MudForm>      
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" 
+            OnClick="CloseEditParamDialog" onmousedown="return false">
+                @LocalStrByKey("_CultureButClose")
+        </MudButton>
+        @*<MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" 
+            OnClick="CreateParamsAsync">
+            Save
+        </MudButton>*@
+    </DialogActions>
+</MudDialog>
+
+<!-- Dialog-EditGasParamSliderDialog -->
+<MudDialog @bind-IsVisible="_editGasParamSliderDialogVisible" Style="width: 500px;" Class="scaled">
+    <TitleContent>
+        <MudText Typo="Typo.h6"></MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@dynParamDataModel">
+
+            <MudTd Class="td_minus1">
+                @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
+                @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
+                @*<img draggable="false" src="Images/minus1.png" class="img_minus1" />*@
+                <MudIconButton Icon="@Icons.Material.Outlined.Remove" Color="Color.Inherit" Size="Size.Large" 
+                    OnClick="@(() => ReduceParamValue(@dynParamDataModel))" />
+            </MudTd>
+                <td style="width:100%; padding-bottom:12px;">
+                    <MudSlider Style="margin-bottom:0px;" @ontouchend="@(()=>UpdateDynParam(@dynParamDataModel))" @onmouseup="@(()=>UpdateDynParam(@dynParamDataModel))"
+                    @bind-Value="@this[@dynParamDataModel]" 
+                    Min="dynParamDataModel.DynParams.MinForSlider"  
+                    Max="dynParamDataModel.DynParams.MaxForSlider"
+                    Step="@(GetParameterProperty(@dynParamDataModel, "Step"))"
+					Color="Color.Info">
+					<table style="width:100%;">
+						<tr>
+							<td style="text-align:left;width:60%">
+								@*min=@dynParamDataModel.DynParams.MinForSlider
+								max=@dynParamDataModel.DynParams.MaxForSlider
+								val=@this[@dynParamDataModel]*@
+								@LocalStrByEnStr(@dynParamDataModel.DynParams.SlidersParamName):
+							</td>
+							<td style="text-align:right; width:30%">@(DisplayParamValue(@dynParamDataModel))</td>
+							<td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@dynParamDataModel))</td>
+						</tr>
+					</table>
+                </MudSlider>                         
+            </td> 
+            <MudTd Class="td_plus1" >
+                @*<img draggable="false" src="Images/plus1.png" class="img_plus1" />*@
+                <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Inherit" Size="Size.Large" 
+                    OnClick="@(() => IncreaseParamValue(@dynParamDataModel))" />
+            </MudTd>
+
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseEditGasParamSliderDialog" onmousedown="return false">
+                @LocalStrByKey("_CultureButClose")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+<!-- Dialog-Password -->
+<MudDialog @bind-IsVisible="_setupPasswordDialogVisible" Style="width:280px" Class="scaled">
+    <TitleContent>
+        <MudTh Style="text-align:left;border-bottom:0px">
+            <MudButton Color="MudBlazor.Color.Primary" OnClick="@(() => ResetPassword())" Style="top:0px;">Reset to Level 0</MudButton>
+        </MudTh>
+    </TitleContent>
+    <DialogContent>
+        <table class="center-mud-text" style="table-layout: fixed; width: 100%;">
+            <tr>
+                <td style="border: 0px solid white;" colspan="2">
+                    <input type="password" id="password-input" minlength="4" maxlength="5" size="5" 
+                    @bind-value="_setupPasswordValue" style="border: 0px solid; width:50%" readonly="readonly"/>
+                </td>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("x"))">&#8592;</MudTh>
+            </tr>
+            <tr>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("7"))">7</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("8"))">8</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("9"))">9</MudTh>
+            </tr>
+            <tr>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("4"))">4</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("5"))">5</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("6"))">6</MudTh>
+            </tr>
+            <tr>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("1"))">1</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("2"))">2</MudTh>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("3"))">3</MudTh>
+            </tr>
+            <tr>
+                <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("0"))">0</MudTh>
+                <MudTh Class="password-dialog" Style="padding: 0px;">&nbsp;</MudTh>
+                <MudTh Class="password-dialog" Style="padding: 0px;">
+                    <MudButton Color="MudBlazor.Color.Secondary" OnClick="@(()=>ClosePasswordSetupDialog())">@LocalStrByKey("_CultureButClose")</MudButton>
+                </MudTh>
+            </tr>
+        </table>
+    </DialogContent>
+</MudDialog>
+
+<!-- Dialog-SetupParams -->
+<MudDialog @bind-IsVisible="_setupParamsDialogVisible" Class="BigDialog">
+    <DialogContent>
+    <MudButton OnClick="CloseSetupParamsDialog">&#8592; Go Back</MudButton>
+    <MudText Class="right_side_text" Typo="Typo.h6">@LocalStrByKey("_CultureButStation"): @(CurrentDevice?.DeviceNumber)</MudText>
+    <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Style="min-height: 440px; max-height: 400px; overflow-y: scroll;" FixedHeader="true"
+          Items="@Elements"
+          GroupBy="@_groupDefinition"
+          GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
+          GroupFooterClass="mb-4"
+          Dense="false"
+          ReadOnly="false" OnRowClick="RowClickEvent" T="ParameterDataModel">
+    <ColGroup>
+        <col style="width: 60px;" />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+    </ColGroup>
+    <HeaderContent>
+        @*<MudTh Style="font-weight:bold;">Nr</MudTh>*@
+        @*<MudTh>Sign</MudTh>*@
+        <MudTh Style="font-weight:bold;">Parameter</MudTh>
+        <MudTh Style="font-weight:bold;width:35%">Value</MudTh>
+        @*<MudTh>Molar mass</MudTh>*@
+    </HeaderContent>
+    <GroupHeaderTemplate>
+        <MudTh Class="mud-table-cell-custom-group" colspan="5">@LocalStrByEnStr($"{context.Key}")</MudTh>
+    </GroupHeaderTemplate>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@(!string.IsNullOrWhiteSpace(context.ParamSettings?.DisplayName) 
+            ? @LocalStrByEnStr(context?.ParamSettings?.DisplayName ?? "") : @LocalStrByEnStr(context.ParamSettings?.ViewParameter.Name ?? "") ?? "")</MudTd>
+        <MudTd DataLabel="Value" >
+            @if(@context?.ParamSettings?.ViewParameter?.Mode == "Switch")
+            {
+                <MudSwitch Disabled="@( context?.ParamSettings?.ReadOnly ?? false )" 
+                    T="bool" @bind-Checked="@this[@context?.ParamSettings?.SettingParam ?? 0]" Color="Color.Primary">
+                    @( @context.DynParams.Value == 1 ? 
+                    @LocalStrByEnStr(@context?.ParamSettings?.ViewParameter?.Values[1] ?? "") : 
+                    @LocalStrByEnStr(@context?.ParamSettings?.ViewParameter?.Values[0] ?? "") )
+                </MudSwitch>
+            }
+            else if(@context?.ParamSettings?.ViewParameter?.Mode == "Select" || 
+                    @context?.ParamSettings?.ViewParameter?.Mode == "NoYes"){
+
+                        @LocalStrByEnStr(@context?.ParamSettings?.ViewParameter?.Values[@context?.DynParams?.Value ?? 0] ?? "");
+
+            }
+            else if(@context?.ParamSettings?.ViewParameter?.Mode == "Button"){
+                <MudButton Disabled="@( context?.ParamSettings?.ReadOnly ?? false )" 
+                    OnClick="@( () => ClickedParamButton(@context?.ParamSettings?.SettingParam ?? 0))" Variant="Variant.Filled" Color="Color.Primary">
+                    <MudText>@LocalStrByEnStr(@context?.ParamSettings?.ViewParameter?.Values[0] ?? "")</MudText>
+                </MudButton>
+                        //@context?.ParamSettings?.ViewParameter?.Values[@context?.DynParams?.Value ?? 0]
+            }
+            @*else if(@context.DynParams?.ParameterDataInfo?.ViewParameter?.Mode == "Select")
+            { int i = 0; 
+            <MudSelect T="int" @bind-Value="@context.DynParams.Value" Class="myselect" Style="margin-top: 0px;">
+                @foreach (var paramText in @context.DynParams?.ParameterDataInfo?.ViewParameter?.Values)
+                {
+                    <MudSelectItem T="int" Value="@i">@paramText</MudSelectItem>
+
+                    i = i + 1;
+                }
+            </MudSelect> 
+            }*@
+            @*else if(@context.Number == 18){
+                @context.Sign;
+            }*@
+            else {
+                @*<MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                <MudOverlay Visible="@( context?.ParamSettings?.ReadOnly ?? false )" LightBackground="true" Absolute="true" />*@
+                <table>
+                    <tr>
+                        <td>
+                            <font style="@( context?.ParamSettings?.ReadOnly ?? false ? "opacity:0.5" : "opacity:1" )">@(DisplayParamValueAndUnit(@context))</font>
+                        </td>
+                        <td>
+                            @if(@context?.ParamSettings?.ViewParameter?.Mode == "ProgressCircular"){
+                                <MudProgressCircular Value="@GetProgressCircularValue(@context?.ParamSettings?.SettingParam ?? 0)" 
+                                Style="height: 40px; width: 40px; position: relative; left: 20px;" Color="Color.Primary" Class="@progressCircularDisplay" />
+                            }
+                        </td>
+                    </tr>
+                </table>
+                @*</MudPaper>*@
+            }
+            </MudTd>
+       @* <MudTd DataLabel="Position">
+            <MudTextField @bind-Value="@context.Position" ReadOnly="true" Variant="Variant.Text" />
+        </MudTd>*@
+        @*<MudTd Style="text-align: right" DataLabel="Molar mass">@context.Molar"</MudTd>*@
+    </RowTemplate>
+    @*<GroupFooterTemplate>
+        <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer" colspan="5">Total Mass: @context.Items.Sum((e) => e.Molar)</MudTh>
+    </GroupFooterTemplate>*@
+</MudTable>
+</DialogContent>
+</MudDialog>
+
+
+<!-- Dialog-OpenParamsList -->
+<MudDialog @bind-IsVisible="_isOpenParamsListDialog" Class="SelectDialog Scaled">
+    <TitleContent>
+        <MudText Typo="Typo.h6">@LocalStrByEnStr(@dynParamDataModel.ParamSettings.DisplayName)</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@dynParamDataModel" @ref="_editParamListFormDialog">
+        <MudList Clickable="true"                  
+            SelectedItemChanged="SelectedListItemParamChanged">
+            @*<MudListSubheader>
+            <MudChip Color="Color.Secondary">
+                (@(selectedItemParamValue?.ToString() ?? "0")) -- Position: @dynParamDataModel.Position
+            </MudChip>
+            </MudListSubheader>*@
+            @{ int i = 0; }
+            @foreach (var paramText in @dynParamDataModel?.ParamSettings?.ViewParameter?.Values ?? new string[0])
+            {
+                <MudListItem T="int" Value="@i">@LocalStrByEnStr(@paramText)</MudListItem>
+                i = i + 1;
+            }
+        </MudList>    
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseParamsListDialog">@LocalStrByKey("_CultureButClose")</MudButton>
+        @*<MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
+    </DialogActions>
+</MudDialog>
+
+<!-- Dialog-About -->
+<MudDialog @bind-IsVisible="@_aboutDialogVisible" Class="scaled">
+    <TitleContent>
+      <MudText Class="mt-1 mb-4 pa-0" Typo="Typo.body1" Align="Align.Center">About</MudText>
+    </TitleContent>
+    <DialogContent>
+        <About></About>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="@(() => _aboutDialogVisible = false)">@LocalStrByKey("_CultureButClose")</MudButton>
+    </DialogActions>
+</MudDialog>
+
+<!-- Dialog-CultureSelector -->
+<MudDialog @bind-IsVisible="@_cultureSelectorVisible" Class="scaled">
+    <TitleContent>
+      <MudText Class="mt-1 mb-4 pa-0" Typo="Typo.body1" Align="Align.Center">@LocalStrByKey("_CultureButLocalization")</MudText>
+    </TitleContent>
+    <DialogContent>
+        <CultureSelector></CultureSelector>
+
+        <UnitSelector></UnitSelector>
+
+        <MudPaper Class="mx-2 mt-4 mb-1 pa-0" Elevation="0">
+          <MudButton OnClick="@(() => _aboutDialogVisible = true)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Info" FullWidth="true" Color="Color.Info">About</MudButton>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseLocalizationDialog">@LocalStrByKey("_CultureButClose")</MudButton>
+    </DialogActions>
+</MudDialog>
+
+<!-- Dialog-Menu -->
+<MudDialog @bind-IsVisible="_menuExpanded" Class="scaled">
+    <TitleContent>
+        <table>
+            <tr><td><MudText Typo="Typo.h6">@LocalStrByKey("Level") @((int)_userPasswordLevel)</MudText></td></tr>
+            <!--
+            <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">@LocalStrByKey("_CultureCuttingData")</MudButton></td></tr>
+          -->
+            <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="@SwitchToCuttingDataPage">@LocalStrByKey("_CultureCuttingData")</MudButton></td></tr>
+            <tr><td><MudButton Disabled="IsOtherModeDisabled()" Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@LocalStrByEnStr($"{@OtherComponentMode} Mode")</MudButton></td></tr>
+        </table>
+    </TitleContent>
+    <DialogContent>  
+        <MudTd>@LocalStrByKey("_CultureButStation") @CurrentDevice.DeviceNumber:
+        <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? @LocalStrByKey("_CultureParamEnabled") : @LocalStrByKey("_CultureParamDisabled"))</MudSwitch></MudTd>
+        <MudList Clickable="true" Style="height:240px;" >
+            <MudListItem Icon="@Icons.Filled.Settings" OnClick="OpenSetupParamsDialog">@LocalStrByKey("_CultureButStation")</MudListItem>
+            <MudListItem Icon="@Icons.Filled.Settings" Text="@LocalStrByKey("_CultureButSystem")" InitiallyExpanded="true">
+                <NestedList>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenLocalizationDialog" Class="nested_item">@LocalStrByKey("_CultureButLocalization") &nbsp;
+                        <img src="@GetLocalCultureIcon" style="mix-blend-mode: normal; width: 35px; height: 20px; vertical-align: middle;" />
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenPasswordSetupDialog" Class="nested_item">@LocalStrByKey("_CultureButPassword")</MudListItem>
+                            <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenTorchInstalledDialog" Class=@($"nested_item {@selectedStationsDisplay}")>@LocalStrByKey("_CultureButConfiguration")</MudListItem>
+                </NestedList>
+            </MudListItem>
+        </MudList>          
+    </DialogContent>
+    <DialogActions>
+        @*<MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
+    </DialogActions>
+</MudDialog>
+
+<!-- Dialog-ErrorLog -->
+<MudDialog @bind-IsVisible="@_errorLogDialogVisible" Class="BigDialog">
+    <TitleContent>
+    </TitleContent>
+    <DialogContent>
+    <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Style="min-height: 440px; max-height: 400px; overflow-y: scroll;" FixedHeader="true"
+          Items="@ErrorLogs"
+          GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
+          GroupFooterClass="mb-4" Dense="false" ReadOnly="false" OnRowClick="@(() => {})" T="ErrorLogModel">
+    <ColGroup>
+        <col style="width: 60px;" />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+    </ColGroup>
+    <HeaderContent>
+        @*<MudTh Style="font-weight:bold;">Nr</MudTh>*@
+        <MudTh Style="font-weight:bold;">@LocalStrByKey("_CultureErrorCode")</MudTh>
+        <MudTh Style="font-weight:bold;">@LocalStrByEnStr("_CultureDescription")</MudTh>
+        <MudTh Style="font-weight:bold;width:35%">@LocalStrByKey("_CultureTime")</MudTh>
+        @*<MudTh>Molar mass</MudTh>*@
+    </HeaderContent>
+    <GroupHeaderTemplate>
+        <MudTh Class="mud-table-cell-custom-group" colspan="5">@LocalStrByEnStr($"{context.Key}")</MudTh>
+    </GroupHeaderTemplate>
+    <RowTemplate>
+        <MudTd DataLabel="ErrorCode">@(@LocalStrByEnStr(context.ErrorCode ?? ""))<br />
+            @(context.SlaveId != null ? String.Format("St.{0,2:00}", context.SlaveId - (int)IhtModbusCommunic.SlaveId.Id_Default) : "")
+        </MudTd>
+        <MudTd DataLabel="Description">@(@LocalStrByEnStr(context.Description ?? "", context.Args ?? new string[] {}))</MudTd>
+        <MudTd DataLabel="Time">@(((DateTime)(context.TimeStamp ?? DateTime.MinValue)).ToString("yyyy-MM-dd HH:mm:ss") ?? "")</MudTd>
+    </RowTemplate>
+    </MudTable>
+    </DialogContent>
+    <DialogActions>
+                <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseErrorLogDialog">@LocalStrByKey("_CultureButClose")</MudButton>
+        @*<MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
+    </DialogActions>
+</MudDialog>
+
+<!-- Dialog-TorchInstalled -->
+<MudDialog @bind-IsVisible="@TorchInstalledDialogVisible" Class="my-install-toarch" Style="width:440px;">
+    @*<TitleContent>
+        <MudText Typo="Typo.h6" Style="text-align: center;">Torch Installed</MudText>
+    </TitleContent>*@
+    <DialogContent>
+        <MudForm>
+            <table width="100%">
+                <tr>
+                    <MudTh><b>@LocalStrByEnStr("Station selection")</b></MudTh>
+                        <MudTh><b>&nbsp;&nbsp;@LocalStrByEnStr("COM Port")</b></MudTh>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div style="position:absolute; top: 150px; left: 250px;">
+                            <MudProgressCircular Style="height:70px;width:70px;" Color="Color.Primary" Indeterminate="true" Class="@drawerDisplay" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" style="vertical-align:top;">
+                        <MudOverlay Visible="_torchInstalledDialogIsBlocked" LightBackground="true" Absolute="true" />
+                        <MudGrid>
+                        @foreach (IhtDevice ihtDevice in ihtDevices.GetDevices().OrderBy(v => v.DeviceNumber))
+                        {
+                            <MudItem xs="6">
+                                @*<input type="checkbox" @bind="@device.IsVisible" /> @:@device.DeviceNumber.ToString();*@
+                                <MudCheckBox @bind-Checked="@ihtDevice.IsVisible" Dense="false" Color="Color.Primary" Disabled="@IsDeviceDisabled(ihtDevice.IsEnabledChbx)">
+                                    <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">@LocalStrByKey("_CultureButStation") @ihtDevice.DeviceNumber</MudText>
+                                </MudCheckBox>
+                            </MudItem>
+                        }  
+                        </MudGrid>
+                        <MudTh><b>@LocalStrByEnStr("_CultureButFuelGas")</b></MudTh>
+                        <MudSelect T="IhtDevices.TorchType" @bind-Value="@ihtDevices.TorchTypeSetup" Class="myselect">             
+                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.Propane)">@LocalStrByKey("_CulturePropane")</MudSelectItem>
+                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.Acetylane)">@LocalStrByKey("_CultureAcetylane")</MudSelectItem>
+                            <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.NaturalGas)">@LocalStrByKey("_CultureNaturalGas")</MudSelectItem>
+                        </MudSelect>
+                    </td>
+                    <td width="50%" valign="top" style="border-width: 0 0 0 1px;border-color: #e0e0e0">                     
+                        <MudSelect T="string" @bind-Value="@_nameComPort" Class="myselect">             
+                          @foreach (string s in SerialPort.GetPortNames())
+                          {
+                            <MudSelectItem T="string" Value="@s">@s</MudSelectItem>
+                          }  
+                        </MudSelect>
+
+                        <br/>
+                        <MudTh><b>Device Connection</b></MudTh>
+                        <MudButton Variant="Variant.Filled" OnClick="@(async () => { await Connection(); })" Disabled="@IsDeviceConnectionDisabled()" 
+                            Style="margin-left:15px; margin-top:5px; margin-bottom:10px">Connection</MudButton>
+                        <MudCheckBox @bind-Checked="@_performResetDevices" Dense="false" Color="Color.Primary">
+                            <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Perform a reset for all devices</MudText>
+                        </MudCheckBox>																										
+                        <MudCheckBox @bind-Checked="@_isSimulation" Dense="false" Color="Color.Primary">
+                            <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Simulation (Demo-Mode)</MudText>
+                        </MudCheckBox>								  
+
+                    </td>
+                </tr>
+            </table>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" Disabled="@(!IsConnected)" Style="@(ihtModbusCommunic.IsSimulation ? "display:none" : "display:block")"
+            OnClick="@(async () => { await DisconnectAsync(); })" onmousedown="return false">Disconnect</MudButton>
+        <MudButton Color="MudBlazor.Color.Secondary" 
+            OnClick="CloseTorchInstalledDialog" onmousedown="return false">@LocalStrByKey("_CultureButClose")</MudButton>
+    </DialogActions>
+</MudDialog>
+
+<!-- Dialog-Initial -->
+<MudDialog IsVisible="_initialDialogIsBlocked" Class=@($"{@_connectVisible} scaled") Style="height:400px;width:500px;background-color:transparent">
+    <DialogContent>
+        <MudText Typo="Typo.h6" Class="centered" Style="top:120px">Connecting to the device...</MudText>
+        <MudProgressCircular Style="height:100px;width:100px;color:#585656 !important" Color="Color.Primary" Indeterminate="true" Class=@($"{_connectVisible} centered")/>
+    </DialogContent>
+</MudDialog>
+
+<!-- Main-View -->
+<div class="flex-container scaled" >  
+    <table id="controlPanel" class="tablemobile centered" width="500px">
+        <tr>
+            <MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
+        </tr>
+        <!-- Device 1..6, Menu-Button -->
+        <tr>
+            <!-- Device 1..6, Menu-Button -->
+            <td style="border-bottom-width: 4px !important; border-bottom-color: white !important;">
+                <!-- Device 1..3 -->
+                <div class="flex-item-left">
+                    <table class="internal_div_table">
+                        <tr>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(1)" @onclick="@(()=>SetDeviceNum(1))">
+                                1<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                @*1<p style="display: inline-flex;font-size: 13px;font-family: inherit;top: -2px;vertical-align: middle;position: relative;">&sum;</p>*@                               
+                                <div style="display:none">@GetErrorCodeMessage(1)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(2)" @onclick="@(()=>SetDeviceNum(2))">
+                                2<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(2)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(3)" @onclick="@(()=>SetDeviceNum(3))">
+                                3<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(3)</div>
+                            </MudTd>
+                        </tr>
+                    </table>
+                 </div>
+                <!-- Device 4..6, Menu-Button -->
+                 <div class="flex-item-right">
+                    <table class="internal_div_table">
+                        <tr>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(4)" @onclick="@(()=>SetDeviceNum(4))">
+                                4<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(4)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)" @onclick="@(()=>SetDeviceNum(5))">
+                                5<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(5)</div>
+                            </MudTd>            
+                            <!-- Menu-Button -->
+                            <MudTd Style="position:relative; padding:0px; max-width: 83.3px;" Class="device_lastcell">
+                              <MudOverlay Visible="_isProcessBtnActive" LightBackground="true" Absolute="true" />
+                              <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())" />           
+                            </MudTd>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <!-- Device 7..10, Sum(Common)-Button -->
+        <tr>
+            <td style="border-bottom-width: 4px !important; border-bottom-color: white !important;">
+                <!-- Device 6..8 -->
+                <div class="flex-item-left">
+                    <table class="internal_div_table">
+                        <tr>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(6)" @onclick="@(()=>SetDeviceNum(6))">
+                                6<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(6)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(7)" @onclick="@(()=>SetDeviceNum(7))">
+                                7<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(7)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(8)" @onclick="@(()=>SetDeviceNum(8))">
+                                8<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(8)</div></MudTd>
+                        </tr>
+                    </table>
+                </div> 
+                <!-- Device 8..9, Device10 or StartProcess-Button for Exibition-Mode, Sum(Common)-Button -->
+                <div class="flex-item-right">
+                    <table class="internal_div_table">
+                        <tr>
+                        <!-- StartProcess-Button for Exibition-Mode -->
+                        @if(ComponentMode != MANUAL_MODE && EXHIBITION_MODE){
+                            <td colspan="2" style="width: 66.35%;">
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="IsStartProcessDisabled()" LightBackground="true" Absolute="true" />
+                                <div class="button_container" style="border: 0px">
+                                    <div id="ProcessBtn" class="@(_isProcessBtnActive ? "process_btn active" : "process_btn")"
+                                        @onclick="@(async (_) => await StartProcessAsync())">
+                                        @(_isProcessBtnActive ? "Stop Process" : "Start Process")
+                                    </div>
+                                </div>
+                                </MudPaper>
+                            </td>
+                
+                        }
+                        else
+                        {
+                            <!-- Device 8..10 -->
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(9)" @onclick="@(()=>SetDeviceNum(9))">
+                                9<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(9)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)" @onclick="@(()=>SetDeviceNum(10))">
+                                10<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(10)</div>
+                            </MudTd>
+                        }
+                          <!-- Sum(Common)-Button -->
+                            <MudTd Style="position:relative; padding:0px; max-width: 83.3px;" Class="@(_isSumTorchesActive ? "device_lastcell active" : "device_lastcell SumButtonContainer")" @onclick="@(() => ClickSumTorchesAsync())">
+                                <MudOverlay Visible="IsSumDisabled()" LightBackground="true" Absolute="true" />
+                                &nbsp;<MudIcon Icon="@Icons.Material.Filled.Functions" Class="SumButton" />&nbsp;
+                            </MudTd>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <!-- Sliders HO/FG/CO, Height-Control, Move-Up/Down, Calibration, Flame ON/OFF, FlameOnEnd, Reload, StartPiercing -->
+        <tr>
+            <td>
+                <!-- Sliders HO/FG/CO -->
+                <div class="flex-item-left">
+                    <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                    <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
+                    <!-- Sliders HO/FG/CO -->
+                    <table class="internal_div_table" style="padding-left:10px; padding-right:20px">
+                        <!-- Slider HO -->
+                        <tr>
+                          @if (false)
+                          {
+                            <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramHeatO2))">
+                                @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
+                                @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
+                                <img draggable="false" src="Images/minus1.png" class="img_minus1" />
+                            </MudTd>
+                            <td>
+                                <MudSlider Style="margin-bottom:0px" @ontouchend="@(()=>UpdateDynParam(@paramHeatO2))" @onmouseup="@(()=>UpdateDynParam(@paramHeatO2))"
+                                  @bind-Value="@this[@paramHeatO2]" 
+                                  Min="paramHeatO2.DynParams.MinForSlider"  
+                                  Max="paramHeatO2.DynParams.MaxForSlider"
+                                  Step="@(GetParameterProperty(@paramHeatO2, "Step"))"
+								    Color="Color.Info">
+								    <table>
+									    <tr>
+										    <td style="text-align:left;width:60%">
+											    min=@paramHeatO2.DynParams.MinForSlider
+											    max=@paramHeatO2.DynParams.MaxForSlider
+											    val=@this[@paramHeatO2]
+											    Flame (H-O):
+										    </td>
+										    <td style="text-align:right; width:30%">@(DisplayParamValue(@paramHeatO2))</td>
+										    <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramHeatO2))</td>
+									    </tr>
+								    </table>
+                                </MudSlider>                           
+                            </td> 
+                            <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramHeatO2))">
+                                 <img draggable="false" src="Images/plus1.png" class="img_plus1" />
+                            </MudTd>
+                          }
+                          else
+                          {
+                           <td @onclick="@(() => EditFlameParamValue(@paramHeatO2))" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                                <MudSlider Disabled="IsDisabledSliderFlameParam()"
+                                       Immediate="true"
+                                       @onclick="@(() => EditFlameParamValue(@paramHeatO2))"
+                                       @ontouchstart="@(() => EditFlameParamValue(@paramHeatO2))"
+                                       @ontouchenter="@(() => EditFlameParamValue(@paramHeatO2))"
+                                       @onmousedown="@(() => EditFlameParamValue(@paramHeatO2))"
+                                       Value="(ComponentMode == MANUAL_MODE)  ? paramHeatO2.DynParams.Value : CurrentDevice?.dataProcessInfo?.CurrOutHeatO2"
+                                       Min="paramHeatO2.DynParams.ConstParams.Min"
+                                       Max="paramHeatO2.DynParams.ConstParams.Max"
+                                       Color="Color.Info">
+                                  <table>
+                                    <tr>
+                                      <td style="text-align:left;width:60%">@LocalStrByEnStr(@paramHeatO2.DynParams.SlidersParamName):</td>
+                                      <td style="text-align:right; width:30%">@(DisplayParamValue(@paramHeatO2, (ComponentMode == MANUAL_MODE) ? paramHeatO2.DynParams.Value : (int)CurrentDevice?.dataProcessInfo?.CurrOutHeatO2, "", true))</td>
+                                      <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramHeatO2))</td>
+                                    </tr>
+                                  </table>
+                                </MudSlider>                           
+                            </td> 
+                          }
+                        </tr>
+                        <!-- Slider FG -->
+                        <tr>
+                          @if (false)
+                          {
+                            <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramFuelGas))">
+                                @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
+                                @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
+                                 <img draggable="false" src="Images/minus1.png" class="img_minus1" />
+                            </MudTd>
+                            <td>
+                                <MudSlider @ontouchend="@(()=>UpdateDynParam(@paramFuelGas))" @onmouseup="@(()=>UpdateDynParam(@paramFuelGas))"
+                                  @bind-Value="@this[@paramFuelGas]"
+								                  Min="@paramFuelGas.DynParams.MinForSlider"
+								                  Max="@paramFuelGas.DynParams.MaxForSlider"
+                                                  Step="@(GetParameterProperty(@paramFuelGas, "Step"))"
+								                  Color="Color.Info">
+									                <table>
+										                <tr>
+											                <td style="text-align:left;width:60%">
+												                min=@paramFuelGas.DynParams.MinForSlider
+												                max=@paramFuelGas.DynParams.MaxForSlider
+												                val=@this[@paramFuelGas]
+												                Flame (F-G):
+											                </td>
+											                <td style="text-align:right; width:30%">@(DisplayParamValue(@paramFuelGas))</td>
+											                <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramFuelGas))</td>
+										                </tr>
+									                </table>
+                                </MudSlider>
+                            </td> 
+                            <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramFuelGas))">
+                                @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
+                                @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
+                                 <img draggable="false" src="Images/plus1.png" class="img_plus1" />
+                            </MudTd>
+                          }
+                          else
+                          {
+                           <td @onclick="@(() => EditFlameParamValue(@paramFuelGas))" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                               <MudSlider Disabled="IsDisabledSliderFlameParam()" 
+                                  Immediate="true"
+                                  @onclick="@(() => EditFlameParamValue(@paramFuelGas))"
+                                  @ontouchstart="@(() => EditFlameParamValue(@paramFuelGas))"
+                                  @ontouchenter="@(() => EditFlameParamValue(@paramFuelGas))"
+                                  @onmousedown="@(() => EditFlameParamValue(@paramFuelGas))"
+                                  Value="(ComponentMode == MANUAL_MODE)  ? paramFuelGas.DynParams.Value : CurrentDevice?.dataProcessInfo?.CurrOutFuelGas"
+                                  Min="paramFuelGas.DynParams.ConstParams.Min" 
+                                  Max="paramFuelGas.DynParams.ConstParams.Max"
+                                  Color="Color.Info">
+                                  <table>
+                                    <tr>
+                                      <td style="text-align:left;width:60%">@LocalStrByEnStr(@paramFuelGas.DynParams.SlidersParamName):</td>
+                                      <td style="text-align:right; width:30%">@(DisplayParamValue(@paramFuelGas, (ComponentMode == MANUAL_MODE) ? paramFuelGas.DynParams.Value : (int)CurrentDevice?.dataProcessInfo?.CurrOutFuelGas))</td>
+                                      <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramFuelGas))</td>
+                                    </tr>
+                                  </table>
+                                </MudSlider>                           
+                            </td> 
+                          }
+                        </tr>
+                        <!-- Slider CO -->
+                        <tr>
+                          @if (false)
+                          {
+                            <MudTd Class="@($"td_minus1 {@_cutO2Visible}")" @onclick="@(() => ReduceParamValue(@paramCutO2))">
+                                 <img draggable="false" src="Images/minus1.png" class="img_minus1" />
+                            </MudTd>
+                            <td>
+                                <MudSlider Class="@_cutO2Visible" @ontouchend="@(()=>UpdateDynParam(@paramCutO2))" @onmouseup="@(()=>UpdateDynParam(@paramCutO2))"                
+                                  @bind-Value="@this[@paramCutO2]" 
+                                  Min="@paramCutO2.DynParams.MinForSlider" 
+                                  Max="@paramCutO2.DynParams.MaxForSlider"
+                                  Step="@(GetParameterProperty(@paramCutO2, "Step"))"
+								                  Color="Color.Info">
+									                <table>
+										                <tr>
+											                <td style="text-align:left;width:60%">
+												                min=@paramCutO2.DynParams.MinForSlider
+												                max=@paramCutO2.DynParams.MaxForSlider
+												                val=@this[@paramCutO2]
+												                C - O:
+											                </td>
+											                <td style="text-align:right; width:30%">@(DisplayParamValue(@paramCutO2))</td>
+											                <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramCutO2))</td>
+										                </tr>
+									                </table>
+                                </MudSlider>                        
+                            </td>
+                            <MudTd Class="@($"td_plus1 {@_cutO2Visible}")" @onclick="@(() => IncreaseParamValue(@paramCutO2))">
+                                 <img draggable="false" src="Images/plus1.png" class="img_plus1" />
+                            </MudTd>                       
+                          }
+                          else
+                          {
+                            @if (paramCutO2 != null)
+                            {
+                            <td @onclick="@(() => EditFlameParamValue(@paramCutO2))" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                               <MudSlider Class="@_cutO2Visible" Disabled="IsDisabledSliderFlameParam()" 
+                                  Immediate="true"
+                                  @onclick="@(() => EditFlameParamValue(@paramCutO2))"
+                                  @ontouchstart="@(() => EditFlameParamValue(@paramCutO2))"
+                                  @ontouchenter="@(() => EditFlameParamValue(@paramCutO2))"
+                                  @onmousedown="@(() => EditFlameParamValue(@paramCutO2))"
+                                  Value="(ComponentMode == MANUAL_MODE)  ? paramCutO2.DynParams.Value : CurrentDevice?.dataProcessInfo?.CurrOutCutO2"
+                                  Min="paramCutO2.DynParams.ConstParams.Min" 
+                                  Max="paramCutO2.DynParams.ConstParams.Max"
+                                  Color="Color.Info">
+                                  <table>
+                                    <tr>
+                                      <td style="text-align:left;width:80%">@LocalStrByEnStr(@paramCutO2.DynParams.SlidersParamName):</td>
+                                      <td style="text-align:right; width:10%">@(DisplayParamValue(@paramCutO2, (ComponentMode == MANUAL_MODE) ? paramCutO2.DynParams.Value : (int)CurrentDevice?.dataProcessInfo?.CurrOutCutO2))</td>
+                                      <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramCutO2))</td>
+                                    </tr>
+                                  </table>
+                                </MudSlider>
+                            </td> 
+                            }
+                          }
+                        </tr>
+                    </table>
+                    </MudPaper>
+                </div>
+                <!-- Manual-/Sensor-HeightControl, Move-Up/Down, Calibration, Flame ON/OFF, FlameOnEnd, Reload, StartPiercing -->
+                <div class="flex-item-right">
+                    <table class="internal_div_table">
+                        <tr>
+                            <!-- Manual-/Sensor-HeightControl Buttons -->
+                            <td class="button_tabcell">
+                            @if (ComponentMode == MANUAL_MODE)
+                            {
+                              <!-- Dummy-Button -> Sensor-HeightControl UP-Button -->
+                              <div class="button_container">
+                                <div class="up_btn" style="background-color:#ffff"></div>
+                              </div>
+                              <!-- Sensor-HeightControl ON/OFF-Button -->
+                              <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="IsHCOnOffDisabled()" LightBackground="true" Absolute="true" />
+                                <div class="button_container">
+                                    <div id="OnOff" class="@(_isHCOnOffActive ? "central_btn active" : "central_btn")"
+                                        @onclick="@(async () => await TurnHCOnOffAsync())">
+                                        <img draggable="false" src="@(_isHCOnOffActive ? "Images/button_clearance_control_on_new.png" : "Images/button_clearance_control_off_w.png")" 
+                                                style="mix-blend-mode: normal; vertical-align: middle; @(_isHCOnOffActive ? "width: 25px; height: 35px;" : "width: 45px; height: 40px;")" />                                  
+                                    </div>
+                                </div>
+                              </MudPaper>
+                              <!-- Dummy-Button -> Sensor-HeightControl DOWN-Button -->
+                              <div class="button_container">
+                                <div class="down_btn" style="@(processHeight != null ? "background-color: #d7e8f9; color: #0061A1" : "background-color: #ffff")">
+                                    @(processHeight != null ? DisplayParamValueAndUnit(@processHeight) : string.Empty)
+                                </div>
+                              </div>
+                            }
+                            else
+                            {
+                              <!-- Manual-HeightControl ON/OFF Button -->
+                              @if (!IsProcessActivated() || _isManHeightActive)
+                              {
+                                <!-- Dummy-Button -> Sensor-HeightControl UP-Button -->
+                                <div class="button_container">
+                                  <div class="up_btn_dummy" style="background-color:#ffff"></div>
+                                </div>
+                                <!-- Manual-HeightControl Button ON/OFF -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                  <MudOverlay Visible="@(IsProcessActivated() || _initialDialogIsBlocked|| !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl)"
+                                    LightBackground="true" Absolute="true" />
+                                  <div class="button_container">
+                                        <div id="ManHeight" class="@(_isManHeightActive ? "central_btn active" : "central_btn")"
+                                            @onclick="@(async () => await ToggleManHeightAsync())">
+                                            <img draggable="false" src="@(_isManHeightActive ? "Images/control_man_grey-s.svg" : "Images/control_auto_grey-s.svg")"
+                                            style="mix-blend-mode: normal; vertical-align: middle; @(_isManHeightActive ? "width: 50px; height: 50px;" : "width: 50px; height: 50px;")" />
+                                      </div>
+                                  </div>
+                                </MudPaper>
+                              }
+                              <!-- Manual-HeightControl SetPreHeatHeight Button -->
+                              @if (!IsProcessActivated())
+                              {
+                                <!-- Manual-HeightControl SetPreHeatHeight Button -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                  <MudOverlay Visible="@(_isPreheatHeightActive || !_isManHeightActive)" LightBackground="true" Absolute="true" />
+                                  <div class="button_container">
+                                      <div id="PreheatHeight" class="@(_isPreheatHeightActive ? "down_btn" : "down_btn")"
+                                                @onclick="@(async () => await GoPreheatHeightAsync())">@DisplayParamValueAndUnit(@manualPreheatHeight)
+                                      </div>
+                                  </div>
+                                </MudPaper>
+                              }
+                              else if (_isManHeightActive)
+                              {
+                                <div class="button_container">
+                                  <div class="central_btn" style="background-color:#ffff"></div>
+                                </div>
+                              }
+                              <!-- Sensor-HeightControl Buttons -->
+                              @if (!_isManHeightActive && IsProcessActivated())
+                              {
+                                <!-- Sensor-HeightControl UP-Button -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                  <MudOverlay Visible="IsProcessModeHCButtonsUpDownDisabled()" LightBackground="true" Absolute="true" />
+                                  <div class="button_container">
+                                      <div id="HCMoveTorchUp" class="@(_isHCTorchUpActive ? "up_btn active" : "up_btn")"
+                                          @onpointerdown="@(async (e) => await HCMoveTorchUpAsync("HCMoveTorchUp"))"
+                                          @onpointerup="@((_) => DeactiveButton("HCMoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchUp"))"
+                                          @onmouseout="@((_) => DeactiveButton("HCMoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchUp"))">
+                                          <img draggable="false" src="Images/button_clearance_control_on_new.png" style="mix-blend-mode: normal; width: 25px; height: 35px; vertical-align: middle;" />
+                                          <img draggable="false" src="Images/__15_Top.png" style="mix-blend-mode: normal; width: 27px; height: 16px; vertical-align: middle;" />
+                                      </div>
+                                  </div>
+                                </MudPaper>
+                                <!-- Sensor-HeightControl ON/OFF-Button -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                  <MudOverlay Visible="IsProcessModeHCButtonOnOffDisabled()" LightBackground="true" Absolute="true" />
+                                  <div class="button_container">
+                                      <div id="OnOff" class="@(_isProcessModeClearenceCtrlOff ? "central_btn active" : "central_btn")"
+                                          @onclick="@(async () => await ProcessModeClearenceCtrlOffAsync())">
+                                          <img draggable="false" src="@(_isProcessModeClearenceCtrlOff ? "Images/button_clearance_control_on_new.png" : "Images/button_clearance_control_off_w.png")" 
+                                                  style="mix-blend-mode: normal; vertical-align: middle; @(_isHCOnOffActive ? "width: 25px; height: 35px;" : "width: 45px; height: 40px;")" />                                  
+                                      </div>
+                                  </div>
+                                </MudPaper>
+                                <!-- Sensor-HeightControl DOWN-Button -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                  <MudOverlay Visible="IsProcessModeHCButtonsUpDownDisabled()" LightBackground="true" Absolute="true" />
+                                  <div class="button_container">
+                                      <div id="HCMoveTorchDown" class="@(_isHCTorchDownActive ? "down_btn active" : "down_btn")"
+                                          @onpointerdown="@(async (e) => await HCMoveTorchDownAsync("HCMoveTorchDown"))"
+                                          @onpointerup="@((_) => DeactiveButton("HCMoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchDown"))"
+                                          @onmouseout="@((_) => DeactiveButton("HCMoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchDown"))">
+                                          <img draggable="false" src="Images/button_clearance_control_on_new.png" style="mix-blend-mode: normal; width: 25px; height: 35px; vertical-align: middle;" />
+                                          <img draggable="false" src="Images/__15_Bottom.png" style="mix-blend-mode: normal; width: 27px; height: 16px; vertical-align: middle;" />
+                                      </div>
+                                  </div>
+                                </MudPaper>
+                              }
+                            }
+                            </td>
+                            
+                            <!-- Move-Up/Down Buttons, Calibration-Button -->
+                            <td class="button_tabcell">
+                                <!-- Move-Up Button -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                  <MudOverlay Visible="IsMoveUpButtonDisabled()" LightBackground="true" Absolute="true"/>
+                                  <div class="button_container">
+                                      <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")"
+                                          @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
+                                          @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
+                                          @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">
+                                          <img draggable="false" src="Images/__15_Top.svg" style="mix-blend-mode: normal; width: 80px; height: 55px; vertical-align: middle;" />
+                                          @*<MudIcon Icon="@Icons.Material.Outlined.ArrowDropUp" Color="Color.Inherit" Size="Size.Large"/>*@
+                                      </div>
+                                  </div>
+                                  @if (ComponentMode == MANUAL_MODE)
+                                  {
+                                      <!-- Calibration-Button -->
+                                      <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                      <MudOverlay Visible="IsCalibrationButtonDisabled()" LightBackground="true" Absolute="true" />
+                                      <div class="button_container">
+                                          <div id="CalibrateBtn" class="@GetCalibrationClass()" @onclick="@(async (_) => await CalibrationProcessAsync())">
+                                              @(_isCalibrationActive ? "STOP CALIB" : "CALIB")
+                                          </div>
+                                      </div>
+                                      </MudPaper>
+                                  }
+                                  else
+                                  {
+                                      <!-- Dummy-Button -->
+                                      <div class="button_container">
+                                        <div class="central_btn" style="background-color:#ffff"></div>
+                                      </div>
+                                  }
+                                </MudPaper>
+                                <!-- Move-Down Button -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                    <MudOverlay Visible="IsMoveDownButtonDisabled()" LightBackground="true" Absolute="true" />
+                                    <div class="button_container">
+                                        <div id="MoveTorchDown" class="@(_isTorchDownActive ? "down_btn active" : "down_btn")"
+                                            @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
+                                            @onpointerup="@((_) => DeactiveButton("MoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("MoveTorchDown"))"
+                                            @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">
+                                            <img draggable="false" src="Images/__15_Bottom.svg" style="mix-blend-mode: normal; width: 80px; height: 55px; vertical-align: middle;" />
+                                        </div>
+                                   </div>
+                                </MudPaper>                             
+                            </td>
+
+                            @if (ComponentMode == MANUAL_MODE)
+                            {
+                            <!-- Flame ON/OFF-Buttons -->
+                            <td class="button_tabcell" height="100%">
+                              <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="IsIgnitionButtonDisabled()" LightBackground="true" Absolute="true"/>
+                                <!-- Flame ON-Button -->
+                                <div class="button_container">
+                                    <div id="FlameOnButton" 
+                                        class="FlameIsOff flame_btn" style="display: @(!_isFlameOn ? "flex" : "none");"
+                                        @onclick="@(async (e) => await TurnFlameOnAsync())">
+                                        <img draggable="false" src="Images/torch_only_no_flame_w.png" 
+                                                style="mix-blend-mode: normal; width: 50px; height: 55px; vertical-align: middle;" />
+                                    </div>
+                                </div>
+                                <!-- Flame OFF-Buttons -->
+                                <div id="FlameOffButton" 
+                                    class="FlameIsOn flame_btn" style="display: @(_isFlameOn ? "flex" : "none"); margin-left: 1px; margin-bottom: 1px; width: 98%;"
+                                    @onclick="@(async (e) => await TurnFlameOffAsync())">
+                                    <img draggable="false" src="Images/torch_with_CO_w.png" 
+                                            style="mix-blend-mode: normal; width: 50px; height: 55px; vertical-align: middle;" />
+                                </div>
+                              </MudPaper>
+                            </td>
+                            }
+                            else 
+                            {                            
+                            <!-- FlameOnEnd-, Reload-, StartPiercing-Buttons -->
+                            <td class="button_tabcell">
+                                <table style="margin: 0px 0px 0px 0px !important"> 
+                                    <!-- FlameOnEnd-Button -->
+                                    <tr>
+                                        <td class="@(_isFlameOnEndActive ? "divcell tabcell_menu" : "divcell tabcell_menu")"
+                                          style="border-top-width: 2px !important; border-bottom-width: 5px !important;"
+                                          @onclick="@(async (_) => await ClickFlameOnEndAsync())">
+                                          <img draggable="false" src="@(_isFlameOnEndActive ? "Images/torch_too_much_gas.png" : "Images/torch_ignition.png")"
+                                            style="mix-blend-mode: normal; width: 50px; height: 50px; vertical-align: middle; margin-top: 5px;" />
+                                        </td>
+                                    </tr>
+                                    <!-- Reload-Button -->
+                                    <tr>
+                                        <!-- GR: 28.03.2023 -->
+                                        <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                          <MudOverlay Visible="IsReloadPreHeatingTimeDisabled()" LightBackground="true" Absolute="true"/>
+                                          <td class="@(_isReloadPreHeatingTimeActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")" 
+                                              style="border-top-width: 1px !important; border-bottom-width: 4px !important;"
+                                              @onpointerdown="@(async (e) => await ReloadPreHeatingTimeActivateAsync("ReloadPreHeatingTime"))"
+                                              @onmouseout="@((_) => DeactiveButton("ReloadPreHeatingTime"))"
+                                              @onpointerup="@(async (e) => await ReloadPreHeatingTimeAsync())">
+                                              <div style="position: relative; margin-top: 19.5px; display: flex; justify-content: center; align-items:center; vertical-align:middle;">
+                                                <span style="display:flex; justify-content:center; align-items:center; vertical-align:middle;">
+                                                  @_currHeatTime<span>s</span>
+                                                </span>
+                                                <MudProgressCircular Value="@reloadProgressValue" Color="Color.Primary" 
+                                                    Style="height:50px; width:50px; color:#808080 !important; position: absolute; margin-top: 0px; display:flex; justify-content:center; align-items:center; vertical-align:middle;">
+                                                </MudProgressCircular>
+                                              </div>
+                                          </td>
+                                        </MudPaper>
+                                    </tr>
+                                    <!-- StartPiercing-Button -->
+                                    <tr >
+                                        <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                          <MudOverlay Visible="IsStartPiercingDisabled()" LightBackground="true" Absolute="true"/>
+                                          <td class="@(_isStartPiercingActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")"
+                                              style="border-top-width: 1.5px !important; border-bottom-width: 2px !important;  margin-top: 4px;"
+                                              @onpointerdown="@(async (e) => await StartPiercingActivateAsync("StartPiercing"))"
+                                              @onmouseout="@((_) => DeactiveButton("StartPiercing"))"
+                                              @onpointerup="@(async (e) => await StartPiercingAsync())">
+                                              <div style="position: relative; display: flex; justify-content: center; align-items:center; vertical-align:middle; padding-top: 4px;">
+                                                <img draggable="false" src="Images/torch_plate_piercing.png" 
+                                                  style="mix-blend-mode: normal; width: 55px; height: 55px; vertical-align: middle;" />
+                                              </div>
+                                          </td>
+                                        </MudPaper>
+                                    </tr>
+                                </table>
+                            </td>
+                            }
+                        </tr>
+                    </table>
+                </div>
+            </td>                      
+        </tr>
+
+        <!-- Error-Log, Flame-Control Ignition/PreHeat/Piercing/Cutting/Heating -->
+        <tr>
+            <td style="border-top-width: 2px !important; border-top-color: white !important;">
+                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
+                <!-- Error-Log, Flame-Control Ignition/PreHeat/Piercing -->
+                <div class="flex-item-left">
+                    <table class="internal_div_table" style="border-spacing: @(ComponentMode == MANUAL_MODE ? "0" : "0")px !important;">
+                        <tr>
+                        @if (ComponentMode == MANUAL_MODE)
+                        {
+                            <!-- Error-Log -->
+                               <td class="UnSelectedParamsType tabcell" style="background-color: #d7e8f9; height: 64px; max-width: 83.3px" @onclick="@(async () => await OpenErrorLogDialog())">
+                                <MudIcon Icon="@Icons.Material.Filled.Warning" style="color:#0061A1" Title="Warnings" Size="Size.Large"
+                                  Class="@(IsAcknowledgeNeeded ? "ErrorDeviceBlink warning_class_manual" : "warning_class_manual")"/>
+                                @if (_processingErrorLog)
+                                {
+                                  <MudProgressCircular Class="ms-n1 centered" Size="Size.Medium" Style="height:95px;width:95px;color:#808080 !important" Indeterminate="true" Color="Color.Primary"/>
+                                }
+                            </td>
+                            <!-- GR: 28.03.2023 -->
+                            <!-- Flame-Control Ignition/PreHeat -->
+                            <MudStack Row="true" Spacing="0" Style="position:relative;">
+                              <MudOverlay Visible="!CurrentDevice.IsConnected" LightBackground="true" Absolute="true" />
+                              <!-- Flame-Control Ignition -->
+                              <MudTd Style="position:relative; font-weight:bold; height: 64px; max-width: 83.3px" Class="@GetParamsTypeClass(IGNITION)" 
+                                  @onclick="@(()=>SetParamsType(IGNITION))">@LocalStrByKey("_CultureButIgnition")
+                                  <MudOverlay Visible="_isHCOnOffActive && !_isFlameOn" LightBackground="true" Absolute="true" />
+                              </MudTd>
+                              <!-- Flame-Control PreHeat -->
+                              <MudTd Style="font-weight:bold; height: 64px; max-width: 83.3px" Class="@GetParamsTypeClass(PRE_HEAT)"
+                                  @onclick="@(()=>SetParamsType(PRE_HEAT))">@LocalStrByKey("_CultureButPreHeating")
+                              </MudTd>
+                            </MudStack>
+                        }
+                        else
+                        {
+                            <!-- GR: 28.03.2023 -->
+                            <!-- Error-Log -->
+                            <td class="tabcell tabcell_status internal_div_table"
+                                style="border-width:0px; font-weight:normal !important; box-sizing:border-box; height: 64px; border-left-width:0px !important;">
+                              <MudStack Row="true" Spacing="0">
+                                <!-- Button Error-Log -->
+                                <div class="UnSelectedParamsType" style="background-color: #d7e8f9; max-width: 83.3px; justify-content:center" @onclick="@(async () => await OpenErrorLogDialog())">
+                                  <MudIcon Icon="@Icons.Material.Filled.Warning" style="color:#0061A1;" Title="Warnings" Size="Size.Large"
+                                    Class="@(IsAcknowledgeNeeded ? "ErrorDeviceBlink warning_class" : "warning_class")"/>
+                                  @if (_processingErrorLog)
+                                  {
+                                  <MudProgressCircular Class="ms-n1 centered" Size="Size.Medium" Style="height:95px;width:95px;color:#808080 !important" Indeterminate="true" Color="Color.Primary"/>
+                                  }
+                                </div>
+                                <MudStack Spacing="0" Style="justify-content:center">
+                                  <!-- Text Error -->
+                                  <MudText style="line-height: 1.2; padding-right: 2px; color: #0061A1" Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">
+                                    @( (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0) > 0 ? $"Error: { @ihtDevices.GetErrorCodeLabel((CurrentDevice?.SlaveId ?? 0), (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0))}" : string.Empty )
+                                  </MudText>
+                                  <!-- Text Warning: Calibration not active -->
+                                  @if (CurrentDevice?.dataProcessInfo?.IsCalibrationInValid == true)
+                                  {
+                                    <MudText style="line-height: 1.2; padding-right: 2px; color: #0061A1" Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">
+                                      @LocalStrByKey("_CultureCalibrationInvalid")
+                                    </MudText>
+                                  }
+                                </MudStack>
+                              </MudStack>
+                            </td>
+                            }
+                        </tr>
+                    </table>
+                </div>
+                <!-- Flame-Control Cutting/Heating, DataSet-Info -->
+                <div class="flex-item-right">
+                    <table class="internal_div_table" style="border-spacing: @(ComponentMode == MANUAL_MODE ? "0" : "0")px !important;">
+                        <tr>
+                            <!-- Flame-Control Cutting/Heating -->
+                            @if (ComponentMode == MANUAL_MODE)
+                            {
+                                <!-- GR: 28.03.2022 -->
+                                <MudStack Row="true" Spacing="0" Style="position:relative;">
+                                  <MudOverlay Visible="!CurrentDevice.IsConnected" LightBackground="true" Absolute="true" />
+                                  <!-- Flame-Control Piercing -->
+                                  <MudTd Style="font-weight:bold; height: 64px; max-width: 83.3px" Class="@GetParamsTypeClass(PIERCING)"
+                                      @onclick="@(()=>SetParamsType(PIERCING))">@LocalStrByKey("_CultureButPiercing")
+                                  </MudTd>
+                                  <!-- Flame-Control Cutting -->
+                                  <MudTd Style="font-weight:bold; height: 64px; max-width: 83.3px" Class="@GetParamsTypeClass(CUTTING)"
+                                      @onclick="@(()=>SetParamsType(CUTTING))">@LocalStrByKey("_CultureButCutting")
+                                  </MudTd>
+                                  <!-- Flame-Control Heating -->
+                                  <MudTd Style="position:relative; font-weight:bold; height: 64px; max-width: 83.3px" Class="@GetParamsTypeClass(HEATTING)"
+                                      @onclick="@(()=>SetParamsType(HEATTING))">@LocalStrByKey("_CultureButHeating")
+                                     <MudOverlay Visible="_isHCOnOffActive && !_isFlameOn" LightBackground="true" Absolute="true" />
+                                  </MudTd>
+                                </MudStack>
+                            }
+                            else
+                            {
+                                <!-- DataSet-Info -->
+                                <td style="height: 64px; border-width:0px; font-weight:normal !important; display:flex; flex-direction:row; justify-content:center; align-items:center; box-sizing:border-box;" 
+                                    class="tabcell tabcell_status internal_div_table">
+                                    <!-- GR: 28.03.2022 -->                                
+                                    @if(!string.IsNullOrWhiteSpace(ihtDevices.DataBaseId.ToString()))
+                                    {    
+                                        <MudText @bind-Value="@CuttingDataBaseId" style="line-height: 1.1; color:#0061A1 !important;" Class="mx-4" Align="Align.Left" 
+                                            Color="Color.Primary" GutterBottom="false" Inline="true" Typo="Typo.body2">                                               
+                                            ID:@(ihtDevices.DataBaseId.ToString() ?? "") | @(Thickness) | @(NozzleName) | @(CuttingSpeed) | @(Kerf) kerf
+                                        </MudText>
+                                    }
+                                    
+                                </td>
+                            }
+                        </tr>
+                    </table>                   
+                </div> 
+                </MudPaper>
+            </td>
+        </tr>
+    </table>
+</div>
+}
+
+@code {
+
+    [Parameter]
+    public string? ComponentMode { get; set; } = PROCESS_MODE;
+
+    private const string PROCESS_MODE = "Process";
+    private const string MANUAL_MODE = "Setup";
+
+    private const string minus = "-";
+
+    private int TestCounter;
+
+    private bool _aboutDialogVisible;
+
+    private void SwitchToCuttingDataPage()
+    {
+      ihtDevices.ComponentMode = ComponentMode;
+      GoToPage(CUTTING_DB_URL);
+    }
+    
+    // TODO: read from settings
+    private bool EXHIBITION_MODE 
+    {
+        get
+        {
+            var ihtCmdParams = IhtCmdLineParams.GetIhtCmdLineParams();
+            return ihtCmdParams.IsSimulationExhibiton;
+
+        }
+    }
+
+    private string OtherComponentMode
+    {
+        get
+        {
+            return (ComponentMode ?? PROCESS_MODE) == PROCESS_MODE ? MANUAL_MODE : PROCESS_MODE;
+        }
+    }
+
+    private string HrefToOtherComponentMode
+    {
+        get
+        {
+            return $"/{OtherComponentMode}";
+        }
+    }
+
+    private bool _isSimulation //{ get; set; }
+    {
+        get
+        {
+            return ihtModbusCommunic.IsSimulationHighPriority;
+        }
+
+        set
+        {
+            ihtModbusCommunic.IsSimulationHighPriority = value;
+        }
+    }
+
+    private string _nameComPort
+    {
+        get
+        {
+            var availablePorts = SerialPort.GetPortNames();
+            var currentPort = string.Empty;
+
+            if(availablePorts.Any(p => p == ihtModbusCommunicData.ComPort))
+            {
+                currentPort = ihtModbusCommunicData.ComPort;
+            }
+
+            return currentPort;
+
+        }
+
+        set
+        {
+            ihtModbusCommunicData.ComPort = value;
+        }
+    }
+
+    private bool _performResetDevices 
+    {
+        get
+        {
+            return ihtModbusCommunicData.IsExecReset;
+        }
+
+        set
+        {
+            ihtModbusCommunicData.IsExecReset = value;
+        }
+    }
+
+    private bool IsDeviceConnectionDisabled() => _nameComPort?.Length == 0 && !_isSimulation;
+
+    public event EventHandler? DynamicAPCParamsClientChanged;
+    public event EventHandler? DynamicAPCParamsClientChangedCommon;
+    public event EventHandler? APCTorchPositionChanged;
+    public event EventHandler? APCTorchPositionStoped;
+    public static event EventHandler? ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded;
+    public static event EventHandler? ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded;
+
+    private ParameterDataModel paramHeatO2 = new();
+    private ParameterDataModel paramFuelGas = new();
+    private ParameterDataModel paramCutO2 = new();
+    private ParameterDataModel paramFlameAdjust = new();
+
+    private ParameterDataModel manualPreheatHeight = new();
+    private ParameterDataModel? processHeight = new();
+
+    private string _cutO2Visible = NONE_DISPLAY_CLASS;
+    private string _flameAdjustVisible;
+    private const string INVISIBLE_CLASS = "invisible";
+    private const string VISIBLE_CLASS = "visible";
+
+    private const string NONE_DISPLAY_CLASS = "d-none";
+    private const string DISPLAY_CLASS = "d-block";
+    private const string DISPLAY_INLINE_CLASS = "display_inline_flex";
+
+    private const string CUTTING_DB_URL = "/CuttingDB";
+
+    private const string IGNITION = CommonConstants.IGNITION;
+    private const string PRE_HEAT = CommonConstants.PRE_HEAT;
+    private const string PIERCING = CommonConstants.PIERCING;
+    private const string CUTTING = CommonConstants.CUTTING;
+    private const string HEATTING = CommonConstants.HEATTING;
+
+    //private int spValueOriginal = 50;
+    //private int spValueCurrent = 50;
+    private string currentTorchEventName = string.Empty;
+    private bool isTorchStartedMoving = false;
+    private bool _menuExpanded = false;
+
+    private bool _setupParamsDialogVisible = false;
+    private ParameterDataModel? dynParamDataModel = new ParameterDataModel();
+    private bool _editParamDialogVisible = false;
+    private bool _editGasParamSliderDialogVisible = false;
+    private int _sliderDynParamValue;
+    private bool _isOpenParamsListDialog = false;
+    private object selectedItemParamValue;
+
+    private MudForm _editParamForm;
+    private MudListItem selectedItem;
+    private MudForm _editParamListFormDialog;
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private IhtDevices.PasswordLevel_SW _userPasswordLevel
+    { 
+        get => apcCommunicManager.UserPasswordLevel;
+        set => apcCommunicManager.UserPasswordLevel = value;
+    }
+
+    private string _setupPasswordValue = "";
+    private bool _setupPasswordDialogVisible = false;
+
+    private bool _cultureSelectorVisible = false;
+
+    private bool _torchInstalledDialogVisible = false;
+    public bool TorchInstalledDialogVisible
+    {
+        get
+        {
+            return _torchInstalledDialogVisible;
+        }
+        set
+        {
+            _torchInstalledDialogVisible = value;
+
+            if (value)
+            {
+                SaveCurrentIsVisibleAndTorchType();
+            }
+            else
+            {
+                RestoreIsVisibleAndTorchType();
+            }
+        }
+    }
+
+
+    private bool _errorLogDialogVisible = false;
+    private bool _processingErrorLog = false;
+
+    private async Task OpenErrorLogDialog()
+    {
+        _processingErrorLog = true; 
+
+        _errorLogDialogVisible = true;
+
+        await Task.Delay(TimeSpan.FromSeconds(0.2));
+
+        await GetErrorLogAsync();
+
+        if (IsAcknowledgeNeeded)
+        {
+            await ihtDevices.ClrErrorCodeCommonAsync();
+        }
+
+        _processingErrorLog = false;
+    }
+
+    private void CloseErrorLogDialog()
+    {
+        _errorLogDialogVisible = false;
+    }
+
+    private bool IsAcknowledgeNeeded 
+    {
+        get
+        {
+            return ihtDevices.GetDevices().Where(x => x.IsVisible).Any(x => (x.dataProcessInfo?.IsAckErrorActive ?? false));
+        }
+    }
+
+    private bool _torchInstalledDialogIsBlocked = false;
+    private bool _initialDialogIsBlocked = false;
+    private int _currentVisibleTorchesNum = 0;
+    private string? _currentComPort;
+    private IhtDevices.TorchType _currentTorchTypeSetup;
+    private bool _isControlPanelDisabled = false;
+
+    private bool _isProcessBtnActive 
+    { 
+        get
+        {
+            return IsProcessActivated();
+        }
+        set {}
+    }
+
+    private TableGroupDefinition<ParameterDataModel> _groupDefinition = new()
+        {
+            GroupName = "Group",
+            Indentation = false,
+            Expandable = true,
+            IsInitiallyExpanded = false,
+            Selector = (e) => e.ViewGroup
+        };
+
+    private IEnumerable<ParameterDataModel> Elements = new List<ParameterDataModel>();
+    private IEnumerable<ErrorLogModel> ErrorLogs = new List<ErrorLogModel>();
+
+    private Dictionary<string, IhtDevices.PasswordLevel_SW> _passwordToLevelDictionary = new Dictionary<string, IhtDevices.PasswordLevel_SW>()
+        {
+            { "0000", IhtDevices.PasswordLevel_SW.Level_0 },
+            { "1410", IhtDevices.PasswordLevel_SW.Level_1 },
+            { "17484", IhtDevices.PasswordLevel_SW.Level_2 },
+            { "10769", IhtDevices.PasswordLevel_SW.Level_3 },
+            { "58301", IhtDevices.PasswordLevel_SW.Level_2 }
+        };
+
+    /// <summary>
+    /// 2.1
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        this.DynamicAPCParamsClientChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+
+        this.DynamicAPCParamsClientChangedCommon += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChangedCommon;
+
+        // Subscribe of Data Provider for the Client Event of moving torch (Up or Down)
+        this.APCTorchPositionChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
+
+        // Subscribe of Data Provider for the Client Event of stopping the torch
+        this.APCTorchPositionStoped += dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
+
+        // Subscribe for event of client stopping working with the torch
+        ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+
+        // Subscribe for event of client connected to the devices and received the data
+        ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded += DynamicAPCParamsOnConnectedTorchesInstalled;
+
+        IhtDevices.DataProviderIsControlsActive .DataChanged += DataProviderIsControlsActive;
+        IhtDevices.DataProviderIsProcessesActive.DataChanged += DataProviderIsProcessesActive;
+        IhtDevices.DataProviderIsClearanceControlsManual.DataChanged += DataProviderIsClearanceControlsManual;
+        IhtDevices.DataProviderIsCuttingDataBaseIdChanged.DataChanged += DataProviderIsCuttingDataBaseIdChanged;
+
+        base.OnInitialized();
+    }
+
+    /// <summary>
+    /// 2.2
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        await InitialSetupParametersAndErrorLogAsync();
+
+        if (ihtModbusCommunic.GetConnectedModbusDatas().Count == 0)
+        {
+            await Connection(manual: false);
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>
+    /// 3.
+    /// </summary>
+    /// <returns></returns>
+    protected override Task OnParametersSetAsync()
+    {
+        return base.OnParametersSetAsync();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public override void UpdateDynParam(ParameterDataModel parameterData)
+    {
+        OnParamChanged(parameterData);
+    }
+
+    private async Task InitialSetupParametersAndErrorLogAsync(bool refreshAll = true)
+    {
+        await GetSetupParametersAsync(refreshAll);
+
+        await GetErrorLogAsync();
+    }
+
+    private async Task GetSetupParametersAsync(bool refreshAll = true)
+    {
+        Elements = await parameterDataInfoManager.GetDeviceSetupParamsAsync(dynDataModificationCNCDataProvider.CurrentDeviceNumber, CancellationToken.None, refreshAll);
+
+        if (Elements != null)
+        {
+            Elements = Elements.Where(p => p.PasswordLevel <= _userPasswordLevel && (p.ParamSettings?.Visible ?? true));
+        }
+    }
+
+    private async Task GetErrorLogAsync()
+    {
+        ErrorLogs = await _errorLogDBService.GetEntriesAsync(CancellationToken.None);
+    }
+
+
+    private bool IsConnected
+    {
+        get
+        {
+            return  ihtModbusCommunic.GetConnectedModbusDatas().Count > 0;
+        }
+    }
+
+    private async Task DisconnectAsync()
+    {
+        if (IsConnected)
+        {
+            await apcCommunicManager.DisconnectAsync();
+        }
+    }
+
+    private async Task Connection(bool manual = true)
+    {
+        if (manual)
+        {
+            _torchInstalledDialogIsBlocked = true;
+        }
+        else
+        {
+            _initialDialogIsBlocked = true;
+        }
+
+        await Task.Delay(TimeSpan.FromSeconds(0.1));
+
+        // Connection to the APC devices
+        //_nameComPort = string.IsNullOrWhiteSpace(_nameComPort) ? ihtModbusCommunicData.ComPort : _nameComPort;
+
+        await apcCommunicManager.Init(_nameComPort, _isSimulation, _performResetDevices, manual);
+
+        ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
+
+     #if true
+        string tcpIpAddrServer = "127.0.0.1";
+            #if false
+    IhtCmdLineParams ihtCmdLineParams = IhtCmdLineParams.GetIhtCmdLineParams();
+      string cmdLineTcpIpAddrServer = String.Empty;
+    if (ihtCmdLineParams.GetParam(IhtCmdLineParams.IdNo.TcpIpAddrServer, ref cmdLineTcpIpAddrServer))
+    {
+    tcpIpAddrServer = cmdLineTcpIpAddrServer;
+    }
+            #endif
+        await MqttConnectAsync(new TimeSpan(0, 0, 30), tcpIpAddrServer);
+    #endif
+        // We do not need to stop worker
+        //await _apcWorkerBackgroundService.StopAsync(APCWorkerBackgroundService._stoppingCts.Token);
+
+        if (manual)
+        {
+            navigationManager.NavigateTo(navigationManager.Uri, true);
+        }
+        else
+        {
+            _initialDialogIsBlocked = false;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    private async Task MqttConnectAsync(TimeSpan timeSpan, string tcpServerAddr)
+    {
+        try
+        {
+            MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
+
+            mqttModelFactory = MqttModelFactory.Instance(tcpServerAddr, 1883);
+            mqttModelFactory.RegisterPublishers();
+
+            if (mqttModelFactory.IsClientsError || !mqttModelFactory.IsClientsConnected())
+            {
+                if (mqttModelFactory.IsClientsError)
+                {
+                    try {await mqttModelFactory.DisconnectClientsAsync(CancellationToken.None); }
+                    catch { }
+                    mqttModelFactory.ClearClientsError();
+                }
+                Console.WriteLine($"MQTT: Connecting with server {mqttModelFactory.Server}:{mqttModelFactory.ServerPort}");
+                await mqttModelFactory.ConnectClientsAsync(timeSpan, CancellationToken.None);
+                Console.WriteLine($"MQTT: Subscribe clients");
+                await mqttModelFactory.SubscribeClientsAsync(MqttQualityOfServiceLevel.AtLeastOnce, CancellationToken.None);
+            }
+
+            Console.WriteLine($"MQTT: Connected with server {mqttModelFactory.Server}:{mqttModelFactory.ServerPort}");
+
+            List<string> topics = mqttModelFactory.GetSubscibedTopicsAll();
+            foreach (var item in topics)
+            {
+                Console.WriteLine($"MQTT: Topic = {item}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"MQTT: {ex.Message}");
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"MQTT: {ex.InnerException?.Message}");
+            }
+        }
+    }
+
+    private int ErrorCode
+    {
+        get
+        {
+            return CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0;
+        }
+    }
+
+
+    public int this[ParameterDataModel parameterDataModel]
+    {
+        get
+        {
+            if (parameterDataModel != null && parameterDataModel.DynParams != null)
+            {
+                var paramValue = CorrectTheCurrentValue(parameterDataModel, parameterDataModel.DynParams.Value);
+
+                return paramValue;
+            }
+            else
+            {
+                throw new Exception($"The parameter {nameof(parameterDataModel)} is not correct");
+            }
+        }
+
+        set
+        {
+            if (parameterDataModel != null && parameterDataModel.DynParams != null)
+            {
+                parameterDataModel.DynParams.Value = value;
+            }
+        }
+    }
+
+    private int ParamHeatO2DynParamsValue 
+    {
+        get
+        {
+            var paramValue = CorrectTheCurrentValue(paramHeatO2, paramHeatO2.DynParams.Value);
+
+            return paramValue;
+        }
+
+        set
+        {
+            paramHeatO2.DynParams.Value = value;
+        }
+    }
+
+    private void GoToPage(string pageUrl)
+    {
+        navigationManager.NavigateTo(pageUrl, true);
+    }
+
+    private bool IsDeviceDisabled(bool IsEnableds)
+    {
+        return !IsEnableds;
+    }
+
+    private bool IsMoveUpButtonDisabled()
+    {
+        return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl;
+    }
+
+    private void IncreaseParamValue(ParameterDataModel parameterData)
+    {
+        if(parameterData != null && parameterData.DynParams != null && parameterData.DynParams.ConstParams != null)
+        {
+            var stepValue = GetParameterProperty(@parameterData, "Step");
+            var maxValue = parameterData.DynParams.MaxForSlider;
+            var curValue = parameterData.DynParams.Value;
+            var halfStep = stepValue / 2;
+
+            // Make step twice smaller
+            stepValue = halfStep * 2 == stepValue ? halfStep : stepValue;
+
+            parameterData.DynParams.Value = CorrectTheCurrentValue(parameterData, curValue) + stepValue;
+
+            if (parameterData.DynParams.Value > maxValue)
+            {
+                parameterData.DynParams.Value = maxValue;
+            }
+
+            UpdateDynParam(parameterData);
+        }
+    }
+
+    private void ReduceParamValue(ParameterDataModel parameterData)
+    {
+        if(parameterData != null && parameterData.DynParams != null && parameterData.DynParams.ConstParams != null)
+        {
+            var stepValue = GetParameterProperty(@parameterData, "Step");
+            var minValue = parameterData.DynParams.MinForSlider;
+            var curValue = parameterData.DynParams.Value;
+            var halfStep = stepValue / 2;
+
+            // Make step twice smaller
+            stepValue = halfStep * 2 == stepValue ? halfStep : stepValue;
+
+            parameterData.DynParams.Value = CorrectTheCurrentValue(parameterData, curValue) - stepValue;
+
+            if (parameterData.DynParams.Value < minValue)
+            {
+                parameterData.DynParams.Value = minValue;
+            }
+
+            UpdateDynParam(parameterData);
+        }
+    }
+
+    private bool IsMoveDownButtonDisabled()
+    {
+        if (CurrentDevice != null && CurrentDevice.IsEnabledMainControl && CurrentDevice.dataProcessInfo != null)
+        {
+            return !CurrentDevice.dataProcessInfo.IsEnabledManDown || !CurrentDevice.IsConnected;
+        }
+
+        return true;
+    }
+
+    private bool IsCalibrationButtonDisabled()
+    {
+        return IsProcessActivated() || _isHCOnOffActive || _isFlameOn;
+    }
+
+    private bool IsProcessActivated()
+    {
+        if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
+        {
+            return CurrentDevice.dataProcessInfo.IsProcessActive;
+        }
+
+        return false;
+    }
+
+    private bool IsIgnitionButtonDisabled()
+    {
+      return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy
+            || !CurrentDevice.IsConnected
+            || !CurrentDevice.IsEnabledMainControl
+            //|| _isHCOnOffActive
+            || _isCalibrationActive;
+    }
+
+    private bool IsProcessModeHCButtonsUpDownDisabled()
+    {
+        if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
+        {
+            return !CurrentDevice.dataProcessInfo.IsHeightControlActive || !CurrentDevice.dataProcessInfo.IsEnabledHeightControlOff;
+        }
+
+        return true;
+    }
+
+    private bool IsProcessModeHCButtonOnOffDisabled()
+    {
+        if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
+        {
+            return !CurrentDevice.dataProcessInfo.IsEnabledHeightControlOff;
+        }
+
+        return true;
+    }
+
+    private bool IsHCOnOffDisabled()
+    {
+      return    /*_isFlameOn 
+             ||*/ (CurrentDevice.dataProcessInfo?.IsCalibrationActive ?? false) 
+             || !CurrentDevice.IsEnabledMainControl;
+
+    }
+
+    private bool IsHCOnOffEnabled()
+    {
+        return    !_isFlameOn 
+               && !_isCalibrationActive
+               && (CurrentDevice.dataProcessInfo?.IsCalibrationActive ?? false) 
+               && CurrentDevice.IsEnabledMainControl;
+    }
+
+    private bool IsStartProcessDisabled()
+    {
+        return !CurrentDevice.IsEnabledMainControl || _isCalibrationActive;
+    }
+
+    private bool IsSumDisabled()
+    {
+        var enabledDevicesCount = ihtDevices.GetDevices().Where(dev => dev.IsEnabledMainControl).ToList().Count;
+
+        if (enabledDevicesCount < 2)
+        {
+            _isSumTorchesActive = false;
+            dynDataModificationCNCDataProvider.IsBroadCastMode = false;
+        }
+
+      //return enabledDevicesCount < 2 || _isFlameOn || _isHCOnOffActive || _isCalibrationActive;
+      return enabledDevicesCount < 2;
+    }
+
+    private bool IsOtherModeDisabled()
+    {
+        return ihtDevices.GetConnectedDevices().Count == 0;
+    }
+
+    private async void OpenSetupParamsDialog()
+    {
+        _setupParamsDialogVisible = true;
+
+        await GetSetupParametersAsync(true);
+    }
+
+    private void CloseSetupParamsDialog()
+    {
+        _setupParamsDialogVisible = false;
+    }
+
+    private void OpenPasswordSetupDialog()
+    {
+        _setupPasswordValue = string.Empty;
+
+        _setupPasswordDialogVisible = true;
+    }
+
+    private void ClosePasswordSetupDialog()
+    {
+        _setupPasswordValue = string.Empty;
+
+        _setupPasswordDialogVisible = false;
+    }
+
+    private void OpenTorchInstalledDialog()
+    {
+        TorchInstalledDialogVisible = true;
+    }
+
+    private void CloseTorchInstalledDialog()
+    {
+        TorchInstalledDialogVisible = false;
+    }
+
+    private void OpenLocalizationDialog()
+    {
+        _cultureSelectorVisible = true;
+    }
+
+    private void CloseLocalizationDialog()
+    {
+        _cultureSelectorVisible = false;
+
+        _menuExpanded = false;
+        //navigationManager.NavigateTo(navigationManager.Uri, true);
+
+        ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void RestoreIsVisibleAndTorchType()
+    {
+        //restore torch type
+        ihtDevices.TorchTypeSetup = _currentTorchTypeSetup;
+
+        //restore devices visibility
+        IhtDevices.ihtDevices.ToList().Where(d => d.Value.DeviceNumber <= _currentVisibleTorchesNum).ToList().ForEach(d => d.Value.IsVisible = true);
+
+        //restore com port
+        _nameComPort = _currentComPort ?? string.Empty;
+    }
+
+    private void SaveCurrentIsVisibleAndTorchType()
+    {
+        _currentVisibleTorchesNum = ihtDevices.GetDevices().Where(x => x.IsVisible).Max(x => x.DeviceNumber);
+
+        _currentTorchTypeSetup = ihtDevices.TorchTypeSetup;
+
+        _currentComPort = _nameComPort;
+    }
+
+    private bool IsEnabledOnDisabled()
+    {
+        return !CurrentDevice.IsEnabledOn;
+    }
+
+    private async Task SetNewPasswordLevel()
+    {
+        IhtDevices.PasswordLevel_SW newPasswordLevel;
+
+        if (_passwordToLevelDictionary.TryGetValue(_setupPasswordValue, out newPasswordLevel))
+        {
+            _userPasswordLevel = newPasswordLevel;
+
+            await GetSetupParametersAsync();
+
+            ClosePasswordSetupDialog();
+        }
+    }
+
+    private async Task GetEditPassword(string passSimbol)
+    {
+        if (passSimbol == "x")
+        {
+            if (!string.IsNullOrEmpty(_setupPasswordValue))
+            {
+                _setupPasswordValue = _setupPasswordValue.Remove(_setupPasswordValue.Length - 1);
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            if (_setupPasswordValue.Length < 5)
+            {
+                _setupPasswordValue = $"{_setupPasswordValue}{passSimbol}";
+            }
+
+            @*if(_setupPasswordValue.Length == 4)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(0.2));
+                SetNewPasswordLevel();
+            }*@
+
+            //await Task.Delay(TimeSpan.FromSeconds(0.2));
+            await SetNewPasswordLevel();
+        }
+    }
+
+    private void OpenEditParamDialog()
+    {
+        _editParamDialogVisible = true;
+    }
+
+    private void GetParamDataModel(Guid id)
+    {
+        dynParamDataModel = Elements.FirstOrDefault(p => p.Id == id) ?? new ParameterDataModel();
+    }
+
+    private void OpenParamsListDialog()
+    {
+        _isOpenParamsListDialog = true;
+    }
+
+    private void CloseEditParamDialog()
+    {
+        _editParamDialogVisible = false;
+    }
+
+    private void OpenEditGasParamSliderDialog()
+    {
+        _editGasParamSliderDialogVisible = true;
+
+        if(dynParamDataModel != null && dynParamDataModel.DynParams != null)
+        {
+            dynParamDataModel.DynParams.SetMaxForSlider();
+            dynParamDataModel.DynParams.SetMinForSlider();
+        }
+    }
+
+    private void CloseEditGasParamSliderDialog()
+    {
+        _editGasParamSliderDialogVisible = false;
+    }
+
+    private void ResetPassword()
+    { 
+        _userPasswordLevel = IhtDevices.PasswordLevel_SW.Level_0;
+
+        GetSetupParametersAsync().Wait();
+        ClosePasswordSetupDialog();
+    }
+
+    private bool GetReadOnlyStatus(int number)
+    {
+        var returnVal = false;
+
+        if(number == 1)
+        {
+            returnVal = true;
+        }
+
+        return returnVal;
+    }
+
+    private void RowClickEvent(TableRowClickEventArgs<ParameterDataModel> tableRowClickEventArgs)
+    {
+        var id = tableRowClickEventArgs.Item.Id;
+        var editMode = tableRowClickEventArgs.Item.ParamSettings?.ViewParameter?.Mode;
+
+        GetParamDataModel(id);
+
+        if (dynParamDataModel.ParamSettings?.ReadOnly ?? false) return;
+
+        if (editMode == "Slider")
+        {
+            OpenEditParamDialog();
+        }
+        else if (editMode == "Select")
+        {
+            OpenParamsListDialog();
+        }
+    }
+
+    private async Task ParameterValueChanged(ushort? paramValue = null)
+    {
+        var result = false;
+#if false
+      // Save data in to the DB or Device properties
+      if(paramValue == null)
+      {
+      paramValue = (ushort)(dynParamDataModel?.DynParams?.Value ?? 0);
+      }
+
+      if (dynParamDataModel?.ParamSettings != null)
+      {
+      var result = await dynParamDataModel.ParamSettings.WriteAsync(ihtDevices, CurrentSlaveId, (ushort)(paramValue));
+      }
+
+      await GetSetupParametersAsync(refreshAll: true);
+#else
+        bool isValueChangedFlameParam = false;
+
+        if (dynParamDataModel?.ParamGroupId == ParamGroup.Technology)
+        {
+            switch (dynParamDataModel?.DynParams?.ParamId)
+            {
+                case (int)IhtModbusParamDyn.eIdxTechnology.HeatO2Ignition:
+                case (int)IhtModbusParamDyn.eIdxTechnology.FuelGasIgnition:
+                case (int)IhtModbusParamDyn.eIdxTechnology.HeatO2PreHeat:
+                case (int)IhtModbusParamDyn.eIdxTechnology.FuelGasPreHeat:
+                case (int)IhtModbusParamDyn.eIdxTechnology.HeatO2Pierce:
+                case (int)IhtModbusParamDyn.eIdxTechnology.FuelGasPierce:
+                case (int)IhtModbusParamDyn.eIdxTechnology.CutO2Pierce:
+                case (int)IhtModbusParamDyn.eIdxTechnology.HeatO2Cut:
+                case (int)IhtModbusParamDyn.eIdxTechnology.FuelGasCut:
+                case (int)IhtModbusParamDyn.eIdxTechnology.CutO2Cut:
+                    {
+                        isValueChangedFlameParam = true;
+                        break;
+                    }
+            }
+        }
+
+        if (isValueChangedFlameParam)
+        {
+            UpdateDynParam(dynParamDataModel);
+        }
+        else
+        {
+            // Save data in to the DB or Device properties
+            if (paramValue == null)
+            {
+                paramValue = (ushort)(dynParamDataModel?.DynParams?.Value ?? 0);
+            }
+
+            if (dynParamDataModel?.ParamSettings != null)
+            {
+                result =  await dynParamDataModel.ParamSettings.WriteAsync(ihtDevices, CurrentSlaveId, (ushort)(paramValue));
+            }
+
+            await GetSetupParametersAsync(refreshAll: true);
+        }
+#endif
+    }
+
+    private void SelectedListItemParamChanged(MudListItem mudListItem)
+    {
+        if (mudListItem != null)
+        {
+            _ = ParameterValueChanged((ushort)((int)mudListItem.Value));
+        }
+    }
+
+    private void CloseParamsListDialog()
+    {
+        _isOpenParamsListDialog = false;
+    }
+
+    ///// ---- start preFlowActive indicator ----
+
+    public int preflowActiveValue;
+
+    private bool preflowActiveDisabled = true;
+
+    public async void SimulateProgress()
+    {
+        preflowActiveValue = 5;
+        do
+        {
+            await Task.Delay(TimeSpan.FromSeconds(1));
+
+            preflowActiveValue = preflowActiveValue - 1;
+            StateHasChanged();
+
+
+        } while (preflowActiveValue > 0);
+
+        preflowActiveDisabled = true;
+        PreflowStarted = false;
+    }
+
+    private bool _preflowStarted;
+    bool PreflowStarted
+    {
+        get { return _preflowStarted; }
+        set { _preflowStarted = value; PreflowStartSwitch_ChangedValue(value);  }
+    }
+
+    ///// ---- end preFlowActive indicator ----
+
+    private int _maxProgressCircularValue;
+    private int _curProgressCircularValue;
+
+    private double GetProgressCircularValue(SettingParamIds settingParamId)
+    {
+        var param = Elements.FirstOrDefault(p => p.ParamSettings != null && p.ParamSettings.SettingParam == settingParamId);
+
+        var paramValue = param?.DynParams?.Value ?? 0;
+
+        if(_maxProgressCircularValue == 0)
+        {
+            _maxProgressCircularValue = paramValue;
+        }
+
+        _curProgressCircularValue = paramValue;
+
+        double returnValue = 100;
+
+        if (_maxProgressCircularValue != 0)
+        {
+            returnValue = _curProgressCircularValue * 100.0 / _maxProgressCircularValue;
+        }
+
+        return returnValue;
+    }
+
+    private string progressCircularDisplay
+    {
+        get
+        {
+            // To see the indicator immediately, we need to change the condition
+            return _maxProgressCircularValue > _curProgressCircularValue ? VISIBLE_CLASS : INVISIBLE_CLASS;
+        }
+    }
+
+
+
+    private double reloadProgressValue
+    {
+        get
+        {
+#if false
+    _currHeatTime = ihtDevices.GetDataProcessInfo(CurrentSlaveId).CurrHeatTime;
+#else
+            if (!CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl)
+            {
+                return 100;
+            }
+            if (IsLedPreHeating)
+            {
+                _currHeatTime = ihtDevices.GetDataProcessInfo(CurrentSlaveId).CurrHeatTime;
+            }
+            else
+            {
+                _currHeatTime = ihtDevices.GetDevice(CurrentSlaveId).dataParamDynTechnology.PreHeatTime / 10;
+            }
+#endif
+            return _currHeatTime * 100.0 / _maxHeatTime;
+        }
+    }
+
+    private string reloadProgressDisplay
+    {
+        get
+        {
+            return IsLedPreHeating ? DISPLAY_CLASS : NONE_DISPLAY_CLASS;
+        }
+    }
+
+    private string selectedStationsDisplay
+    {
+        get
+        {
+            return _userPasswordLevel >= IhtDevices.PasswordLevel_SW.Level_1 ? DISPLAY_INLINE_CLASS : NONE_DISPLAY_CLASS;
+        }
+    }
+
+    private string GetLocalCultureIcon
+    {
+        get
+        {
+            var flagPath = string.Empty;
+
+            var regionName = LocalizationHelper.GetRegionNameFromCulture(CultureInfo.CurrentUICulture);
+
+            if (!string.IsNullOrWhiteSpace(regionName))
+            {
+                var flagName = LocalizationHelper.GetFlagNameFromRegionName(regionName);
+
+                if (!string.IsNullOrWhiteSpace(flagName))
+                {
+                    flagPath = LocalizationHelper.GetFlagNamePath(flagName);
+                }
+            }
+
+            return flagPath;
+        }
+    }
+
+    private int _maxHeatTime;
+    private int _currHeatTime;
+
+    public void SetMaxHeatTimeProgressValue(int maxHeatTime)
+    {
+        _maxHeatTime = maxHeatTime;
+    }
+
+    bool IsEnabledMainControl
+    {
+        get { return CurrentDevice.IsEnabledMainControl; }
+        set
+        {
+            CurrentDevice.IsEnabledMainControl = value;
+
+            if (value)
+            {
+                dynDataModificationCNCDataProvider.ManualySelectedDeviceIsDisabled = false;
+            }
+            else
+            {
+                _menuExpanded = false;
+            }
+        }
+    }
+
+    public bool this[SettingParamIds settingParamId]
+    {
+        get
+        {
+            var param = Elements.FirstOrDefault(p => p.ParamSettings != null && p.ParamSettings.SettingParam == settingParamId);
+
+            return (param?.DynParams?.Value ?? 0) == 0 ? false : true;
+        }
+        set
+        {
+            var param = Elements.FirstOrDefault(p => p.ParamSettings != null && p.ParamSettings.SettingParam == settingParamId);
+
+            // set the value immediately, when value is not written to the device, it's updated to the old value
+            var paramValue = value == false ? 0 : 1;
+            param.DynParams.Value = paramValue;
+
+            _ = ParameterValueChanged((ushort)paramValue);
+        }
+    }
+
+    void ClickedParamButton(SettingParamIds settingParamId)
+    {
+        dynParamDataModel = Elements.FirstOrDefault(p => p.ParamSettings != null && p.ParamSettings.SettingParam == settingParamId);
+
+        if (dynParamDataModel?.ParamSettings != null)
+        {
+            _ = ParameterValueChanged();
+        }
+    }
+
+    private void PreflowStartSwitch_ChangedValue(bool isChecked)
+    {
+        if (dynParamDataModel == null || dynParamDataModel.DynParams == null) return;
+
+        dynParamDataModel.DynParams.Value = isChecked ? 1 : 0;
+
+        var paramName = dynParamDataModel.ParamName;
+        var paramVal = dynParamDataModel.DynParams?.Value;
+
+        if(paramName == IhtModbusParamDyn.eIdxAdditional.StartPreflow.ToString() && paramVal == 1)
+        {
+            preflowActiveDisabled = false;
+            SimulateProgress();
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private int VisibleDevicesCount {
+        get
+        {
+            return ihtDevices.GetDevices().Where(d => d.IsVisible).Count();
+        }
+    }
+
+    private int ConnectedDevicesCount {
+        get
+        {
+            return ihtDevices.GetDevices().Where(d => d.IsVisible && d.IsConnected).Count();
+        }
+    }
+
+    private string drawerDisplay {
+        get
+        {
+            return _torchInstalledDialogIsBlocked ? DISPLAY_CLASS : NONE_DISPLAY_CLASS;
+        }
+    }
+
+    private string _connectVisible {
+        get
+        {
+            return _initialDialogIsBlocked ? DISPLAY_CLASS : NONE_DISPLAY_CLASS;
+        }
+        set { }
+    }
+
+    private IhtDevice CurrentDevice
+    {
+        get
+        {
+            return ihtDevices.GetDevice(dynDataModificationCNCDataProvider.CurrentSlaveId);
+        }
+    }
+
+    private void ToggleMenu()
+    {
+        _menuExpanded = !_menuExpanded;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="heigthCtrlHandler"></param>
+    /// <returns></returns>
+    private async Task ExecHeightCtrlAsync(Func<int, Task> heigthCtrlHandler, bool IsHCOnOffActive = true, bool turnHCOffAllEnabledDevices=false)
+    {
+        if (IsBroadCastMode || turnHCOffAllEnabledDevices)
+        {
+            var devices = ihtDevices.GetDevices().Where(dev => dev.IsEnabledMainControl).ToList();
+            foreach (IhtDevice device in devices)
+            {
+                ihtDevices.GetDataCmdExecution(device.SlaveId).IsHCOnOffActive = IsHCOnOffActive;
+                await heigthCtrlHandler(device.SlaveId);
+            }
+        }
+        else
+        {
+            _isHCOnOffActive = IsHCOnOffActive;
+            await heigthCtrlHandler(CurrentSlaveId);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private async Task UpdateCurrentParamsTypeAsync()
+    {
+        if (CurrentDevice != null)
+        {
+            string paramsType = string.Empty;
+
+            int? statusLeds  = CurrentDevice?.dataProcessInfo?.StatusLeds;
+
+            if ((statusLeds & (int)IhtModbusParamDyn.eStatusLedBit.Ignition) != 0)
+            {
+                paramsType = IGNITION;
+            }
+            else if ((statusLeds & (int)IhtModbusParamDyn.eStatusLedBit.PreHeating) != 0)
+            {
+                paramsType = PRE_HEAT;
+            }
+            else if ((statusLeds & (int)IhtModbusParamDyn.eStatusLedBit.Piercing) != 0)
+            {
+                paramsType = PIERCING;
+            }
+            else if ((statusLeds & (int)IhtModbusParamDyn.eStatusLedBit.Cutting) != 0)
+            {
+                paramsType = CUTTING ;
+            }
+            else
+            {
+                paramsType = IGNITION ;
+            }
+
+            if (!string.IsNullOrEmpty(paramsType) && paramsType != dynDataModificationCNCDataProvider.CurrentParamsType)
+            {
+                dynDataModificationCNCDataProvider.CurrentParamsType = paramsType;
+                await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+    }
+
+    /// <summary>
+    ///
+    ///
+    /// </summary>
+    /// <param name="paramsType"></param>
+    /// <returns></returns>
+    private async Task SetParamsType(string paramsType)
+    {
+        string paramstypeHC = paramsType;
+
+        if (_isHCOnOffActive)
+        {
+            if (paramstypeHC == IGNITION || paramsType == HEATTING)
+            {
+                paramstypeHC = PRE_HEAT;
+                if (!_isFlameOn)
+                {
+                    paramsType = PRE_HEAT;
+                }
+            }
+
+            Func<int, Task>? heigthCtrlHandler = null;
+            switch (paramstypeHC)
+            {
+                case PRE_HEAT: heigthCtrlHandler = ihtDevices.HeightControlPreHeatingAsync; break;
+                case PIERCING: heigthCtrlHandler = ihtDevices.HeightControlPiercingAsync; break;
+                case CUTTING: heigthCtrlHandler = ihtDevices.HeightControlCuttingAsync; break;
+                case HEATTING: heigthCtrlHandler = ihtDevices.HeightControlCuttingAsync; break;
+                default: return;
+
+            }
+
+            await ExecHeightCtrlAsync(heigthCtrlHandler, IsHCOnOffActive: true);
+        }
+
+
+        switch (paramsType)
+        {
+            case IGNITION: await Task.Delay(250); await ihtDevices.SetupCtrl_SetIgnitionCommonAsync(); break;
+            case PRE_HEAT: await ihtDevices.SetupCtrl_SetPreHeatingCommonAsync(); break;
+            case PIERCING: await ihtDevices.SetupCtrl_SetPiercingCommonAsync(); break;
+            case CUTTING: await ihtDevices.SetupCtrl_SetCuttingCommonAsync(); break;
+            case HEATTING: await ihtDevices.SetupCtrl_SetHeatingCommonAsync(); break;
+        }
+
+        dynDataModificationCNCDataProvider.CurrentParamsType = paramsType;
+
+        await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
+
+        await InvokeAsync(StateHasChanged);
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="deviceNum"></param>
+    private async void SetDeviceNum(int deviceNum)
+    {
+        //TODO: implemet: not to go to error device!!!!
+        var device = GetDeviceByDeviceNumber(deviceNum);
+
+        //if (deviceNum <= VisibleDevicesCount && !device.IsCommunicError)
+        if (device.IsVisible)
+        {
+            // Stop the SP moving
+            StopTorchMoving();
+
+            // Reset the SP value to the start val
+            //spValueCurrent = 50;
+
+            dynDataModificationCNCDataProvider.CurrentDeviceNumber = deviceNum;
+
+            await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
+
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="selectedType"></param>
+    /// <returns></returns>
+    private string GetParamsTypeClass(string selectedType)
+    {
+        if (selectedType.ToLower() == dynDataModificationCNCDataProvider.CurrentParamsType.ToLower())
+            return "SelectedParamsType tabcell";
+        return "UnselectedParamsType tabcell";
+    }
+
+    private IhtDevice GetDeviceByDeviceNumber(int devNumber)
+    {
+        var slaveId = devNumber + (int)IhtModbusCommunic.SlaveId.Id_Default;
+        var device = ihtDevices.GetDevice(slaveId);
+        return device;
+    }
+
+    private string GetDeviceNumClass(int selectedNum)
+    {
+        var cssClass = "NotInUseDeviceNum device_tabcell";
+
+        var device = GetDeviceByDeviceNumber(selectedNum);
+
+        if (device != null)
+        {
+            if (device.dataProcessInfo != null)
+                device.IsTorchDisabled = device.dataProcessInfo.IsInpTorchDisabled;
+
+            if (!device.IsVisible)
+            {
+                return cssClass;
+            }
+
+            if (device.IsConnected)
+            {
+                if (device.IsEnabledMainControl)
+                {
+                    if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
+                    {
+                        cssClass = "SelectedDeviceNum device_tabcell";
+
+                        if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
+                        {
+                            cssClass = " ErrorDevice Selected";
+                        }
+                    }
+                    else
+                    {
+                        cssClass = "ConnectedDeviceNum device_tabcell";
+
+                        if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
+                        {
+                            cssClass += " ErrorDevice";
+                        }
+                    }
+
+                    if (_isSumTorchesActive)
+                    {
+                        cssClass += " SumDevices";
+                    }
+                }
+                else
+                {
+                    if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
+                    {
+                        cssClass = "DisabledDeviceSelected  device_tabcell";
+
+                        if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
+                        {
+                            cssClass = " ErrorDevice Selected";
+                        }
+                    }
+                    else
+                    {
+                        cssClass = "DisabledDeviceNum device_tabcell";
+
+                        if ((device?.dataProcessInfo?.ErrorCode ?? 0) > 0)
+                        {
+                            cssClass += " ErrorDevice";
+                        }
+                    }
+                }
+            }
+            else if (device.IsCommunicError)
+            {
+                cssClass = "DisabledDeviceNum ErrorDevice device_tabcell";
+                device.IsEnabledMainControl = false;
+                device.IsEnabledOn = false;
+
+                if (selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
+                {
+                    cssClass += " Selected";
+                }
+            }
+            else if (device.IsVisible && selectedNum == dynDataModificationCNCDataProvider.CurrentDeviceNumber)
+            {
+                cssClass = "DisabledDeviceNum  device_tabcell";
+                device.IsEnabledOn = false;
+            }
+
+            Task.Run(() => GetDeviceCalibrationState(device));
+        }
+
+        return cssClass;
+    }
+
+    private string GetErrorCodeMessage(int devNum)
+    {
+
+        var errorCode = GetDeviceErrorCode(devNum);
+        var messageStr = string.Empty;
+        var device = GetDeviceByDeviceNumber(devNum);
+
+        //Communication error
+        if(errorCode == 100)
+        {
+            messageStr = "Commun. Er.";
+        }
+        else
+        {
+            messageStr = $" Er. Code: {errorCode}";
+        }
+
+        return messageStr;
+    }
+
+    private int GetDeviceErrorCode(int devNum)
+    {
+        var errorCode = 0;
+
+        var device = GetDeviceByDeviceNumber(devNum);
+
+        if(device != null)
+        {
+            errorCode = device?.dataProcessInfo?.ErrorCode ?? 0;
+        }
+
+        return errorCode;
+    }
+
+    private void StopTorchMoving()
+    {
+        if (isTorchStartedMoving)
+        {
+            isTorchStartedMoving = false;
+
+            this.APCTorchPositionStoped?.Invoke("StopTorch", EventArgs.Empty);
+
+            ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private void StartMovingTorch(string eventName)
+    {
+        if (!isTorchStartedMoving)
+        {
+            isTorchStartedMoving = true;
+
+            this.APCTorchPositionChanged?.Invoke(eventName, EventArgs.Empty);
+
+            ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private bool IsDisabledSliderFlameParam()
+    {
+        if (ComponentMode == MANUAL_MODE)
+        {
+            return _isHCOnOffActive && !_isFlameOn;//_isCalibrationActive || _isHCOnOffActive || !_isFlameOn;
+        }
+        else
+        {
+            if (IsProcessActivated())
+            {
+                if (dynDataModificationCNCDataProvider.CurrentParamsType == PRE_HEAT
+                    || dynDataModificationCNCDataProvider.CurrentParamsType == PIERCING
+                    || dynDataModificationCNCDataProvider.CurrentParamsType == CUTTING
+                   )
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void EditFlameParamValue(ParameterDataModel parameterData)
+    {
+        if (IsDisabledSliderFlameParam())
+        {
+            return;
+        }
+        dynParamDataModel = parameterData;
+
+        if(dynParamDataModel.DynParams.ConstParams.Step < 100)
+        {
+            dynParamDataModel.DynParams.ConstParams.Step = 100;
+        }
+
+        OpenEditGasParamSliderDialog();
+    }
+
+    private void SliderValueChangedHandler(int v)
+    {
+        // update the view-model to let the change render
+        // if you avoid that, you wil effectively cancel the event
+        int TheValue = v;
+
+        Console.WriteLine($"The user has now chosen {v}");
+    }
+
+    private async void DynamicAPCParamsOnDynamicAPCParamsDataChanged(object? sender, EventArgs e)
+    {
+        try
+        {
+            await GetSetupParametersAsync(refreshAll: true);
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch { };
+    }
+
+    private async void DynamicAPCParamsOnConnectedTorchesInstalled(object? sender, EventArgs e)
+    {
+        await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        this.DynamicAPCParamsClientChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+        this.DynamicAPCParamsClientChangedCommon -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChangedCommon;
+
+        this.APCTorchPositionChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
+        this.APCTorchPositionStoped -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
+
+        _ = TurnFlameOffAsync(turnFlameOffAllEnabledDevices: true);
+
+        _ = TurnHCOffAsync(turnHCOffAllEnabledDevices: true);
+
+        // Stop the SP moving and refresh component for all the users
+        _ = dynDataModificationCNCDataProvider.StopMovingTorchAsync();
+        ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
+
+        ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+
+        ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded -= DynamicAPCParamsOnConnectedTorchesInstalled;
+
+        IhtDevices.DataProviderIsControlsActive .DataChanged -= DataProviderIsControlsActive;
+        IhtDevices.DataProviderIsProcessesActive.DataChanged -= DataProviderIsProcessesActive;
+        IhtDevices.DataProviderIsClearanceControlsManual.DataChanged -= DataProviderIsClearanceControlsManual;
+        IhtDevices.DataProviderIsCuttingDataBaseIdChanged.DataChanged -= DataProviderIsCuttingDataBaseIdChanged;
+    }
+
+    private void ParamSelected1(ChangeEventArgs args)
+    {
+        //dynDataModificationCNCDataProvider._paramHeatO2.DynParams.Value = args.Value;
+        //OnParamChanged();
+    }
+
+    private void OnParamChanged(object eventParam)
+    {
+        if (IsBroadCastMode)
+        {
+            DynamicAPCParamsClientChangedCommon?.Invoke(eventParam, EventArgs.Empty);
+        }
+        else
+        {
+            DynamicAPCParamsClientChanged?.Invoke(eventParam, EventArgs.Empty);
+        }
+
+    }
+
+    int? CuttingDataBaseId
+    {
+        get
+        {
+            _ = GetCurrentCuttingDataFromDB(ihtDevices.DataBaseId);
+
+            return ihtDevices.DataBaseId;
+        }
+
+        set { }
+    }
+
+    string NozzleName = string.Empty;
+    string Thickness = string.Empty;
+    string CuttingSpeed = string.Empty;
+    string Kerf = string.Empty;
+
+    // Create only one string for all params but not for each param
+    private async Task GetCurrentCuttingDataFromDB(int? DataBaseId)
+    {
+        if (DataBaseId != null && DataBaseId != 0)
+        {
+            var cuttingDataModel = await cuttingDataDBService.GetEntryByIdAsync((int)DataBaseId, CancellationToken.None);
+
+            if(cuttingDataModel != null)
+            {
+                NozzleName = cuttingDataModel?.Nozzle?.Name ?? string.Empty;
+                Thickness = DisplayValueAndUnit(cuttingDataModel?.Thickness ?? 0, Units.txtMm) ?? string.Empty;
+                CuttingSpeed = DisplayValueAndUnit(cuttingDataModel?.CuttingSpeed ?? 0, Units.txtInch_min) ?? string.Empty;
+                Kerf = DisplayValueAndUnit(cuttingDataModel?.Kerf ?? 0, Units.txtMm) ?? string.Empty; // cuttingDataModel?.Kerf.ToString("0.#") ?? string.Empty;
+            }
+        }
+    }
+
+}

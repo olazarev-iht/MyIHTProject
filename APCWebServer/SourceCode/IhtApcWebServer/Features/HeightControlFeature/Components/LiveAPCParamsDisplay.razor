@@ -1,0 +1,37 @@
+﻿@using IhtApcWebServer.Features.HeightControlFeature.Services
+@inject LiveAPCParamsDataProvider liveAPCParamsDataProvider;
+@implements IDisposable
+<MudText Typo="Typo.h4">LiveAPCParamsDisplay</MudText>
+
+@if (liveAPCParamsDataProvider != null)
+{
+    var liveParamsInfos = liveAPCParamsDataProvider.CurrentLiveAPCParams.LiveParamsInfos;
+
+    @for (var i = 1; i <= liveParamsInfos.Count; i++){
+        <p>Device @i Live Params are: 
+            Live Param 1 = @liveParamsInfos[i].LiveParam1 
+            Live Param 2 = @liveParamsInfos[i].LiveParam2 
+            Live Param 3 = @liveParamsInfos[i].LiveParam3
+        </p>
+        
+    }
+}
+@code {
+
+    protected override void OnInitialized()
+    {
+        liveAPCParamsDataProvider.LiveAPCParamsDataChanged += LiveAPCParamsOnLiveAPCParamsDataChanged;
+        base.OnInitialized();
+    }
+
+    private async void LiveAPCParamsOnLiveAPCParamsDataChanged(object? sender, EventArgs e)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        liveAPCParamsDataProvider.LiveAPCParamsDataChanged -= LiveAPCParamsOnLiveAPCParamsDataChanged;
+    }
+
+}

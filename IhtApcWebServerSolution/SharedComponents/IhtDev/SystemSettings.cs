@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SharedComponents.Models;
 using SharedComponents.Services.APCHardwareDBServices;
 using Microsoft.Extensions.Options;
+using System.Threading;
 
 namespace SharedComponents.IhtDev
 {
@@ -607,6 +608,24 @@ namespace SharedComponents.IhtDev
             }
         }
 
+        private int? _dataBaseId;
+        public int? DataBaseId
+        {
+            get { return _dataBaseId; }
+
+            set
+            {
+                _dataBaseId = value;
+
+                var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
+                if (configSettings != null && !initialSettings)
+                {
+                    configSettings.DataBaseId = value;
+                    _configSettingsDBService.UpdateEntryAsync(configSettings, CancellationToken.None);
+                }
+            }
+        }
+
         private int? _torchType;
         public int? TorchType
         {
@@ -716,12 +735,14 @@ namespace SharedComponents.IhtDev
         }
 
         protected readonly IConfigSettingsDBService _configSettingsDBService;
-        private readonly Settings _settings;
+		protected readonly IConfigSettingsArchiveDBService _configSettingsArchiveDBService;
+		private readonly Settings _settings;
 
         public SystemSettings(
             IOptions<Settings> settings,
-            IConfigSettingsDBService configSettingsDBService
-            )
+            IConfigSettingsDBService configSettingsDBService,
+			IConfigSettingsArchiveDBService configSettingsArchiveDBService
+			)
         {
             _settings = settings != null ? settings.Value :
                throw new ArgumentNullException($"{nameof(settings)}");
@@ -729,9 +750,21 @@ namespace SharedComponents.IhtDev
             _configSettingsDBService = configSettingsDBService ??
                throw new ArgumentNullException($"{nameof(configSettingsDBService)}");
 
-            var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
+			_configSettingsArchiveDBService = configSettingsArchiveDBService ??
+			   throw new ArgumentNullException($"{nameof(configSettingsArchiveDBService)}");
 
-            Mode = configSettings?.Mode ?? _settings.Mode;
+			var configSettings = _configSettingsDBService.GetEntryAsync(CancellationToken.None).Result;
+
+			if (configSettings != null
+					&& configSettings.Mode == null
+					&& string.IsNullOrWhiteSpace(configSettings.ComPort)
+					&& string.IsNullOrWhiteSpace(configSettings.IpAddr)
+					&& string.IsNullOrWhiteSpace(configSettings.Baudrate))
+			{
+				configSettings = _configSettingsArchiveDBService.GetEntryAsync(CancellationToken.None).Result;
+			}
+
+			Mode = configSettings?.Mode ?? _settings.Mode;
             TcpPort = string.IsNullOrWhiteSpace(configSettings?.TcpPort) ? _settings.TcpPort : configSettings?.TcpPort;
             IpAddr = string.IsNullOrWhiteSpace(configSettings?.IpAddr) ? _settings.IpAddr : configSettings?.IpAddr;
             ComPort = string.IsNullOrWhiteSpace(configSettings?.ComPort) ? _settings.ComPort : configSettings?.ComPort;
@@ -768,6 +801,7 @@ namespace SharedComponents.IhtDev
             DataBaseNozzleSelectedIndex = configSettings?.DataBaseNozzleSelectedIndex ?? _settings.DataBaseNozzleSelectedIndex;
 
             DataBaseGuid = configSettings?.DataBaseGuid ?? _settings.DataBaseGuid;
+            DataBaseId = configSettings?.DataBaseId ?? _settings.DataBaseId;
             TorchType = configSettings?.TorchType ?? _settings.TorchType;
             PressureUnit = configSettings?.PressureUnit ?? _settings.PressureUnit;
             LengthUnit = configSettings?.LengthUnit ?? _settings.LengthUnit;

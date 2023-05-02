@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,9 @@ namespace SharedComponents.Helpers
 		public const int MaxErrolLogRowsNum = 5000;
 
 		//Max number of rows we show from the business log
-		public const int MaxErrolLogRowsToShow = 150;
-	}
+		public const int MaxErrolLogRowsToShow = 100;
+
+        //CuttingDB min num of constant rows
+        public const int CutDBMinConstRowNumber = 50000;
+    }
 }

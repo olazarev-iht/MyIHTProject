@@ -35,8 +35,13 @@ using System.Net;
 using SharedComponents.Helpers;
 using SharedComponents.MqttModel;
 using Serilog.Context;
+using IhtApcWebServer.Services.CuttingDataArchiveDBService;
+using IhtApcWebServer.Services.APCHardwareArchiveDBServices;
+using IhtApcWebServer.Helpers;
 
 var BaseDirectory = WindowsServiceHelpers.IsWindowsService() ? AppContext.BaseDirectory : default;
+var filePathArchiveDataBase = CommonData.filePathArchiveDataBase;
+var filePathArchiveSettings = CommonData.filePathArchiveSettings;
 
 var options = new WebApplicationOptions
 {
@@ -162,10 +167,21 @@ builder.Services.AddDbContextFactory<APCHardwareDBContext>(options =>
 	options.UseSqlite($"Data Source={BaseDirectory}APCHardware.db");
 });
 
+// Archives for CuttingData and ConfigSettings tables
+builder.Services.AddDbContextFactory<CuttingDataArchiveDbContext>(options =>
+{
+    options.UseSqlite(@$"Data Source={filePathArchiveDataBase}");
+});
+builder.Services.AddDbContextFactory<APCHardwareArchiveDBContext>(options =>
+{
+    options.UseSqlite(@$"Data Source={filePathArchiveSettings}");
+});
+
 builder.Services.AddScoped<ICuttingParametersService, CuttingParametersService>();
 
 // CuttingData
 builder.Services.AddSingleton<ICuttingDataDBService, CuttingDataDBService>();
+builder.Services.AddSingleton<ICuttingDataArchiveDBService, CuttingDataArchiveDBService>();
 builder.Services.AddSingleton<IGasDBService, GasDBService>();
 builder.Services.AddSingleton<IMaterialDBService, MaterialDBService>();
 builder.Services.AddSingleton<INozzleDBService, NozzleDBService>();
@@ -179,6 +195,7 @@ builder.Services.AddSingleton<IParameterDataDBService, ParameterDataDBService>()
 builder.Services.AddSingleton<IParameterDataInfoDBService, ParameterDataInfoDBService>();
 builder.Services.AddSingleton<IAPCDefaultDataMockDBService, APCDefaultDataMockDBService>();
 builder.Services.AddSingleton<IConfigSettingsDBService, ConfigSettingsDBService>();
+builder.Services.AddSingleton<IConfigSettingsArchiveDBService, ConfigSettingsArchiveDBService>();
 builder.Services.AddSingleton<IErrorLogDBService, ErrorLogDBService>();
 
 // APC Mock DB
@@ -202,7 +219,7 @@ builder.Services.AddSingleton<IhtModbusCommunic>();
 builder.Services.AddSingleton<IhtModbusCommunicData>(); 
 builder.Services.AddSingleton<APCCommunicManager>();
 builder.Services.AddSingleton<CommunicationsService>();
-builder.Services.AddSingleton<DataCommon>();
+//builder.Services.AddSingleton<DataCommon>();
 builder.Services.AddSingleton<IhtCutDataAddressMap>();
 builder.Services.AddSingleton<MqttModelFactory>();
 
@@ -302,10 +319,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-var supportedCultures = new[] { "en-US", "de-DE", "fr-FR", "it-IT", "hu-HU", "nl-NL", "sl-SI", "zH-Hans" };
+var supportedCultures = new[] { "en-US", "de-DE", "fr-FR", "it-IT", "hu-HU", "nl-NL", "sl-SI", "zH-Hans", "en-GB" };
 var localizationOptions = new RequestLocalizationOptions()
 	.SetDefaultCulture(supportedCultures[0])
-	.AddSupportedCultures(supportedCultures)
+	.AddSupportedCultures(supportedCultures[0])
 	.AddSupportedUICultures(supportedCultures);
 
 app.UseRequestLocalization(localizationOptions);

@@ -1,0 +1,78 @@
+﻿@page "/cuttingData"
+
+@inherits IhtComponentBase
+@using SharedComponents.Models
+@using SharedComponents.Services
+@using SharedComponents.Services.CuttingDataDBServices
+@using SharedComponents.Models.CuttingData
+@inject ICuttingDataDBService cuttingDataDBService
+
+<PageTitle>Cutting Parameters</PageTitle>
+
+<MudText Typo="Typo.h3">Cutting Parameters</MudText>
+
+<MudTable Elevation="25" RowsPerPage="8" Items="@cuttingDataModelList" Hover="true" Breakpoint="Breakpoint.Sm" 
+    Loading="@(cuttingDataModelList == null)" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Material</MudTh>
+        <MudTh>Remark</MudTh>
+        <MudTh>Thickness</MudTh>
+        <MudTh>Nozzle</MudTh>
+        <MudTh>Cutting speed</MudTh>
+        <MudTh>Origin</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Material">@context.Material?.Name</MudTd>
+        <MudTd DataLabel="Remark">@context.Remark</MudTd>
+        <MudTd DataLabel="Thickness">@context.Thickness</MudTd>
+        <MudTd DataLabel="Nozzle">@context.Nozzle?.Name</MudTd>
+        <MudTd DataLabel="Origin">@context.idCutDataParent</MudTd>
+        <MudTd DataLabel="">
+            <MudFab @onclick="@(()=>Edit(@context.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" IconSize="Size.Small" />
+            <MudFab @onclick="@(()=>Delete(@context.Id))" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 8, 10, 12 }" />
+    </PagerContent>
+</MudTable>
+
+
+@code {
+    //private PagedResult<CuttingParametersModel>? parameters;
+
+    //private IEnumerable<CuttingParametersModel>? entries => parameters?.Entries;
+
+    private CuttingDataModel cuttingDataModel = new CuttingDataModel();
+    private List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await this.GetEntriesAsync();
+    }
+
+    private async Task GetEntriesAsync()
+    {
+        cuttingDataModelList = await cuttingDataDBService.GetEntriesAsync(CancellationToken.None);
+    }
+
+    private async void Save()
+    {
+        await cuttingDataDBService.AddEntryAsync(cuttingDataModel, CancellationToken.None);
+        cuttingDataModel = new CuttingDataModel();
+        // snackBar.Add("Customer Saved.", Severity.Success);
+        await GetEntriesAsync();
+    }
+
+    private void Edit(int id)
+    {
+        cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
+    }
+
+    private async void Delete(int id)
+    {
+       await cuttingDataDBService.DeleteEntryAsync(id, CancellationToken.None);
+       // snackBar.Add("Customer Deleted.", Severity.Success);
+       await GetEntriesAsync();
+    }
+}

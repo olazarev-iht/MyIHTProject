@@ -1,0 +1,137 @@
+﻿@using IhtApcWebServer.Features.HeightControlFeature.Services
+@inject DynamicAPCParamsDataProvider dynamicAPCParamsDataProvider;
+@implements IDisposable
+<MudText Typo="Typo.h4">DynamicAPCParamsDisplay</MudText>
+
+@if (dynamicAPCParamsDataProvider != null)
+{
+    var dynamicParamsInfos = dynamicAPCParamsDataProvider.CurrentDynamicAPCParams.DynamicParamsInfos;
+    @for (var i = 1; i <= dynamicParamsInfos.Count; i++){
+        <p>Device @i Dynamic Params are: 
+            Dynamic Param 1 = @dynamicParamsInfos[i].DynamicParam1 
+            Dynamic Param 2 = @dynamicParamsInfos[i].DynamicParam2 
+            Dynamic Param 3 = @dynamicParamsInfos[i].DynamicParam3
+        </p>
+    }
+    @*<EditForm Model="@dynamicParamsInfos"> *@
+        <table border=1>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr>
+            @*@for (var i = 1; i <= dynamicParamsInfos.Count; i++){*@
+            <td>Device 1 Dynamic Params are: 
+                Dynamic Param 1:
+                @*<InputSelect id="Device1Param1" @bind-Value="dynamicParamsInfos[1].DynamicParam1" @onchange="@ParamSelected">
+                    @for (var x = 1; x <= 10; x++)
+                    {
+                        <option value="@x" >@x</option>
+                    }
+                </InputSelect>*@
+
+                <Select id="Device1Param1" value="@dynamicParamsInfos[1].DynamicParam1" @onchange="ParamSelected1">
+                    @for (var x = 1; x <= 10; x++)
+                    {
+                        <option value="@x" >@x</option>
+                    }
+                </Select>
+            </td>
+            <td>
+                Dynamic Param 2:
+                @*<InputSelect id="Device1Param2" @bind-Value="dynamicParamsInfos[1].DynamicParam2" @onchange="@ParamSelected">
+                    @for (var x = 1; x <= 10; x++)
+                    {
+                        <option value="@x" >@x</option>
+                    }
+                </InputSelect>*@
+                 <Select id="Device1Param1" value="@dynamicParamsInfos[1].DynamicParam2" @onchange="ParamSelected2">
+                    @for (var x = 1; x <= 10; x++)
+                    {
+                        <option value="@x" >@x</option>
+                    }
+                </Select>
+            </td>
+            <td>
+                Dynamic Param 3:
+                @*<InputSelect id="Device1Param3" @bind-Value="dynamicParamsInfos[1].DynamicParam3" @onchange="@ParamSelected">
+                    @for (var x = 1; x <= 10; x++)
+                    {
+                        <option value="@x" >@x</option>
+                    }
+                </InputSelect>*@
+                <Select id="Device1Param1" value="@dynamicParamsInfos[1].DynamicParam3" @onchange="ParamSelected3">
+                    @for (var x = 1; x <= 10; x++)
+                    {
+                        <option value="@x" >@x</option>
+                    }
+                </Select>
+            </td>
+            @*}*@
+        </tr>
+    </table>
+    @*</EditForm>*@
+    @*<p>DynamicParam2</p>
+    <InputSelect id="@i" @bind-Value="dynamicParamsInfos[i].DynamicParam2">
+        @for (var x = 1; x <= 5; x++)
+        {
+            <option value="@x">@x</option>
+        }
+    </InputSelect>
+
+    <p>DynamicParam3</p>
+    <InputSelect id="@i" @bind-Value="dynamicParamsInfos[i].DynamicParam3">
+        @for (var x = 1; x <= 5; x++)
+        {
+            <option value="@x">@x</option>
+        }
+    </InputSelect>*@
+        
+    
+}
+@code {
+
+    public event EventHandler? DynamicAPCParamsClientChanged;
+
+    protected override void OnInitialized()
+    {
+        dynamicAPCParamsDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        this.DynamicAPCParamsClientChanged += dynamicAPCParamsDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+
+        base.OnInitialized();
+    }
+
+    private async void DynamicAPCParamsOnDynamicAPCParamsDataChanged(object? sender, EventArgs e)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        dynamicAPCParamsDataProvider.DynamicAPCParamsDataChanged -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        this.DynamicAPCParamsClientChanged -= dynamicAPCParamsDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+    }
+
+    private void ParamSelected1(ChangeEventArgs args)
+    {
+        dynamicAPCParamsDataProvider.CurrentDynamicAPCParams.DynamicParamsInfos[1].DynamicParam1 = double.Parse(args.Value.ToString());
+        OnParamSelected();
+    }
+
+    private void ParamSelected2(ChangeEventArgs args)
+    {
+        dynamicAPCParamsDataProvider.CurrentDynamicAPCParams.DynamicParamsInfos[1].DynamicParam2 = double.Parse(args.Value.ToString());
+        OnParamSelected();
+    }
+
+    private void ParamSelected3(ChangeEventArgs args)
+    {
+        dynamicAPCParamsDataProvider.CurrentDynamicAPCParams.DynamicParamsInfos[1].DynamicParam3 = double.Parse(args.Value.ToString());
+        OnParamSelected();
+    }
+
+    private void OnParamSelected()
+    {
+        this.DynamicAPCParamsClientChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+}

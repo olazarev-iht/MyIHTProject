@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharedComponents.IhtDev;
 using SharedComponents.IhtModbus;
+using SharedComponents.Models;
 
 namespace SharedComponents.Helpers
 {
@@ -28,9 +29,9 @@ namespace SharedComponents.Helpers
             //LoadLengthUnit(settings);
 
             LoadDevices(settings);
+            LoadDataBaseControl(settings);
 
             //TODO implement in the next vertion ?
-            //LoadDataBaseControl(settings);
             //LoadLanguage(settings);
         }
 
@@ -53,7 +54,11 @@ namespace SharedComponents.Helpers
             //UpdatePressureUnit(settings);
             //UpdateLengthUnit(settings);
             UpdateDevices(settings);
-            //UpdateDataBaseControl(settings);
+
+            //We do not call update Settings DB here because we do not setup cutting data (DataBaseId) when starting the connection
+            // but only when we load Cutting Data from the CuttingDB
+            UpdateDataBaseControl(settings);
+
             //UpdateLanguage(settings);
         }
 
@@ -261,6 +266,26 @@ namespace SharedComponents.Helpers
             }
         }
 
+        public static void UpdateDataBaseControl(SystemSettings settings)
+        {
+            var _ihtDevices = IhtDevices.GetIhtDevices();
+            if (_ihtDevices != null)
+            {
+                //settings.DataBaseMaterialSelectedIndex = mainWnd.dataBaseControl.MaterialSelectedIndex;
+                //settings.DataBaseThicknessSelectedIndex = mainWnd.dataBaseControl.ThicknessSelectedIndex;
+                //settings.DataBaseNozzleSelectedIndex = mainWnd.dataBaseControl.NozzleSelectedIndex;
+                settings.DataBaseId = _ihtDevices.DataBaseId;
+            }
+        }
+
+        private static void LoadDataBaseControl(SystemSettings settings)
+        {
+            var _ihtDevices = IhtDevices.GetIhtDevices();
+            if (_ihtDevices != null)
+            {
+                _ihtDevices.DataBaseId = settings.DataBaseId;
+            }
+        }
 
     }
 

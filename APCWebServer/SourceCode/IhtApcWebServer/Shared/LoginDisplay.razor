@@ -1,0 +1,13 @@
+﻿<AuthorizeView>
+    <Authorized>
+        <MudLink Color="Color.Tertiary" Href="Identity/Account/Manage">Hello, @context.User.Identity?.Name!</MudLink>
+        <form method="post" action="Identity/Account/LogOut">
+            <MudButton ButtonType="ButtonType.Submit">Log out</MudButton>
+        </form>
+
+    </Authorized>
+    <NotAuthorized>
+        <MudLink Color="Color.Tertiary" Href="Identity/Account/Register">Register</MudLink>
+        <MudLink Color="Color.Tertiary" Href="Identity/Account/Login">Log In</MudLink>
+    </NotAuthorized>
+</AuthorizeView>

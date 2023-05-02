@@ -29,9 +29,11 @@ namespace SharedComponents.APCHardwareManagers
         protected readonly IParameterDataDBService _parameterDataDBService;
         protected readonly IParameterDataInfoDBService _parameterDataInfoDBService;
         protected readonly ICuttingDataDBService _cuttingDataDBService;
+        protected readonly ICuttingDataArchiveDBService _cuttingDataArchiveDBService;
         protected readonly IConfigSettingsDBService _configSettingsDBService;
+		protected readonly IConfigSettingsArchiveDBService _configSettingsArchiveDBService;
 
-        protected readonly IAPCDeviceMockDBService _apcDeviceMockDBService;
+		protected readonly IAPCDeviceMockDBService _apcDeviceMockDBService;
         protected readonly IConstParamsMockDBService _constParamsMockDBService;
         protected readonly IDynParamsMockDBService _dynParamsMockDBService;
         protected readonly IParameterDataMockDBService _parameterDataMockDBService;
@@ -49,6 +51,7 @@ namespace SharedComponents.APCHardwareManagers
             IParameterDataDBService parameterDataDBService,
             IParameterDataInfoDBService parameterDataInfoDBService,
             ICuttingDataDBService cuttingDataDBService,
+            ICuttingDataArchiveDBService cuttingDataArchiveDBService,
             IAPCDeviceMockDBService apcDeviceMockDBService,
             IConstParamsMockDBService constParamsMockDBService,
             IDynParamsMockDBService dynParamsMockDBService,
@@ -58,7 +61,8 @@ namespace SharedComponents.APCHardwareManagers
             IhtModbusCommunic ihtModbusCommunic,
             IhtCutDataAddressMap ihtCutDataAddressMap,
             IConfigSettingsDBService configSettingsDBService,
-            IOptions<Settings> settings
+			IConfigSettingsArchiveDBService configSettingsArchiveDBService,
+			IOptions<Settings> settings
             )
         {
             _apcDeviceDBService = apcDeviceDBService ??
@@ -78,6 +82,9 @@ namespace SharedComponents.APCHardwareManagers
 
             _cuttingDataDBService = cuttingDataDBService ??
                throw new ArgumentNullException($"{nameof(cuttingDataDBService)}");
+
+            _cuttingDataArchiveDBService = cuttingDataArchiveDBService ??
+               throw new ArgumentNullException($"{nameof(cuttingDataArchiveDBService)}");
 
             _apcDeviceMockDBService = apcDeviceMockDBService ??
                throw new ArgumentNullException($"{nameof(apcDeviceMockDBService)}");
@@ -106,7 +113,10 @@ namespace SharedComponents.APCHardwareManagers
             _configSettingsDBService = configSettingsDBService ??
               throw new ArgumentNullException($"{nameof(configSettingsDBService)}");
 
-            _settings = settings != null ? settings.Value : 
+			_configSettingsArchiveDBService = configSettingsArchiveDBService ??
+			  throw new ArgumentNullException($"{nameof(configSettingsArchiveDBService)}");
+
+			_settings = settings != null ? settings.Value : 
                 throw new ArgumentNullException($"{nameof(settings)}");
         }
 
@@ -193,9 +203,22 @@ namespace SharedComponents.APCHardwareManagers
 
             ParamsReadOnlyPropertySetUp(deviceParams);
 
+            ParamsVisiblePropertySetUp(deviceParams);
+
             return deviceParams;
         }
 
+        private void ParamsVisiblePropertySetUp(IEnumerable<ParameterDataModel> deviceParams)
+        {
+            var InVisibleParamsArr = new SettingParamIds[] {
+                SettingParamIds.LinearDrivePosition,
+                SettingParamIds.HeightControlActive,
+                SettingParamIds.StatusHeightControl
+            };
+
+            deviceParams.Where(p => p.ParamSettings != null && InVisibleParamsArr.ToList().Contains(p.ParamSettings.SettingParam))
+                .ToList().ForEach(p => { p.ParamSettings.Visible = false; });
+        }
         private void ParamsReadOnlyPropertySetUp(IEnumerable<ParameterDataModel> deviceParams)
         {
             //Setup default values
@@ -328,11 +351,28 @@ namespace SharedComponents.APCHardwareManagers
         {
             var settings = _settings;
 
-            // Example for deleting data for devices
-            // await DeleteAllAPCHardwareDataAsync(CancellationToken.None, 10);
+            #region Copy From Archive
 
-            // We Update SimulationData mock table every time we turn the device on
-            await UpdateSimulationDataMockWithDefaultData(CancellationToken.None);
+            // If it is the installation process (only) and if CuttingDataArchiveDB has Ids < 50000 && CuttingData has not Ids < 50000
+            // then we need to copy Ids < 50000 from CuttingDataArchiveDB to the current CuttingData table
+            var isInstallationProcess = await IsInstallationProcess(cancellationToken);
+
+            if (isInstallationProcess)
+            {
+                await InsertCuttingArchiveDBRows(cancellationToken);
+            }
+
+			// If current ConfigSetting DB is empty and ConfigSetting data exists in the Archive - we need to copy
+			// data from the archive to the current ConfigSetting table
+			//await InsertSettingsArchiveDBRow(cancellationToken);
+
+			#endregion
+
+			// Example for deleting data for devices
+			// await DeleteAllAPCHardwareDataAsync(CancellationToken.None, 10);
+
+			// We Update SimulationData mock table every time we turn the device on
+			await UpdateSimulationDataMockWithDefaultData(CancellationToken.None);
 
             var isParameterDataEmpty = !(await _parameterDataDBService.GetEntriesAsync(CancellationToken.None)).Any();
 
@@ -345,10 +385,16 @@ namespace SharedComponents.APCHardwareManagers
             }
         }
 
-        public async Task UpdateAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null)
+        public async Task UpdateAPCHardwareDataAsync(CancellationToken cancellationToken, List<IhtDevice> deviceList = null)
         {
-            await DeleteAPCHardwareDataAsync(cancellationToken, devicesAmount);
-            await FillAPCHardwareDataAsync(cancellationToken, devicesAmount);
+            await DeleteAPCHardwareDataAsync(cancellationToken, deviceList);
+            await FillAPCHardwareDataAsync(cancellationToken, deviceList);
+        }
+
+        public async Task CopyModbusAPCHardwareDataAsync(CancellationToken cancellationToken, List<IhtDevice> ihtDeviceList = null)
+        {
+            await DeleteAPCHardwareDataAsync(cancellationToken, ihtDeviceList);
+            await CopyModbusDataAPCHardwareDataAsync(cancellationToken, ihtDeviceList);
         }
 
         public async Task UpdateSimulationDataMockWithDefaultData(CancellationToken cancellationToken)
@@ -356,7 +402,41 @@ namespace SharedComponents.APCHardwareManagers
             await _apcSimulationDataMockDBService.UpdateFromDefaultDataAsync(cancellationToken);
         }
 
-        public async Task<ParameterDataModel> GetDeviceParamByParamGroupAndParamIdAsync(int deviceId, ParamGroup paramGroup, int paramId, CancellationToken cancellationToken)
+        public async Task InsertCuttingArchiveDBRows(CancellationToken cancellationToken)
+        {
+            var archiveCustomDBRows = await _cuttingDataArchiveDBService.GetEntriesAsync(cancellationToken);
+
+            if(archiveCustomDBRows != null && archiveCustomDBRows.Any())
+            {
+                var cuttingDBCustomRows = await _cuttingDataDBService.GetCustomEntriesAsync(cancellationToken);
+
+                if (cuttingDBCustomRows != null && !cuttingDBCustomRows.Any())
+                {
+                    await _cuttingDataDBService.AddListFromArchiveAsync(archiveCustomDBRows, cancellationToken);
+                }
+            }
+        }
+
+        public async Task<bool> IsInstallationProcess(CancellationToken cancellationToken)
+        {
+            //var archiveSettingsRow = await _configSettingsArchiveDBService.GetEntryAsync(cancellationToken);
+
+            var returnValue = false;
+
+            var currentSettingsRow = await _configSettingsDBService.GetEntryAsync(cancellationToken);
+
+            if (currentSettingsRow != null
+                && string.IsNullOrWhiteSpace(currentSettingsRow.ComPort)
+                && string.IsNullOrWhiteSpace(currentSettingsRow.IpAddr)
+                && string.IsNullOrWhiteSpace(currentSettingsRow.Baudrate))
+            {
+                returnValue = true;
+            }
+
+            return returnValue;
+        }
+
+		public async Task<ParameterDataModel?> GetDeviceParamByParamGroupAndParamIdAsync(int deviceId, ParamGroup paramGroup, int paramId, CancellationToken cancellationToken)
         {
             var param = await _parameterDataDBService.GetDeviceParamByParamGroupAndParamIdAsync(deviceId, paramGroup, paramId, cancellationToken);
 
@@ -402,14 +482,14 @@ namespace SharedComponents.APCHardwareManagers
 
         }
 
-        private async Task DeleteAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null)
+        private async Task DeleteAPCHardwareDataAsync(CancellationToken cancellationToken, List<IhtDevice> deviceList = null)
         {
             try
             {
                 // Since we use cascade delete (onDelete: ReferentialAction.Cascade) we can delete in the following way:
                 // since we don't copy APCDevice table every time any more we don't delete it
-                await _constParamsDBService.DeleteAllEntriesAsync(cancellationToken, devicesAmount);
-                await _parameterDataInfoDBService.DeleteAllEntriesAsync(cancellationToken, devicesAmount);                
+                await _constParamsDBService.DeleteAllEntriesAsync(cancellationToken, deviceList);
+                await _parameterDataInfoDBService.DeleteAllEntriesAsync(cancellationToken, deviceList);                
             }
             catch (Exception ex)
             {
@@ -417,17 +497,19 @@ namespace SharedComponents.APCHardwareManagers
             }
         }
 
-        private async Task<bool> FillAPCHardwareDataAsync(CancellationToken cancellationToken, int? devicesAmount = null)
+        private async Task<bool> FillAPCHardwareDataAsync(CancellationToken cancellationToken, List<IhtDevice> deviceList = null)
         {
+            var deviceNums = deviceList?.Select(d => d.DeviceNumber).ToList() ?? new List<int>();
+
             try
             {
                 ResetParamsLists();
 
                 var apcDeviceList = (await _apcDeviceDBService.GetEntriesAsync(cancellationToken))
-                    .Where(d => devicesAmount == null || d.Num <= devicesAmount);
+                    .Where(d => deviceList == null || deviceNums.Contains(d.Num));
 
                 var ihtDevices = IhtDevices.ihtDevices.Select(kpv => kpv.Value)
-                    .Where(kvp => devicesAmount == null || kvp.DeviceNumber <= devicesAmount).OrderBy(kvp => kvp.DeviceNumber).ToList();
+                    .Where(kvp => deviceList == null || deviceNums.Contains(kvp.DeviceNumber)).OrderBy(kvp => kvp.DeviceNumber).ToList();
 
                 // Not DB Model devices
                 foreach (var apcDevice in ihtDevices)
@@ -457,6 +539,54 @@ namespace SharedComponents.APCHardwareManagers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <param name="devicesAmount"></param>
+        /// <returns></returns>
+        private async Task<bool> CopyModbusDataAPCHardwareDataAsync(CancellationToken cancellationToken, List<IhtDevice> deviceList = null)
+        {
+            var deviceNums = deviceList?.Select(d => d.DeviceNumber).ToList() ?? new List<int>();
+
+            try
+            {
+                ResetParamsLists();
+
+                var apcDeviceList = (await _apcDeviceDBService.GetEntriesAsync(cancellationToken))
+                    .Where(d => deviceList == null || deviceNums.Contains(d.Num));
+
+                var ihtDevices = IhtDevices.ihtDevices.Select(kpv => kpv.Value)
+                    .Where(kvp => deviceList == null || deviceNums.Contains(kvp.DeviceNumber)).OrderBy(kvp => kvp.DeviceNumber).ToList();
+
+                // Not DB Model devices
+                foreach (var apcDevice in ihtDevices)
+                {
+                    // DB Model - remove in the future (we need only for APCDeviceId = deviceDBModel.Id)
+                    var deviceDBModel = apcDeviceList.FirstOrDefault(dev => dev.Num == apcDevice.DeviceNumber);
+                    if (deviceDBModel == null) throw new Exception("There is no device in the collaction");
+
+                    // TODO: Try to get values from modbusData
+                    await CopyModbusParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Technology);
+                    await CopyModbusParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Process);
+                    await CopyModbusParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Config);
+                    await CopyModbusParameterDatasForDeviceAndGroupAsync(deviceDBModel.Id, apcDevice.DeviceNumber, ParamGroup.Service);
+                }
+
+                await _constParamsDBService.AddRangeAsync(constParamsModels, CancellationToken.None);
+                await _parameterDataInfoDBService.AddRangeAsync(parameterDataInfoModels, CancellationToken.None);
+                await _dynParamsDBService.AddRangeAsync(dynParamsModels, CancellationToken.None);
+                await _parameterDataDBService.AddRangeAsync(parameterDataModels, CancellationToken.None);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+                return false;
+            }
+        }
+
         private async Task SaveParameterDatasForDeviceAndGroupAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup)
         {
             var constParamsValuesArray = await GetParamsSubGroupValuesFromMockDB((byte)deviceNumber, 
@@ -468,6 +598,78 @@ namespace SharedComponents.APCHardwareManagers
                 ParamGroupHelper._groupAddressesDictionary[paramGroup].numberDynStoreValue);
 
             await SaveParameterDatasForArraysAsync(deviceDBModelId, deviceNumber, paramGroup, constParamsValuesArray, dynParamsValuesArray);
+        }
+
+        class ParamsInfo
+        {
+            //private IhtModbusAddrInfo ihtModbusAddrInfo;
+            //private Func<ushort[]> getDataTechnologyDyn;
+
+            public ParamsInfo(IhtModbusAddrInfo ihtModbusAddrInfo, Func<ushort[]> getDataTechnologyDyn)
+            {
+                //this.ihtModbusAddrInfo    = ihtModbusAddrInfo;
+                //this.getDataTechnologyDyn = getDataTechnologyDyn;
+                StartAddr = ihtModbusAddrInfo.u16StartAddr;
+                Length    = ihtModbusAddrInfo.u16AddrNumber;
+                Array.Resize(ref Values, Length);
+                Array.Copy(getDataTechnologyDyn(), Values, Length);
+            }
+
+            public ushort   StartAddr;
+            public ushort[]? Values;
+            public int      Length;
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deviceDBModelId"></param>
+        /// <param name="deviceNumber"></param>
+        /// <param name="paramGroup"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="NotImplementedException"></exception>
+        private async Task CopyModbusParameterDatasForDeviceAndGroupAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup)
+        {
+            int           apcSlaveId    = deviceNumber + (int)IhtModbusCommunic.SlaveId.Id_Default;
+            IhtModbusData ihtModbusData = _ihtModbusCommunic.GetData(apcSlaveId);
+            if (ihtModbusData == null)
+            {
+              throw new ArgumentNullException($"{nameof(ParameterDataInfoManager)} : {nameof(CopyModbusParameterDatasForDeviceAndGroupAsync)}");
+            }
+
+            ParamsInfo? paramsInfoConst = null;
+            ParamsInfo? paramsInfoDyn   = null;
+            switch (paramGroup)
+            {
+                case ParamGroup.Technology:
+                    paramsInfoConst = new ParamsInfo(ihtModbusData.GetAddrInfo_TechnologyConst(), ihtModbusData.GetTechnologyConst  );
+                    paramsInfoDyn   = new ParamsInfo(ihtModbusData.GetAddrInfo_TechnologyDyn()  , ihtModbusData.GetDataTechnologyDyn);
+                    break;
+                case ParamGroup.Process:
+                    paramsInfoConst = new ParamsInfo(ihtModbusData.GetAddrInfo_ProcessConst(), ihtModbusData.GetProcessConst  );
+                    paramsInfoDyn   = new ParamsInfo(ihtModbusData.GetAddrInfo_ProcessDyn()  , ihtModbusData.GetDataProcessDyn);
+                    break;
+                case ParamGroup.Config:
+                    paramsInfoConst = new ParamsInfo(ihtModbusData.GetAddrInfo_ConfigConst(), ihtModbusData.GetConfigConst  );
+                    paramsInfoDyn   = new ParamsInfo(ihtModbusData.GetAddrInfo_ConfigDyn()  , ihtModbusData.GetDataConfigDyn);
+                    break;
+                case ParamGroup.Service:
+                    paramsInfoConst = new ParamsInfo(ihtModbusData.GetAddrInfo_ServiceConst(), ihtModbusData.GetServiceConst  );
+                    paramsInfoDyn   = new ParamsInfo(ihtModbusData.GetAddrInfo_ServiceDyn()  , ihtModbusData.GetDataServiceDyn);
+                    break;
+                case ParamGroup.ProcessInfo:
+                case ParamGroup.CmdExec:
+                case ParamGroup.SetupExec:
+                case ParamGroup.StatusHeightCtrl:
+                case ParamGroup.Additional:
+                    throw new NotImplementedException($"{nameof(ParameterDataInfoManager)} : {nameof(CopyModbusParameterDatasForDeviceAndGroupAsync)}");
+            }
+           
+            var paramsConstAddressAndValues = paramsInfoConst?.Values?.Select(x => (paramsInfoConst.StartAddr++, x)).ToArray();
+            var paramsDynAddressAndValues   = paramsInfoDyn  ?.Values?.Select(x => (paramsInfoDyn  .StartAddr++, x)).ToArray();
+
+            await SaveParameterDatasForArraysAsync(deviceDBModelId, deviceNumber, paramGroup, paramsConstAddressAndValues, paramsDynAddressAndValues);
         }
 
         private async Task SaveParameterDatasForArraysAsync(Guid deviceDBModelId, int deviceNumber, ParamGroup paramGroup, 
@@ -534,6 +736,24 @@ namespace SharedComponents.APCHardwareManagers
         }
 
         private async Task<(ushort Address, ushort Value)[]> GetParamsSubGroupValuesFromMockDB(byte apcDeviceId, ushort startStoreValue, ushort numberStoreValue)
+        {
+            var apcSlaveId = apcDeviceId + (int)IhtModbusCommunic.SlaveId.Id_Default;
+
+            //TODO: change to "await _ihtModbusCommunic.ReadAsync(apcSlaveId, (ushort)paramAddress, ihtModbusResult);"
+            var ihtModbusResult = new IhtModbusResult();
+            var paramsStartAddr = await _ihtModbusCommunic.ReadAsync(apcSlaveId, startStoreValue, ihtModbusResult);
+
+            var paramsNumber = await _ihtModbusCommunic.ReadAsync(apcSlaveId, numberStoreValue, ihtModbusResult);
+
+            var paramsValues = await _ihtModbusCommunic.ReadAsync(apcSlaveId, paramsStartAddr, paramsNumber, ihtModbusResult);
+            //var paramsValues = await _apcSimulationDataMockDBService.GetHoldingRegistersWithAddressAsync(deviceNum, paramsStartAddr, paramsNumber);
+
+            var paramsAddressAndValues = paramsValues.Select(x => (paramsStartAddr++, x)).ToArray();
+
+            return paramsAddressAndValues;
+        }
+
+        private async Task<(ushort Address, ushort Value)[]> CopyParamsSubGroupValuesFromMockDB(byte apcDeviceId, ushort startStoreValue, ushort numberStoreValue)
         {
             var apcSlaveId = apcDeviceId + (int)IhtModbusCommunic.SlaveId.Id_Default;
 

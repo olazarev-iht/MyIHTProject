@@ -1,0 +1,734 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FileNameAppInfoData" xml:space="preserve">
+    <value>AppInfoData.xml</value>
+    <comment>Dient zur Ablage von Applikations Info-Daten</comment>
+  </data>
+  <data name="FileNameConfigFile" xml:space="preserve">
+    <value>IhtApcApplication.exe.config</value>
+    <comment>Aktuelle Konfigurations-Datei. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FileNameConfigFilePre" xml:space="preserve">
+    <value>IhtApcApplicationPre.exe.config</value>
+    <comment>Vorhergehende Konfigurations-Datei. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FileNameDataBase" xml:space="preserve">
+    <value>ihtCutData.accdb</value>
+    <comment>Datenbank</comment>
+  </data>
+  <data name="FileNameSettingsData" xml:space="preserve">
+    <value>Settings.xml</value>
+    <comment>Dient zur Ablage der Einstellungs-Daten, wenn der Kommandozeile-Parameter --APCName übergeben wird </comment>
+  </data>
+  <data name="FolderArchive" xml:space="preserve">
+    <value>Archive</value>
+    <comment>Wird für den Zugriff auf die Datenbank benötigt. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderCutCycleData" xml:space="preserve">
+    <value>CutCycleData</value>
+    <comment>Dient zur Ablage der CutCycle-Daten. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderDataBase" xml:space="preserve">
+    <value>DataBase</value>
+    <comment>Wird für den Zugriff auf die Datenbank benötigt. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderDeviceData" xml:space="preserve">
+    <value>DeviceData</value>
+    <comment>Dient zur Ablage der Geräte-Daten. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderDownloadToolSetup" xml:space="preserve">
+    <value>DownloadToolSetup</value>
+    <comment>Dient zur Ablage vom Setup vom Download - Tool. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderErrorData" xml:space="preserve">
+    <value>ErrorData</value>
+    <comment>Dient zur Ablage der Fehler-Daten. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderFdtiUsbConverterSetup" xml:space="preserve">
+    <value>FdtiUsbConverterSetup</value>
+    <comment>Dient zur Ablage vom Setup vom FTDI USB Converter. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderHelpData" xml:space="preserve">
+    <value>HelpData</value>
+    <comment>Dient zur Ablage der Hilfe-Daten. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderHistogramData" xml:space="preserve">
+    <value>HistogramData</value>
+    <comment>Dient zur Ablage der Histogram Daten. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderManufacturer" xml:space="preserve">
+    <value>IHT Automation</value>
+    <comment>Wird für den Zugriff auf verschiedene Daten benötigt. Siehe auch Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderProductName" xml:space="preserve">
+    <value>APC Automatic Cutting Process System</value>
+    <comment>Wird für den Zugriff auf verschiedene Daten benötigt. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderProlificUsbConverterSetup" xml:space="preserve">
+    <value>ProlificUsbConverterSetup</value>
+    <comment>Dient zur Ablage vom Setup vom PROLIFIC USB Converter. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderStatusData" xml:space="preserve">
+    <value>StatusData</value>
+    <comment>Dient zur Ablage der Status-Daten. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderStatusInfoData" xml:space="preserve">
+    <value>StatusInfoData</value>
+    <comment>Dient zur Ablage der StatusInfo-Daten. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="FolderUser" xml:space="preserve">
+    <value>User</value>
+    <comment>Dient zur Ablage verschiedener Daten durch den Bediener. Siehe auch AkInstaller!</comment>
+  </data>
+  <data name="_CultureAcetylane" xml:space="preserve">
+    <value>Acetylene</value>
+  </data>
+  <data name="_CultureAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="_CultureButAllParameter" xml:space="preserve">
+    <value>All parameter</value>
+  </data>
+  <data name="_CultureButBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="_CultureButCalibration" xml:space="preserve">
+    <value>Height Calibration</value>
+  </data>
+  <data name="_CultureButCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="_CultureButClear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="_CultureButClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="_CultureButCommunication" xml:space="preserve">
+    <value>Communication</value>
+  </data>
+  <data name="_CultureButConfiguration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="_CultureButConnection" xml:space="preserve">
+    <value>Connection</value>
+  </data>
+  <data name="_CultureButCurrent" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="_CultureButCutCycleHistory" xml:space="preserve">
+    <value>Cut cycle history</value>
+  </data>
+  <data name="_CultureButCutting" xml:space="preserve">
+    <value>Cutting</value>
+  </data>
+  <data name="_CultureButData" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="_CultureButDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="_CultureButDeviceInfo" xml:space="preserve">
+    <value>Device info</value>
+  </data>
+  <data name="_CultureButDuplicate" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="_CultureButEnablePressureCO2" xml:space="preserve">
+    <value>Enable pressure C-O</value>
+  </data>
+  <data name="_CultureButEnablePressureFG" xml:space="preserve">
+    <value>Enable pressure F-G</value>
+  </data>
+  <data name="_CultureButEnablePressureHO2" xml:space="preserve">
+    <value>Enable pressure H-O</value>
+  </data>
+  <data name="_CultureButEnter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="_CultureButErrorCounts" xml:space="preserve">
+    <value>Error counts</value>
+  </data>
+  <data name="_CultureButErrorLog" xml:space="preserve">
+    <value>Error log</value>
+  </data>
+  <data name="_CultureButFactoryReset" xml:space="preserve">
+    <value>Factory reset</value>
+  </data>
+  <data name="_CultureButFwUpdate" xml:space="preserve">
+    <value>Firmware update</value>
+  </data>
+  <data name="_CultureButGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="_CultureButHeating" xml:space="preserve">
+    <value>Heating</value>
+  </data>
+  <data name="_CultureButHeightControl" xml:space="preserve">
+    <value>Height control</value>
+  </data>
+  <data name="_CultureButHelp" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="_CultureButHistory" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="_CultureButIgnite" xml:space="preserve">
+    <value>Ignite</value>
+  </data>
+  <data name="_CultureButIgnition" xml:space="preserve">
+    <value>Ignition</value>
+  </data>
+  <data name="_CultureButIhtService" xml:space="preserve">
+    <value>IhtService</value>
+  </data>
+  <data name="_CultureButInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="_CultureButLinearDrive" xml:space="preserve">
+    <value>Linear drive</value>
+  </data>
+  <data name="_CultureButLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="_CultureButManually" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="_CultureButModify" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="_CultureButNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="_CultureButNumbers" xml:space="preserve">
+    <value>Numbers</value>
+  </data>
+  <data name="_CultureButOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="_CultureButOk" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="_CultureButPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="_CultureButPiercing" xml:space="preserve">
+    <value>Piercing</value>
+  </data>
+  <data name="_CultureButPreFlow" xml:space="preserve">
+    <value>Pre Flow</value>
+  </data>
+  <data name="_CultureButPreFlowBreak" xml:space="preserve">
+    <value>Break preflow</value>
+  </data>
+  <data name="_CultureButPreFlowStart" xml:space="preserve">
+    <value>Start preflow</value>
+  </data>
+  <data name="_CultureButPreHeating" xml:space="preserve">
+    <value>PreHeating</value>
+  </data>
+  <data name="_CultureButPrevious" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="_CultureButRead" xml:space="preserve">
+    <value>Read</value>
+  </data>
+  <data name="_CultureButRetract" xml:space="preserve">
+    <value>Retract position</value>
+  </data>
+  <data name="_CultureButSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="_CultureButService" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="_CultureButSet" xml:space="preserve">
+    <value>Set</value>
+  </data>
+  <data name="_CultureButSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="_CultureButSetup" xml:space="preserve">
+    <value>Setup</value>
+  </data>
+  <data name="_CultureButSlag" xml:space="preserve">
+    <value>Slag</value>
+  </data>
+  <data name="_CultureButStartPiercing" xml:space="preserve">
+    <value>Start piercing</value>
+  </data>
+  <data name="_CultureButStateMessages" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="_CultureButTemper" xml:space="preserve">
+    <value>Temper</value>
+  </data>
+  <data name="_CultureButTestPressureOutputs" xml:space="preserve">
+    <value>Test pressure outputs</value>
+  </data>
+  <data name="_CultureButTorch" xml:space="preserve">
+    <value>Torch</value>
+  </data>
+  <data name="_CultureButTorchInstalled" xml:space="preserve">
+    <value>Torch installed</value>
+  </data>
+  <data name="_CultureButUpdate" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="_CultureButYes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="_CultureCalibrationActive" xml:space="preserve">
+    <value>Height Calibration active</value>
+  </data>
+  <data name="_CultureCalibrationInvalid" xml:space="preserve">
+    <value>Height Calibration invalid</value>
+  </data>
+  <data name="_CultureCalibrationValid" xml:space="preserve">
+    <value>Height Calibration valid</value>
+  </data>
+  <data name="_CultureCapSetpoint" xml:space="preserve">
+    <value>Torch Height</value>
+  </data>
+  <data name="_CultureClearance" xml:space="preserve">
+    <value>Clearance</value>
+  </data>
+  <data name="_CultureCommand" xml:space="preserve">
+    <value>Command</value>
+  </data>
+  <data name="_CultureConnected" xml:space="preserve">
+    <value>connected</value>
+  </data>
+  <data name="_CultureCounter" xml:space="preserve">
+    <value>Counter</value>
+  </data>
+  <data name="_CultureCuttingSpeed" xml:space="preserve">
+    <value>Cutting speed</value>
+  </data>
+  <data name="_CultureDataBaseRemarkExist" xml:space="preserve">
+    <value>This remark already exists!</value>
+  </data>
+  <data name="_CultureDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="_CultureDisable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="_CultureDistanceCalibration" xml:space="preserve">
+    <value>Manual Height calibration</value>
+  </data>
+  <data name="_CultureDynamic" xml:space="preserve">
+    <value>Dynamic</value>
+  </data>
+  <data name="_CultureEnable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="_CultureErrorCode" xml:space="preserve">
+    <value>Error code</value>
+  </data>
+  <data name="_CultureExecuteDeviceReset" xml:space="preserve">
+    <value>Perform a reset for all devices</value>
+  </data>
+  <data name="_CultureExitProgram" xml:space="preserve">
+    <value>Exit program ?</value>
+  </data>
+  <data name="_CultureFit3TorchControllerNotConnected" xml:space="preserve">
+    <value>Torch controller not connected</value>
+  </data>
+  <data name="_CultureFit3TorchTypeCodeFault" xml:space="preserve">
+    <value>Torch type code fault</value>
+  </data>
+  <data name="_CultureFit3TorchTypeUndefined" xml:space="preserve">
+    <value>Torch type undefined</value>
+  </data>
+  <data name="_CultureFlameAdjust" xml:space="preserve">
+    <value>Ignition flame adjust</value>
+  </data>
+  <data name="_CultureFlameoffsetEnable" xml:space="preserve">
+    <value>Flame offset enable</value>
+  </data>
+  <data name="_CultureFwSpecial" xml:space="preserve">
+    <value>FW-Special: 9x.xx.xx</value>
+  </data>
+  <data name="_CultureFwUpdate" xml:space="preserve">
+    <value>FW-Update</value>
+  </data>
+  <data name="_CultureHeightControlActive" xml:space="preserve">
+    <value>Height control active</value>
+  </data>
+  <data name="_CultureHelp" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="_CultureIgnitionData" xml:space="preserve">
+    <value>Ignition parameter</value>
+  </data>
+  <data name="_CultureIgnitionDetectionEnabled" xml:space="preserve">
+    <value>Ignition detection enabled</value>
+  </data>
+  <data name="_CultureInfoPressureOutputsLocked" xml:space="preserve">
+    <value>Pressure outputs locked</value>
+  </data>
+  <data name="_CultureInvalid" xml:space="preserve">
+    <value>invalid</value>
+  </data>
+  <data name="_CultureKerfWidth" xml:space="preserve">
+    <value>Kerf width</value>
+  </data>
+  <data name="_CultureLanguage" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="_CultureLanguageImage" xml:space="preserve">
+    <value>IhtImages/LanguageEnglish.gif</value>
+  </data>
+  <data name="_CultureLeadInLength" xml:space="preserve">
+    <value>LeadIn length</value>
+  </data>
+  <data name="_CultureLengthUnit" xml:space="preserve">
+    <value>Length unit</value>
+  </data>
+  <data name="_CultureMaterial" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="_CultureMsgBoxInstallDownloadTool" xml:space="preserve">
+    <value>Installation Download Tool</value>
+  </data>
+  <data name="_CultureMsgBoxInstallDownloadToolQuestion" xml:space="preserve">
+    <value>Do you want to install the Download Tool?</value>
+  </data>
+  <data name="_CultureMsgBoxInstallFdtiUsbDriver" xml:space="preserve">
+    <value>Installation FDTI USB Converter driver</value>
+  </data>
+  <data name="_CultureMsgBoxInstallFdtiUsbDriverQuestion" xml:space="preserve">
+    <value>Do you want to install the FDTI USB Converter driver?</value>
+  </data>
+  <data name="_CultureMsgLogAppStarted" xml:space="preserve">
+    <value>Application started...</value>
+  </data>
+  <data name="_CultureMsgLogCommunicIsRtu" xml:space="preserve">
+    <value>Communication via RTU</value>
+  </data>
+  <data name="_CultureMsgLogCommunicIsTcp" xml:space="preserve">
+    <value>Communication via TCP</value>
+  </data>
+  <data name="_CultureMsgLogConnectingTorch" xml:space="preserve">
+    <value>Connecting Torch</value>
+  </data>
+  <data name="_CultureMsgLogFwSpecialActive" xml:space="preserve">
+    <value>FW-Special active</value>
+  </data>
+  <data name="_CultureMsgLogFwUpdateRequired" xml:space="preserve">
+    <value>FW-Update required! Minimum version</value>
+  </data>
+  <data name="_CultureMsgLogInvalidSelection" xml:space="preserve">
+    <value>Invalid selection</value>
+  </data>
+  <data name="_CultureMsgLogRecognizingTorches" xml:space="preserve">
+    <value>Recognizing connected torches...</value>
+  </data>
+  <data name="_CultureNaturalGas" xml:space="preserve">
+    <value>Natural gas</value>
+  </data>
+  <data name="_CultureNo" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="_CultureNotConnected" xml:space="preserve">
+    <value>not connected</value>
+  </data>
+  <data name="_CultureNozzle" xml:space="preserve">
+    <value>Nozzle</value>
+  </data>
+  <data name="_CultureOrigin" xml:space="preserve">
+    <value>Origin</value>
+  </data>
+  <data name="_CultureParamDefault" xml:space="preserve">
+    <value>default</value>
+  </data>
+  <data name="_CultureParamDisabled" xml:space="preserve">
+    <value>disabled</value>
+  </data>
+  <data name="_CultureParamEnabled" xml:space="preserve">
+    <value>enabled</value>
+  </data>
+  <data name="_CultureParamFlashbackSensitivity" xml:space="preserve">
+    <value>Flashback Sensitivity</value>
+  </data>
+  <data name="_CultureParamHigh" xml:space="preserve">
+    <value>high</value>
+  </data>
+  <data name="_CultureParamIgnitionDetection" xml:space="preserve">
+    <value>Ignition Detection</value>
+  </data>
+  <data name="_CultureParamLow" xml:space="preserve">
+    <value>low</value>
+  </data>
+  <data name="_CultureParamOff" xml:space="preserve">
+    <value>off</value>
+  </data>
+  <data name="_CultureParamOn" xml:space="preserve">
+    <value>on</value>
+  </data>
+  <data name="_CultureParamPiercingHeightControl" xml:space="preserve">
+    <value>Piercing Height Control</value>
+  </data>
+  <data name="_CultureParamSlagSensitivity" xml:space="preserve">
+    <value>Slag Sensitivity</value>
+  </data>
+  <data name="_CulturePartNumber" xml:space="preserve">
+    <value>Part number</value>
+  </data>
+  <data name="_CulturePosition" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="_CulturePreFlowActive" xml:space="preserve">
+    <value>Preflow active</value>
+  </data>
+  <data name="_CulturePreHeatingTime" xml:space="preserve">
+    <value>PreHeating Time</value>
+  </data>
+  <data name="_CulturePressureC_O" xml:space="preserve">
+    <value>C-O</value>
+  </data>
+  <data name="_CulturePressureF_G" xml:space="preserve">
+    <value>F-G</value>
+  </data>
+  <data name="_CulturePressureH_O" xml:space="preserve">
+    <value>H-O</value>
+  </data>
+  <data name="_CulturePressureOutputsControl" xml:space="preserve">
+    <value>Pressure outputs</value>
+  </data>
+  <data name="_CulturePressureOutputsLocked" xml:space="preserve">
+    <value>Pressure outputs locked</value>
+  </data>
+  <data name="_CulturePressureOutputsTest" xml:space="preserve">
+    <value>Pressure outputs test</value>
+  </data>
+  <data name="_CulturePressureUnit" xml:space="preserve">
+    <value>Pressure unit</value>
+  </data>
+  <data name="_CultureProcessActive" xml:space="preserve">
+    <value>Process is active</value>
+  </data>
+  <data name="_CultureProcessInActive" xml:space="preserve">
+    <value>Process is inactive</value>
+  </data>
+  <data name="_CulturePropane" xml:space="preserve">
+    <value>Propane</value>
+  </data>
+  <data name="_CultureReconnectionRequired" xml:space="preserve">
+    <value>Reconnection</value>
+  </data>
+  <data name="_CultureRemark" xml:space="preserve">
+    <value>Remark</value>
+  </data>
+  <data name="_CultureResetAllDevices" xml:space="preserve">
+    <value>Reset all devices. Please wait...</value>
+  </data>
+  <data name="_CultureRetractPositionEnable" xml:space="preserve">
+    <value>Retract position enable</value>
+  </data>
+  <data name="_CultureScanAvailablePorts" xml:space="preserve">
+    <value>Scan available ports</value>
+  </data>
+  <data name="_CultureSecurityFolderProgramData" xml:space="preserve">
+    <value>Change security for Folder C:\ProgramData\IHT Automation</value>
+  </data>
+  <data name="_CultureSensorCollisionOutput" xml:space="preserve">
+    <value>Sensor collision output</value>
+  </data>
+  <data name="_CultureSerialNumber" xml:space="preserve">
+    <value>Serial number</value>
+  </data>
+  <data name="_CultureSetupEndDownloadTool" xml:space="preserve">
+    <value>Finished setup download tool</value>
+  </data>
+  <data name="_CultureSetupEndFdtiUsbDriver" xml:space="preserve">
+    <value>Finished setup fdti usb driver</value>
+  </data>
+  <data name="_CultureSetupEndUpdateDatabase" xml:space="preserve">
+    <value>Update of the database finished</value>
+  </data>
+  <data name="_CultureSetupFinished" xml:space="preserve">
+    <value>Setup finished</value>
+  </data>
+  <data name="_CultureSetupNotInstalledDownloadTool" xml:space="preserve">
+    <value>Download tool not installed</value>
+  </data>
+  <data name="_CultureSetupNotInstalledFdtiUsbDriver" xml:space="preserve">
+    <value>Fdti usb driver not installed</value>
+  </data>
+  <data name="_CultureSetupStartDownloadTool" xml:space="preserve">
+    <value>Starting setup download tool</value>
+  </data>
+  <data name="_CultureSetupStartFdtiUsbDriver" xml:space="preserve">
+    <value>Starting setup fdti usb driver</value>
+  </data>
+  <data name="_CultureSetupStartUpdateDatabase" xml:space="preserve">
+    <value>Starting updating data base. Please wait..</value>
+  </data>
+  <data name="_CultureSlaveAddress" xml:space="preserve">
+    <value>Slave address</value>
+  </data>
+  <data name="_CultureSlaveConnection" xml:space="preserve">
+    <value>Device connection</value>
+  </data>
+  <data name="_CultureSlaveId" xml:space="preserve">
+    <value>Slave-ID</value>
+  </data>
+  <data name="_CultureState" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="_CultureTactileInitPosFinding" xml:space="preserve">
+    <value>Automatic Height Calibration</value>
+  </data>
+  <data name="_CultureThickness" xml:space="preserve">
+    <value>Thickness</value>
+  </data>
+  <data name="_CultureTime" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="_CultureTorch" xml:space="preserve">
+    <value>Torch</value>
+  </data>
+  <data name="_CultureTorchSelection" xml:space="preserve">
+    <value>Torch selection</value>
+  </data>
+  <data name="_CultureTorchType" xml:space="preserve">
+    <value>Torch type</value>
+  </data>
+  <data name="_CultureTorchTypeWrongIdentity" xml:space="preserve">
+    <value>Wrong identity of torch type</value>
+  </data>
+  <data name="_CultureUnit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="_CultureUnknown" xml:space="preserve">
+    <value>unknown</value>
+  </data>
+  <data name="_CultureValue" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="_CultureVersion" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="_CultureWrongTorchType" xml:space="preserve">
+    <value>Wrong torch type</value>
+  </data>
+</root>

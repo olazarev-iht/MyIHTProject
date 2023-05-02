@@ -1,8 +1,10 @@
-﻿@*@inherits IhtComponentBase*@
-@using System.Reflection;
+﻿@using System.Reflection;
 @using System.Collections;
+@using System.Globalization
 @using IhtApcWebServer.Extensions
 @using SharedComponents.CutDataRepository
+@using SharedComponents.Helpers
+@using SharedComponents.IhtData.DataProvider
 @using SharedComponents.IhtDev
 @using SharedComponents.IhtModbus
 @using SharedComponents.Models
@@ -21,8 +23,10 @@
 @inject IhtCutDataAddressMap ihtCutDataAddressMap
 @inject IParameterDataInfoManager parameterDataInfoManager
 @inject IAPCWorker apcWorker
+@inject IhtDevices ihtDevices
 
 @inject MudBlazor.ISnackbar snackBar
+@inherits IhtComponentBase
 @implements IDisposable
 
 <style>
@@ -64,6 +68,7 @@
 	}
     .mud-input{
 	    font-size: 0.96rem;
+        /*width: 100%;*/
 	}	
 	.mud-input-control>.mud-input-control-input-container {
 		align-items: center;
@@ -134,33 +139,83 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
     cursor:default !important;
 }
 
+.last_loaded 
+{
+    /*font-weight: bold;*/
+    background-color: gray;
+    color: white !important;
+}
+
+.mud-popover.mud-popover-open.mud-popover-top-center.mud-popover-anchor-top-center.mud-popover-overflow-flip-onopen.mud-popover-relative-width.mud-paper.mud-elevation-8.overflow-y-auto
+{
+    position: fixed;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+}
+
+.mud-popover.mud-popover-open.mud-popover-top-center.mud-popover-anchor-bottom-center.mud-popover-overflow-flip-onopen.mud-popover-relative-width.mud-paper.mud-elevation-8.overflow-y-auto 
+{
+    position: fixed;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+    max-width:150px !important;
+    width:150px !important
+}
+
+.mud-input-control.mud-select.myselect > .mud-input-control-input-container > div.mud-input.mud-input-text 
+{
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+
+.mud-input-control.mud-select.myselect > .mud-input-control-input-container > div.mud-input.mud-input-text > div.mud-input-slot.mud-input-root
+{
+    color: #fff !important;
+    font-size: 12px  !important;
+    display: none !important;
+}
+
+.mud-input-control.mud-select.myselect > .mud-input-control-input-container > div.mud-input.mud-input-text > div.mud-input-adornment.mud-input-adornment-end.mud-select-input 
+{
+    color: #fff !important;
+    font-size: 12px  !important;
+    /*display: none !important;*/
+}
+
+.mud-input-control.mud-select.myselect .mud-icon-size-medium {
+    font-size: 2.5rem !important;
+}
 </style>
 
-<PageTitle>Cutting Data</PageTitle>
+<PageTitle>@LocalStrByKey("_CultureCuttingData")</PageTitle>
 
-<MudText Typo="Typo.h3">Cutting Data</MudText>
+<MudText Typo="Typo.h3">@LocalStrByKey("_CultureCuttingData")</MudText>
 
 <MudDialog @bind-IsVisible="_loadParamsDialogVisible">
     <TitleContent>
-        <MudText Typo="Typo.h6">Load Confirmation</MudText>
+        <MudText Typo="Typo.h6">@LocalStrByKey("_CultureButLoad")</MudText>
     </TitleContent>
     <DialogContent>
         <MudForm Model="@cuttingDataModel" @ref="_loadForm">
             <MudTextField ReadOnly Value="@cuttingDataModel.Material.Name" Label="Material" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
             <MudTextField ReadOnly Value="@cuttingDataModel.Thickness" Label="Thickness" Variant="Variant.Text" Margin="Margin.Normal"></MudTextField>
             <MudTextField ReadOnly Value="@cuttingDataModel.Remark" Label="Remark" Variant="Variant.Text" Margin="Margin.Normal"
-                Lines="2" For=@(() => cuttingDataModel.Remark)></MudTextField>                  
+                Lines="2" For=@(() => cuttingDataModel.Remark)></MudTextField>
         </MudForm>      
     </DialogContent>
     <DialogActions>
-        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseLoadParamsModal">Cancel</MudButton>
-        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="LoadParamsAsync">Load</MudButton>
+        <MudButton Color="MudBlazor.Color.Default" Variant="Variant.Outlined" OnClick="CloseLoadParamsModal">@LocalStrByKey("_CultureButCancel")</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="MudBlazor.Color.Default" OnClick="LoadParamsAsync">@LocalStrByKey("_CultureButLoad")</MudButton>
     </DialogActions>
 </MudDialog>
 
 <MudDialog @bind-IsVisible="_deleteParamsDialogVisible">
     <TitleContent>
-        <MudText Typo="Typo.h6">Delete Confirmation</MudText>
+        <MudText Typo="Typo.h6">@LocalStrByKey("_CultureButDelete")</MudText>
     </TitleContent>
     <DialogContent>
         <MudForm Model="@cuttingDataModel" @ref="_deleteForm">
@@ -171,14 +226,14 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
         </MudForm>      
     </DialogContent>
     <DialogActions>
-        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Cancel</MudButton>
-        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>
+    <MudButton Color="MudBlazor.Color.Default" Variant="Variant.Outlined" OnClick="CloseDeleteParamsModal">@LocalStrByKey("_CultureButCancel")</MudButton>
+    <MudButton Variant="Variant.Outlined" Color="MudBlazor.Color.Default" OnClick="DeleteParamsAsync">@LocalStrByKey("_CultureButDelete")</MudButton>
     </DialogActions>
 </MudDialog>
 
 <MudDialog @bind-IsVisible="_createParamsDialogVisible">
     <TitleContent>
-        <MudText Typo="Typo.h6">Duplicate</MudText>
+            <MudText Typo="Typo.h6">@LocalStrByKey("_CultureButDuplicate")</MudText>
     </TitleContent>
     <DialogContent>
         <MudForm Model="@cuttingDataModel" @ref="_createForm">
@@ -191,38 +246,42 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
         </MudForm>      
     </DialogContent>
     <DialogActions>
-        <MudButton Color="MudBlazor.Color.Secondary" 
+        <MudButton Color="MudBlazor.Color.Default" Variant="Variant.Outlined"
             OnClick="CloseCreateParamsModal" onmousedown="return false">
-            Cancel
+            @LocalStrByKey("_CultureButCancel")
         </MudButton>
-        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" 
+        <MudButton Variant="Variant.Outlined" Color="MudBlazor.Color.Default" 
             OnClick="CreateParamsAsync">
-            Save
+            @LocalStrByKey("_CultureButSave")
         </MudButton>
     </DialogActions>
 </MudDialog>
 
 <MudDialog @bind-IsVisible="_editOneParamDialogVisible" Style="max-width:800px !important; width:550px" Class="scaled">
     <TitleContent>
-        <MudText Typo="Typo.h6">Edit</MudText>
+        <MudText Typo="Typo.h6">@_sliderVarName</MudText>
     </TitleContent>
     <DialogContent>
-        <MudForm Model="@cuttingDataModel"
-                 @ref="_editForm">
-            <MudSlider @bind-Value="@_sliderVarValue" Min="@_sliderMinValue" Max="@_sliderMaxValue"
-                Step="@_sliderDeltaValue" Color="Color.Info">Value: @_sliderVarValue.ToString()
+        <MudForm Model="@cuttingDataModel">
+            <MudSlider @bind-Value="@this[@cdSliderModel]" 
+                Min="@cdSliderModel.IntParamMinValue" 
+                Max="@cdSliderModel.IntParamMaxValue"
+                Step="@(GetCutDBParameterProperty(@cdSliderModel, "Step"))" Color="Color.Info">
+                    Value: @DisplayCutDBParamValueAndUnit(@cdSliderModel)
+                    @*Min:@cdSliderModel.IntParamMinValue
+                    Max:@cdSliderModel.IntParamMaxValue
+                    Step:@(GetCutDBParameterProperty(@cdSliderModel, "Step"))*@
             </MudSlider>
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="MudBlazor.Color.Secondary" 
+        <MudButton Color="MudBlazor.Color.Default" Variant="Variant.Outlined"
                    OnClick="CloseEditOneParamModal" onmousedown="return false">
-            Cancel
+            @LocalStrByKey("_CultureButCancel")
         </MudButton>
-        <MudButton Variant="Variant.Filled" 
-                   Color="MudBlazor.Color.Primary" 
+    <MudButton Color="MudBlazor.Color.Default" Variant="Variant.Outlined"
                    OnClick="SaveEditOneParamModal">
-            Save
+            @LocalStrByKey("_CultureButSave")
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -236,96 +295,108 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
         <table class="center-mud-text">
             <tr>
                 <MudTh Style="width:24%; border: 0px solid;">&nbsp;</MudTh>
-                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Ignition</MudTh>
-                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">PreHeating</MudTh>
-                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Piercing</MudTh>
-                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Cutting</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">@LocalStrByKey("_CultureButIgnition")</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">@LocalStrByKey("_CultureButPreHeating1")</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">@LocalStrByKey("_CultureButPiercing")</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">@LocalStrByKey("_CultureButCutting1")</MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">H-O [bar]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CulturePressureH_O") [@DisplayPressureUnit()]</MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam(nameof(@cuttingDataModel.PI0), @cuttingDataModel.PI0, paramMin:0.5f, paramMax:5.0f, paramDelta:0.1f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PI0"/>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam(nameof(@cuttingDataModel.PI0), @cuttingDataModel.PI0, paramMin:0.5f, paramMax:5.0f, paramDelta:0.1f, @cuttingDataModel.Id, Units.txtBar))" @bind-Value="@cuttingDataModel.PI0"
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PI0, maxValue: 99999).Split(" ")[0]" />
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PreHeatHeatingOxygenPressure", @cuttingDataModel.PreHeatHeatingOxygenPressure, paramMin:0.5f, paramMax:5.0f, paramDelta:0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PreHeatHeatingOxygenPressure"/>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("PreHeatHeatingOxygenPressure", @cuttingDataModel.PreHeatHeatingOxygenPressure, paramMin:0.5f, paramMax:5.0f, paramDelta:0.1f, @cuttingDataModel.Id, Units.txtBar))" @bind-Value="@cuttingDataModel.PreHeatHeatingOxygenPressure"
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PreHeatHeatingOxygenPressure, maxValue: 99999).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PierceHeatingOxygenPressure", @cuttingDataModel.PierceHeatingOxygenPressure, paramMin:0.5f, paramMax:5.0f, paramDelta:0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceHeatingOxygenPressure"/>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("PierceHeatingOxygenPressure", @cuttingDataModel.PierceHeatingOxygenPressure, paramMin:0.5f, paramMax:5.0f, paramDelta:0.1f, @cuttingDataModel.Id, Units.txtBar))" @bind-Value="@cuttingDataModel.PierceHeatingOxygenPressure"
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PierceHeatingOxygenPressure, maxValue: 99999).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("CutHeatingOxygenPressure", @cuttingDataModel.CutHeatingOxygenPressure, paramMin:0.5f, paramMax:5.0f, paramDelta:0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CutHeatingOxygenPressure" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("CutHeatingOxygenPressure", @cuttingDataModel.CutHeatingOxygenPressure, paramMin:0.5f, paramMax:5.0f, paramDelta:0.1f, @cuttingDataModel.Id, Units.txtBar))" @bind-Value="@cuttingDataModel.CutHeatingOxygenPressure" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.CutHeatingOxygenPressure, maxValue: 99999).Split(" ")[0]"/>
                 </MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">C-O [bar]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CulturePressureC_O") [@DisplayPressureUnit()]</MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PierceCuttingOxygenPressure", @cuttingDataModel.PierceCuttingOxygenPressure, paramMin:0.0f, paramMax:10.0f, paramDelta:0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceCuttingOxygenPressure" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("PierceCuttingOxygenPressure", @cuttingDataModel.PierceCuttingOxygenPressure, paramMin:0.0f, paramMax:10.0f, paramDelta:0.1f, @cuttingDataModel.Id, Units.txtBar))" @bind-Value="@cuttingDataModel.PierceCuttingOxygenPressure" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PierceCuttingOxygenPressure, maxValue: 99999).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("CutCuttingOxygenPressure", @cuttingDataModel.CutCuttingOxygenPressure, paramMin:0.0f, paramMax:10.0f, paramDelta:0.5f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CutCuttingOxygenPressure" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("CutCuttingOxygenPressure", @cuttingDataModel.CutCuttingOxygenPressure, paramMin:0.0f, paramMax:10.0f, paramDelta:0.1f, @cuttingDataModel.Id, Units.txtBar))" @bind-Value="@cuttingDataModel.CutCuttingOxygenPressure" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.CutCuttingOxygenPressure, maxValue: 99999).Split(" ")[0]"/>
                 </MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">F-G [bar]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CulturePressureF_G") [@DisplayPressureUnit()]</MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PI1", @cuttingDataModel.PI1, paramMin:0.0f, paramMax:1.0f, paramDelta:0.1f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PI1" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("PI1", @cuttingDataModel.PI1, paramMin:0.0f, paramMax:1.0f, paramDelta:0.05f, @cuttingDataModel.Id, Units.txtBar))" @bind-Value="@cuttingDataModel.PI1" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PI1, maxValue: 1000).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PreHeatFuelGasPressure", @cuttingDataModel.PreHeatFuelGasPressure, paramMin:0.0f, paramMax:1.0f, paramDelta:0.1f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PreHeatFuelGasPressure" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("PreHeatFuelGasPressure", @cuttingDataModel.PreHeatFuelGasPressure, paramMin:0.0f, paramMax:1.0f, paramDelta:0.05f, @cuttingDataModel.Id, Units.txtBar))" @bind-Value="@cuttingDataModel.PreHeatFuelGasPressure"
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PreHeatFuelGasPressure, maxValue: 1000).Split(" ")[0]" />
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PierceFuelGasPressure", @cuttingDataModel.PierceFuelGasPressure, paramMin:0.0f, paramMax:1.0f, paramDelta:0.1f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceFuelGasPressure" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("PierceFuelGasPressure", @cuttingDataModel.PierceFuelGasPressure, paramMin:0.0f, paramMax:1.0f, paramDelta:0.05f, @cuttingDataModel.Id, Units.txtBar))" @bind-Value="@cuttingDataModel.PierceFuelGasPressure" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PierceFuelGasPressure, 1000).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("CutFuelGasPressure", @cuttingDataModel.CutFuelGasPressure, paramMin:0.0f, paramMax:1.0f, paramDelta:0.1f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CutFuelGasPressure" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("CutFuelGasPressure", @cuttingDataModel.CutFuelGasPressure, paramMin:0.0f, paramMax:1.0f, paramDelta:0.05f, @cuttingDataModel.Id, Units.txtBar))" @bind-Value="@cuttingDataModel.CutFuelGasPressure"
+                    Text="@GetFormatedPressureValue(cuttingDataModel.CutFuelGasPressure, maxValue: 1000).Split(" ")[0]" />
                 </MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">Clearance [mm]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CultureClearance") [@DisplayLengthUnit()]</MudTh>
                 <MudTh></MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PreHeatHeight", @cuttingDataModel.PreHeatHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:1.0f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PreHeatHeight" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("PreHeatHeight", @cuttingDataModel.PreHeatHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:0.5f, @cuttingDataModel.Id, Units.txtMm))" @bind-Value="@cuttingDataModel.PreHeatHeight" 
+                    Text="@GetFormatedLengthValue(cuttingDataModel.PreHeatHeight).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PierceHeight", @cuttingDataModel.PierceHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:1.0f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceHeight" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("PierceHeight", @cuttingDataModel.PierceHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:0.5f, @cuttingDataModel.Id, Units.txtMm))" @bind-Value="@cuttingDataModel.PierceHeight" 
+                    Text="@GetFormatedLengthValue(cuttingDataModel.PierceHeight).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("CutHeight", @cuttingDataModel.CutHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:1.0f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CutHeight" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("CutHeight", @cuttingDataModel.CutHeight, paramMin:2.0f, paramMax:20.0f, paramDelta:0.5f, @cuttingDataModel.Id, Units.txtMm))" @bind-Value="@cuttingDataModel.CutHeight" 
+                    Text="@GetFormatedLengthValue(cuttingDataModel.CutHeight).Split(" ")[0]"/>
                 </MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">Time [s]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CultureTime") [s]</MudTh>
                 <MudTh></MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PreHeatTime", @cuttingDataModel.PreHeatTime, paramMin:0.0f, paramMax:300.0f, paramDelta:1.0f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PreHeatTime" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("PreHeatTime", @cuttingDataModel.PreHeatTime, paramMin:0.0f, paramMax:300.0f, paramDelta:1.0f, @cuttingDataModel.Id, Units.txtSec))" @bind-Value="@cuttingDataModel.PreHeatTime" />
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("PierceTime", @cuttingDataModel.PierceTime, paramMin:0.0f, paramMax:10.0f, paramDelta:0.1f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.PierceTime" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("PierceTime", @cuttingDataModel.PierceTime, paramMin:0.0f, paramMax:10.0f, paramDelta:0.1f, @cuttingDataModel.Id, Units.txtSec))" @bind-Value="@cuttingDataModel.PierceTime" />
                 </MudTh>
                 <MudTh></MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">Ignition flame<br />
-                    ajust [%]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CultureFlameAdjust") [%]</MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
                     @onclick="@(()=>EditOneParam("IgnitionFlameAdjustment", @cuttingDataModel.IgnitionFlameAdjustment, paramMin:20.0f, paramMax:100.0f, paramDelta:1.0f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.IgnitionFlameAdjustment" />
                 </MudTh>
                 <MudTh></MudTh>
@@ -333,28 +404,28 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
                 <MudTh></MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">Cutting Speed<br />
-                    [mm/min]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CultureCuttingSpeed")<br />
+                    [@DisplayLengthUnit()/min]</MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" 
-                    @onclick="@(()=>EditOneParam("CuttingSpeed", @cuttingDataModel.CuttingSpeed, paramMin:0.0f, paramMax:1500.0f, paramDelta:5.0f, @cuttingDataModel.Id))" @bind-Value="@cuttingDataModel.CuttingSpeed" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture"
+                    @onclick="@(()=>EditOneParam("CuttingSpeed", @cuttingDataModel.CuttingSpeed, paramMin:0.0f, paramMax:1500.0f, paramDelta:5.0f, @cuttingDataModel.Id, Units.txtMm))" @bind-Value="@cuttingDataModel.CuttingSpeed" 
+                    Text="@GetFormatedLengthValue(cuttingDataModel.CuttingSpeed).Split(" ")[0]"/>
                 </MudTh>
             </tr>
         </table>
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="MudBlazor.Color.Secondary" 
+        <MudButton Color="MudBlazor.Color.Default" Variant="Variant.Outlined"
                    OnClick="CloseEditParamsModal" onmousedown="return false">
-            Cancel
+            @LocalStrByKey("_CultureButCancel")
         </MudButton>
-        <MudButton Variant="Variant.Filled" 
-                   Color="MudBlazor.Color.Primary" 
-                   OnClick="UpdateParamsAsync">
-            Save
+    <MudButton Color="MudBlazor.Color.Default" Variant="Variant.Outlined"
+               OnClick="UpdateParamsAsync">
+            @LocalStrByKey("_CultureButSave")
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -367,145 +438,171 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
         <MudButton Style="color:#6d7781 !important" OnClick="@(() => GoOperatorScreen(MANUAL_MODE))">@MANUAL_MODE Mode</MudButton>
     </TitleContent>*@
     <DialogContent>     
-        <MudList Clickable="true" Style="Height:200px;" >
-            <MudListItem OnClick="@(() => GoOperatorScreen(PROCESS_MODE))">@PROCESS_MODE Mode</MudListItem>
-            <MudListItem OnClick="@(() => GoOperatorScreen(MANUAL_MODE))">@MANUAL_MODE Mode</MudListItem>
+        <!--
+        <MudList Clickable="true"  >
+            <MudListItem OnClick="@(() => GoOperatorScreen(PROCESS_MODE))">@LocalStrByEnStr($"{@PROCESS_MODE} Mode")</MudListItem>
+            <MudListItem OnClick="@(() => GoOperatorScreen(MANUAL_MODE))">@LocalStrByEnStr($"{@MANUAL_MODE} Mode")</MudListItem>
         </MudList>       
+        -->
+        <MudStack>
+            <MudButton Color="Color.Inherit" Variant="Variant.Outlined" OnClick="@(() => GoOperatorScreen(PROCESS_MODE))" >@LocalStrByEnStr($"{@PROCESS_MODE} Mode")</MudButton>
+            <MudButton Color="Color.Inherit" Variant="Variant.Outlined" OnClick="@(() => GoOperatorScreen(MANUAL_MODE))">@LocalStrByEnStr($"{@MANUAL_MODE} Mode")</MudButton>
+        </MudStack>
     </DialogContent>
     <DialogActions>
         @*<MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseDeleteParamsModal">Cancel</MudButton>
         <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
-    </DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" Variant="Variant.Outlined" OnClick="@(() => _menuExpanded = false)">@LocalStrByKey("_CultureButClose")</MudButton>
+  </DialogActions>
 </MudDialog>
 
+<!-- Dialog CuttingDataSet -->
 <MudDialog @bind-IsVisible="_paramPopUpDialogVisible" Class="MyMudDialog scaled nouserselect" Style="width1: 550px !important1;">
-    <TitleContent>
+     <TitleContent>
         <MudText Typo="Typo.h6"></MudText>
     </TitleContent>
     <DialogContent>
+        <MudOverlay Visible="_isDataSetLoading" LightBackground="true" Absolute="true"/>
         <MudForm Model="@cuttingDataModel" @ref="_selectedForm">
-            <table class="center-mud-text readonly_table">
+          <table class="center-mud-text readonly_table">
             <tr>
                 <MudTh Style="width:24%; border: 0px solid;">&nbsp;</MudTh>
-                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Ignition</MudTh>
-                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">PreHeating</MudTh>
-                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Piercing</MudTh>
-                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">Cutting</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">@LocalStrByKey("_CultureButIgnition")</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">@LocalStrByKey("_CultureButPreHeating1")</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">@LocalStrByKey("_CultureButPiercing")</MudTh>
+                <MudTh Style="background-color:aliceblue; font-weight:bold; width:19%">@LocalStrByKey("_CultureButCutting1")</MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">H-O [bar]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CulturePressureH_O") [@DisplayPressureUnit()]</MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined" Class="nouserselect"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PI0"/>
+                    <MudTextField Variant="Variant.Outlined" Class="nouserselect"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.PI0"
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PI0, maxValue: 99999).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  Class="nouserselect" ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PreHeatHeatingOxygenPressure"/>
+                    <MudTextField Variant="Variant.Outlined"  Class="nouserselect" ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.PreHeatHeatingOxygenPressure"
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PreHeatHeatingOxygenPressure, maxValue: 99999).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  Class="nouserselect" ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PierceHeatingOxygenPressure"/>
+                    <MudTextField Variant="Variant.Outlined"  Class="nouserselect" ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.PierceHeatingOxygenPressure"
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PierceHeatingOxygenPressure, maxValue: 99999).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  Class="nouserselect" ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.CutHeatingOxygenPressure" />
-                </MudTh>
-            </tr>
-            <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">C-O [bar]</MudTh>
-                <MudTh></MudTh>
-                <MudTh></MudTh>
-                <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PierceCuttingOxygenPressure" />
-                </MudTh>
-                <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.CutCuttingOxygenPressure" />
+                    <MudTextField Variant="Variant.Outlined"  Class="nouserselect" ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.CutHeatingOxygenPressure" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.CutHeatingOxygenPressure, maxValue: 99999).Split(" ")[0]"/>
                 </MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">F-G [bar]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CulturePressureC_O") [@DisplayPressureUnit()]</MudTh>
+                <MudTh></MudTh>
+                <MudTh></MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PI1" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.PierceCuttingOxygenPressure" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PierceCuttingOxygenPressure, maxValue: 99999).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PreHeatFuelGasPressure" />
-                </MudTh>
-                <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PierceFuelGasPressure" />
-                </MudTh>
-                <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.CutFuelGasPressure" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.CutCuttingOxygenPressure" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.CutCuttingOxygenPressure, maxValue: 99999).Split(" ")[0]"/>
                 </MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">Clearance [mm]</MudTh>
-                <MudTh></MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CulturePressureF_G") [@DisplayPressureUnit()]</MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PreHeatHeight" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.PI1" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PI1, maxValue: 1000).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PierceHeight" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.PreHeatFuelGasPressure" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PreHeatFuelGasPressure, maxValue: 1000).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.CutHeight" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.PierceFuelGasPressure" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.PierceFuelGasPressure, maxValue: 1000).Split(" ")[0]"/>
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.CutFuelGasPressure" 
+                    Text="@GetFormatedPressureValue(cuttingDataModel.CutFuelGasPressure, maxValue: 1000).Split(" ")[0]"/>
                 </MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">Time [s]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CultureClearance") [@DisplayLengthUnit()]</MudTh>
                 <MudTh></MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PreHeatTime" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.PreHeatHeight" 
+                    Text="@GetFormatedLengthValue(cuttingDataModel.PreHeatHeight).Split(" ")[0]"/>
                 </MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.PierceTime" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.PierceHeight" 
+                    Text="@GetFormatedLengthValue(cuttingDataModel.PierceHeight).Split(" ")[0]"/>
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.CutHeight" 
+                    Text="@GetFormatedLengthValue(cuttingDataModel.CutHeight).Split(" ")[0]"/>
+                </MudTh>
+            </tr>
+            <tr>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CultureTime") [s]</MudTh>
+                <MudTh></MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.PreHeatTime" />
+                </MudTh>
+                <MudTh>
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.PierceTime" />
                 </MudTh>
                 <MudTh></MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">Ignition flame<br />
-                    ajust [%]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CultureFlameAdjust") [%]</MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.IgnitionFlameAdjustment" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.IgnitionFlameAdjustment" />
                 </MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
             </tr>
             <tr>
-                <MudTh Style="background-color:aliceblue;font-weight: bold">Cutting Speed<br />
-                    [mm/min]</MudTh>
+                <MudTh Style="background-color:aliceblue;font-weight: bold">@LocalStrByKey("_CultureCuttingSpeed")<br />
+                    [@DisplayLengthUnit()/min]</MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
                 <MudTh></MudTh>
                 <MudTh>
-                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Value="@cuttingDataModel.CuttingSpeed" />
+                    <MudTextField Variant="Variant.Outlined"  ReadOnly="true" Style="background-color:aliceblue;" Culture="@CultureInfo.CurrentCulture" Value="@cuttingDataModel.CuttingSpeed" 
+                    Text="@GetFormatedLengthValue(cuttingDataModel.CuttingSpeed).Split(" ")[0]"/>
                 </MudTh>
             </tr>
-        </table>
+          </table>
+          <div style="position:absolute; top: 200px; left: 330px;">
+            <MudProgressCircular Class="@getIsDataSetLoading" Size="Size.Large" Style="height:70px;width:70px;" Indeterminate="true" Color="Color.Primary" />
+          </div>
         </MudForm>      
     </DialogContent>
     <DialogActions>
+        <MudOverlay Visible="_isDataSetLoading" LightBackground="true" Absolute="true"/>
         <table>
             <tr>
                 <td>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Duplicate(@cuttingDataModel.Id))">Duplicate</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Default" OnClick="@(()=>Duplicate(@cuttingDataModel.Id))">@LocalStrByKey("_CultureButDuplicate")</MudButton>
                 </td>
                 <td>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Edit(@cuttingDataModel.Id))"
-                        Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())">Edit</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Default" OnClick="@(()=>Edit(@cuttingDataModel.Id))"
+                               Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())">@LocalStrByKey("_CultureButModify")</MudButton>
                 </td>
                 <td>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Delete(@cuttingDataModel.Id))"
-                        Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())">Delete</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Default" OnClick="@(()=>Delete(@cuttingDataModel.Id))"
+                               Disabled="@IsDisabled(@cuttingDataModel.idCutDataParent.ToString())">@LocalStrByKey("_CultureButDelete")</MudButton>
                 </td>
                 <td>
-                    <MudButton Disabled="!_enableToLoadData" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>Load(@cuttingDataModel.Id))">Load</MudButton>
+                    <MudButton Disabled="!_enableToLoadData" Variant="Variant.Outlined" Color="Color.Default" OnClick="@(()=>Load(@cuttingDataModel.Id))">@LocalStrByKey("_CultureButLoad")</MudButton>
                 </td>
             </tr>
         </table>
+    <MudButton Color="MudBlazor.Color.Default" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Close" OnClick="@(() => _paramPopUpDialogVisible = false)">@LocalStrByKey("_CultureButClose")</MudButton>
     </DialogActions>
 </MudDialog>
 
-<br />
-<MudTable Elevation="25" RowsPerPage="6" Items="@cuttingDataModelList" Filter="new Func<CuttingDataModel, bool>(Search)" Hover="true" Striped="true"
-    @bind-cuttingDataModel="cuttingDataModel" OnRowClick="RowClickEvent" T="CuttingDataModel" Class="centered scaled" Style="width: 550px; cursor: default;" 
-    Dense="false" HeaderClass="tab_head" RowClass="tab_row" SelectedItem="selectedDataModel">
+<MudTable Elevation="25" RowsPerPage="@_rowsPerPage" Items="@cuttingDataModelList" Filter="new Func<CuttingDataModel, bool>(Search)" Hover="true" Striped="true"
+    @ref="CuttingDataTable" @bind-CurrentPage="@TableCurrentPage" @bind-cuttingDataModel="cuttingDataModel" OnRowClick="RowClickEvent" T="CuttingDataModel"
+    Class="centered scaled" Style="width: 550px; cursor: default;" Dense="false" HeaderClass="tab_head" RowClass="tab_row" SelectedItem="selectedDataModel">
     @*<ToolBarContent>
         <MudText Typo="Typo.h6">Parameters</MudText>
         <MudSpacer />
@@ -536,21 +633,39 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
     </ToolBarContent>*@
     <HeaderContent>
         <MudTh Style="text-align: center; color: #ffff">ID</MudTh>
-        <MudTh Style="text-align: center; color: #ffff">Materi-<br/>al</MudTh>
-        <MudTh Style="text-align: center; color: #ffff">Remark</MudTh>
-        <MudTh Style="text-align: center; color: #ffff">Thick<br/>[mm]</MudTh>
-        <MudTh Style="width:80px;text-align: center; color: #ffff">Nozzle</MudTh>
-        <MudTh Style="text-align: center; color: #ffff">
-            <MudIconButton Style="padding: 0px;" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())"/>
-            <br />Speed<br/>[mm/min]</MudTh>
+        <MudTh Style="text-align: center; color: #ffff">@LocalStrByKey("_CultureMaterial")</MudTh>
+        <MudTh Style="text-align: center; color: #ffff">@LocalStrByKey("_CultureRemark")</MudTh>
+        <MudTh Style="text-align: center; color: #ffff; min-width: 75px;">@LocalStrByKey("_CultureThickness")
+            <MudSelect T="float" @bind-Value="searchThickness" AnchorOrigin="Origin.BottomCenter" Class="myselect">
+                <MudSelectItem T="float" Value="0">ALL</MudSelectItem>
+                @foreach (var thickness in ArrThicknesses)
+                {
+                    <MudSelectItem T="float" Value="@thickness">@GetFormatedLengthValue(@thickness).Split(" ")[0]</MudSelectItem>
+                }
+            </MudSelect>
+            [@DisplayLengthUnit()]
+        </MudTh>
+        <MudTh Style="width:80px;text-align: center; color: #ffff; min-width: 75px;">
+            @LocalStrByKey("_CultureNozzle")
+            <MudSelect T="string" @bind-Value="searchNozzle" AnchorOrigin="Origin.BottomCenter" Class="myselect">
+                <MudSelectItem T="string" Value="string.Empty">ALL</MudSelectItem>
+                @foreach (var nozzleModel in NozzleModelList)
+                {
+                    <MudSelectItem T="string" Value="@nozzleModel.Id.ToString()">@nozzleModel.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudTh>
+        <MudTh Style="text-align: center; color: #ffff; max-width: 140px;">
+            @LocalStrByKey("_CultureCuttingSpeed")<br />[@DisplayLengthUnit()/min]
+      </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Id" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.Id</MudTd>
-        <MudTd DataLabel="Material" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.Material?.Name</MudTd>
-        <MudTd DataLabel="Remark" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.Remark</MudTd>
-        <MudTd DataLabel="Thickness" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.Thickness</MudTd>
-        <MudTd DataLabel="Nozzle" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.Nozzle?.Name1<br/>@context.Nozzle?.Name2</MudTd>
-        <MudTd DataLabel="Cutting speed" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : "tab_row")">@context.CuttingSpeed</MudTd>
+        <MudTd DataLabel="Id" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : ihtDevices.DataBaseId == @context.Id ? "tab_row last_loaded" : "tab_row")">@context.Id</MudTd>
+        <MudTd DataLabel="Material" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow" : ihtDevices.DataBaseId == @context.Id ? "tab_row last_loaded" : "tab_row")">@context.Material?.Name</MudTd>
+        <MudTd DataLabel="Remark" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow": ihtDevices.DataBaseId == @context.Id ? "tab_row last_loaded" : "tab_row")">@context.Remark</MudTd>
+        <MudTd DataLabel="Thickness" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow": ihtDevices.DataBaseId == @context.Id ? "tab_row last_loaded" : "tab_row")">@GetFormatedLengthValue((double)@context.Thickness).Split(" ")[0]</MudTd>
+        <MudTd DataLabel="Nozzle" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow": ihtDevices.DataBaseId == @context.Id ? "tab_row last_loaded" : "tab_row")">@context.Nozzle?.Name1<br />@context.Nozzle?.Name2</MudTd>
+        <MudTd DataLabel="Cutting speed" Style="text-align: center;" Class="@(@context.SelectedRow ? "SelectedRow": ihtDevices.DataBaseId == @context.Id ? "tab_row last_loaded" : "tab_row")">@GetFormatedLengthValue((double)@context.CuttingSpeed).Split(" ")[0]</MudTd>
         @*<MudTd DataLabel="">
             <MudFab @onclick="@(()=>Duplicate(@context.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Title="Duplicate" Size="Size.Small" IconSize="Size.Small" />
             <MudFab @onclick="@(()=>Edit(@context.Id))" Disabled="@IsDisabled(@context.idCutDataParent.ToString())" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Title="Edit" Size="Size.Small" IconSize="Size.Small" />
@@ -559,185 +674,372 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
     </RowTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="new int[] { 6 }" />
+        <MudButton Color="MudBlazor.Color.Default" Variant="Variant.Outlined"
+                   StartIcon="@Icons.Material.Filled.Close" Size="Size.Small"
+                   FullWidth="true" 
+                   OnClick="@(() => GoOperatorScreen(ihtDevices.ComponentMode))">
+          @LocalStrByKey("_CultureButClose")
+      </MudButton>
     </PagerContent>
+    <FooterContent>
+    </FooterContent>
 </MudTable>
 
+@code {
+    private bool _createParamsDialogVisible;
+    private bool _editParamsDialogVisible;
+    private bool _deleteParamsDialogVisible;
+    private bool _loadParamsDialogVisible;
+    private bool _editOneParamDialogVisible;
+    private bool _paramPopUpDialogVisible;
 
-		@code {
-	private bool _createParamsDialogVisible;
-	private bool _editParamsDialogVisible;
-	private bool _deleteParamsDialogVisible;
-	private bool _loadParamsDialogVisible;
-	private bool _editOneParamDialogVisible;
-	private bool _paramPopUpDialogVisible;
-	private ArrayList _modbusDatas = new();
+    private bool _isDataSetLoading;
+    private const string NONE_DISPLAY_CLASS = "d-none";
+    private const string DISPLAY_CLASS = "d-block";
+    private string getIsDataSetLoading
+    {
+        get
+        {
+            return _isDataSetLoading ? DISPLAY_CLASS : NONE_DISPLAY_CLASS;
+        }
+    }
 
-	private MudForm _createForm;
-	private MudForm _editForm;
-	private MudForm _deleteForm;
-	private MudForm _loadForm;
-	private MudForm _selectedForm;
+    private ArrayList _modbusDatas = new();
 
-	private string searchMaterial = "";
-	private float searchThickness = 0;
-	private string searchNozzle = "";
+    private MudForm _createForm;
+    private MudForm _editForm;
+    private MudForm _deleteForm;
+    private MudForm _loadForm;
+    private MudForm _selectedForm;
 
-	private string _sliderVarName = "";
-	private float _sliderVarValue = 0;
-	private float _sliderMinValue = 0;
-	private float _sliderMaxValue = 0;
-	private float _sliderDeltaValue = 0;
-	private string[] _sliderArrValues = null;
+    private string searchMaterial = "";
+    private float searchThickness = 0;
+    private string searchNozzle = "";
 
-	private const string PROCESS_MODE = "Process";
-	private const string MANUAL_MODE = "Manual";
+    private string _sliderVarName = "";
+    private float _sliderVarValue = 0;
+    private float _sliderMinValue = 0;
+    private float _sliderMaxValue = 0;
+    private float _sliderDeltaValue = 0;
+    private string _sliderUnit = "";
+    private string[] _sliderArrValues = null;
 
-	private bool _menuExpanded = false;
+    private bool firstLoadingFlag = true;
 
-	private bool _enableToLoadData
-	{
-		get
-		{
-			_modbusDatas = IhtModbusCommunic.GetConnectedModbusDatas();
-			return _modbusDatas.Count > 0;
-		}
-	}
-	//private bool _forMenuFieldDisplay = false;
+    CDSliderModel cdSliderModel = null;
 
-	private float[] arrThicknesses = { 3, 4, 5, 6, 7, 8, 10, 12, 15, 20, 25, 30, 40, 50, 70, 80, 90, 100, 120, 130, 150, 200, 230, 250, 300 };
-	private CuttingDataModel cuttingDataModel = new CuttingDataModel();
-	private CuttingDataModel selectedDataModel = new CuttingDataModel();
-	//private NozzleModel nozzle = new NozzleModel();
-	private static List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
-	private IEnumerable<NozzleModel> nozzleModelList = new List<NozzleModel>();
-	private IEnumerable<MaterialModel> materialModelList = new List<MaterialModel>();
+    private int _tableCurrentPage;
+    public int TableCurrentPage
+    {
+        get
+        {
+            int? currentPage = CuttingDataTable?.CurrentPage;
 
-	private IhtModbusCommunic IhtModbusCommunic => ihtDevices.ihtModbusCommunic;
+            if (currentPage != null)
+            {
+                if (_searchNozzleChanged || _searchThicknessChanged)
+                {
+                    return 0;
+                }
+                else
+                {
+                    if (firstLoadingFlag && (searchNozzle != string.Empty || searchThickness != 0))
+                    {
+                        firstLoadingFlag = false;
 
-	public static event EventHandler? StaticParamsClientChanged;
+                        return 0;
+                    }
+                }
 
-	protected override async Task OnInitializedAsync()
-	{
-		await GetEntriesAsync();
-		await GetNozzlesAsync();
-		await GetMaterialsAsync();
+                return (int)currentPage;
+            }
 
-		APCCuttingDataDisplay.StaticParamsClientChanged += StaticAPCParamsOnStaticAPCParamsDataChanged;
-	}
+            return _tableCurrentPage;
+        }
+        set
+        {
+            _tableCurrentPage = value;
+        }
+    }
 
-	private void GoOperatorScreen(string screenMode)
-	{
-		navigationManager.NavigateTo($"{screenMode}", true);
-	}
+    private int _rowsPerPage = 6;
+    private MudTable<CuttingDataModel>? CuttingDataTable;
 
-	private void ToggleMenu()
-	{
-		_menuExpanded = !_menuExpanded;
-	}
+    public int this[CDSliderModel cdSliderModel]
+    {
+        get
+        {
+            if (cdSliderModel != null)
+            {
+                var paramValue = CorrectCutDBTheCurrentValue(cdSliderModel, cdSliderModel.IntParamValue);
 
-	//private void ForMenuMouseOver()
-	//{
-	//    _forMenuFieldDisplay = true;
-	//}
+                return paramValue;
+            }
+            else
+            {
+                throw new Exception($"The parameter {nameof(cdSliderModel)} is not correct");
+            }
+        }
 
-	//private void ForMenuMouseOut()
-	//{
-	//    _forMenuFieldDisplay = false;
-	//}
+        set
+        {
+            if (cdSliderModel != null)
+            {
+                cdSliderModel.paramValue = (float)(value * cdSliderModel.Multiplier);
+            }
+        }
+    }
 
-	private async Task<List<CuttingDataModel>> GetEntriesAsync()
-	{
-		cuttingDataModelList = await cuttingDataDBService.GetEntriesByGasTypeAsync((int)ihtDevices.TorchTypeSetup, CancellationToken.None);
-		//cuttingDataModelList = cuttingDataModelList.Where(d => d.Gas.GasId == (int)ihtDevices.TorchTypeSetup).ToList();
+    private const string PROCESS_MODE = "Process";
+    private const string MANUAL_MODE = "Setup";
 
-		return cuttingDataModelList;
-	}
+    private bool _menuExpanded = false;
+
+    //CultureInfo CurrentCulture
+    //{
+    //    get {
+    //        CultureInfo.CurrentCulture
+    //    }
+    //}
+
+    private bool _enableToLoadData
+    {
+        get
+        {
+            _modbusDatas = IhtModbusCommunic.GetConnectedModbusDatas();
+            return _modbusDatas.Count > 0;
+        }
+    }
+    //private bool _forMenuFieldDisplay = false;
+
+    private float[] arrThicknesses = { 3, 4, 5, 6, 7, 8, 10, 12, 15, 20, 25, 30, 40, 50, 70, 80, 90, 100, 120, 130, 150, 200, 230, 250, 300 };
+    private float[] ArrThicknesses
+    {
+        get
+        {
+            GetThicknesses();
+
+            return arrThicknesses;
+        }
+
+        set
+        {
+            arrThicknesses = value;
+        }
+    }
+
+    private CuttingDataModel cuttingDataModel = new CuttingDataModel();
+    private CuttingDataModel selectedDataModel = new CuttingDataModel();
+    //private NozzleModel nozzle = new NozzleModel();
+    private static List<CuttingDataModel> cuttingDataModelList = new List<CuttingDataModel>();
+
+    private IEnumerable<NozzleModel> nozzleModelList = new List<NozzleModel>();
+    private IEnumerable<NozzleModel> NozzleModelList
+    {
+        get
+        {
+            GetNozzlesAsync().Wait();
+
+            return nozzleModelList;
+        }
+
+        set
+        {
+            nozzleModelList = value;
+        }
+    }
+
+    private IEnumerable<MaterialModel> materialModelList = new List<MaterialModel>();
+
+    private IhtModbusCommunic IhtModbusCommunic => ihtDevices.ihtModbusCommunic;
+
+    public static event EventHandler? StaticParamsClientChanged;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetEntriesAsync();
+        await GetNozzlesAsync();
+        await GetMaterialsAsync();
+
+        APCCuttingDataDisplay.StaticParamsClientChanged += StaticAPCParamsOnStaticAPCParamsDataChanged;
+
+        //Current Page must be page that has the last loaded row
+        LoadCurrentPage();
+    }
+
+    private void LoadCurrentPage()
+    {
+        var currentPageNumber = 0;
+
+        var allPagesNumber = cuttingDataModelList.Count();
+
+        if(allPagesNumber > 0)
+        {
+            var loadedRowNumber = cuttingDataModelList.Where(x => x.Id <= (ihtDevices.DataBaseId ?? 0)).Count();
+
+            if(loadedRowNumber > 0)
+            {
+                var wholePagesNumber = loadedRowNumber / _rowsPerPage;
+
+                var additionalNumber = loadedRowNumber % _rowsPerPage == 0 ? 0 : 1;
+
+                currentPageNumber = wholePagesNumber + additionalNumber - 1;
+            }
+        }
+
+        _tableCurrentPage = currentPageNumber;
+    }
+
+    private void GoOperatorScreen(string screenMode)
+    {
+        navigationManager.NavigateTo($"{screenMode}", true);
+    }
+
+    private void ToggleMenu()
+    {
+        _menuExpanded = !_menuExpanded;
+    }
+
+    //private void ForMenuMouseOver()
+    //{
+    //    _forMenuFieldDisplay = true;
+    //}
+
+    //private void ForMenuMouseOut()
+    //{
+    //    _forMenuFieldDisplay = false;
+    //}
+
+    private async Task<List<CuttingDataModel>> GetEntriesAsync()
+    {
+        cuttingDataModelList = await cuttingDataDBService.GetEntriesByGasTypeAsync((int)ihtDevices.TorchTypeSetup, CancellationToken.None);
+        //cuttingDataModelList = cuttingDataModelList.Where(d => d.Gas.GasId == (int)ihtDevices.TorchTypeSetup).ToList();
+
+        return cuttingDataModelList;
+    }
 
 
-	private async Task GetNozzlesAsync()
-	{
-		nozzleModelList = await nozzleDBService.GetEntriesAsync(CancellationToken.None);
-	}
+    private async Task GetNozzlesAsync()
+    {
+        nozzleModelList = await nozzleDBService.GetEntriesAsync(CancellationToken.None);
 
-	private async Task GetMaterialsAsync()
-	{
-		materialModelList = await materialDBService.GetEntriesAsync(CancellationToken.None);
-	}
+        nozzleModelList = nozzleModelList.Where(n => cuttingDataModelList.Any(cd => cd.Nozzle.Name.Equals(n.Name))).ToList();
+    }
 
-	private bool Search(CuttingDataModel cuttingDataModel)
-	{
-		if (string.IsNullOrWhiteSpace(searchMaterial + searchThickness + searchNozzle)) return true;
-		if (((cuttingDataModel.Material?.Id.ToString().Contains(searchMaterial, StringComparison.OrdinalIgnoreCase) ?? false) || string.IsNullOrWhiteSpace(searchMaterial))
-			&& (cuttingDataModel.Thickness == searchThickness || searchThickness == 0)
-			&& ((cuttingDataModel.Nozzle?.Id.ToString().Contains(searchNozzle, StringComparison.OrdinalIgnoreCase) ?? false) || string.IsNullOrWhiteSpace(searchNozzle)))
-		{
-			return true;
-		}
-		return false;
-	}
+    private void GetThicknesses()
+    {
+        arrThicknesses = arrThicknesses.Where(n => cuttingDataModelList.Any(cd => cd.Thickness.Equals(n))).ToArray();
+    }
 
-	private void RowClickEvent(TableRowClickEventArgs<CuttingDataModel> tableRowClickEventArgs)
-	{
-		var id = tableRowClickEventArgs.Item.Id;
-		SetUpCuttingDataModel(id);
-		OpenParamPopUpDialog();
-	}
+    private async Task GetMaterialsAsync()
+    {
+        materialModelList = await materialDBService.GetEntriesAsync(CancellationToken.None);
+    }
 
-	private void OpenParamPopUpDialog()
-	{
-		_paramPopUpDialogVisible = true;
-	}
+    string _searchNozzleOld = string.Empty;
+    bool _searchNozzleChanged = false;
+    float _searchThicknessOld = 0;
+    bool _searchThicknessChanged = false;
 
-	private async Task UpdateParamsAsync()
-	{
-		if (_editForm.IsValid)
-		{
-			await cuttingDataDBService.UpdateEntryAsync(cuttingDataModel.Id, cuttingDataModel, CancellationToken.None);
-			_editParamsDialogVisible = false;
-			await GetEntriesAsync();
+    private bool Search(CuttingDataModel cuttingDataModel)
+    {
+        if (string.IsNullOrWhiteSpace(searchMaterial + searchThickness + searchNozzle)) return true;
+        if (((cuttingDataModel.Material?.Id.ToString().Contains(searchMaterial, StringComparison.OrdinalIgnoreCase) ?? false) || string.IsNullOrWhiteSpace(searchMaterial))
+            && (cuttingDataModel.Thickness == searchThickness || searchThickness == 0)
+            && ((cuttingDataModel.Nozzle?.Id.ToString().Contains(searchNozzle, StringComparison.OrdinalIgnoreCase) ?? false) || string.IsNullOrWhiteSpace(searchNozzle)))
+        {
+            if (_searchNozzleOld != searchNozzle)
+            {
+                _searchNozzleChanged = true;
+            }
 
-			OnStaticParamChanged();
-		}
-	}
+            if (_searchThicknessOld != searchThickness)
+            {
+                _searchThicknessChanged = true;
+            }
 
-	private async Task CreateParamsAsync()
-	{
-		if (_createForm.IsValid)
-		{
-			await cuttingDataDBService.AddEntryAsync(cuttingDataModel, CancellationToken.None);
-			cuttingDataModel = new CuttingDataModel();
-			_createParamsDialogVisible = false;
-			//snackBar.Add("Parameter Saved.", Severity.Success);
-			await GetEntriesAsync();
+            _searchNozzleOld = searchNozzle;
+            _searchThicknessOld = searchThickness;
 
-			OnStaticParamChanged();
-		}
-	}
+            return true;
+        }
+        return false;
+    }
 
-	private async Task DeleteParamsAsync()
-	{
-		await cuttingDataDBService.DeleteEntryAsync(cuttingDataModel.Id, CancellationToken.None);
-		cuttingDataModel = new CuttingDataModel();
-		_deleteParamsDialogVisible = false;
-		//snackBar.Add("Parameter Deleted.", Severity.Success);
-		await GetEntriesAsync();
+    private void RowClickEvent(TableRowClickEventArgs<CuttingDataModel> tableRowClickEventArgs)
+    {
+        var id = tableRowClickEventArgs.Item.Id;
+        SetUpCuttingDataModel(id);
+        OpenParamPopUpDialog();
+    }
 
-		OnStaticParamChanged();
-	}
+    private void OpenParamPopUpDialog()
+    {
+        _paramPopUpDialogVisible = true;
+    }
 
-	private void ResetConstParamsSettingsDictionaryToNull()
-	{
-		IhtDevices.GetIhtDevices().GetDevices()
-		.ForEach(
-			d => d.ConstParamsSettings.ToList().ForEach(
-				kvp => d.ConstParamsSettings[kvp.Key] = (min: null, max: null)
-			)
-		);
-	}
+    private async Task UpdateParamsAsync()
+    {
+        if (_editForm.IsValid)
+        {
+            await cuttingDataDBService.UpdateEntryAsync(cuttingDataModel.Id, cuttingDataModel, CancellationToken.None);
+            _editParamsDialogVisible = false;
+            await GetEntriesAsync();
 
-	private async Task LoadParamsAsync()
-	{
-		await parameterDataInfoManager.LoadCuttingDataParamsFromDBAsync(_modbusDatas, cuttingDataModel);
+            OnStaticParamChanged();
+        }
+    }
+
+    private async Task CreateParamsAsync()
+    {
+        if (_createForm.IsValid)
+        {
+            await cuttingDataDBService.AddEntryAsync(cuttingDataModel, CancellationToken.None);
+            cuttingDataModel = new CuttingDataModel();
+            _createParamsDialogVisible = false;
+            //snackBar.Add("Parameter Saved.", Severity.Success);
+            await GetEntriesAsync();
+
+            OnStaticParamChanged();
+        }
+    }
+
+    private async Task DeleteParamsAsync()
+    {
+        await cuttingDataDBService.DeleteEntryAsync(cuttingDataModel.Id, CancellationToken.None);
+        cuttingDataModel = new CuttingDataModel();
+        _deleteParamsDialogVisible = false;
+        //snackBar.Add("Parameter Deleted.", Severity.Success);
+        await GetEntriesAsync();
+
+        OnStaticParamChanged();
+    }
+
+    private void ResetConstParamsSettingsDictionaryToNull()
+    {
+        IhtDevices.GetIhtDevices().GetDevices()
+        .ForEach(
+            d => d.ConstParamsSettings.ToList().ForEach(
+                kvp => d.ConstParamsSettings[kvp.Key] = (min: null, max: null)
+            )
+        );
+    }
+
+    private async Task LoadParamsAsync()
+    {
+        _loadParamsDialogVisible = false;
+        _isDataSetLoading = true;
+        
+        await parameterDataInfoManager.LoadCuttingDataParamsFromDBAsync(_modbusDatas, cuttingDataModel);
+
+        // Save DataBaseId to use then in the SystemSettings
+        // ihtDevices._systemSettings.DataBaseId = cuttingDataModel.Id;
+        ihtDevices.DataBaseId = cuttingDataModel.Id;
+        IhtSettings.UpdateDataBaseControl(ihtDevices._systemSettings);
+
+        // Rising an event - ihtDevices.DataBaseId has been changed
+        // to refresh subscribed component - DynDataModificationCNC.razor
+        IhtDevices.IsCuttingDataBaseIdChanged(new object(), new ProcessInfoEventArgs<int>(0, cuttingDataModel.Id));
 
 		// Reset ConstParamsSettings Dictionary of each device after loading the Cutting Data
 		// to enable an update of the min and max values for Constant Params in DynParamsModel class
@@ -747,13 +1049,14 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
 
         int dataRecordId = cuttingDataModel.Id;
         cuttingDataModel = new CuttingDataModel();
-        _loadParamsDialogVisible = false;
+        //_loadParamsDialogVisible = false;
         await GetEntriesAsync();
 
         OnStaticParamChanged();
         MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
         string payload = $"{dataRecordId}";
-        await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordCreatedNotification, payload);
+        await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordUserLoadedNotification, payload);
+        _isDataSetLoading = false;
     }
 
     private async void CloseEditParamsModal()
@@ -792,12 +1095,13 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
             //Convert.ChangeType(_sliderVarValue, prop.PropertyType);
             if(prop.PropertyType == typeof(int))
             {
-                var sliderVarValueInt = (int)Math.Round(_sliderVarValue);
+                //var sliderVarValueInt = (int)Math.Round(_sliderVarValue);
+                var sliderVarValueInt = (int)Math.Round(cdSliderModel.paramValue);
                 prop.SetValue(cuttingDataModel, sliderVarValueInt, null);
             }
             else
             {
-                prop.SetValue(cuttingDataModel, _sliderVarValue, null);
+                prop.SetValue(cuttingDataModel, cdSliderModel.paramValue, null);
             }
 
         }
@@ -809,7 +1113,7 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
     {
         cuttingDataModel = cuttingDataModelList.FirstOrDefault(c => c.Id == id) ?? new CuttingDataModel();
         cuttingDataModelList.ForEach(row => row.SelectedRow = false);
-        cuttingDataModel.SelectedRow = true;
+        if (cuttingDataModel.Id != ihtDevices.DataBaseId) cuttingDataModel.SelectedRow = true;
     }
 
     private void Edit(int id)
@@ -836,7 +1140,7 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
         _loadParamsDialogVisible = true;
     }
 
-    private void EditOneParam(string paramName, float paramValue, float paramMin, float paramMax, float paramDelta, int id)
+    private void EditOneParam(string paramName, float paramValue, float paramMin, float paramMax, float paramDelta, int id, string paramUnit = "")
     {
         SetUpCuttingDataModel(id);
         _sliderVarName = paramName;
@@ -844,6 +1148,16 @@ table.readonly_table input.mud-input-slot.mud-input-root.mud-input-root-outlined
         _sliderMinValue = paramMin;
         _sliderMaxValue = paramMax;
         _sliderDeltaValue = paramDelta;
+        _sliderUnit = paramUnit;
+
+        cdSliderModel = new CDSliderModel 
+        { 
+            paramValue = _sliderVarValue, 
+            paramMinValue = _sliderMinValue, 
+            paramMaxValue = _sliderMaxValue, 
+            paramStepValue = _sliderDeltaValue,
+            paramUnit = _sliderUnit
+        };
 
         _editOneParamDialogVisible = true;
     }

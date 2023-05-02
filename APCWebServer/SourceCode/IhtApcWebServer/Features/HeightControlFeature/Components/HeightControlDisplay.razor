@@ -1,0 +1,31 @@
+﻿@using IhtApcWebServer.Features.HeightControlFeature.Services
+@inject HeightControlDataProvider HeightControlData;
+@implements IDisposable
+<MudText Typo="Typo.h4">HeightControlDisplay</MudText>
+
+@if (HeightControlData != null)
+{
+    <MudText>Set height is: @HeightControlData.CurrentHeightData.SetHeight</MudText>
+    <br/>
+    <MudText>Actual height is: @HeightControlData.CurrentHeightData.ActualHeight</MudText>
+    <br/>
+}
+@code {
+
+    protected override void OnInitialized()
+    {
+        HeightControlData.HeightControlDataChanged += HeightControlDataOnHeightControlDataChanged;
+        base.OnInitialized();
+    }
+
+    private async void HeightControlDataOnHeightControlDataChanged(object? sender, EventArgs e)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        HeightControlData.HeightControlDataChanged -= HeightControlDataOnHeightControlDataChanged;
+    }
+
+}

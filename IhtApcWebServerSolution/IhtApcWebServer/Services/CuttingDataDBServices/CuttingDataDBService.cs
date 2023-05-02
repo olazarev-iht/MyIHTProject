@@ -2,6 +2,7 @@
 using IhtApcWebServer.Data.DataMapper;
 using IhtApcWebServer.Data.Models.CuttingData;
 using Microsoft.EntityFrameworkCore;
+using SharedComponents.Helpers;
 using SharedComponents.Models.CuttingData;
 using SharedComponents.MqttModel;
 using SharedComponents.Services.CuttingDataDBServices;
@@ -37,7 +38,24 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 			return entries;
 		}
 
-		public async Task<List<CuttingDataModel>> GetEntriesByGasTypeAsync(int gasTypeId, CancellationToken cancellationToken)
+        public async Task<List<CuttingDataModel>> GetCustomEntriesAsync(CancellationToken cancellationToken)
+        {
+            await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+            var entries = await dbContext.CuttingData
+                .Where(p => p.Id < CommonConstants.CutDBMinConstRowNumber)
+                .OrderBy(p => p.Id)
+                .ThenBy(p => p.Thickness)
+                .Include(p => p.Gas)
+                .Include(p => p.Nozzle)
+                .Include(p => p.Material)
+                .Select(p => _mapper.Map<CuttingData, CuttingDataModel>(p))
+                .ToListAsync(cancellationToken);
+
+            return entries;
+        }
+
+        public async Task<List<CuttingDataModel>> GetEntriesByGasTypeAsync(int gasTypeId, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
@@ -113,7 +131,63 @@ namespace IhtApcWebServer.Services.CuttingDataDBServices
 			return entity.Id;
 		}
 
-		public async Task<int?> AddBaseEntryAsync(CuttingDataModel model, CancellationToken cancellationToken)
+        //public async Task<int?> AddEntryFromArchiveAsync(CuttingDataModel model, CancellationToken cancellationToken)
+        //{
+        //    var dbContext = cuttingDataDbContext;
+        //    //bool created = false;
+
+        //    var entity = _mapper.Map<CuttingDataModel, CuttingData>(model);
+
+        //    //using var tx = dbContext.Database.BeginTransaction();
+
+        //    //var customCounter = await dbContext.CustomCounter.SingleAsync();
+
+        //    //entity.Id = customCounter.CounterId;
+        //    //entity.idCutDataParent = !string.IsNullOrWhiteSpace(model.idCutDataParent.ToString()) ? model.idCutDataParent : model.Id;
+
+        //    //await dbContext.Database.ExecuteSqlRawAsync($@"update CustomCounter Set CounterId = {++customCounter.CounterId}");
+
+        //    await dbContext.CuttingData.AddAsync(entity, cancellationToken);
+        //    await dbContext.SaveChangesAsync(cancellationToken);
+
+        //    //await tx.CommitAsync();
+
+        //    //created = true;
+        //    //if (created)
+        //    //{
+        //    //    MqttModelFactory mqttModelFactory = MqttModelFactory.Instance();
+        //    //    // 
+        //    //    int dataRecordId = entity.Id;
+        //    //    string payload = $"{dataRecordId}";
+        //    //    await mqttModelFactory.Publish(MqttModelFactory.PublishId.DataRecordCreatedNotification, payload);
+        //    //}
+
+        //    return entity.Id;
+        //}
+
+        public async Task AddListFromArchiveAsync(List<CuttingDataModel> modelList, CancellationToken cancellationToken)
+		{
+            await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+            using var trnx = dbContext.Database.BeginTransaction();
+
+			int lastId = 0;
+
+            foreach (CuttingDataModel model in modelList)
+			{
+                var entity = _mapper.Map<CuttingDataModel, CuttingData>(model);
+                await dbContext.CuttingData.AddAsync(entity, cancellationToken);
+				lastId = entity.Id;
+            }
+
+            await dbContext.SaveChangesAsync(cancellationToken);
+
+            await dbContext.Database.ExecuteSqlRawAsync($@"update CustomCounter Set CounterId = {++lastId}");
+
+            await trnx.CommitAsync(cancellationToken);
+        }
+
+        public async Task<int?> AddBaseEntryAsync(CuttingDataModel model, CancellationToken cancellationToken)
 		{
 			await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 

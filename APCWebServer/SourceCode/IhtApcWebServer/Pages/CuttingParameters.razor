@@ -1,0 +1,37 @@
+﻿@*@page "/cuttingParameters"
+
+@inherits IhtComponentBase
+@using SharedComponents.Models
+@using SharedComponents.Services
+@inject ICuttingParametersService parametersService
+
+<PageTitle>Cutting Parameters</PageTitle>
+
+<MudText Typo="Typo.h3">Cutting Parameters</MudText>
+
+<MudTable Items="@entries" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@(parameters == null)" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh>Thickness</MudTh>
+        <MudTh>Cutting Height</MudTh>
+        <MudTh>Heating Height</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Thickness">@D(context.Thickness)</MudTd>
+        <MudTd DataLabel="Cutting Height">@D(context.CuttingHeight)</MudTd>
+        <MudTd DataLabel="Heating Height">@D(context.HeatingHeight)</MudTd>
+    </RowTemplate>
+</MudTable>
+
+
+@code {
+    private PagedResult<CuttingParametersModel>? parameters;
+
+    private IEnumerable<CuttingParametersModel>? entries => parameters?.Entries;
+
+    protected override async Task OnInitializedAsync()
+    {
+        parameters = await parametersService.GetEntriesAsync(0, 20, CancellationToken.None);
+    }
+}*@

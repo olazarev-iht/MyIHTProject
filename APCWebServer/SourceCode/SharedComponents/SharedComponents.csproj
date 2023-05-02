@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\CuttingParameters.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MQTTnet" Version="4.1.1.318" />
+    <PackageReference Include="MudBlazor" Version="6.0.9" />
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	<PackageReference Include="System.IO.Ports" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Cultures\" />
+    <Folder Include="Pages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="IhtCommunic">
+      <HintPath>..\Dlls\IhtCommunic.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicCutbus">
+      <HintPath>..\Dlls\IhtCommunicCutbus.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicManager">
+      <HintPath>..\Dlls\IhtCommunicManager.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicManagerApc">
+      <HintPath>..\Dlls\IhtCommunicManagerApc.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicManagerService">
+      <HintPath>..\Dlls\IhtCommunicManagerService.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicService">
+      <HintPath>..\Dlls\IhtCommunicService.dll</HintPath>
+    </Reference>
+    <Reference Include="IhtCommunicService.resources">
+      <HintPath>..\Dlls\IhtCommunicService.resources.dll</HintPath>
+    </Reference>
+    <Reference Include="MQTTnet">
+      <HintPath>..\Dlls\MQTTnet.dll</HintPath>
+    </Reference>
+    <Reference Include="NModbus">
+      <HintPath>..\Dlls\NModbus.dll</HintPath>
+    </Reference>
+    <Reference Include="NModbus.Serial">
+      <HintPath>..\Dlls\NModbus.Serial.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

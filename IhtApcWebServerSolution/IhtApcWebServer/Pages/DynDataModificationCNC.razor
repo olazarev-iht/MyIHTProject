@@ -9,9 +9,11 @@
 @using IhtApcWebServer.Services.APCCommunic
 @using IhtApcWebServer.Services.APCWorkerService;
 @using SharedComponents.Models.APCHardware
+@using SharedComponents.Models.CuttingData
 @using SharedComponents.Services.APCHardwareDBServices
 @using SharedComponents.Services.APCHardwareManagers
 @using SharedComponents.Services.APCHardwareMockDBServices
+@using SharedComponents.Services.CuttingDataDBServices
 @using SharedComponents.IhtData
 @using MudBlazor.Examples.Data.Models
 @using System.Globalization
@@ -21,10 +23,13 @@
 @inject HttpClient httpClient
 @inject IhtDevices ihtDevices
 @inject MqttModelFactory mqttModelFactory 
+<!--
 @inject DataCommon dataCommon
+-->
 @inject DynDataModificationCNCDataProvider dynDataModificationCNCDataProvider
 @inject IParameterDataInfoManager parameterDataInfoManager
 @inject IAPCSimulationDataMockDBService apcSimulationDataMockDBService
+@inject ICuttingDataDBService cuttingDataDBService
 @inject APCCommunicManager apcCommunicManager
 @inject IhtModbusCommunic ihtModbusCommunic
 @inject IhtModbusCommunicData ihtModbusCommunicData
@@ -52,7 +57,7 @@
 }
 
 .device_lastcell {
-    width: 88px;
+    width: 83px;
     height:55px;
     text-align: center;
     font-weight:bold;
@@ -66,7 +71,7 @@
 }
 
 .button_tabcell {
-    width: 88px;
+    width: 83.3px;
     height:50px;
     text-align: center;
 }
@@ -99,7 +104,9 @@
 }
 .active {
         box-shadow: 0px 0px 0px #0065c8;
-        background-color: #FF584F;
+        /*background-color: #FF584F;*/
+        background-color: #3D6FB4;
+        color: white;
 }
 
 .flame_active{
@@ -123,11 +130,13 @@ table#controlPanel td  {
 }
 
 .SelectedParamsType {
-    background-color:aquamarine;
+    background-color: #3D6FB4;
+    color: #ffffff;
 }
 
 .UnselectedParamsType {
-    background-color:#e1f0fd;
+      background-color: #d7e8f9;
+      color: #3D6FB4;
 }
 
 .FlameIsOff {
@@ -146,7 +155,8 @@ table#controlPanel td  {
 
 .ConnectedDeviceNum {
     background-color:#e1f0fd;
-    color: #999191;
+    color: #0061A1;
+    /*color: #999191;*/
     /*border: 0px !important;*/
 }
 
@@ -195,6 +205,7 @@ table#controlPanel td  {
 }
 
 .flex-item-right {
+  float:right;
   flex: 50%;
 }
 
@@ -227,10 +238,9 @@ button .mud-nav-link-text {
     padding: 3px 4px !important;
 }
 
-/*.mud-list.mud-list-padding {
-     padding-top: 0px; 
-    padding-bottom: 0px; 
-}*/
+.mud-dialog-content .mud-list.mud-list-padding {
+    padding-top: 0px !important;
+}
 
 /*.mud-popover.mud-popover-relative-width {
     width: unset;
@@ -290,29 +300,45 @@ input#password-input:focus {
 }*/
 
 .ErrorDeviceBlink {
-    animation: blink-animation 1s steps(5, start) infinite;
-    -webkit-animation: blink-animation 1s steps(5, start) infinite;
+    animation: blink-animation 1s steps(1, start) infinite;
+    -webkit-animation: blink-animation 1s steps(2, start) infinite;
 }
 
 .ErrorDevice {
-    background-color:#d56565;
-    box-shadow: inset 150px 150px 0px 0px #e5d7d7bf;
-    color: #eaeaeb !important;
+    background-color:#FF584F;
+    /*box-shadow: inset 150px 150px 0px 0px #e5d7d7bf;*/
+    color: #000000 !important;
     /*border: 1px solid !important;*/
     text-align: center;
 }
 
     .ErrorDevice.Selected {
-        border: 2px solid #0057ab63 !important;
+        border: 4px solid #497abf !important;
     }
 
     .ErrorDevice>div {
         display: block !important;
         font-size: 10.5px;
-        color: #616161;
+        color: #000000;
         position: absolute;
     }
 
+    .SumDevices>svg {
+        height:14px;
+        width:14px;
+        vertical-align:middle;
+        display:inline-flex !important
+    }
+
+.SumButton {
+    height:35px;
+    width:35px;
+    vertical-align:middle;
+}
+
+.SumButtonContainer{
+    color:#0061A1;
+}
 
 .errorbackground {
     margin: 3rem;
@@ -324,6 +350,34 @@ input#password-input:focus {
     transform: rotate(300deg);
     -webkit-transform: rotate(300deg);
     color: #c6afaf;
+}
+
+.BigDialog {
+    min-width: 500px;
+    max-height: 500px;
+    overflow-y: hidden;
+    zoom: 0.75;
+    top: 90px !important
+}
+
+.display_inline_flex{
+    display: inline-flex;
+}
+
+.right_side_text {
+    display: inline-flex;
+    float: right;
+    margin-right: 15px;
+}
+
+.mud-icon-size-large.warning_class {
+    font-size: 3.0rem;
+    margin: 5px 0 0 15px;
+}
+
+.mud-icon-size-large.warning_class_manual {
+    font-size: 3.3rem;
+    padding: 5px 0 0 0px;
 }
 </style>
 
@@ -338,7 +392,13 @@ input#password-input:focus {
     }
 
     .mud-input-control.mud-select.myselect>.mud-input-control-input-container>div.mud-input.mud-input-text {
-    margin-top: 0px; 
+        margin-top: 0px;
+        margin-left: 15px;
+        margin-right: 10px;
+    }
+
+    .mud-nested-list>.mud-list-item.nested_item>.mud-list-item-icon{
+        min-width: 40px;
     }
 
     .mud-dialog .mud-dialog-title  {
@@ -351,7 +411,7 @@ input#password-input:focus {
     }
 
     .mud-table-cell  {
-        font-size: 1rem;
+        font-size: 0.98rem;
         padding: 9px;
         /*border-bottom: 0px solid*/
         border: 0px
@@ -370,6 +430,10 @@ input#password-input:focus {
     }
 
     .my-install-toarch .mud-dialog-actions {
+        padding: 0px;
+    }
+
+    .mud-dialog .mud-dialog-actions {
         padding: 0px;
     }
 
@@ -400,11 +464,11 @@ input#password-input:focus {
     }
 
     .td_plus1 {
-        color:#2196f3ff; width: 35px; padding-left: 0px; padding-bottom: 8px; vertical-align: bottom;
+        color:#2196f3ff; padding-left: 10px; padding-right: 0px; padding-bottom: 0px; vertical-align: bottom;
     }
 
     .td_minus1 {
-        color:#2196f3ff; padding-bottom: 8px; padding-left: 0px; padding-right: 7px; width: 10px; vertical-align: bottom;
+        color:#2196f3ff; padding-left: 0px; padding-right: 10px; padding-bottom: 0px; vertical-align: bottom;
     }
 
     .mud-popover.mud-popover-open.mud-popover-top-center.mud-popover-anchor-top-center.mud-popover-overflow-flip-onopen.mud-popover-relative-width.mud-paper.mud-elevation-8.overflow-y-auto
@@ -431,29 +495,60 @@ input#password-input:focus {
 
 @if (dynDataModificationCNCDataProvider != null)
 {
-    manualPreheatHeight = dynDataModificationCNCDataProvider.ManualPreheatHeight;
+  ++TestCounter;
 
-    paramHeatO2 = dynDataModificationCNCDataProvider._paramHeatO2;
-    paramFuelGas = dynDataModificationCNCDataProvider._paramFuelGas;
+  manualPreheatHeight = dynDataModificationCNCDataProvider.ManualPreheatHeight;
 
-    if(dynDataModificationCNCDataProvider.CurrentParamsType == IGNITION)
+  processHeight = dynDataModificationCNCDataProvider.ProcessHeight;
+
+  var paramHeatO2_  = dynDataModificationCNCDataProvider._paramHeatO2;
+  var paramFuelGas_ = dynDataModificationCNCDataProvider._paramFuelGas;
+  var paramCutO2_   = dynDataModificationCNCDataProvider._paramCutO2;
+
+  paramHeatO2  = paramHeatO2_  != null ? paramHeatO2_  : paramHeatO2;
+  paramFuelGas = paramFuelGas_ != null ? paramFuelGas_ : paramFuelGas;
+  paramCutO2   = paramCutO2_   != null ? paramCutO2_   : paramCutO2;
+
+  if (IsProcessActivated())
+  {
+    if (ComponentMode != PROCESS_MODE)
     {
-        paramFlameAdjust = dynDataModificationCNCDataProvider._paramFlameAdjust;
-        _cutO2Visible = NONE_DISPLAY_CLASS;
-        _flameAdjustVisible = VISIBLE_CLASS;
+      ComponentMode = PROCESS_MODE;
     }
-    else if(dynDataModificationCNCDataProvider.CurrentParamsType != PRE_HEAT 
-            && dynDataModificationCNCDataProvider.CurrentParamsType != HEATTING)
+
+    bool isCOVisible =   paramCutO2 != null
+                      && CurrentDevice != null
+                      && CurrentDevice.dataProcessInfo != null
+                      && (CurrentDevice.dataProcessInfo.IsLedPiercing || CurrentDevice.dataProcessInfo.IsLedCutting);
+
+    _cutO2Visible = isCOVisible ? VISIBLE_CLASS : NONE_DISPLAY_CLASS;
+
+    _ = UpdateCurrentParamsTypeAsync();
+  }
+  else
+  {
+    if (dynDataModificationCNCDataProvider.CurrentParamsType == IGNITION)
     {
-        paramCutO2 = dynDataModificationCNCDataProvider._paramCutO2;
-        _flameAdjustVisible = NONE_DISPLAY_CLASS;
-        _cutO2Visible = VISIBLE_CLASS;
+      paramFlameAdjust = dynDataModificationCNCDataProvider._paramFlameAdjust;
+      _flameAdjustVisible = VISIBLE_CLASS;
+      _cutO2Visible = NONE_DISPLAY_CLASS;
+    }
+    else if (   dynDataModificationCNCDataProvider.CurrentParamsType != PRE_HEAT
+             && dynDataModificationCNCDataProvider.CurrentParamsType != HEATTING
+            )
+    {
+      //paramCutO2 = dynDataModificationCNCDataProvider._paramCutO2;
+      _flameAdjustVisible = NONE_DISPLAY_CLASS;
+      _cutO2Visible = paramCutO2 != null ? VISIBLE_CLASS : NONE_DISPLAY_CLASS;
     }
     else
     {
-        _flameAdjustVisible = NONE_DISPLAY_CLASS;
-        _cutO2Visible = INVISIBLE_CLASS;
+      _flameAdjustVisible = NONE_DISPLAY_CLASS;
+      _cutO2Visible = paramCutO2 != null ? INVISIBLE_CLASS : NONE_DISPLAY_CLASS;
     }
+  }
+
+<!-- Dialog-EditParam -->
 <MudDialog @bind-IsVisible="_editParamDialogVisible" Style="width: 500px;" Class="scaled">
     <TitleContent>
         <MudText Typo="Typo.h6"></MudText>
@@ -475,7 +570,7 @@ input#password-input:focus {
     <DialogActions>
         <MudButton Color="MudBlazor.Color.Secondary" 
             OnClick="CloseEditParamDialog" onmousedown="return false">
-            Close
+                @LocalStrByKey("_CultureButClose")
         </MudButton>
         @*<MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" 
             OnClick="CreateParamsAsync">
@@ -484,17 +579,69 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
+<!-- Dialog-EditGasParamSliderDialog -->
+<MudDialog @bind-IsVisible="_editGasParamSliderDialogVisible" Style="width: 500px;" Class="scaled">
+    <TitleContent>
+        <MudText Typo="Typo.h6"></MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm Model="@dynParamDataModel">
+
+            <MudTd Class="td_minus1">
+                @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
+                @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
+                @*<img draggable="false" src="Images/minus1.png" class="img_minus1" />*@
+                <MudIconButton Icon="@Icons.Material.Outlined.Remove" Color="Color.Inherit" Size="Size.Large" 
+                    OnClick="@(() => ReduceParamValue(@dynParamDataModel))" />
+            </MudTd>
+                <td style="width:100%; padding-bottom:12px;">
+                    <MudSlider Style="margin-bottom:0px;" @ontouchend="@(()=>UpdateDynParam(@dynParamDataModel))" @onmouseup="@(()=>UpdateDynParam(@dynParamDataModel))"
+                    @bind-Value="@this[@dynParamDataModel]" 
+                    Min="dynParamDataModel.DynParams.MinForSlider"  
+                    Max="dynParamDataModel.DynParams.MaxForSlider"
+                    Step="@(GetParameterProperty(@dynParamDataModel, "Step"))"
+					Color="Color.Info">
+					<table style="width:100%;">
+						<tr>
+							<td style="text-align:left;width:60%">
+								@*min=@dynParamDataModel.DynParams.MinForSlider
+								max=@dynParamDataModel.DynParams.MaxForSlider
+								val=@this[@dynParamDataModel]*@
+								@LocalStrByEnStr(@dynParamDataModel.DynParams.SlidersParamName):
+							</td>
+							<td style="text-align:right; width:30%">@(DisplayParamValue(@dynParamDataModel))</td>
+							<td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@dynParamDataModel))</td>
+						</tr>
+					</table>
+                </MudSlider>                         
+            </td> 
+            <MudTd Class="td_plus1" >
+                @*<img draggable="false" src="Images/plus1.png" class="img_plus1" />*@
+                <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Inherit" Size="Size.Large" 
+                    OnClick="@(() => IncreaseParamValue(@dynParamDataModel))" />
+            </MudTd>
+
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseEditGasParamSliderDialog" onmousedown="return false">
+                @LocalStrByKey("_CultureButClose")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+<!-- Dialog-Password -->
 <MudDialog @bind-IsVisible="_setupPasswordDialogVisible" Style="width:280px" Class="scaled">
     <TitleContent>
         <MudTh Style="text-align:left;border-bottom:0px">
-            <MudButton Color="MudBlazor.Color.Primary" OnClick="@(() => ResetPassword())">Reset to Level 0</MudButton>
+            <MudButton Color="MudBlazor.Color.Primary" OnClick="@(() => ResetPassword())" Style="top:0px;">Reset to Level 0</MudButton>
         </MudTh>
     </TitleContent>
     <DialogContent>
         <table class="center-mud-text" style="table-layout: fixed; width: 100%;">
             <tr>
                 <td style="border: 0px solid white;" colspan="2">
-                    <input type="password" id="password-input" minlength="4" maxlength="4" size="4" 
+                    <input type="password" id="password-input" minlength="4" maxlength="5" size="5" 
                     @bind-value="_setupPasswordValue" style="border: 0px solid; width:50%" readonly="readonly"/>
                 </td>
                 <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("x"))">&#8592;</MudTh>
@@ -518,16 +665,18 @@ input#password-input:focus {
                 <MudTh Class="password-dialog" @onclick="@(()=>GetEditPassword("0"))">0</MudTh>
                 <MudTh Class="password-dialog" Style="padding: 0px;">&nbsp;</MudTh>
                 <MudTh Class="password-dialog" Style="padding: 0px;">
-                    <MudButton Color="MudBlazor.Color.Secondary" OnClick="@(()=>ClosePasswordSetupDialog())">Close</MudButton>
+                    <MudButton Color="MudBlazor.Color.Secondary" OnClick="@(()=>ClosePasswordSetupDialog())">@LocalStrByKey("_CultureButClose")</MudButton>
                 </MudTh>
             </tr>
         </table>
     </DialogContent>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_setupParamsDialogVisible" Style="min-width: 500px; max-height: 500px; overflow-y: hidden; zoom: 0.75; top: 90px !important">
+<!-- Dialog-SetupParams -->
+<MudDialog @bind-IsVisible="_setupParamsDialogVisible" Class="BigDialog">
     <DialogContent>
     <MudButton OnClick="CloseSetupParamsDialog">&#8592; Go Back</MudButton>
+    <MudText Class="right_side_text" Typo="Typo.h6">@LocalStrByKey("_CultureButStation"): @(CurrentDevice?.DeviceNumber)</MudText>
     <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Style="min-height: 440px; max-height: 400px; overflow-y: scroll;" FixedHeader="true"
           Items="@Elements"
           GroupBy="@_groupDefinition"
@@ -560,7 +709,7 @@ input#password-input:focus {
             @if(@context?.ParamSettings?.ViewParameter?.Mode == "Switch")
             {
                 <MudSwitch Disabled="@( context?.ParamSettings?.ReadOnly ?? false )" 
-                T="bool" @bind-Checked="@this[@context?.ParamSettings?.SettingParam ?? 0]" Color="Color.Primary">
+                    T="bool" @bind-Checked="@this[@context?.ParamSettings?.SettingParam ?? 0]" Color="Color.Primary">
                     @( @context.DynParams.Value == 1 ? 
                     @LocalStrByEnStr(@context?.ParamSettings?.ViewParameter?.Values[1] ?? "") : 
                     @LocalStrByEnStr(@context?.ParamSettings?.ViewParameter?.Values[0] ?? "") )
@@ -625,6 +774,7 @@ input#password-input:focus {
 </MudDialog>
 
 
+<!-- Dialog-OpenParamsList -->
 <MudDialog @bind-IsVisible="_isOpenParamsListDialog" Class="SelectDialog Scaled">
     <TitleContent>
         <MudText Typo="Typo.h6">@LocalStrByEnStr(@dynParamDataModel.ParamSettings.DisplayName)</MudText>
@@ -639,12 +789,11 @@ input#password-input:focus {
             </MudChip>
             </MudListSubheader>*@
             @{ int i = 0; }
-                    @foreach (var paramText in @dynParamDataModel?.ParamSettings?.ViewParameter?.Values ?? new string[0])
-                    {
+            @foreach (var paramText in @dynParamDataModel?.ParamSettings?.ViewParameter?.Values ?? new string[0])
+            {
                 <MudListItem T="int" Value="@i">@LocalStrByEnStr(@paramText)</MudListItem>
                 i = i + 1;
             }
-
         </MudList>    
         </MudForm>
     </DialogContent>
@@ -654,40 +803,62 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
+<!-- Dialog-About -->
+<MudDialog @bind-IsVisible="@_aboutDialogVisible" Class="scaled">
+    <TitleContent>
+      <MudText Class="mt-1 mb-4 pa-0" Typo="Typo.body1" Align="Align.Center">About</MudText>
+    </TitleContent>
+    <DialogContent>
+        <About></About>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="@(() => _aboutDialogVisible = false)">@LocalStrByKey("_CultureButClose")</MudButton>
+    </DialogActions>
+</MudDialog>
+
+<!-- Dialog-CultureSelector -->
 <MudDialog @bind-IsVisible="@_cultureSelectorVisible" Class="scaled">
     <TitleContent>
-        <MudText Typo="Typo.h6">Select your locale:</MudText>
+      <MudText Class="mt-1 mb-4 pa-0" Typo="Typo.body1" Align="Align.Center">@LocalStrByKey("_CultureButLocalization")</MudText>
     </TitleContent>
     <DialogContent>
         <CultureSelector></CultureSelector>
 
         <UnitSelector></UnitSelector>
+
+        <MudPaper Class="mx-2 mt-4 mb-1 pa-0" Elevation="0">
+          <MudButton OnClick="@(() => _aboutDialogVisible = true)" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Info" FullWidth="true" Color="Color.Info">About</MudButton>
+        </MudPaper>
     </DialogContent>
     <DialogActions>
         <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseLocalizationDialog">@LocalStrByKey("_CultureButClose")</MudButton>
     </DialogActions>
 </MudDialog>
 
+<!-- Dialog-Menu -->
 <MudDialog @bind-IsVisible="_menuExpanded" Class="scaled">
     <TitleContent>
         <table>
             <tr><td><MudText Typo="Typo.h6">@LocalStrByKey("Level") @((int)_userPasswordLevel)</MudText></td></tr>
+            <!--
             <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">@LocalStrByKey("_CultureCuttingData")</MudButton></td></tr>
+          -->
+            <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="@SwitchToCuttingDataPage">@LocalStrByKey("_CultureCuttingData")</MudButton></td></tr>
             <tr><td><MudButton Disabled="IsOtherModeDisabled()" Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@LocalStrByEnStr($"{@OtherComponentMode} Mode")</MudButton></td></tr>
         </table>
     </TitleContent>
     <DialogContent>  
-        <MudTd>@LocalStrByKey("_CultureButTorch") @CurrentDevice.DeviceNumber:
+        <MudTd>@LocalStrByKey("_CultureButStation") @CurrentDevice.DeviceNumber:
         <MudSwitch @bind-Checked="@IsEnabledMainControl" Color="Color.Primary" Disabled="IsEnabledOnDisabled()">@(CurrentDevice.IsEnabledMainControl ? @LocalStrByKey("_CultureParamEnabled") : @LocalStrByKey("_CultureParamDisabled"))</MudSwitch></MudTd>
-        <MudList Clickable="true" Style="Height:220px;" >
-            <MudListItem Icon="@Icons.Filled.Settings" Text="@LocalStrByKey("_CultureButSettings")" InitiallyExpanded="false">
+        <MudList Clickable="true" Style="height:240px;" >
+            <MudListItem Icon="@Icons.Filled.Settings" OnClick="OpenSetupParamsDialog">@LocalStrByKey("_CultureButStation")</MudListItem>
+            <MudListItem Icon="@Icons.Filled.Settings" Text="@LocalStrByKey("_CultureButSystem")" InitiallyExpanded="true">
                 <NestedList>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenSetupParamsDialog">@LocalStrByKey("_CultureButSetup")</MudListItem>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenLocalizationDialog">@LocalStrByKey("_CultureLanguage") &nbsp;
-                        <img src="@($"Images/Culture/{CultureInfo.CurrentUICulture.EnglishName.Split()[0]}.gif")" style="mix-blend-mode: normal; width: 35px; height: 20px; vertical-align: middle;" />
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenLocalizationDialog" Class="nested_item">@LocalStrByKey("_CultureButLocalization") &nbsp;
+                        <img src="@GetLocalCultureIcon" style="mix-blend-mode: normal; width: 35px; height: 20px; vertical-align: middle;" />
                     </MudListItem>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenPasswordSetupDialog">@LocalStrByKey("_CultureButPassword")</MudListItem>
-                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenTorchInstalledDialog">@LocalStrByKey("_CultureButTorchInstalled")</MudListItem>
+                    <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenPasswordSetupDialog" Class="nested_item">@LocalStrByKey("_CultureButPassword")</MudListItem>
+                            <MudListItem Icon="@Icons.Filled.Article" OnClick="OpenTorchInstalledDialog" Class=@($"nested_item {@selectedStationsDisplay}")>@LocalStrByKey("_CultureButConfiguration")</MudListItem>
                 </NestedList>
             </MudListItem>
         </MudList>          
@@ -698,13 +869,9 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="@_errorLogDialogVisible" Class="scaled">
+<!-- Dialog-ErrorLog -->
+<MudDialog @bind-IsVisible="@_errorLogDialogVisible" Class="BigDialog">
     <TitleContent>
-        @*<table>
-            <tr><td><MudText Typo="Typo.h6">@LocalStrByKey("Level") @((int)_userPasswordLevel)</MudText></td></tr>
-            <tr><td><MudButton Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(CUTTING_DB_URL); }">@LocalStrByKey("_CultureCuttingData")</MudButton></td></tr>
-            <tr><td><MudButton Disabled="IsOtherModeDisabled()" Style="position:relative; color:#6d7781 !important" OnClick="() => { GoToPage(HrefToOtherComponentMode); }">@LocalStrByEnStr($"{@OtherComponentMode} Mode")</MudButton></td></tr>
-        </table>*@
     </TitleContent>
     <DialogContent>
     <MudTable Hover="true" Breakpoint="Breakpoint.Sm" Style="min-height: 440px; max-height: 400px; overflow-y: scroll;" FixedHeader="true"
@@ -722,7 +889,7 @@ input#password-input:focus {
     <HeaderContent>
         @*<MudTh Style="font-weight:bold;">Nr</MudTh>*@
         <MudTh Style="font-weight:bold;">@LocalStrByKey("_CultureErrorCode")</MudTh>
-        <MudTh Style="font-weight:bold;">@LocalStrByEnStr("Description")</MudTh>
+        <MudTh Style="font-weight:bold;">@LocalStrByEnStr("_CultureDescription")</MudTh>
         <MudTh Style="font-weight:bold;width:35%">@LocalStrByKey("_CultureTime")</MudTh>
         @*<MudTh>Molar mass</MudTh>*@
     </HeaderContent>
@@ -730,18 +897,21 @@ input#password-input:focus {
         <MudTh Class="mud-table-cell-custom-group" colspan="5">@LocalStrByEnStr($"{context.Key}")</MudTh>
     </GroupHeaderTemplate>
     <RowTemplate>
-        <MudTd DataLabel="ErrorCode">@(@LocalStrByEnStr(context.ErrorCode ?? ""))<br />@String.Format("St.{0,2:00}", context.SlaveId - (int)IhtModbusCommunic.SlaveId.Id_Default)</MudTd>
-        <MudTd DataLabel="Description">@(@LocalStrByEnStr(context.Description ?? ""))</MudTd>
+        <MudTd DataLabel="ErrorCode">@(@LocalStrByEnStr(context.ErrorCode ?? ""))<br />
+            @(context.SlaveId != null ? String.Format("St.{0,2:00}", context.SlaveId - (int)IhtModbusCommunic.SlaveId.Id_Default) : "")
+        </MudTd>
+        <MudTd DataLabel="Description">@(@LocalStrByEnStr(context.Description ?? "", context.Args ?? new string[] {}))</MudTd>
         <MudTd DataLabel="Time">@(((DateTime)(context.TimeStamp ?? DateTime.MinValue)).ToString("yyyy-MM-dd HH:mm:ss") ?? "")</MudTd>
     </RowTemplate>
     </MudTable>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseErrorLogDialog">Close</MudButton>
+                <MudButton Color="MudBlazor.Color.Secondary" OnClick="CloseErrorLogDialog">@LocalStrByKey("_CultureButClose")</MudButton>
         @*<MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="DeleteParamsAsync">Delete</MudButton>*@
     </DialogActions>
 </MudDialog>
 
+<!-- Dialog-TorchInstalled -->
 <MudDialog @bind-IsVisible="@TorchInstalledDialogVisible" Class="my-install-toarch" Style="width:440px;">
     @*<TitleContent>
         <MudText Typo="Typo.h6" Style="text-align: center;">Torch Installed</MudText>
@@ -750,8 +920,8 @@ input#password-input:focus {
         <MudForm>
             <table width="100%">
                 <tr>
-                    <MudTh><b>@LocalStrByEnStr("Torch selection")</b></MudTh>
-                    <MudTh><b>@LocalStrByEnStr("Torch type")</b></MudTh>
+                    <MudTh><b>@LocalStrByEnStr("Station selection")</b></MudTh>
+                        <MudTh><b>&nbsp;&nbsp;@LocalStrByEnStr("COM Port")</b></MudTh>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -761,30 +931,28 @@ input#password-input:focus {
                     </td>
                 </tr>
                 <tr>
-                    <td width="50%">
+                    <td width="50%" style="vertical-align:top;">
                         <MudOverlay Visible="_torchInstalledDialogIsBlocked" LightBackground="true" Absolute="true" />
-            <MudGrid>
-        @foreach (IhtDevice ihtDevice in ihtDevices.GetDevices().OrderBy(v => v.DeviceNumber))
-        {
-            <MudItem xs="6">
-                    @*<input type="checkbox" @bind="@device.IsVisible" /> @:@device.DeviceNumber.ToString();*@
-                    <MudCheckBox @bind-Checked="@ihtDevice.IsVisible" Dense="false" Color="Color.Primary" Disabled="@IsDeviceDisabled(ihtDevice.IsEnabledChbx)">
-                        <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">@LocalStrByKey("_CultureButTorch") @ihtDevice.DeviceNumber</MudText>
-                    </MudCheckBox>
-            </MudItem>
-        }  
-            </MudGrid>
-                    </td>
-                    <td width="50%" valign="top" style="border-width: 0 0 0 1px;border-color: #e0e0e0">
-                        <MudSelect T="IhtDevices.TorchType" @bind-Value="@ihtDevices.TorchTypeSetup" Class="myselect" Style="margin-top: 0px;">             
+                        <MudGrid>
+                        @foreach (IhtDevice ihtDevice in ihtDevices.GetDevices().OrderBy(v => v.DeviceNumber))
+                        {
+                            <MudItem xs="6">
+                                @*<input type="checkbox" @bind="@device.IsVisible" /> @:@device.DeviceNumber.ToString();*@
+                                <MudCheckBox @bind-Checked="@ihtDevice.IsVisible" Dense="false" Color="Color.Primary" Disabled="@IsDeviceDisabled(ihtDevice.IsEnabledChbx)">
+                                    <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">@LocalStrByKey("_CultureButStation") @ihtDevice.DeviceNumber</MudText>
+                                </MudCheckBox>
+                            </MudItem>
+                        }  
+                        </MudGrid>
+                        <MudTh><b>@LocalStrByEnStr("_CultureButFuelGas")</b></MudTh>
+                        <MudSelect T="IhtDevices.TorchType" @bind-Value="@ihtDevices.TorchTypeSetup" Class="myselect">             
                             <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.Propane)">@LocalStrByKey("_CulturePropane")</MudSelectItem>
                             <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.Acetylane)">@LocalStrByKey("_CultureAcetylane")</MudSelectItem>
                             <MudSelectItem T="IhtDevices.TorchType" Value="@(IhtDevices.TorchType.NaturalGas)">@LocalStrByKey("_CultureNaturalGas")</MudSelectItem>
                         </MudSelect>
-
-                        <br />
-                        <MudTh><b>COM Port</b></MudTh>
-                        <MudSelect T="string" @bind-Value="@_nameComPort" Class="myselect" Style="margin-top: 0px;">             
+                    </td>
+                    <td width="50%" valign="top" style="border-width: 0 0 0 1px;border-color: #e0e0e0">                     
+                        <MudSelect T="string" @bind-Value="@_nameComPort" Class="myselect">             
                           @foreach (string s in SerialPort.GetPortNames())
                           {
                             <MudSelectItem T="string" Value="@s">@s</MudSelectItem>
@@ -793,7 +961,8 @@ input#password-input:focus {
 
                         <br/>
                         <MudTh><b>Device Connection</b></MudTh>
-                        <MudButton Variant="Variant.Filled" OnClick="@(async () => { await Connection(); })" Disabled="@IsDeviceConnectionDisabled()">Connection</MudButton>
+                        <MudButton Variant="Variant.Filled" OnClick="@(async () => { await Connection(); })" Disabled="@IsDeviceConnectionDisabled()" 
+                            Style="margin-left:15px; margin-top:5px; margin-bottom:10px">Connection</MudButton>
                         <MudCheckBox @bind-Checked="@_performResetDevices" Dense="false" Color="Color.Primary">
                             <MudText Style="font-size: 13px;font-weight: 500;" Typo="Typo.subtitle1">Perform a reset for all devices</MudText>
                         </MudCheckBox>																										
@@ -814,6 +983,7 @@ input#password-input:focus {
     </DialogActions>
 </MudDialog>
 
+<!-- Dialog-Initial -->
 <MudDialog IsVisible="_initialDialogIsBlocked" Class=@($"{@_connectVisible} scaled") Style="height:400px;width:500px;background-color:transparent">
     <DialogContent>
         <MudText Typo="Typo.h6" Class="centered" Style="top:120px">Connecting to the device...</MudText>
@@ -821,325 +991,546 @@ input#password-input:focus {
     </DialogContent>
 </MudDialog>
 
+<!-- Main-View -->
 <div class="flex-container scaled" >  
     <table id="controlPanel" class="tablemobile centered" width="500px">
         <tr>
             <MudText Typo="Typo.h4">Dynamic Params Modification (CNC)</MudText>
         </tr>
+        <!-- Device 1..6, Menu-Button -->
         <tr>
+            <!-- Device 1..6, Menu-Button -->
             <td style="border-bottom-width: 4px !important; border-bottom-color: white !important;">
+                <!-- Device 1..3 -->
                 <div class="flex-item-left">
                     <table class="internal_div_table">
                         <tr>
-            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(1)"
-            @onclick="@(()=>SetDeviceNum(1))">1<div style="display:none">@GetErrorCodeMessage(1)</div></MudTd>
-            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(2)"
-            @onclick="@(()=>SetDeviceNum(2))">2<div style="display:none">@GetErrorCodeMessage(2)</div></MudTd>
-            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(3)"
-            @onclick="@(()=>SetDeviceNum(3))">3<div style="display:none">@GetErrorCodeMessage(3)</div></MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(1)" @onclick="@(()=>SetDeviceNum(1))">
+                                1<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                @*1<p style="display: inline-flex;font-size: 13px;font-family: inherit;top: -2px;vertical-align: middle;position: relative;">&sum;</p>*@                               
+                                <div style="display:none">@GetErrorCodeMessage(1)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(2)" @onclick="@(()=>SetDeviceNum(2))">
+                                2<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(2)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(3)" @onclick="@(()=>SetDeviceNum(3))">
+                                3<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(3)</div>
+                            </MudTd>
                         </tr>
                     </table>
                  </div>
+                <!-- Device 4..6, Menu-Button -->
                  <div class="flex-item-right">
                     <table class="internal_div_table">
                         <tr>
-            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(4)"
-            @onclick="@(()=>SetDeviceNum(4))">4<div style="display:none">@GetErrorCodeMessage(4)</div></MudTd>
-            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)"
-            @onclick="@(()=>SetDeviceNum(5))">5<div style="display:none">@GetErrorCodeMessage(5)</div></MudTd>            
-            <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-            <MudOverlay Visible="_isProcessBtnActive || (ErrorCode > 0 && ErrorCode < 100)" LightBackground="true" Absolute="true" />
-            <MudTd Style="padding:0px;" Class="device_lastcell">
-                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())" />           
-            </MudTd>
-            </MudPaper>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(4)" @onclick="@(()=>SetDeviceNum(4))">
+                                4<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(4)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(5)" @onclick="@(()=>SetDeviceNum(5))">
+                                5<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(5)</div>
+                            </MudTd>            
+                            <!-- Menu-Button -->
+                            <MudTd Style="position:relative; padding:0px; max-width: 83.3px;" Class="device_lastcell">
+                              <MudOverlay Visible="_isProcessBtnActive" LightBackground="true" Absolute="true" />
+                              <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@((e) => ToggleMenu())" />           
+                            </MudTd>
                         </tr>
                     </table>
                 </div>
             </td>
         </tr>
+        <!-- Device 7..10, Sum(Common)-Button -->
         <tr>
-            <td style="border-bottom-width: 3px !important; border-bottom-color: white !important;">
+            <td style="border-bottom-width: 4px !important; border-bottom-color: white !important;">
+                <!-- Device 6..8 -->
                 <div class="flex-item-left">
                     <table class="internal_div_table">
                         <tr>
-            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(6)"
-            @onclick="@(()=>SetDeviceNum(6))">6<div style="display:none">@GetErrorCodeMessage(6)</div></MudTd>
-            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(7)"
-            @onclick="@(()=>SetDeviceNum(7))">7<div style="display:none">@GetErrorCodeMessage(7)</div></MudTd>
-            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(8)"
-            @onclick="@(()=>SetDeviceNum(8))">8<div style="display:none">@GetErrorCodeMessage(8)</div></MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(6)" @onclick="@(()=>SetDeviceNum(6))">
+                                6<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(6)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(7)" @onclick="@(()=>SetDeviceNum(7))">
+                                7<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(7)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(8)" @onclick="@(()=>SetDeviceNum(8))">
+                                8<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(8)</div></MudTd>
                         </tr>
                     </table>
-                </div>
+                </div> 
+                <!-- Device 8..9, Device10 or StartProcess-Button for Exibition-Mode, Sum(Common)-Button -->
                 <div class="flex-item-right">
                     <table class="internal_div_table">
                         <tr>
-            @if(ComponentMode != MANUAL_MODE && EXHIBITION_MODE){
-                <td colspan="2" style="width: 66.35%;">
-                    <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                    <MudOverlay Visible="IsStartProcessDisabled()" LightBackground="true" Absolute="true" />
-                    <div class="button_container">
-                        <div id="ProcessBtn" class="@(_isProcessBtnActive ? "process_btn active" : "process_btn")"
-                            @onclick="@(async (_) => await StartProcessAsync())">
-                            @(_isProcessBtnActive ? "Stop Process" : "Start Process")
-                        </div>
-                    </div>
-                    </MudPaper>
-                </td>
+                        <!-- StartProcess-Button for Exibition-Mode -->
+                        @if(ComponentMode != MANUAL_MODE && EXHIBITION_MODE){
+                            <td colspan="2" style="width: 66.35%;">
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="IsStartProcessDisabled()" LightBackground="true" Absolute="true" />
+                                <div class="button_container" style="border: 0px">
+                                    <div id="ProcessBtn" class="@(_isProcessBtnActive ? "process_btn active" : "process_btn")"
+                                        @onclick="@(async (_) => await StartProcessAsync())">
+                                        @(_isProcessBtnActive ? "Stop Process" : "Start Process")
+                                    </div>
+                                </div>
+                                </MudPaper>
+                            </td>
                 
-            }
-            else{
-                <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(9)"
-                @onclick="@(()=>SetDeviceNum(9))">9<div style="display:none">@GetErrorCodeMessage(9)</div></MudTd>
-
-                <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)"
-                @onclick="@(()=>SetDeviceNum(10))">10<div style="display:none">@GetErrorCodeMessage(10)</div></MudTd>
-            }
-                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                <MudOverlay Visible="IsSumDisabled()" LightBackground="true" Absolute="true" />
-                    <MudTd Class="@(_isSumTorchesActive ? "device_lastcell active" : "device_lastcell")" 
-                        Style="font-size:25px; padding:6px; font-family:none;" @onclick="@(() => ClickSumTorches())">&nbsp;&#8721;&nbsp;</MudTd> 
-                </MudPaper>
+                        }
+                        else
+                        {
+                            <!-- Device 8..10 -->
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(9)" @onclick="@(()=>SetDeviceNum(9))">
+                                9<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(9)</div>
+                            </MudTd>
+                            <MudTd Style="font-weight:bold;" Class="@GetDeviceNumClass(10)" @onclick="@(()=>SetDeviceNum(10))">
+                                10<MudIcon Icon="@Icons.Material.Filled.Functions" Style="display:none"/>
+                                <div style="display:none">@GetErrorCodeMessage(10)</div>
+                            </MudTd>
+                        }
+                          <!-- Sum(Common)-Button -->
+                            <MudTd Style="position:relative; padding:0px; max-width: 83.3px;" Class="@(_isSumTorchesActive ? "device_lastcell active" : "device_lastcell SumButtonContainer")" @onclick="@(() => ClickSumTorchesAsync())">
+                                <MudOverlay Visible="IsSumDisabled()" LightBackground="true" Absolute="true" />
+                                &nbsp;<MudIcon Icon="@Icons.Material.Filled.Functions" Class="SumButton" />&nbsp;
+                            </MudTd>
                         </tr>
                     </table>
                 </div>
             </td>
         </tr>
+        <!-- Sliders HO/FG/CO, Height-Control, Move-Up/Down, Calibration, Flame ON/OFF, FlameOnEnd, Reload, StartPiercing -->
         <tr>
             <td>
+                <!-- Sliders HO/FG/CO -->
                 <div class="flex-item-left">
-                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
-                <table class="internal_div_table">
-                    <tr>
-                        <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramHeatO2))">
-                            @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
-                            @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
-                             <img draggable="false" src="Images/minus1.png" class="img_minus1" />
-                        </MudTd>
-                        <td>
-                            <MudSlider Style="margin-bottom:0px" @ontouchend="@(()=>UpdateDynParam(@paramHeatO2))" @onmouseup="@(()=>UpdateDynParam(@paramHeatO2))"
-                            @bind-Value="@this[@paramHeatO2]"
-                            Min="paramHeatO2.DynParams.MinForSlider" 
-                            Max="paramHeatO2.DynParams.MaxForSlider"
-                            Step="@(GetParameterProperty(@paramHeatO2, "Step"))" 
-                            Color="Color.Info"><table><tr><td style="text-align:left;width:60%">
-                                min=@paramHeatO2.DynParams.MinForSlider
-                                max=@paramHeatO2.DynParams.MaxForSlider
-                                val=@this[@paramHeatO2]
-                                Flame (H-O):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramHeatO2))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramHeatO2))</td></tr></table>
-                            </MudSlider>                           
-                        </td> 
-                        <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramHeatO2))">
-                             <img draggable="false" src="Images/plus1.png" class="img_plus1" />
-                        </MudTd>
-                    </tr>
-                    <tr>
-                        <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramFuelGas))">
-                            @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
-                            @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
-                             <img draggable="false" src="Images/minus1.png" class="img_minus1" />
-                        </MudTd>
-                        <td>
-                            <MudSlider @ontouchend="@(()=>UpdateDynParam(@paramFuelGas))" @onmouseup="@(()=>UpdateDynParam(@paramFuelGas))"
-                            @bind-Value="@this[@paramFuelGas]" 
-                            Min="@paramFuelGas.DynParams.MinForSlider"
-                            Max="@paramFuelGas.DynParams.MaxForSlider"
-                            Step="@(GetParameterProperty(@paramFuelGas, "Step"))" 
-                            Color="Color.Info"><table><tr><td style="text-align:left;width:60%">
-                                min=@paramFuelGas.DynParams.MinForSlider
-                                max=@paramFuelGas.DynParams.MaxForSlider
-                                val=@this[@paramFuelGas]
-                                Flame (F-G):</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramFuelGas))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramFuelGas))</td></tr></table>
-                            </MudSlider>
-                        </td>  
-                        <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramFuelGas))">
-                            @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
-                            @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
-                             <img draggable="false" src="Images/plus1.png" class="img_plus1" />
-                        </MudTd>
-                    </tr>
-                    <tr>
-                        <MudTd Class="@($"td_minus1 {@_cutO2Visible}")" @onclick="@(() => ReduceParamValue(@paramCutO2))">
-                             <img draggable="false" src="Images/minus1.png" class="img_minus1" />
-                        </MudTd>
-                        <td>
-                            <MudSlider Class="@_cutO2Visible" @ontouchend="@(()=>UpdateDynParam(@paramCutO2))" @onmouseup="@(()=>UpdateDynParam(@paramCutO2))"                
-                            @bind-Value="@this[@paramCutO2]" 
-                            Min="@paramCutO2.DynParams.MinForSlider"
-							Max="@paramCutO2.DynParams.MaxForSlider"
-                            Step="@(GetParameterProperty(@paramCutO2, "Step"))" 
-                            Color="Color.Info"><table><tr><td style="text-align:left;width:60%">
-                                min=@paramCutO2.DynParams.MinForSlider
-                                max=@paramCutO2.DynParams.MaxForSlider
-                                val=@this[@paramCutO2]
-                                C - O:</td><td style="text-align:right; width:30%">@(DisplayParamValue(@paramCutO2))</td><td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramCutO2))</td></tr></table>
-                            </MudSlider>                        
-                        </td>
-                        <MudTd Class="@($"td_plus1 {@_cutO2Visible}")" @onclick="@(() => IncreaseParamValue(@paramCutO2))">
-                             <img draggable="false" src="Images/plus1.png" class="img_plus1" />
-                        </MudTd>                       
-                    </tr>
-                </table>
-                </MudPaper>
+                    <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                    <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
+                    <!-- Sliders HO/FG/CO -->
+                    <table class="internal_div_table" style="padding-left:10px; padding-right:20px">
+                        <!-- Slider HO -->
+                        <tr>
+                          @if (false)
+                          {
+                            <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramHeatO2))">
+                                @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
+                                @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
+                                <img draggable="false" src="Images/minus1.png" class="img_minus1" />
+                            </MudTd>
+                            <td>
+                                <MudSlider Style="margin-bottom:0px" @ontouchend="@(()=>UpdateDynParam(@paramHeatO2))" @onmouseup="@(()=>UpdateDynParam(@paramHeatO2))"
+                                  @bind-Value="@this[@paramHeatO2]" 
+                                  Min="paramHeatO2.DynParams.MinForSlider"  
+                                  Max="paramHeatO2.DynParams.MaxForSlider"
+                                  Step="@(GetParameterProperty(@paramHeatO2, "Step"))"
+								    Color="Color.Info">
+								    <table>
+									    <tr>
+										    <td style="text-align:left;width:60%">
+											    min=@paramHeatO2.DynParams.MinForSlider
+											    max=@paramHeatO2.DynParams.MaxForSlider
+											    val=@this[@paramHeatO2]
+											    Flame (H-O):
+										    </td>
+										    <td style="text-align:right; width:30%">@(DisplayParamValue(@paramHeatO2))</td>
+										    <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramHeatO2))</td>
+									    </tr>
+								    </table>
+                                </MudSlider>                           
+                            </td> 
+                            <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramHeatO2))">
+                                 <img draggable="false" src="Images/plus1.png" class="img_plus1" />
+                            </MudTd>
+                          }
+                          else
+                          {
+                           <td @onclick="@(() => EditFlameParamValue(@paramHeatO2))" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                                <MudSlider Disabled="IsDisabledSliderFlameParam()"
+                                       Immediate="true"
+                                       @onclick="@(() => EditFlameParamValue(@paramHeatO2))"
+                                       @ontouchstart="@(() => EditFlameParamValue(@paramHeatO2))"
+                                       @ontouchenter="@(() => EditFlameParamValue(@paramHeatO2))"
+                                       @onmousedown="@(() => EditFlameParamValue(@paramHeatO2))"
+                                       Value="(ComponentMode == MANUAL_MODE)  ? paramHeatO2.DynParams.Value : CurrentDevice?.dataProcessInfo?.CurrOutHeatO2"
+                                       Min="paramHeatO2.DynParams.ConstParams.Min"
+                                       Max="paramHeatO2.DynParams.ConstParams.Max"
+                                       Color="Color.Info">
+                                  <table>
+                                    <tr>
+                                      <td style="text-align:left;width:60%">@LocalStrByEnStr(@paramHeatO2.DynParams.SlidersParamName):</td>
+                                      <td style="text-align:right; width:30%">@(DisplayParamValue(@paramHeatO2, (ComponentMode == MANUAL_MODE) ? paramHeatO2.DynParams.Value : (int)CurrentDevice?.dataProcessInfo?.CurrOutHeatO2, "", true))</td>
+                                      <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramHeatO2))</td>
+                                    </tr>
+                                  </table>
+                                </MudSlider>                           
+                            </td> 
+                          }
+                        </tr>
+                        <!-- Slider FG -->
+                        <tr>
+                          @if (false)
+                          {
+                            <MudTd Class="td_minus1" @onclick="@(() => ReduceParamValue(@paramFuelGas))">
+                                @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
+                                @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
+                                 <img draggable="false" src="Images/minus1.png" class="img_minus1" />
+                            </MudTd>
+                            <td>
+                                <MudSlider @ontouchend="@(()=>UpdateDynParam(@paramFuelGas))" @onmouseup="@(()=>UpdateDynParam(@paramFuelGas))"
+                                  @bind-Value="@this[@paramFuelGas]"
+								                  Min="@paramFuelGas.DynParams.MinForSlider"
+								                  Max="@paramFuelGas.DynParams.MaxForSlider"
+                                                  Step="@(GetParameterProperty(@paramFuelGas, "Step"))"
+								                  Color="Color.Info">
+									                <table>
+										                <tr>
+											                <td style="text-align:left;width:60%">
+												                min=@paramFuelGas.DynParams.MinForSlider
+												                max=@paramFuelGas.DynParams.MaxForSlider
+												                val=@this[@paramFuelGas]
+												                Flame (F-G):
+											                </td>
+											                <td style="text-align:right; width:30%">@(DisplayParamValue(@paramFuelGas))</td>
+											                <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramFuelGas))</td>
+										                </tr>
+									                </table>
+                                </MudSlider>
+                            </td> 
+                            <MudTd Class="td_plus1" @onclick="@(() => IncreaseParamValue(@paramFuelGas))">
+                                @*<MudTextField Variant="Variant.Outlined" T="string" ReadOnly="true" Style="background-color:aliceblue;" 
+                                @onclick="@(() => --@paramHeatO2.DynParams.Value)" Value="@minus"/>*@
+                                 <img draggable="false" src="Images/plus1.png" class="img_plus1" />
+                            </MudTd>
+                          }
+                          else
+                          {
+                           <td @onclick="@(() => EditFlameParamValue(@paramFuelGas))" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                               <MudSlider Disabled="IsDisabledSliderFlameParam()" 
+                                  Immediate="true"
+                                  @onclick="@(() => EditFlameParamValue(@paramFuelGas))"
+                                  @ontouchstart="@(() => EditFlameParamValue(@paramFuelGas))"
+                                  @ontouchenter="@(() => EditFlameParamValue(@paramFuelGas))"
+                                  @onmousedown="@(() => EditFlameParamValue(@paramFuelGas))"
+                                  Value="(ComponentMode == MANUAL_MODE)  ? paramFuelGas.DynParams.Value : CurrentDevice?.dataProcessInfo?.CurrOutFuelGas"
+                                  Min="paramFuelGas.DynParams.ConstParams.Min" 
+                                  Max="paramFuelGas.DynParams.ConstParams.Max"
+                                  Color="Color.Info">
+                                  <table>
+                                    <tr>
+                                      <td style="text-align:left;width:60%">@LocalStrByEnStr(@paramFuelGas.DynParams.SlidersParamName):</td>
+                                      <td style="text-align:right; width:30%">@(DisplayParamValue(@paramFuelGas, (ComponentMode == MANUAL_MODE) ? paramFuelGas.DynParams.Value : (int)CurrentDevice?.dataProcessInfo?.CurrOutFuelGas))</td>
+                                      <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramFuelGas))</td>
+                                    </tr>
+                                  </table>
+                                </MudSlider>                           
+                            </td> 
+                          }
+                        </tr>
+                        <!-- Slider CO -->
+                        <tr>
+                          @if (false)
+                          {
+                            <MudTd Class="@($"td_minus1 {@_cutO2Visible}")" @onclick="@(() => ReduceParamValue(@paramCutO2))">
+                                 <img draggable="false" src="Images/minus1.png" class="img_minus1" />
+                            </MudTd>
+                            <td>
+                                <MudSlider Class="@_cutO2Visible" @ontouchend="@(()=>UpdateDynParam(@paramCutO2))" @onmouseup="@(()=>UpdateDynParam(@paramCutO2))"                
+                                  @bind-Value="@this[@paramCutO2]" 
+                                  Min="@paramCutO2.DynParams.MinForSlider" 
+                                  Max="@paramCutO2.DynParams.MaxForSlider"
+                                  Step="@(GetParameterProperty(@paramCutO2, "Step"))"
+								                  Color="Color.Info">
+									                <table>
+										                <tr>
+											                <td style="text-align:left;width:60%">
+												                min=@paramCutO2.DynParams.MinForSlider
+												                max=@paramCutO2.DynParams.MaxForSlider
+												                val=@this[@paramCutO2]
+												                C - O:
+											                </td>
+											                <td style="text-align:right; width:30%">@(DisplayParamValue(@paramCutO2))</td>
+											                <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramCutO2))</td>
+										                </tr>
+									                </table>
+                                </MudSlider>                        
+                            </td>
+                            <MudTd Class="@($"td_plus1 {@_cutO2Visible}")" @onclick="@(() => IncreaseParamValue(@paramCutO2))">
+                                 <img draggable="false" src="Images/plus1.png" class="img_plus1" />
+                            </MudTd>                       
+                          }
+                          else
+                          {
+                            @if (paramCutO2 != null)
+                            {
+                            <td @onclick="@(() => EditFlameParamValue(@paramCutO2))" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                               <MudSlider Class="@_cutO2Visible" Disabled="IsDisabledSliderFlameParam()" 
+                                  Immediate="true"
+                                  @onclick="@(() => EditFlameParamValue(@paramCutO2))"
+                                  @ontouchstart="@(() => EditFlameParamValue(@paramCutO2))"
+                                  @ontouchenter="@(() => EditFlameParamValue(@paramCutO2))"
+                                  @onmousedown="@(() => EditFlameParamValue(@paramCutO2))"
+                                  Value="(ComponentMode == MANUAL_MODE)  ? paramCutO2.DynParams.Value : CurrentDevice?.dataProcessInfo?.CurrOutCutO2"
+                                  Min="paramCutO2.DynParams.ConstParams.Min" 
+                                  Max="paramCutO2.DynParams.ConstParams.Max"
+                                  Color="Color.Info">
+                                  <table>
+                                    <tr>
+                                      <td style="text-align:left;width:80%">@LocalStrByEnStr(@paramCutO2.DynParams.SlidersParamName):</td>
+                                      <td style="text-align:right; width:10%">@(DisplayParamValue(@paramCutO2, (ComponentMode == MANUAL_MODE) ? paramCutO2.DynParams.Value : (int)CurrentDevice?.dataProcessInfo?.CurrOutCutO2))</td>
+                                      <td style="text-align:right; width:10%">&nbsp;@(DisplayParamUnit(@paramCutO2))</td>
+                                    </tr>
+                                  </table>
+                                </MudSlider>
+                            </td> 
+                            }
+                          }
+                        </tr>
+                    </table>
+                    </MudPaper>
                 </div>
+                <!-- Manual-/Sensor-HeightControl, Move-Up/Down, Calibration, Flame ON/OFF, FlameOnEnd, Reload, StartPiercing -->
                 <div class="flex-item-right">
                     <table class="internal_div_table">
                         <tr>
+                            <!-- Manual-/Sensor-HeightControl Buttons -->
                             <td class="button_tabcell">
-                            @if(ComponentMode != MANUAL_MODE && !_isProcessBtnActive)
+                            @if (ComponentMode == MANUAL_MODE)
                             {
+                              <!-- Dummy-Button -> Sensor-HeightControl UP-Button -->
+                              <div class="button_container">
+                                <div class="up_btn" style="background-color:#ffff"></div>
+                              </div>
+                              <!-- Sensor-HeightControl ON/OFF-Button -->
+                              <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                <MudOverlay Visible="IsHCOnOffDisabled()" LightBackground="true" Absolute="true" />
                                 <div class="button_container">
-                                    <div class="up_btn" style="background-color:#ffff"></div>
-                                </div>
-                                <div class="button_container">
-                                            <div id="ManHeight" class="@(_isManHeightActive ? "central_ch_btn active_manual_height" : "central_ch_btn")"
-                                         @onclick="@(async () => await ToggleManHeightAsync())">
-                                                <img draggable="false" src="@(_isManHeightActive ? "Images/button_manual_clearance_control.png" : "Images/button_manual_clearance_control.png")"
-                                                     style="mix-blend-mode: normal; vertical-align: middle; @(_isManHeightActive ? "width: 45px; height: 40px;" : "width: 45px; height: 40px;")" />
-                                    </div>
-                                </div>
-                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="@(_isPreheatHeightActive || !_isManHeightActive)" LightBackground="true" Absolute="true" />
-                                <div class="button_container">
-                                    <div id="PreheatHeight" class="@(_isPreheatHeightActive ? "down_btn" : "down_btn")"
-                                             @onclick="@(async () => await GoPreheatHeightAsync())">@DisplayParamValueAndUnit(@manualPreheatHeight)
-                                    </div>
-                                </div>
-                                </MudPaper>
-                            }
-                            else
-                            {                           
-                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsHCButtonsDisabled() || ComponentMode == MANUAL_MODE" LightBackground="true" Absolute="true" />
-                                <div class="button_container">
-                                    <div id="HCMoveTorchUp" class="@(_isHCTorchUpActive ? "up_btn active" : "up_btn")"
-                                        @onpointerdown="@(async (e) => await HCMoveTorchUpAsync("HCMoveTorchUp"))"
-                                        @onpointerup="@((_) => DeactiveButton("HCMoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchUp"))"
-                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchUp"))">
-                                        <img draggable="false" src="Images/button_clearance_control_on_new.png" style="mix-blend-mode: normal; width: 25px; height: 35px; vertical-align: middle;" />
-                                        <img draggable="false" src="Images/__15_Top.png" style="mix-blend-mode: normal; width: 27px; height: 16px; vertical-align: middle;" />
-                                        
-                                    </div>
-                                </div>
-                                </MudPaper>
-                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsHCOnOffDisabled() || ComponentMode == MANUAL_MODE" LightBackground="true" Absolute="true" />
-                                <div class="button_container">
-                                    <div id="OnOff" class="@(_isHCOnOffActive ? "central_ch_btn active" : "central_ch_btn")"
+                                    <div id="OnOff" class="@(_isHCOnOffActive ? "central_btn active" : "central_btn")"
                                         @onclick="@(async () => await TurnHCOnOffAsync())">
                                         <img draggable="false" src="@(_isHCOnOffActive ? "Images/button_clearance_control_on_new.png" : "Images/button_clearance_control_off_w.png")" 
                                                 style="mix-blend-mode: normal; vertical-align: middle; @(_isHCOnOffActive ? "width: 25px; height: 35px;" : "width: 45px; height: 40px;")" />                                  
                                     </div>
                                 </div>
-                                </MudPaper>
-                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsHCButtonsDisabled() || ComponentMode == MANUAL_MODE" LightBackground="true" Absolute="true" />
-                                <div class="button_container">
-                                    <div id="HCMoveTorchDown" class="@(_isHCTorchDownActive ? "down_btn active" : "down_btn")"
-                                        @onpointerdown="@(async (e) => await HCMoveTorchDownAsync("HCMoveTorchDown"))"
-                                        @onpointerup="@((_) => DeactiveButton("HCMoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchDown"))"
-                                        @onmouseout="@((_) => DeactiveButton("HCMoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchDown"))">
-                                        <img draggable="false" src="Images/button_clearance_control_on_new.png" style="mix-blend-mode: normal; width: 25px; height: 35px; vertical-align: middle;" />
-                                        <img draggable="false" src="Images/__15_Bottom.png" style="mix-blend-mode: normal; width: 27px; height: 16px; vertical-align: middle;" />
-                                    </div>
-                               </div>
                               </MudPaper>
+                              <!-- Dummy-Button -> Sensor-HeightControl DOWN-Button -->
+                              <div class="button_container">
+                                <div class="down_btn" style="@(processHeight != null ? "background-color: #d7e8f9; color: #0061A1" : "background-color: #ffff")">
+                                    @(processHeight != null ? DisplayParamValueAndUnit(@processHeight) : string.Empty)
+                                </div>
+                              </div>
+                            }
+                            else
+                            {
+                              <!-- Manual-HeightControl ON/OFF Button -->
+                              @if (!IsProcessActivated() || _isManHeightActive)
+                              {
+                                <!-- Dummy-Button -> Sensor-HeightControl UP-Button -->
+                                <div class="button_container">
+                                  <div class="up_btn_dummy" style="background-color:#ffff"></div>
+                                </div>
+                                <!-- Manual-HeightControl Button ON/OFF -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                  <MudOverlay Visible="@(IsProcessActivated() || _initialDialogIsBlocked|| !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl)"
+                                    LightBackground="true" Absolute="true" />
+                                  <div class="button_container">
+                                        <div id="ManHeight" class="@(_isManHeightActive ? "central_btn active" : "central_btn")"
+                                            @onclick="@(async () => await ToggleManHeightAsync())">
+                                            <img draggable="false" src="@(_isManHeightActive ? "Images/control_man_grey-s.svg" : "Images/control_auto_grey-s.svg")"
+                                            style="mix-blend-mode: normal; vertical-align: middle; @(_isManHeightActive ? "width: 50px; height: 50px;" : "width: 50px; height: 50px;")" />
+                                      </div>
+                                  </div>
+                                </MudPaper>
+                              }
+                              <!-- Manual-HeightControl SetPreHeatHeight Button -->
+                              @if (!IsProcessActivated())
+                              {
+                                <!-- Manual-HeightControl SetPreHeatHeight Button -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                  <MudOverlay Visible="@(_isPreheatHeightActive || !_isManHeightActive)" LightBackground="true" Absolute="true" />
+                                  <div class="button_container">
+                                      <div id="PreheatHeight" class="@(_isPreheatHeightActive ? "down_btn" : "down_btn")"
+                                                @onclick="@(async () => await GoPreheatHeightAsync())">@DisplayParamValueAndUnit(@manualPreheatHeight)
+                                      </div>
+                                  </div>
+                                </MudPaper>
+                              }
+                              else if (_isManHeightActive)
+                              {
+                                <div class="button_container">
+                                  <div class="central_btn" style="background-color:#ffff"></div>
+                                </div>
+                              }
+                              <!-- Sensor-HeightControl Buttons -->
+                              @if (!_isManHeightActive && IsProcessActivated())
+                              {
+                                <!-- Sensor-HeightControl UP-Button -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                  <MudOverlay Visible="IsProcessModeHCButtonsUpDownDisabled()" LightBackground="true" Absolute="true" />
+                                  <div class="button_container">
+                                      <div id="HCMoveTorchUp" class="@(_isHCTorchUpActive ? "up_btn active" : "up_btn")"
+                                          @onpointerdown="@(async (e) => await HCMoveTorchUpAsync("HCMoveTorchUp"))"
+                                          @onpointerup="@((_) => DeactiveButton("HCMoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchUp"))"
+                                          @onmouseout="@((_) => DeactiveButton("HCMoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchUp"))">
+                                          <img draggable="false" src="Images/button_clearance_control_on_new.png" style="mix-blend-mode: normal; width: 25px; height: 35px; vertical-align: middle;" />
+                                          <img draggable="false" src="Images/__15_Top.png" style="mix-blend-mode: normal; width: 27px; height: 16px; vertical-align: middle;" />
+                                      </div>
+                                  </div>
+                                </MudPaper>
+                                <!-- Sensor-HeightControl ON/OFF-Button -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                  <MudOverlay Visible="IsProcessModeHCButtonOnOffDisabled()" LightBackground="true" Absolute="true" />
+                                  <div class="button_container">
+                                      <div id="OnOff" class="@(_isProcessModeClearenceCtrlOff ? "central_btn active" : "central_btn")"
+                                          @onclick="@(async () => await ProcessModeClearenceCtrlOffAsync())">
+                                          <img draggable="false" src="@(_isProcessModeClearenceCtrlOff ? "Images/button_clearance_control_on_new.png" : "Images/button_clearance_control_off_w.png")" 
+                                                  style="mix-blend-mode: normal; vertical-align: middle; @(_isHCOnOffActive ? "width: 25px; height: 35px;" : "width: 45px; height: 40px;")" />                                  
+                                      </div>
+                                  </div>
+                                </MudPaper>
+                                <!-- Sensor-HeightControl DOWN-Button -->
+                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                  <MudOverlay Visible="IsProcessModeHCButtonsUpDownDisabled()" LightBackground="true" Absolute="true" />
+                                  <div class="button_container">
+                                      <div id="HCMoveTorchDown" class="@(_isHCTorchDownActive ? "down_btn active" : "down_btn")"
+                                          @onpointerdown="@(async (e) => await HCMoveTorchDownAsync("HCMoveTorchDown"))"
+                                          @onpointerup="@((_) => DeactiveButton("HCMoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("HCMoveTorchDown"))"
+                                          @onmouseout="@((_) => DeactiveButton("HCMoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("HCMoveTorchDown"))">
+                                          <img draggable="false" src="Images/button_clearance_control_on_new.png" style="mix-blend-mode: normal; width: 25px; height: 35px; vertical-align: middle;" />
+                                          <img draggable="false" src="Images/__15_Bottom.png" style="mix-blend-mode: normal; width: 27px; height: 16px; vertical-align: middle;" />
+                                      </div>
+                                  </div>
+                                </MudPaper>
+                              }
                             }
                             </td>
+                            
+                            <!-- Move-Up/Down Buttons, Calibration-Button -->
                             <td class="button_tabcell">
+                                <!-- Move-Up Button -->
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsMoveUpButtonDisabled()" LightBackground="true" Absolute="true"/>
-                                <div class="button_container">
-                                    <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")"
-                                        @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
-                                        @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
-                                        @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">
-                                        <img draggable="false" src="Images/__15_Top.svg" style="mix-blend-mode: normal; width: 80px; height: 55px; vertical-align: middle;" />
-                                    </div>
-                                </div>
-                                @if (ComponentMode == MANUAL_MODE)
-                                {
-                                    <div class="button_container">
+                                  <MudOverlay Visible="IsMoveUpButtonDisabled()" LightBackground="true" Absolute="true"/>
+                                  <div class="button_container">
+                                      <div id="MoveTorchUp" class="@(_isTorchUpActive ? "up_btn active" : "up_btn")"
+                                          @onpointerdown="@(async (e) => await MoveTorchUpAsync("MoveTorchUp"))"
+                                          @onpointerup="@((_) => DeactiveButton("MoveTorchUp"))" @ontouchend="@((_) => DeactiveButton("MoveTorchUp"))"
+                                          @onmouseout="@((_) => DeactiveButton("MoveTorchUp"))" @onmouseup="@((_) => DeactiveButton("MoveTorchUp"))">
+                                          <img draggable="false" src="Images/__15_Top.svg" style="mix-blend-mode: normal; width: 80px; height: 55px; vertical-align: middle;" />
+                                          @*<MudIcon Icon="@Icons.Material.Outlined.ArrowDropUp" Color="Color.Inherit" Size="Size.Large"/>*@
+                                      </div>
+                                  </div>
+                                  @if (ComponentMode == MANUAL_MODE)
+                                  {
+                                      <!-- Calibration-Button -->
+                                      <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                                      <MudOverlay Visible="IsCalibrationButtonDisabled()" LightBackground="true" Absolute="true" />
+                                      <div class="button_container">
+                                          <div id="CalibrateBtn" class="@GetCalibrationClass()" @onclick="@(async (_) => await CalibrationProcessAsync())">
+                                              @(_isCalibrationActive ? "STOP CALIB" : "CALIB")
+                                          </div>
+                                      </div>
+                                      </MudPaper>
+                                  }
+                                  else
+                                  {
+                                      <!-- Dummy-Button -->
+                                      <div class="button_container">
                                         <div class="central_btn" style="background-color:#ffff"></div>
-                                    </div>
-                                }
-                                else{
-                                    <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                    <MudOverlay Visible="IsCalibrationButtonDisabled()" LightBackground="true" Absolute="true" />
-                                    <div class="button_container">
-                                        <div id="CalibrateBtn" class="@GetCalibrationClass()" @onclick="@(async (_) => await CalibrationProcessAsync())">CALIB</div>
-                                    </div>
-                                    </MudPaper>
-                                }
+                                      </div>
+                                  }
                                 </MudPaper>
+                                <!-- Move-Down Button -->
                                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="IsMoveDownButtonDisabled()" LightBackground="true" Absolute="true" />
-                                <div class="button_container">
-                                    <div id="MoveTorchDown" class="@(_isTorchDownActive ? "down_btn active" : "down_btn")"
-                                        @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
-                                        @onpointerup="@((_) => DeactiveButton("MoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("MoveTorchDown"))"
-                                        @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">
-                                        <img draggable="false" src="Images/__15_Bottom.svg" style="mix-blend-mode: normal; width: 80px; height: 55px; vertical-align: middle;" />
-                                    </div>
-                               </div>
-                               </MudPaper>                             
+                                    <MudOverlay Visible="IsMoveDownButtonDisabled()" LightBackground="true" Absolute="true" />
+                                    <div class="button_container">
+                                        <div id="MoveTorchDown" class="@(_isTorchDownActive ? "down_btn active" : "down_btn")"
+                                            @onpointerdown="@(async (e) => await MoveTorchDownAsync("MoveTorchDown"))"
+                                            @onpointerup="@((_) => DeactiveButton("MoveTorchDown"))" @ontouchend="@((_) => DeactiveButton("MoveTorchDown"))"
+                                            @onmouseout="@((_) => DeactiveButton("MoveTorchDown"))" @onmouseup="@((_) => DeactiveButton("MoveTorchDown"))">
+                                            <img draggable="false" src="Images/__15_Bottom.svg" style="mix-blend-mode: normal; width: 80px; height: 55px; vertical-align: middle;" />
+                                        </div>
+                                   </div>
+                                </MudPaper>                             
                             </td>
 
                             @if (ComponentMode == MANUAL_MODE)
                             {
+                            <!-- Flame ON/OFF-Buttons -->
                             <td class="button_tabcell" height="100%">
-                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
+                              <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                                 <MudOverlay Visible="IsIgnitionButtonDisabled()" LightBackground="true" Absolute="true"/>
+                                <!-- Flame ON-Button -->
                                 <div class="button_container">
-                                    <div id="FlameOnButton" class="FlameIsOff flame_btn" style="display: @(!_isFlameOn ? "flex" : "none"); height:184px"
+                                    <div id="FlameOnButton" 
+                                        class="FlameIsOff flame_btn" style="display: @(!_isFlameOn ? "flex" : "none");"
                                         @onclick="@(async (e) => await TurnFlameOnAsync())">
                                         <img draggable="false" src="Images/torch_only_no_flame_w.png" 
                                                 style="mix-blend-mode: normal; width: 50px; height: 55px; vertical-align: middle;" />
                                     </div>
                                 </div>
-                                <div class="button_container">
-                                    <div id="FlameOffButton" class="FlameIsOn flame_btn" style="display: @(_isFlameOn ? "flex" : "none"); height:184px"
-                                        @onclick="@(async (e) => await TurnFlameOffAsync())">
-                                        <img draggable="false" src="Images/torch_with_CO_w.png" 
-                                                style="mix-blend-mode: normal; width: 50px; height: 55px; vertical-align: middle;" />
+                                <!-- Flame OFF-Buttons -->
+                                <div id="FlameOffButton" 
+                                    class="FlameIsOn flame_btn" style="display: @(_isFlameOn ? "flex" : "none"); margin-left: 1px; margin-bottom: 1px; width: 98%;"
+                                    @onclick="@(async (e) => await TurnFlameOffAsync())">
+                                    <img draggable="false" src="Images/torch_with_CO_w.png" 
+                                            style="mix-blend-mode: normal; width: 50px; height: 55px; vertical-align: middle;" />
                                 </div>
-                                </div>
-                                </MudPaper>
+                              </MudPaper>
                             </td>
-                           }
-                           else 
-                           {                            
+                            }
+                            else 
+                            {                            
+                            <!-- FlameOnEnd-, Reload-, StartPiercing-Buttons -->
                             <td class="button_tabcell">
-                                <table style="margin: 0px 0px 0px 3px !important"> 
+                                <table style="margin: 0px 0px 0px 0px !important"> 
+                                    <!-- FlameOnEnd-Button -->
                                     <tr>
                                         <td class="@(_isFlameOnEndActive ? "divcell tabcell_menu" : "divcell tabcell_menu")"
-                                            @onclick="@(async (_) => await ClickFlameOnEndAsync())">
-                                            <img draggable="false" src="@(_isFlameOnEndActive ? "Images/torch_too_much_gas.png" : "Images/torch_ignition.png")" 
-                                                style="mix-blend-mode: multiply; width: 50px; height: 55px; vertical-align: middle;" />
+                                          style="border-top-width: 2px !important; border-bottom-width: 5px !important;"
+                                          @onclick="@(async (_) => await ClickFlameOnEndAsync())">
+                                          <img draggable="false" src="@(_isFlameOnEndActive ? "Images/torch_too_much_gas.png" : "Images/torch_ignition.png")"
+                                            style="mix-blend-mode: normal; width: 50px; height: 50px; vertical-align: middle; margin-top: 5px;" />
                                         </td>
                                     </tr>
+                                    <!-- Reload-Button -->
                                     <tr>
+                                        <!-- GR: 28.03.2023 -->
                                         <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                        <MudOverlay Visible="IsReloadPreHeatingTimeDisabled()" LightBackground="true" Absolute="true"/>
-                                        <td class="@(_isReloadPreHeatingTimeActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")"
-                                            @onpointerdown="@(async (e) => await ReloadPreHeatingTimeActivateAsync("ReloadPreHeatingTime"))"
-                                            @onmouseout="@((_) => DeactiveButton("ReloadPreHeatingTime"))"
-                                            @onpointerup="@(async (e) => await ReloadPreHeatingTimeAsync())">
-                                            <img draggable="false" src="Images/button_refresh2.png" style="mix-blend-mode: multiply; width: 80px; height: 55px; vertical-align: middle;" />
-                                        </td>
+                                          <MudOverlay Visible="IsReloadPreHeatingTimeDisabled()" LightBackground="true" Absolute="true"/>
+                                          <td class="@(_isReloadPreHeatingTimeActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")" 
+                                              style="border-top-width: 1px !important; border-bottom-width: 4px !important;"
+                                              @onpointerdown="@(async (e) => await ReloadPreHeatingTimeActivateAsync("ReloadPreHeatingTime"))"
+                                              @onmouseout="@((_) => DeactiveButton("ReloadPreHeatingTime"))"
+                                              @onpointerup="@(async (e) => await ReloadPreHeatingTimeAsync())">
+                                              <div style="position: relative; margin-top: 19.5px; display: flex; justify-content: center; align-items:center; vertical-align:middle;">
+                                                <span style="display:flex; justify-content:center; align-items:center; vertical-align:middle;">
+                                                  @_currHeatTime<span>s</span>
+                                                </span>
+                                                <MudProgressCircular Value="@reloadProgressValue" Color="Color.Primary" 
+                                                    Style="height:50px; width:50px; color:#808080 !important; position: absolute; margin-top: 0px; display:flex; justify-content:center; align-items:center; vertical-align:middle;">
+                                                </MudProgressCircular>
+                                              </div>
+                                          </td>
                                         </MudPaper>
                                     </tr>
-                                    <tr>
+                                    <!-- StartPiercing-Button -->
+                                    <tr >
                                         <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                        <MudOverlay Visible="IsStartPiercingDisabled()" LightBackground="true" Absolute="true"/>
-                                        <td class="@(_isStartPiercingActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")"
-                                            @onpointerdown="@(async (e) => await StartPiercingActivateAsync("StartPiercing"))"
-                                            @onmouseout="@((_) => DeactiveButton("StartPiercing"))"
-                                            @onpointerup="@(async (e) => await StartPiercingAsync())">
-                                            <img draggable="false" src="Images/torch_plate_piercing3.png" style="mix-blend-mode: multiply; width: 80px; height: 55px;" />
-                                        </td>
+                                          <MudOverlay Visible="IsStartPiercingDisabled()" LightBackground="true" Absolute="true"/>
+                                          <td class="@(_isStartPiercingActive ? "divcell tabcell_menu active" : "divcell tabcell_menu")"
+                                              style="border-top-width: 1.5px !important; border-bottom-width: 2px !important;  margin-top: 4px;"
+                                              @onpointerdown="@(async (e) => await StartPiercingActivateAsync("StartPiercing"))"
+                                              @onmouseout="@((_) => DeactiveButton("StartPiercing"))"
+                                              @onpointerup="@(async (e) => await StartPiercingAsync())">
+                                              <div style="position: relative; display: flex; justify-content: center; align-items:center; vertical-align:middle; padding-top: 4px;">
+                                                <img draggable="false" src="Images/torch_plate_piercing.png" 
+                                                  style="mix-blend-mode: normal; width: 55px; height: 55px; vertical-align: middle;" />
+                                              </div>
+                                          </td>
                                         </MudPaper>
                                     </tr>
                                 </table>
@@ -1150,59 +1541,114 @@ input#password-input:focus {
                 </div>
             </td>                      
         </tr>
+
+        <!-- Error-Log, Flame-Control Ignition/PreHeat/Piercing/Cutting/Heating -->
         <tr>
             <td style="border-top-width: 2px !important; border-top-color: white !important;">
                 <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
                 <MudOverlay Visible="!CurrentDevice.IsEnabledMainControl" LightBackground="true" Absolute="true" />
+                <!-- Error-Log, Flame-Control Ignition/PreHeat/Piercing -->
                 <div class="flex-item-left">
                     <table class="internal_div_table" style="border-spacing: @(ComponentMode == MANUAL_MODE ? "0" : "0")px !important;">
                         <tr>
-                            @if (ComponentMode == MANUAL_MODE)
-                            {
-                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="_isHCOnOffActive" LightBackground="true" Absolute="true" />
-                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(IGNITION)"
-                                    @onclick="@(()=>SetParamsType(IGNITION))">@LocalStrByKey("_CultureButIgnition")</MudTd>
-                                </MudPaper>
-                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(PRE_HEAT)"
-                                    @onclick="@(()=>SetParamsType(PRE_HEAT))">@LocalStrByKey("_CultureButPreHeating")</MudTd>
-                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(PIERCING)"
-                                    @onclick="@(()=>SetParamsType(PIERCING))">@LocalStrByKey("_CultureButPiercing")</MudTd>
-                            }
-                            else
-                            {
-                                <td style="border-width:0px; font-weight:normal !important; box-sizing:border-box;" class="tabcell tabcell_status internal_div_table">
-                                    <MudIcon Icon="@Icons.Material.Filled.Warning" style="color:#0061A1" Title="Warnings" Size="Size.Large"
-                                    Class="@(IsAcknowledgeNeeded ? "ErrorDeviceBlink" : "")" onclick="@(async () => await OpenErrorLogDialog())" />
-                                    CurrOutHeatO2:@dataCommon.CurrOutHeatO2 CurrOutCutO2:@dataCommon.CurrOutCutO2 CurrOutFuelGas:@dataCommon.CurrOutFuelGas
-                                    @( (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0) > 0 ? $"Error: { @ihtDevices.GetErrorCodeLabel((CurrentDevice?.SlaveId ?? 0), (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0))}" : string.Empty )                                  
-                                </td>
+                        @if (ComponentMode == MANUAL_MODE)
+                        {
+                            <!-- Error-Log -->
+                               <td class="UnSelectedParamsType tabcell" style="background-color: #d7e8f9; height: 64px; max-width: 83.3px" @onclick="@(async () => await OpenErrorLogDialog())">
+                                <MudIcon Icon="@Icons.Material.Filled.Warning" style="color:#0061A1" Title="Warnings" Size="Size.Large"
+                                  Class="@(IsAcknowledgeNeeded ? "ErrorDeviceBlink warning_class_manual" : "warning_class_manual")"/>
+                                @if (_processingErrorLog)
+                                {
+                                  <MudProgressCircular Class="ms-n1 centered" Size="Size.Medium" Style="height:95px;width:95px;color:#808080 !important" Indeterminate="true" Color="Color.Primary"/>
+                                }
+                            </td>
+                            <!-- GR: 28.03.2023 -->
+                            <!-- Flame-Control Ignition/PreHeat -->
+                            <MudStack Row="true" Spacing="0" Style="position:relative;">
+                              <MudOverlay Visible="!CurrentDevice.IsConnected" LightBackground="true" Absolute="true" />
+                              <!-- Flame-Control Ignition -->
+                              <MudTd Style="position:relative; font-weight:bold; height: 64px; max-width: 83.3px" Class="@GetParamsTypeClass(IGNITION)" 
+                                  @onclick="@(()=>SetParamsType(IGNITION))">@LocalStrByKey("_CultureButIgnition")
+                                  <MudOverlay Visible="_isHCOnOffActive && !_isFlameOn" LightBackground="true" Absolute="true" />
+                              </MudTd>
+                              <!-- Flame-Control PreHeat -->
+                              <MudTd Style="font-weight:bold; height: 64px; max-width: 83.3px" Class="@GetParamsTypeClass(PRE_HEAT)"
+                                  @onclick="@(()=>SetParamsType(PRE_HEAT))">@LocalStrByKey("_CultureButPreHeating")
+                              </MudTd>
+                            </MudStack>
+                        }
+                        else
+                        {
+                            <!-- GR: 28.03.2023 -->
+                            <!-- Error-Log -->
+                            <td class="tabcell tabcell_status internal_div_table"
+                                style="border-width:0px; font-weight:normal !important; box-sizing:border-box; height: 64px; border-left-width:0px !important;">
+                              <MudStack Row="true" Spacing="0">
+                                <!-- Button Error-Log -->
+                                <div class="UnSelectedParamsType" style="background-color: #d7e8f9; max-width: 83.3px; justify-content:center" @onclick="@(async () => await OpenErrorLogDialog())">
+                                  <MudIcon Icon="@Icons.Material.Filled.Warning" style="color:#0061A1;" Title="Warnings" Size="Size.Large"
+                                    Class="@(IsAcknowledgeNeeded ? "ErrorDeviceBlink warning_class" : "warning_class")"/>
+                                  @if (_processingErrorLog)
+                                  {
+                                  <MudProgressCircular Class="ms-n1 centered" Size="Size.Medium" Style="height:95px;width:95px;color:#808080 !important" Indeterminate="true" Color="Color.Primary"/>
+                                  }
+                                </div>
+                                <MudStack Spacing="0" Style="justify-content:center">
+                                  <!-- Text Error -->
+                                  <MudText style="line-height: 1.2; padding-right: 2px; color: #0061A1" Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">
+                                    @( (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0) > 0 ? $"Error: { @ihtDevices.GetErrorCodeLabel((CurrentDevice?.SlaveId ?? 0), (CurrentDevice?.dataProcessInfo?.ErrorCode ?? 0))}" : string.Empty )
+                                  </MudText>
+                                  <!-- Text Warning: Calibration not active -->
+                                  @if (CurrentDevice?.dataProcessInfo?.IsCalibrationInValid == true)
+                                  {
+                                    <MudText style="line-height: 1.2; padding-right: 2px; color: #0061A1" Align="Align.Left" GutterBottom="false" Inline="true" Typo="Typo.body2">
+                                      @LocalStrByKey("_CultureCalibrationInvalid")
+                                    </MudText>
+                                  }
+                                </MudStack>
+                              </MudStack>
+                            </td>
                             }
                         </tr>
                     </table>
                 </div>
+                <!-- Flame-Control Cutting/Heating, DataSet-Info -->
                 <div class="flex-item-right">
                     <table class="internal_div_table" style="border-spacing: @(ComponentMode == MANUAL_MODE ? "0" : "0")px !important;">
                         <tr>
+                            <!-- Flame-Control Cutting/Heating -->
                             @if (ComponentMode == MANUAL_MODE)
                             {
-                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(CUTTING)"
-                                    @onclick="@(()=>SetParamsType(CUTTING))">@LocalStrByKey("_CultureButCutting")</MudTd>
-                                <MudPaper Style="position:relative; box-shadow: 0px 0px 0px 0px;">
-                                <MudOverlay Visible="_isHCOnOffActive" LightBackground="true" Absolute="true" />
-                                <MudTd Style="font-weight:bold;" Class="@GetParamsTypeClass(HEATTING)"
-                                    @onclick="@(()=>SetParamsType(HEATTING))">@LocalStrByKey("_CultureButHeating")</MudTd>
-                                </MudPaper>
-                                <td class="mud-table-cell UnselectedParamsType tabcell">@ComponentMode</td>
+                                <!-- GR: 28.03.2022 -->
+                                <MudStack Row="true" Spacing="0" Style="position:relative;">
+                                  <MudOverlay Visible="!CurrentDevice.IsConnected" LightBackground="true" Absolute="true" />
+                                  <!-- Flame-Control Piercing -->
+                                  <MudTd Style="font-weight:bold; height: 64px; max-width: 83.3px" Class="@GetParamsTypeClass(PIERCING)"
+                                      @onclick="@(()=>SetParamsType(PIERCING))">@LocalStrByKey("_CultureButPiercing")
+                                  </MudTd>
+                                  <!-- Flame-Control Cutting -->
+                                  <MudTd Style="font-weight:bold; height: 64px; max-width: 83.3px" Class="@GetParamsTypeClass(CUTTING)"
+                                      @onclick="@(()=>SetParamsType(CUTTING))">@LocalStrByKey("_CultureButCutting")
+                                  </MudTd>
+                                  <!-- Flame-Control Heating -->
+                                  <MudTd Style="position:relative; font-weight:bold; height: 64px; max-width: 83.3px" Class="@GetParamsTypeClass(HEATTING)"
+                                      @onclick="@(()=>SetParamsType(HEATTING))">@LocalStrByKey("_CultureButHeating")
+                                     <MudOverlay Visible="_isHCOnOffActive && !_isFlameOn" LightBackground="true" Absolute="true" />
+                                  </MudTd>
+                                </MudStack>
                             }
                             else
                             {
-                                <td style="border-width:0px; font-weight:normal !important; display:flex; flex-direction:row; justify-content:center; align-items:center; box-sizing:border-box;" 
+                                <!-- DataSet-Info -->
+                                <td style="height: 64px; border-width:0px; font-weight:normal !important; display:flex; flex-direction:row; justify-content:center; align-items:center; box-sizing:border-box;" 
                                     class="tabcell tabcell_status internal_div_table">
-                                    <div>Heat Time:</div>
-                                    <MudProgressCircular Value="@reloadProgressValue" Style="height:40px;width:40px; position: absolute;left: 438px" Color="Color.Primary" 
-                                        Class="@reloadProgressDisplay" />
-                                    <div Style="position: absolute;left: 450px">@_currHeatTime</div>
+                                    <!-- GR: 28.03.2022 -->                                
+                                    @if(!string.IsNullOrWhiteSpace(ihtDevices.DataBaseId.ToString()))
+                                    {    
+                                        <MudText style="line-height: 1.1; color:#0061A1 !important;" Class="mx-4" Align="Align.Left"
+                                             Color="Color.Primary" GutterBottom="false" Inline="true" Typo="Typo.body2">@GetCurrentCuttingDataFromDB(ihtDevices.DataBaseId).Result</MudText>
+                                    }
+                                    
                                 </td>
                             }
                         </tr>
@@ -1213,17 +1659,28 @@ input#password-input:focus {
         </tr>
     </table>
 </div>
-
 }
+
 @code {
+
     [Parameter]
     public string? ComponentMode { get; set; } = PROCESS_MODE;
 
     private const string PROCESS_MODE = "Process";
-    private const string MANUAL_MODE = "Manual";
+    private const string MANUAL_MODE = "Setup";
 
     private const string minus = "-";
 
+    private int TestCounter;
+
+    private bool _aboutDialogVisible;
+
+    private void SwitchToCuttingDataPage()
+    {
+      ihtDevices.ComponentMode = ComponentMode;
+      GoToPage(CUTTING_DB_URL);
+    }
+    
     // TODO: read from settings
     private bool EXHIBITION_MODE 
     {
@@ -1314,14 +1771,16 @@ input#password-input:focus {
     private ParameterDataModel paramFlameAdjust = new();
 
     private ParameterDataModel manualPreheatHeight = new();
+    private ParameterDataModel? processHeight = new();
 
-    private string _cutO2Visible;
+    private string _cutO2Visible = NONE_DISPLAY_CLASS;
     private string _flameAdjustVisible;
     private const string INVISIBLE_CLASS = "invisible";
     private const string VISIBLE_CLASS = "visible";
 
     private const string NONE_DISPLAY_CLASS = "d-none";
     private const string DISPLAY_CLASS = "d-block";
+    private const string DISPLAY_INLINE_CLASS = "display_inline_flex";
 
     private const string CUTTING_DB_URL = "/CuttingDB";
 
@@ -1340,6 +1799,7 @@ input#password-input:focus {
     private bool _setupParamsDialogVisible = false;
     private ParameterDataModel? dynParamDataModel = new ParameterDataModel();
     private bool _editParamDialogVisible = false;
+    private bool _editGasParamSliderDialogVisible = false;
     private int _sliderDynParamValue;
     private bool _isOpenParamsListDialog = false;
     private object selectedItemParamValue;
@@ -1350,7 +1810,12 @@ input#password-input:focus {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private IhtDevices.PasswordLevel_SW _userPasswordLevel = IhtDevices.PasswordLevel_SW.Level_0;
+    private IhtDevices.PasswordLevel_SW _userPasswordLevel
+    { 
+        get => apcCommunicManager.UserPasswordLevel;
+        set => apcCommunicManager.UserPasswordLevel = value;
+    }
+
     private string _setupPasswordValue = "";
     private bool _setupPasswordDialogVisible = false;
 
@@ -1380,15 +1845,24 @@ input#password-input:focus {
 
 
     private bool _errorLogDialogVisible = false;
+    private bool _processingErrorLog = false;
 
     private async Task OpenErrorLogDialog()
     {
+        _processingErrorLog = true; 
+
+        _errorLogDialogVisible = true;
+
+        await Task.Delay(TimeSpan.FromSeconds(0.2));
+
+        await GetErrorLogAsync();
+
         if (IsAcknowledgeNeeded)
         {
             await ihtDevices.ClrErrorCodeCommonAsync();
         }
 
-        _errorLogDialogVisible = true;
+        _processingErrorLog = false;
     }
 
     private void CloseErrorLogDialog()
@@ -1421,28 +1895,62 @@ input#password-input:focus {
     }
 
     private TableGroupDefinition<ParameterDataModel> _groupDefinition = new()
-    {
-        GroupName = "Group",
-        Indentation = false,
-        Expandable = true,
-        IsInitiallyExpanded = false,
-        Selector = (e) => e.ViewGroup
-    };
+        {
+            GroupName = "Group",
+            Indentation = false,
+            Expandable = true,
+            IsInitiallyExpanded = false,
+            Selector = (e) => e.ViewGroup
+        };
 
     private IEnumerable<ParameterDataModel> Elements = new List<ParameterDataModel>();
     private IEnumerable<ErrorLogModel> ErrorLogs = new List<ErrorLogModel>();
 
     private Dictionary<string, IhtDevices.PasswordLevel_SW> _passwordToLevelDictionary = new Dictionary<string, IhtDevices.PasswordLevel_SW>()
-    {
-        { "0000", IhtDevices.PasswordLevel_SW.Level_0 },
-        { "1111", IhtDevices.PasswordLevel_SW.Level_1 },
-        { "2222", IhtDevices.PasswordLevel_SW.Level_2 },
-        { "3333", IhtDevices.PasswordLevel_SW.Level_3 }
-    };
+        {
+            { "0000", IhtDevices.PasswordLevel_SW.Level_0 },
+            { "1410", IhtDevices.PasswordLevel_SW.Level_1 },
+            { "17484", IhtDevices.PasswordLevel_SW.Level_2 },
+            { "10769", IhtDevices.PasswordLevel_SW.Level_3 },
+            { "58301", IhtDevices.PasswordLevel_SW.Level_2 }
+        };
 
+    /// <summary>
+    /// 2.1
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+        this.DynamicAPCParamsClientChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
+
+        this.DynamicAPCParamsClientChangedCommon += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChangedCommon;
+
+        // Subscribe of Data Provider for the Client Event of moving torch (Up or Down)
+        this.APCTorchPositionChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
+
+        // Subscribe of Data Provider for the Client Event of stopping the torch
+        this.APCTorchPositionStoped += dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
+
+        // Subscribe for event of client stopping working with the torch
+        ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
+
+        // Subscribe for event of client connected to the devices and received the data
+        ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded += DynamicAPCParamsOnConnectedTorchesInstalled;
+
+        IhtDevices.DataProviderIsControlsActive .DataChanged += DataProviderIsControlsActive;
+        IhtDevices.DataProviderIsProcessesActive.DataChanged += DataProviderIsProcessesActive;
+        IhtDevices.DataProviderIsClearanceControlsManual.DataChanged += DataProviderIsClearanceControlsManual;
+        IhtDevices.DataProviderIsCuttingDataBaseIdChanged.DataChanged += DataProviderIsCuttingDataBaseIdChanged;
+
+        base.OnInitialized();
+    }
+
+    /// <summary>
+    /// 2.2
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
-        await GetSetupParametersAsync();
+        await InitialSetupParametersAndErrorLogAsync();
 
         if (ihtModbusCommunic.GetConnectedModbusDatas().Count == 0)
         {
@@ -1450,6 +1958,30 @@ input#password-input:focus {
         }
 
         await InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>
+    /// 3.
+    /// </summary>
+    /// <returns></returns>
+    protected override Task OnParametersSetAsync()
+    {
+        return base.OnParametersSetAsync();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public override void UpdateDynParam(ParameterDataModel parameterData)
+    {
+        OnParamChanged(parameterData);
+    }
+
+    private async Task InitialSetupParametersAndErrorLogAsync(bool refreshAll = true)
+    {
+        await GetSetupParametersAsync(refreshAll);
+
+        await GetErrorLogAsync();
     }
 
     private async Task GetSetupParametersAsync(bool refreshAll = true)
@@ -1460,7 +1992,10 @@ input#password-input:focus {
         {
             Elements = Elements.Where(p => p.PasswordLevel <= _userPasswordLevel && (p.ParamSettings?.Visible ?? true));
         }
+    }
 
+    private async Task GetErrorLogAsync()
+    {
         ErrorLogs = await _errorLogDBService.GetEntriesAsync(CancellationToken.None);
     }
 
@@ -1501,18 +2036,18 @@ input#password-input:focus {
 
         ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded?.Invoke(this, EventArgs.Empty);
 
- #if true
+     #if true
         string tcpIpAddrServer = "127.0.0.1";
-        #if false
+            #if false
     IhtCmdLineParams ihtCmdLineParams = IhtCmdLineParams.GetIhtCmdLineParams();
-    string cmdLineTcpIpAddrServer = String.Empty;
+      string cmdLineTcpIpAddrServer = String.Empty;
     if (ihtCmdLineParams.GetParam(IhtCmdLineParams.IdNo.TcpIpAddrServer, ref cmdLineTcpIpAddrServer))
     {
-      tcpIpAddrServer = cmdLineTcpIpAddrServer;
+    tcpIpAddrServer = cmdLineTcpIpAddrServer;
     }
-        #endif
+            #endif
         await MqttConnectAsync(new TimeSpan(0, 0, 30), tcpIpAddrServer);
-#endif
+    #endif
         // We do not need to stop worker
         //await _apcWorkerBackgroundService.StopAsync(APCWorkerBackgroundService._stoppingCts.Token);
 
@@ -1579,6 +2114,7 @@ input#password-input:focus {
         }
     }
 
+
     public int this[ParameterDataModel parameterDataModel]
     {
         get
@@ -1639,8 +2175,12 @@ input#password-input:focus {
         if(parameterData != null && parameterData.DynParams != null && parameterData.DynParams.ConstParams != null)
         {
             var stepValue = GetParameterProperty(@parameterData, "Step");
-            var maxValue = GetParameterProperty(@parameterData, "Max");
+            var maxValue = parameterData.DynParams.MaxForSlider;
             var curValue = parameterData.DynParams.Value;
+            var halfStep = stepValue / 2;
+
+            // Make step twice smaller
+            stepValue = halfStep * 2 == stepValue ? halfStep : stepValue;
 
             parameterData.DynParams.Value = CorrectTheCurrentValue(parameterData, curValue) + stepValue;
 
@@ -1658,8 +2198,12 @@ input#password-input:focus {
         if(parameterData != null && parameterData.DynParams != null && parameterData.DynParams.ConstParams != null)
         {
             var stepValue = GetParameterProperty(@parameterData, "Step");
-            var minValue = GetParameterProperty(@parameterData, "Min");
+            var minValue = parameterData.DynParams.MinForSlider;
             var curValue = parameterData.DynParams.Value;
+            var halfStep = stepValue / 2;
+
+            // Make step twice smaller
+            stepValue = halfStep * 2 == stepValue ? halfStep : stepValue;
 
             parameterData.DynParams.Value = CorrectTheCurrentValue(parameterData, curValue) - stepValue;
 
@@ -1684,7 +2228,7 @@ input#password-input:focus {
 
     private bool IsCalibrationButtonDisabled()
     {
-        return IsProcessActivated() || _isHCOnOffActive;
+        return IsProcessActivated() || _isHCOnOffActive || _isFlameOn;
     }
 
     private bool IsProcessActivated()
@@ -1699,14 +2243,28 @@ input#password-input:focus {
 
     private bool IsIgnitionButtonDisabled()
     {
-        return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy || !CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl || _isHCOnOffActive;
+      return dynDataModificationCNCDataProvider.IsCurrentDeviceBusy
+            || !CurrentDevice.IsConnected
+            || !CurrentDevice.IsEnabledMainControl
+            //|| _isHCOnOffActive
+            || _isCalibrationActive;
     }
 
-    private bool IsHCButtonsDisabled()
+    private bool IsProcessModeHCButtonsUpDownDisabled()
     {
         if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
         {
-            return !CurrentDevice.dataProcessInfo.IsHeightControlActive;
+            return !CurrentDevice.dataProcessInfo.IsHeightControlActive || !CurrentDevice.dataProcessInfo.IsEnabledHeightControlOff;
+        }
+
+        return true;
+    }
+
+    private bool IsProcessModeHCButtonOnOffDisabled()
+    {
+        if (CurrentDevice != null && CurrentDevice.dataProcessInfo != null)
+        {
+            return !CurrentDevice.dataProcessInfo.IsEnabledHeightControlOff;
         }
 
         return true;
@@ -1714,7 +2272,18 @@ input#password-input:focus {
 
     private bool IsHCOnOffDisabled()
     {
-        return _isFlameOn || (CurrentDevice.dataProcessInfo?.IsCalibrationActive ?? false) || !CurrentDevice.IsEnabledMainControl;
+      return    /*_isFlameOn 
+             ||*/ (CurrentDevice.dataProcessInfo?.IsCalibrationActive ?? false) 
+             || !CurrentDevice.IsEnabledMainControl;
+
+    }
+
+    private bool IsHCOnOffEnabled()
+    {
+        return    !_isFlameOn 
+               && !_isCalibrationActive
+               && (CurrentDevice.dataProcessInfo?.IsCalibrationActive ?? false) 
+               && CurrentDevice.IsEnabledMainControl;
     }
 
     private bool IsStartProcessDisabled()
@@ -1732,7 +2301,8 @@ input#password-input:focus {
             dynDataModificationCNCDataProvider.IsBroadCastMode = false;
         }
 
-        return enabledDevicesCount < 2 || _isFlameOn || _isHCOnOffActive || _isCalibrationActive;
+      //return enabledDevicesCount < 2 || _isFlameOn || _isHCOnOffActive || _isCalibrationActive;
+      return enabledDevicesCount < 2;
     }
 
     private bool IsOtherModeDisabled()
@@ -1740,9 +2310,11 @@ input#password-input:focus {
         return ihtDevices.GetConnectedDevices().Count == 0;
     }
 
-    private void OpenSetupParamsDialog()
+    private async void OpenSetupParamsDialog()
     {
         _setupParamsDialogVisible = true;
+
+        await GetSetupParametersAsync(true);
     }
 
     private void CloseSetupParamsDialog()
@@ -1815,7 +2387,7 @@ input#password-input:focus {
         return !CurrentDevice.IsEnabledOn;
     }
 
-    private void SetNewPasswordLevel()
+    private async Task SetNewPasswordLevel()
     {
         IhtDevices.PasswordLevel_SW newPasswordLevel;
 
@@ -1823,15 +2395,15 @@ input#password-input:focus {
         {
             _userPasswordLevel = newPasswordLevel;
 
-            GetSetupParametersAsync().Wait();
-        }
+            await GetSetupParametersAsync();
 
-        ClosePasswordSetupDialog();
+            ClosePasswordSetupDialog();
+        }
     }
 
     private async Task GetEditPassword(string passSimbol)
     {
-        if(passSimbol == "x")
+        if (passSimbol == "x")
         {
             if (!string.IsNullOrEmpty(_setupPasswordValue))
             {
@@ -1844,16 +2416,19 @@ input#password-input:focus {
         }
         else
         {
-            if (_setupPasswordValue.Length < 4)
+            if (_setupPasswordValue.Length < 5)
             {
                 _setupPasswordValue = $"{_setupPasswordValue}{passSimbol}";
             }
 
-            if(_setupPasswordValue.Length == 4)
+            @*if(_setupPasswordValue.Length == 4)
             {
                 await Task.Delay(TimeSpan.FromSeconds(0.2));
                 SetNewPasswordLevel();
-            }
+            }*@
+
+            //await Task.Delay(TimeSpan.FromSeconds(0.2));
+            await SetNewPasswordLevel();
         }
     }
 
@@ -1875,6 +2450,22 @@ input#password-input:focus {
     private void CloseEditParamDialog()
     {
         _editParamDialogVisible = false;
+    }
+
+    private void OpenEditGasParamSliderDialog()
+    {
+        _editGasParamSliderDialogVisible = true;
+
+        if(dynParamDataModel != null && dynParamDataModel.DynParams != null)
+        {
+            dynParamDataModel.DynParams.SetMaxForSlider();
+            dynParamDataModel.DynParams.SetMinForSlider();
+        }
+    }
+
+    private void CloseEditGasParamSliderDialog()
+    {
+        _editGasParamSliderDialogVisible = false;
     }
 
     private void ResetPassword()
@@ -1916,27 +2507,73 @@ input#password-input:focus {
         }
     }
 
-    private async void ParameterValueChanged(ushort? paramValue = null)
+    private async Task ParameterValueChanged(ushort? paramValue = null)
     {
-        // Save data in to the DB or Device properties
-        if(paramValue == null)
+        var result = false;
+#if false
+      // Save data in to the DB or Device properties
+      if(paramValue == null)
+      {
+      paramValue = (ushort)(dynParamDataModel?.DynParams?.Value ?? 0);
+      }
+
+      if (dynParamDataModel?.ParamSettings != null)
+      {
+      var result = await dynParamDataModel.ParamSettings.WriteAsync(ihtDevices, CurrentSlaveId, (ushort)(paramValue));
+      }
+
+      await GetSetupParametersAsync(refreshAll: true);
+#else
+        bool isValueChangedFlameParam = false;
+
+        if (dynParamDataModel?.ParamGroupId == ParamGroup.Technology)
         {
-            paramValue = (ushort)(dynParamDataModel?.DynParams?.Value ?? 0);
+            switch (dynParamDataModel?.DynParams?.ParamId)
+            {
+                case (int)IhtModbusParamDyn.eIdxTechnology.HeatO2Ignition:
+                case (int)IhtModbusParamDyn.eIdxTechnology.FuelGasIgnition:
+                case (int)IhtModbusParamDyn.eIdxTechnology.HeatO2PreHeat:
+                case (int)IhtModbusParamDyn.eIdxTechnology.FuelGasPreHeat:
+                case (int)IhtModbusParamDyn.eIdxTechnology.HeatO2Pierce:
+                case (int)IhtModbusParamDyn.eIdxTechnology.FuelGasPierce:
+                case (int)IhtModbusParamDyn.eIdxTechnology.CutO2Pierce:
+                case (int)IhtModbusParamDyn.eIdxTechnology.HeatO2Cut:
+                case (int)IhtModbusParamDyn.eIdxTechnology.FuelGasCut:
+                case (int)IhtModbusParamDyn.eIdxTechnology.CutO2Cut:
+                    {
+                        isValueChangedFlameParam = true;
+                        break;
+                    }
+            }
         }
 
-        if (dynParamDataModel?.ParamSettings != null)
+        if (isValueChangedFlameParam)
         {
-            var result = await dynParamDataModel.ParamSettings.WriteAsync(ihtDevices, CurrentSlaveId, (ushort)(paramValue));
+            UpdateDynParam(dynParamDataModel);
         }
+        else
+        {
+            // Save data in to the DB or Device properties
+            if (paramValue == null)
+            {
+                paramValue = (ushort)(dynParamDataModel?.DynParams?.Value ?? 0);
+            }
 
-        await GetSetupParametersAsync(refreshAll: true);
+            if (dynParamDataModel?.ParamSettings != null)
+            {
+                result =  await dynParamDataModel.ParamSettings.WriteAsync(ihtDevices, CurrentSlaveId, (ushort)(paramValue));
+            }
+
+            await GetSetupParametersAsync(refreshAll: true);
+        }
+#endif
     }
 
     private void SelectedListItemParamChanged(MudListItem mudListItem)
     {
         if (mudListItem != null)
         {
-            ParameterValueChanged((ushort)((int)mudListItem.Value));
+            _ = ParameterValueChanged((ushort)((int)mudListItem.Value));
         }
     }
 
@@ -2018,11 +2655,23 @@ input#password-input:focus {
     {
         get
         {
-            _currHeatTime = ihtDevices.GetDataProcessInfo(CurrentSlaveId).CurrHeatTime;
-
-            //return 100.0 - ((_currHeatTime * 100.0)/_maxHeatTime);
-
-            return _currHeatTime * 100.0/_maxHeatTime;
+#if false
+    _currHeatTime = ihtDevices.GetDataProcessInfo(CurrentSlaveId).CurrHeatTime;
+#else
+            if (!CurrentDevice.IsConnected || !CurrentDevice.IsEnabledMainControl)
+            {
+                return 100;
+            }
+            if (IsLedPreHeating)
+            {
+                _currHeatTime = ihtDevices.GetDataProcessInfo(CurrentSlaveId).CurrHeatTime;
+            }
+            else
+            {
+                _currHeatTime = ihtDevices.GetDevice(CurrentSlaveId).dataParamDynTechnology.PreHeatTime / 10;
+            }
+#endif
+            return _currHeatTime * 100.0 / _maxHeatTime;
         }
     }
 
@@ -2031,6 +2680,36 @@ input#password-input:focus {
         get
         {
             return IsLedPreHeating ? DISPLAY_CLASS : NONE_DISPLAY_CLASS;
+        }
+    }
+
+    private string selectedStationsDisplay
+    {
+        get
+        {
+            return _userPasswordLevel >= IhtDevices.PasswordLevel_SW.Level_1 ? DISPLAY_INLINE_CLASS : NONE_DISPLAY_CLASS;
+        }
+    }
+
+    private string GetLocalCultureIcon
+    {
+        get
+        {
+            var flagPath = string.Empty;
+
+            var regionName = LocalizationHelper.GetRegionNameFromCulture(CultureInfo.CurrentUICulture);
+
+            if (!string.IsNullOrWhiteSpace(regionName))
+            {
+                var flagName = LocalizationHelper.GetFlagNameFromRegionName(regionName);
+
+                if (!string.IsNullOrWhiteSpace(flagName))
+                {
+                    flagPath = LocalizationHelper.GetFlagNamePath(flagName);
+                }
+            }
+
+            return flagPath;
         }
     }
 
@@ -2053,6 +2732,10 @@ input#password-input:focus {
             {
                 dynDataModificationCNCDataProvider.ManualySelectedDeviceIsDisabled = false;
             }
+            else
+            {
+                _menuExpanded = false;
+            }
         }
     }
 
@@ -2066,9 +2749,13 @@ input#password-input:focus {
         }
         set
         {
-            var paramValue = value == false ? 0 : 1;
+            var param = Elements.FirstOrDefault(p => p.ParamSettings != null && p.ParamSettings.SettingParam == settingParamId);
 
-            ParameterValueChanged((ushort)paramValue);
+            // set the value immediately, when value is not written to the device, it's updated to the old value
+            var paramValue = value == false ? 0 : 1;
+            param.DynParams.Value = paramValue;
+
+            _ = ParameterValueChanged((ushort)paramValue);
         }
     }
 
@@ -2078,7 +2765,7 @@ input#password-input:focus {
 
         if (dynParamDataModel?.ParamSettings != null)
         {
-            ParameterValueChanged();
+            _ = ParameterValueChanged();
         }
     }
 
@@ -2141,39 +2828,16 @@ input#password-input:focus {
         _menuExpanded = !_menuExpanded;
     }
 
-    protected override void OnInitialized()
-    {
-        dynDataModificationCNCDataProvider.DynamicAPCParamsDataChanged += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
-        this.DynamicAPCParamsClientChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChanged;
-
-        this.DynamicAPCParamsClientChangedCommon += dynDataModificationCNCDataProvider.dynamicParamsDysplay_DynamicAPCParamsClientChangedCommon;
-
-        // Subscribe of Data Provider for the Client Event of moving torch (Up or Down)
-        this.APCTorchPositionChanged += dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
-
-        // Subscribe of Data Provider for the Client Event of stopping the torch
-        this.APCTorchPositionStoped += dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
-
-        // Subscribe for event of client stopping working with the torch
-        ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded += DynamicAPCParamsOnDynamicAPCParamsDataChanged;
-
-        // Subscribe for event of client connected to the devices and received the data
-        ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded += DynamicAPCParamsOnConnectedTorchesInstalled;
-
-        base.OnInitialized();
-    }
-
-
     /// <summary>
     /// 
     /// </summary>
     /// <param name="heigthCtrlHandler"></param>
     /// <returns></returns>
-    private async Task ExecHeightCtrlAsync(Func<int, Task> heigthCtrlHandler, bool IsHCOnOffActive = true)
+    private async Task ExecHeightCtrlAsync(Func<int, Task> heigthCtrlHandler, bool IsHCOnOffActive = true, bool turnHCOffAllEnabledDevices=false)
     {
-        if (IsBroadCastMode)
+        if (IsBroadCastMode || turnHCOffAllEnabledDevices)
         {
-            var devices = ihtDevices.GetOnDevices();
+            var devices = ihtDevices.GetDevices().Where(dev => dev.IsEnabledMainControl).ToList();
             foreach (IhtDevice device in devices)
             {
                 ihtDevices.GetDataCmdExecution(device.SlaveId).IsHCOnOffActive = IsHCOnOffActive;
@@ -2189,31 +2853,80 @@ input#password-input:focus {
 
     /// <summary>
     /// 
-    /// 
+    /// </summary>
+    private async Task UpdateCurrentParamsTypeAsync()
+    {
+        if (CurrentDevice != null)
+        {
+            string paramsType = string.Empty;
+
+            int? statusLeds  = CurrentDevice?.dataProcessInfo?.StatusLeds;
+
+            if ((statusLeds & (int)IhtModbusParamDyn.eStatusLedBit.Ignition) != 0)
+            {
+                paramsType = IGNITION;
+            }
+            else if ((statusLeds & (int)IhtModbusParamDyn.eStatusLedBit.PreHeating) != 0)
+            {
+                paramsType = PRE_HEAT;
+            }
+            else if ((statusLeds & (int)IhtModbusParamDyn.eStatusLedBit.Piercing) != 0)
+            {
+                paramsType = PIERCING;
+            }
+            else if ((statusLeds & (int)IhtModbusParamDyn.eStatusLedBit.Cutting) != 0)
+            {
+                paramsType = CUTTING ;
+            }
+            else
+            {
+                paramsType = IGNITION ;
+            }
+
+            if (!string.IsNullOrEmpty(paramsType) && paramsType != dynDataModificationCNCDataProvider.CurrentParamsType)
+            {
+                dynDataModificationCNCDataProvider.CurrentParamsType = paramsType;
+                await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+    }
+
+    /// <summary>
+    ///
+    ///
     /// </summary>
     /// <param name="paramsType"></param>
     /// <returns></returns>
     private async Task SetParamsType(string paramsType)
     {
+        string paramstypeHC = paramsType;
+
         if (_isHCOnOffActive)
         {
-            if (paramsType == IGNITION || paramsType == HEATTING)
+            if (paramstypeHC == IGNITION || paramsType == HEATTING)
             {
-                paramsType = PRE_HEAT;
+                paramstypeHC = PRE_HEAT;
+                if (!_isFlameOn)
+                {
+                    paramsType = PRE_HEAT;
+                }
             }
 
             Func<int, Task>? heigthCtrlHandler = null;
-            switch (paramsType)
+            switch (paramstypeHC)
             {
                 case PRE_HEAT: heigthCtrlHandler = ihtDevices.HeightControlPreHeatingAsync; break;
-                case PIERCING: heigthCtrlHandler = ihtDevices.HeightControlPiercingAsync  ; break;
-                case CUTTING : heigthCtrlHandler = ihtDevices.HeightControlCuttingAsync   ; break;
-                case HEATTING: heigthCtrlHandler = ihtDevices.HeightControlCuttingAsync   ; break;
+                case PIERCING: heigthCtrlHandler = ihtDevices.HeightControlPiercingAsync; break;
+                case CUTTING: heigthCtrlHandler = ihtDevices.HeightControlCuttingAsync; break;
+                case HEATTING: heigthCtrlHandler = ihtDevices.HeightControlCuttingAsync; break;
                 default: return;
+
             }
 
             await ExecHeightCtrlAsync(heigthCtrlHandler, IsHCOnOffActive: true);
         }
+
 
         switch (paramsType)
         {
@@ -2229,6 +2942,7 @@ input#password-input:focus {
         await dynDataModificationCNCDataProvider.RefreshDynamicDataModelToDisplayAsync();
 
         await InvokeAsync(StateHasChanged);
+
     }
 
     /// <summary>
@@ -2287,7 +3001,7 @@ input#password-input:focus {
             if (device.dataProcessInfo != null)
                 device.IsTorchDisabled = device.dataProcessInfo.IsInpTorchDisabled;
 
-            if(!device.IsVisible)
+            if (!device.IsVisible)
             {
                 return cssClass;
             }
@@ -2313,6 +3027,11 @@ input#password-input:focus {
                         {
                             cssClass += " ErrorDevice";
                         }
+                    }
+
+                    if (_isSumTorchesActive)
+                    {
+                        cssClass += " SumDevices";
                     }
                 }
                 else
@@ -2418,9 +3137,51 @@ input#password-input:focus {
         }
     }
 
-    public override void UpdateDynParam(ParameterDataModel parameterData)
+    private bool IsDisabledSliderFlameParam()
     {
-        OnParamChanged(parameterData);
+        if (ComponentMode == MANUAL_MODE)
+        {
+            return _isHCOnOffActive && !_isFlameOn;//_isCalibrationActive || _isHCOnOffActive || !_isFlameOn;
+        }
+        else
+        {
+            if (IsProcessActivated())
+            {
+                if (dynDataModificationCNCDataProvider.CurrentParamsType == PRE_HEAT
+                    || dynDataModificationCNCDataProvider.CurrentParamsType == PIERCING
+                    || dynDataModificationCNCDataProvider.CurrentParamsType == CUTTING
+                   )
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void EditFlameParamValue(ParameterDataModel parameterData)
+    {
+        if (IsDisabledSliderFlameParam())
+        {
+            return;
+        }
+        dynParamDataModel = parameterData;
+
+        if(dynParamDataModel.DynParams.ConstParams.Step < 100)
+        {
+            dynParamDataModel.DynParams.ConstParams.Step = 100;
+        }
+
+        OpenEditGasParamSliderDialog();
+    }
+
+    private void SliderValueChangedHandler(int v)
+    {
+        // update the view-model to let the change render
+        // if you avoid that, you wil effectively cancel the event
+        int TheValue = v;
+
+        Console.WriteLine($"The user has now chosen {v}");
     }
 
     private async void DynamicAPCParamsOnDynamicAPCParamsDataChanged(object? sender, EventArgs e)
@@ -2449,12 +3210,9 @@ input#password-input:focus {
         this.APCTorchPositionChanged -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionChanged;
         this.APCTorchPositionStoped -= dynDataModificationCNCDataProvider.dynamicParamsDysplay_APCTorchPositionStoped;
 
-        _ = TurnFlameOffAsync();
+        _ = TurnFlameOffAsync(turnFlameOffAllEnabledDevices: true);
 
-        if(_isHCOnOffActive)
-        { 
-            _ = TurnHCOffAsync();
-        }
+        _ = TurnHCOffAsync(turnHCOffAllEnabledDevices: true);
 
         // Stop the SP moving and refresh component for all the users
         _ = dynDataModificationCNCDataProvider.StopMovingTorchAsync();
@@ -2463,6 +3221,11 @@ input#password-input:focus {
         ClientStartedOrStoppedWorkingWithDeviceRefreshIsNeeded -= DynamicAPCParamsOnDynamicAPCParamsDataChanged;
 
         ConnectedTorchesInstalledClientReceivedDataRefreshIsNeeded -= DynamicAPCParamsOnConnectedTorchesInstalled;
+
+        IhtDevices.DataProviderIsControlsActive .DataChanged -= DataProviderIsControlsActive;
+        IhtDevices.DataProviderIsProcessesActive.DataChanged -= DataProviderIsProcessesActive;
+        IhtDevices.DataProviderIsClearanceControlsManual.DataChanged -= DataProviderIsClearanceControlsManual;
+        IhtDevices.DataProviderIsCuttingDataBaseIdChanged.DataChanged -= DataProviderIsCuttingDataBaseIdChanged;
     }
 
     private void ParamSelected1(ChangeEventArgs args)
@@ -2481,7 +3244,30 @@ input#password-input:focus {
         {
             DynamicAPCParamsClientChanged?.Invoke(eventParam, EventArgs.Empty);
         }
-        
+
+    }
+
+    // Create only one string for all params but not for each param
+    private async Task<string> GetCurrentCuttingDataFromDB(int? DataBaseId)
+    {
+        var LoadedDataString = string.Empty;
+
+        if (DataBaseId != null && DataBaseId != 0)
+        {
+            var cuttingDataModel = await cuttingDataDBService.GetEntryByIdAsync((int)DataBaseId, CancellationToken.None);
+
+            if(cuttingDataModel != null)
+            {
+                var NozzleName = cuttingDataModel?.Nozzle?.Name ?? string.Empty;
+                var Thickness = DisplayValueAndUnit(cuttingDataModel?.Thickness ?? 0, Units.txtMm) ?? string.Empty;
+                var CuttingSpeed = DisplayValueAndUnit(cuttingDataModel?.CuttingSpeed ?? 0, Units.txtInch_min) ?? string.Empty;
+                var Kerf = DisplayValueAndUnit(cuttingDataModel?.Kerf ?? 0, Units.txtMm) ?? string.Empty; // cuttingDataModel?.Kerf.ToString("0.#") ?? string.Empty;
+
+                LoadedDataString = $"ID:{ihtDevices.DataBaseId.ToString() ?? ""} | {Thickness} | {NozzleName} | {CuttingSpeed} | {Kerf} kerf";
+            }
+        }
+
+        return LoadedDataString;
     }
 
 }
